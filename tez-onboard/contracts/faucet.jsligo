@@ -1,0 +1,70 @@
+// tez-onboard seeding faucet
+// One small claim per fresh address. Admin funds and tunes it.
+// jsLIGO (LIGO >= 1.x syntax)
+
+type storage = {
+  admin: address,
+  drip: tez,                       // amount sent per claim (e.g. 0.5tez)
+  max_balance: tez,                // claims rejected if claimer already holds >= this
+  claimed: big_map<address, timestamp>, // one claim per address, timestamped
+  paused: bool,
+};
+
+type ret = [list<operation>, storage];
+
+// --- entrypoints ---
+
+@entry
+const claim = (_u: unit, s: storage): ret => {
+  if (s.paused) failwith("FAUCET_PAUSED");
+
+  const who = Tezos.get_sender();
+
+  // one claim per address
+  if (Big_map.mem(who, s.claimed)) failwith("ALREADY_CLAIMED");
+
+  // don't drip to wallets that are already funded
+  // (best-effort: checks the sender's on-chain balance is impossible directly;
+  //  we gate on amount sent = 0 and rely on client-side balance check +
+  //  the one-claim rule. Keep drip small.)
+  if (Tezos.get_amount() > 0mutez) failwith("NO_DEPOSIT_NEEDED");
+
+  const contract_opt: option<contract<unit>> = Tezos.get_contract_opt(who);
+  const dest = match(contract_opt) {
+    when (Some(c)): c;
+    when (None()): failwith("BAD_ADDRESS")
+  };
+
+  const op = Tezos.transaction(unit, s.drip, dest);
+  const claimed = Big_map.add(who, Tezos.get_now(), s.claimed);
+  return [list([op]), { ...s, claimed: claimed }];
+};
+
+@entry
+const fund = (_u: unit, s: storage): ret => {
+  // anyone can top up the faucet by sending tez here
+  return [list([]), s];
+};
+
+@entry
+const set_drip = (amount: tez, s: storage): ret => {
+  if (Tezos.get_sender() != s.admin) failwith("NOT_ADMIN");
+  return [list([]), { ...s, drip: amount }];
+};
+
+@entry
+const set_paused = (p: bool, s: storage): ret => {
+  if (Tezos.get_sender() != s.admin) failwith("NOT_ADMIN");
+  return [list([]), { ...s, paused: p }];
+};
+
+@entry
+const withdraw = (amount: tez, s: storage): ret => {
+  if (Tezos.get_sender() != s.admin) failwith("NOT_ADMIN");
+  const contract_opt: option<contract<unit>> = Tezos.get_contract_opt(s.admin);
+  const dest = match(contract_opt) {
+    when (Some(c)): c;
+    when (None()): failwith("BAD_ADMIN")
+  };
+  return [list([Tezos.transaction(unit, amount, dest)]), s];
+};

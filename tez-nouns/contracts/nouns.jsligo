@@ -1,0 +1,211 @@
+// tez-nouns — FA2 NFT with earned + living traits
+// jsLIGO (LIGO >= 1.x). Template-grade: readable over gas-golfed.
+
+type token_id = nat;
+
+type seed = {
+  background: nat,
+  body: nat,
+  head: nat,
+  glasses: nat,
+  accessory: nat,   // EARNED: derived from stamps registry at mint
+  aura: nat,        // LIVING: mutable post-mint
+};
+
+type series = | ["Personal"] | ["Auction"];
+
+type noun = {
+  seed: seed,
+  series: series,
+  minted_at: timestamp,
+  last_poke: timestamp,
+};
+
+type storage = {
+  admin: address,
+  stamps_registry: address,        // tez-stamps contract
+  next_id: token_id,
+  ledger: big_map<token_id, address>,
+  nouns: big_map<token_id, noun>,
+  personal_minted: big_map<address, token_id>,
+  // trait inventory sizes for random slots
+  pool_sizes: { background: nat, body: nat, head: nat, glasses: nat, aura: nat },
+  // earned-accessory rule table: (stamp_id needed) -> accessory pool [start, len]
+  accessory_rules: big_map<nat, [nat, nat]>,
+  default_accessory_pool: [nat, nat],
+  // qualifying stamp for personal mint
+  qualifying_stamp: nat,
+  // on-chain art: (layer_name, index) packed key -> RLE bytes
+  art: big_map<[string, nat], bytes>,
+  decay_period: int,               // seconds of inactivity before aura decays
+  metadata: big_map<string, bytes>,
+};
+
+type ret = [list<operation>, storage];
+
+// ---------- pseudo-randomness ----------
+// Good enough for trait assignment on a template; NOT for high-value lotteries.
+const roll = (entropy: bytes, salt: nat, modulo: nat): nat => {
+  const h = Crypto.blake2b(Bytes.concat(entropy, Bytes.pack(salt)));
+  return match(Bytes.unpack(Bytes.sub(0n, 4n, h)) as option<nat>) {
+    when (Some(n)): n % modulo;
+    when (None()): salt % modulo
+  };
+};
+
+// ---------- earned accessory ----------
+const derive_accessory = (s: storage, who: address, entropy: bytes): nat => {
+  // Walk the rule table by stamp id: highest qualifying stamp id wins.
+  // (Template keeps rules small; iterate a known id range.)
+  let pool = s.default_accessory_pool;
+  let i = 0n;
+  while (i < 32n) {
+    match(Big_map.find_opt(i, s.accessory_rules)) {
+      when (Some(p)): do {
+        const held = match(Tezos.call_view("has_stamp", [who, i], s.stamps_registry)
+                           as option<bool>) {
+          when (Some(b)): b;
+          when (None()): false
+        };
+        if (held) pool = p;
+      };
+      when (None()): unit
+    };
+    i = i + 1n;
+  };
+  const [start, len] = pool;
+  return start + roll(entropy, 99n, len);
+};
+
+// ---------- mint ----------
+@entry
+const mint = (kind: series, s: storage): ret => {
+  const who = Tezos.get_sender();
+  const id = s.next_id;
+
+  match(kind) {
+    when (Personal()): do {
+      if (Big_map.mem(who, s.personal_minted)) failwith("ONE_PER_WALLET");
+      const qualifies = match(Tezos.call_view(
+        "has_stamp", [who, s.qualifying_stamp], s.stamps_registry) as option<bool>) {
+        when (Some(b)): b;
+        when (None()): false
+      };
+      if (!qualifies) failwith("EARN_YOUR_NOUN");
+    };
+    when (Auction()): do {
+      if (Tezos.get_sender() != s.admin) failwith("NOT_AUCTION_HOUSE");
+    }
+  };
+
+  const entropy = Bytes.pack([Tezos.get_now(), who, id]);
+  const seed: seed = {
+    background: roll(entropy, 1n, s.pool_sizes.background),
+    body:       roll(entropy, 2n, s.pool_sizes.body),
+    head:       roll(entropy, 3n, s.pool_sizes.head),
+    glasses:    roll(entropy, 4n, s.pool_sizes.glasses),  // sacred, always random
+    accessory:  derive_accessory(s, who, entropy),         // earned
+    aura:       0n,                                        // born bright
+  };
+
+  const n: noun = { seed, series: kind, minted_at: Tezos.get_now(), last_poke: Tezos.get_now() };
+  const personal_minted = match(kind) {
+    when (Personal()): Big_map.add(who, id, s.personal_minted);
+    when (Auction()): s.personal_minted
+  };
+
+  return [list([]), {
+    ...s,
+    next_id: id + 1n,
+    ledger: Big_map.add(id, who, s.ledger),
+    nouns: Big_map.add(id, n, s.nouns),
+    personal_minted,
+  }];
+};
+
+// ---------- aura lifecycle ----------
+
+@entry
+const poke = (id: token_id, s: storage): ret => {
+  const owner = match(Big_map.find_opt(id, s.ledger)) {
+    when (Some(a)): a; when (None()): failwith("NO_NOUN")
+  };
+  if (Tezos.get_sender() != owner) failwith("NOT_OWNER");
+  const n = match(Big_map.find_opt(id, s.nouns)) {
+    when (Some(x)): x; when (None()): failwith("NO_NOUN")
+  };
+  const refreshed = { ...n, last_poke: Tezos.get_now(), seed: { ...n.seed, aura: 0n } };
+  return [list([]), { ...s, nouns: Big_map.update(id, Some(refreshed), s.nouns) }];
+};
+
+// Permissionless keeper: anyone can decay a neglected noun's aura one step.
+@entry
+const decay = (id: token_id, s: storage): ret => {
+  const n = match(Big_map.find_opt(id, s.nouns)) {
+    when (Some(x)): x; when (None()): failwith("NO_NOUN")
+  };
+  if (Tezos.get_now() < n.last_poke + s.decay_period) failwith("STILL_BRIGHT");
+  const dimmer = n.seed.aura + 1n >= s.pool_sizes.aura ? n.seed.aura : n.seed.aura + 1n;
+  const dimmed = { ...n, last_poke: Tezos.get_now(), seed: { ...n.seed, aura: dimmer } };
+  return [list([]), { ...s, nouns: Big_map.update(id, Some(dimmed), s.nouns) }];
+};
+
+@entry
+const grant_aura = (p: { id: token_id, aura: nat }, s: storage): ret => {
+  if (Tezos.get_sender() != s.admin) failwith("NOT_ADMIN"); // hand to DAO later
+  const n = match(Big_map.find_opt(p.id, s.nouns)) {
+    when (Some(x)): x; when (None()): failwith("NO_NOUN")
+  };
+  const granted = { ...n, seed: { ...n.seed, aura: p.aura } };
+  return [list([]), { ...s, nouns: Big_map.update(p.id, Some(granted), s.nouns) }];
+};
+
+// ---------- admin: art + rules ----------
+
+@entry
+const set_art = (p: { layer: string, index: nat, rle: bytes }, s: storage): ret => {
+  if (Tezos.get_sender() != s.admin) failwith("NOT_ADMIN");
+  return [list([]), { ...s, art: Big_map.update([p.layer, p.index], Some(p.rle), s.art) }];
+};
+
+@entry
+const set_accessory_rule = (p: { stamp_id: nat, pool: [nat, nat] }, s: storage): ret => {
+  if (Tezos.get_sender() != s.admin) failwith("NOT_ADMIN");
+  return [list([]), { ...s, accessory_rules: Big_map.update(p.stamp_id, Some(p.pool), s.accessory_rules) }];
+};
+
+// ---------- FA2 transfer (nouns ARE transferable, unlike stamps) ----------
+
+type transfer_dest = { to_: address, token_id: token_id, amount: nat };
+type transfer_item = { from_: address, txs: list<transfer_dest> };
+
+@entry
+const transfer = (ts: list<transfer_item>, s: storage): ret => {
+  let ledger = s.ledger;
+  for (const t of ts) {
+    for (const d of t.txs) {
+      if (d.amount != 1n) failwith("FA2_INSUFFICIENT_BALANCE");
+      const owner = match(Big_map.find_opt(d.token_id, ledger)) {
+        when (Some(a)): a; when (None()): failwith("FA2_TOKEN_UNDEFINED")
+      };
+      if (owner != t.from_ || Tezos.get_sender() != owner)
+        failwith("FA2_NOT_OWNER");
+      ledger = Big_map.update(d.token_id, Some(d.to_), ledger);
+    }
+  };
+  return [list([]), { ...s, ledger }];
+};
+
+// ---------- views ----------
+
+@view
+const get_noun = (id: token_id, s: storage): noun =>
+  match(Big_map.find_opt(id, s.nouns)) {
+    when (Some(n)): n; when (None()): failwith("NO_NOUN")
+  };
+
+@view
+const get_art = (k: [string, nat], s: storage): bytes =>
+  match(Big_map.find_opt(k, s.art)) {
+    when (Some(b)): b; when (None()): failwith("NO_ART")
+  };

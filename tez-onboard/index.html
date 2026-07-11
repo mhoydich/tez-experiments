@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>tez-onboard — the front door</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <main class="door">
+    <p class="eyebrow">tez-onboard · template 01</p>
+    <h1>Your wallet is<br /><em>your memory.</em></h1>
+    <p class="lede">
+      Sign in with an account you already have. A Tezos wallet appears,
+      gets seeded with enough tez to act, and starts remembering
+      everything you do from here.
+    </p>
+
+    <div id="connect-wrap">
+      <button id="connect" class="enter">Enter with Kukai</button>
+      <p class="fine">or any Beacon wallet — Temple, Umami…</p>
+    </div>
+
+    <section id="session" hidden>
+      <dl class="passport">
+        <div><dt>Address</dt><dd id="address">—</dd></div>
+        <div><dt>Balance</dt><dd id="balance">—</dd></div>
+      </dl>
+      <button id="disconnect" class="ghost">Disconnect</button>
+    </section>
+
+    <p id="status" class="status" role="status"></p>
+
+    <footer>
+      <p>Ghostnet by default · CC0 · part of the tez-experiments series</p>
+    </footer>
+  </main>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

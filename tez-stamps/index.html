@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>tez-stamps — your passport</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <main class="office">
+    <p class="eyebrow">tez-stamps · template 02</p>
+    <h1>Proof you<br /><em>showed up.</em></h1>
+    <p class="lede">Every stamp on this page is a soulbound token —
+       earned by doing, bound to your wallet, readable by any app.</p>
+
+    <button id="connect" class="enter">Open my passport</button>
+
+    <section id="passport" hidden>
+      <p class="mono" id="address"></p>
+      <ul id="stamps" class="stamp-grid" aria-label="Your stamps"></ul>
+      <div id="claimable"></div>
+    </section>
+
+    <p id="status" class="status" role="status"></p>
+    <footer><p>Ghostnet · CC0 · reads/writes the stamps registry contract</p></footer>
+  </main>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

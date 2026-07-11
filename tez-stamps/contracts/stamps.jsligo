@@ -1,0 +1,123 @@
+// tez-stamps — soulbound FA2 stamp registry (TZIP-12 shaped)
+// Each token_id is a stamp TYPE. Balances are 0 or 1 per wallet.
+// Transfers are disabled (soulbound); only minting via gates.
+// jsLIGO (LIGO >= 1.x)
+
+type token_id = nat;
+
+type gate =
+  | ["Open"]                    // anyone can self-claim once
+  | ["Issuer"]                  // only stamp_type.issuer can mint
+  | ["Signed", key];            // user submits issuer-signed voucher
+
+type stamp_type = {
+  metadata: map<string, bytes>, // TZIP-21 token metadata
+  issuer: address,
+  gate: gate,
+  total: nat,
+};
+
+type ledger_key = [address, token_id];
+
+type storage = {
+  admin: address,
+  next_id: token_id,
+  types: big_map<token_id, stamp_type>,
+  ledger: big_map<ledger_key, unit>,     // holding = key present
+  metadata: big_map<string, bytes>,      // contract metadata (TZIP-16)
+};
+
+type ret = [list<operation>, storage];
+
+// ---------- helpers ----------
+
+const has = (s: storage, who: address, id: token_id): bool =>
+  Big_map.mem([who, id], s.ledger);
+
+const mint_to = (s: storage, who: address, id: token_id, t: stamp_type): storage => {
+  if (has(s, who, id)) failwith("ALREADY_STAMPED");
+  const ledger = Big_map.add([who, id], unit, s.ledger);
+  const types = Big_map.update(id, Some({ ...t, total: t.total + 1n }), s.types);
+  return { ...s, ledger, types };
+};
+
+const get_type = (s: storage, id: token_id): stamp_type =>
+  match(Big_map.find_opt(id, s.types)) {
+    when (Some(t)): t;
+    when (None()): failwith("UNKNOWN_STAMP")
+  };
+
+// ---------- admin / issuer entrypoints ----------
+
+@entry
+const add_stamp_type = (
+  p: { metadata: map<string, bytes>, issuer: address, gate: gate },
+  s: storage
+): ret => {
+  if (Tezos.get_sender() != s.admin) failwith("NOT_ADMIN");
+  const t: stamp_type = { metadata: p.metadata, issuer: p.issuer, gate: p.gate, total: 0n };
+  const types = Big_map.add(s.next_id, t, s.types);
+  return [list([]), { ...s, types, next_id: s.next_id + 1n }];
+};
+
+@entry
+const issue = (p: { to_: address, id: token_id }, s: storage): ret => {
+  const t = get_type(s, p.id);
+  if (Tezos.get_sender() != t.issuer) failwith("NOT_ISSUER");
+  return [list([]), mint_to(s, p.to_, p.id, t)];
+};
+
+// ---------- claim entrypoints ----------
+
+@entry
+const claim_open = (id: token_id, s: storage): ret => {
+  const t = get_type(s, id);
+  return match(t.gate) {
+    when (Open()): [list([]), mint_to(s, Tezos.get_sender(), id, t)];
+    when (Issuer()): failwith("GATED");
+    when (Signed(_k)): failwith("GATED")
+  };
+};
+
+// Voucher = issuer signature over pack((claimer, token_id, contract_address))
+@entry
+const claim_signed = (p: { id: token_id, sig: signature }, s: storage): ret => {
+  const t = get_type(s, p.id);
+  const claimer = Tezos.get_sender();
+  return match(t.gate) {
+    when (Signed(k)): do {
+      const payload = Bytes.pack([claimer, p.id, Tezos.get_self_address()]);
+      if (!Crypto.check(k, p.sig, payload)) failwith("BAD_VOUCHER");
+      return [list([]), mint_to(s, claimer, p.id, t)];
+    };
+    when (Open()): failwith("USE_CLAIM_OPEN");
+    when (Issuer()): failwith("GATED")
+  };
+};
+
+// ---------- FA2 surface (read-compatible, transfer-disabled) ----------
+
+type transfer_dest = { to_: address, token_id: token_id, amount: nat };
+type transfer_item = { from_: address, txs: list<transfer_dest> };
+
+@entry
+const transfer = (_t: list<transfer_item>, _s: storage): ret =>
+  failwith("SOULBOUND: stamps are non-transferable");
+
+type balance_request = { owner: address, token_id: token_id };
+type balance_response = { request: balance_request, balance: nat };
+
+@entry
+const balance_of = (
+  p: { requests: list<balance_request>, callback: contract<list<balance_response>> },
+  s: storage
+): ret => {
+  const respond = (r: balance_request): balance_response =>
+    ({ request: r, balance: has(s, r.owner, r.token_id) ? 1n : 0n });
+  const responses = List.map(respond, p.requests);
+  return [list([Tezos.transaction(responses, 0mutez, p.callback)]), s];
+};
+
+@entry
+const update_operators = (_p: unit, _s: storage): ret =>
+  failwith("SOULBOUND: no operators");

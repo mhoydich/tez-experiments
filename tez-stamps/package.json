@@ -1,0 +1,19 @@
+{
+  "name": "tez-stamps",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "deploy": "node scripts/deploy.js"
+  },
+  "dependencies": {
+    "@airgap/beacon-sdk": "^4.3.1",
+    "@taquito/beacon-wallet": "^20.1.0",
+    "@taquito/signer": "^20.1.0",
+    "@taquito/taquito": "^20.1.0",
+    "@taquito/tzip16": "^20.1.0"
+  },
+  "devDependencies": { "dotenv": "^16.4.5", "vite": "^5.4.0" }
+}

@@ -1,0 +1,34 @@
+{
+  "comment": "Placeholder 32x32 trait set. RLE format: [paletteIndex, runLength] pairs, row-major. Palette 0 = transparent. Swap in real art; original Nouns art is CC0.",
+  "palette": ["transparent", "#d5d7e1", "#e1d7d5", "#1f1d29", "#0f61ff", "#b3402a", "#f3a002", "#2a9d8f", "#ffffff", "#10312e"],
+  "layers": {
+    "background": [
+      {"name": "cool",    "rle": "solid:1"},
+      {"name": "warm",    "rle": "solid:2"},
+      {"name": "tezos",   "rle": "solid:4"},
+      {"name": "kelp",    "rle": "solid:7"}
+    ],
+    "body": [
+      {"name": "ink",     "rle": "rect:8,20,16,10,3"},
+      {"name": "stamp",   "rle": "rect:8,20,16,10,5"}
+    ],
+    "head": [
+      {"name": "round",   "rle": "rect:10,6,12,12,6"},
+      {"name": "square",  "rle": "rect:9,5,14,13,9"}
+    ],
+    "glasses": [
+      {"name": "noggles", "rle": "noggles:10,9,4"}
+    ],
+    "accessory": [
+      {"name": "plain",      "rle": "rect:14,22,4,2,8",  "pool": "default"},
+      {"name": "scholar",    "rle": "rect:12,22,8,2,6",  "pool": "education"},
+      {"name": "drumsticks", "rle": "rect:11,21,10,1,5", "pool": "drum"},
+      {"name": "validator",  "rle": "rect:13,22,6,3,4",  "pool": "baker"}
+    ],
+    "aura": [
+      {"name": "bright", "rle": "ring:16,16,15,6"},
+      {"name": "dim",    "rle": "ring:16,16,15,1"},
+      {"name": "faded",  "rle": "none"}
+    ]
+  }
+}
