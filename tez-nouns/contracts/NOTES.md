@@ -1,25 +1,14 @@
 # Contract notes
 
-## Views to add to tez-stamps
+## Views on tez-stamps — DONE
 
 tez-nouns derives traits by calling on-chain views on the stamps registry.
-Add these to `tez-stamps/contracts/stamps.jsligo`:
+`has_stamp` and `stamp_count` now live in `tez-stamps/contracts/stamps.jsligo`
+(bottom of the file) and compile clean under LIGO 1.15.6. Signatures:
 
 ```jsligo
-@view
-const has_stamp = (p: [address, nat], s: storage): bool =>
-  Big_map.mem([p[0], p[1]], s.ledger);
-
-@view
-const stamp_count = (who: address, s: storage): nat => {
-  // template shortcut: iterate known type range; fine for small registries
-  let n = 0n; let i = 0n;
-  while (i < 32n) {
-    if (Big_map.mem([who, i], s.ledger)) n = n + 1n;
-    i = i + 1n;
-  };
-  return n;
-};
+has_stamp   : (p: [address, nat]) => bool   // matches Tezos.call_view in nouns.jsligo
+stamp_count : (who: address) => nat         // iterates token_ids 0..31
 ```
 
 ## Randomness caveat

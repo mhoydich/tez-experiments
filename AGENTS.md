@@ -24,9 +24,16 @@ design spec bridging 02→03. tez-nouns/contracts/NOTES.md lists known gaps.
 
 ## Ground truth about current state (be honest with yourself)
 
-- All three jsLIGO contracts were written WITHOUT a compiler in the loop.
-  Assume syntax errors exist. Compiling them is task #1.
-- `npm install` has never been run in any repo. Frontends are unsmoke-tested.
+- All three contracts compile clean under LIGO 1.15.6 (P0 tasks 1+3 done
+  2026-07-11; zero source fixes were needed). The `has_stamp`/`stamp_count`
+  views are in stamps.jsligo. On this machine there is no docker: `ligo` on
+  PATH (~/.local/bin/ligo) is a wrapper that runs the static Linux binary
+  inside a Lima VM named "ligo" — output goes to stdout, redirect on the
+  host side (the guest mounts $HOME read-only).
+- Frontends smoke-tested (P0 task 2 done): both dev servers run and the
+  Beacon Connect Wallet modal opens. This required vite.config.js node
+  polyfills + Beacon-bundle aliases and the Beacon v4 constructor network
+  option — see commit history for the why.
 - The renderer (`tez-nouns/src/render.js`) IS tested offline and works.
 - Nothing is deployed. Ghostnet is the only target until told otherwise.
 

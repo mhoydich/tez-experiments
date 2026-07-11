@@ -121,3 +121,20 @@ const balance_of = (
 @entry
 const update_operators = (_p: unit, _s: storage): ret =>
   failwith("SOULBOUND: no operators");
+
+// ---------- views (read by tez-nouns at mint; see tez-nouns/contracts/NOTES.md) ----------
+
+@view
+const has_stamp = (p: [address, nat], s: storage): bool =>
+  Big_map.mem([p[0], p[1]], s.ledger);
+
+@view
+const stamp_count = (who: address, s: storage): nat => {
+  // template shortcut: iterate known type range; fine for small registries
+  let n = 0n; let i = 0n;
+  while (i < 32n) {
+    if (Big_map.mem([who, i], s.ledger)) n = n + 1n;
+    i = i + 1n;
+  };
+  return n;
+};
