@@ -4,12 +4,16 @@ import { BeaconWallet } from "@taquito/beacon-wallet";
 import { NetworkType } from "@airgap/beacon-sdk";
 import { loadStampTypes, walletHolds, claimOpen } from "./claim.js";
 
-const RPC = import.meta.env.VITE_RPC || "https://rpc.shadownet.teztnets.com";
+const NETWORK = import.meta.env.VITE_NETWORK || "shadownet";
+const RPC = import.meta.env.VITE_RPC ||
+  (NETWORK === "mainnet" ? "https://mainnet.smartpy.io" : "https://rpc.shadownet.teztnets.com");
 export const Tezos = new TezosToolkit(RPC);
 export const wallet = new BeaconWallet({
   name: "tez-stamps",
   // Beacon v4: network is set on the client, not on requestPermissions()
-  network: { type: NetworkType.CUSTOM, name: "Shadownet", rpcUrl: RPC },
+  network: NETWORK === "mainnet"
+    ? { type: NetworkType.MAINNET, rpcUrl: RPC }
+    : { type: NetworkType.CUSTOM, name: "Shadownet", rpcUrl: RPC },
   featuredWallets: ["kukai", "temple", "umami"],
 });
 Tezos.setWalletProvider(wallet);

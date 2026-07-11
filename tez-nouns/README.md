@@ -1,5 +1,9 @@
 # tez-nouns
 
+**Deployed (MAINNET)**: `KT1NK5vQABzaYy8x9rNhiLL4BVVEsJJZ4VgT` (LIGO
+1.15.6), registry `KT1PT6DHgiH4dxhUS2Tj8dzaeNsc4ygy5nBo`, art on-chain,
+noun #0 minted.
+
 **Deployed (Shadownet)**: `KT1JzbnZM6FJ9JqLvg3i6szb29dPRAMyrNM9` (LIGO
 1.15.6), wired to stamps registry `KT1MSMyZDAhhNN7TLHoZYttRBfpURnnzgg3P`,
 qualifying stamp id 0. Art uploaded (scripts/upload-art.js); noun #0 minted; token_metadata view verified on-chain (valid TZIP-21 JSON + 8.3KB SVG).

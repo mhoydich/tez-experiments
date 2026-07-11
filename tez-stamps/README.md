@@ -1,5 +1,7 @@
 # tez-stamps
 
+**Deployed (MAINNET)**: registry `KT1PT6DHgiH4dxhUS2Tj8dzaeNsc4ygy5nBo`
+(LIGO 1.15.6) — stampz.xyz points here.
 **Deployed (Shadownet)**: registry `KT1MSMyZDAhhNN7TLHoZYttRBfpURnnzgg3P`
 (LIGO 1.15.6). Types 0 "First Steps" (open), 1 "Showed Up" (open),
 2 "Shipped" (signed) — thumbnails are on-chain data URIs.
