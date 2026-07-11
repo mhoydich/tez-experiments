@@ -1,5 +1,10 @@
 # tez-stamps
 
+**Live at [stampz.xyz](https://stampz.xyz)** — Cloudflare Pages project
+`stampz` (deploy: `npx vite build && npx wrangler pages deploy dist
+--project-name stampz`). DNS: Namecheap ALIAS @ / CNAME www →
+stampz.pages.dev. Rebuild + redeploy after setting VITE_REGISTRY_ADDRESS.
+
 Template #2 in the tez-experiments series. The verificational primitive:
 
 **do a thing → prove the thing → receive a stamp.**
