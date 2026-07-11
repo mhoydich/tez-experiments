@@ -4,7 +4,7 @@ import { InMemorySigner } from "@taquito/signer";
 import "dotenv/config";
 
 const amount = Number(process.argv[2] || 5);
-const RPC = process.env.RPC || "https://ghostnet.tezos.ecadinfra.com";
+const RPC = process.env.RPC || "https://rpc.shadownet.teztnets.com";
 const Tezos = new TezosToolkit(RPC);
 Tezos.setSignerProvider(await InMemorySigner.fromSecretKey(process.env.ADMIN_KEY));
 

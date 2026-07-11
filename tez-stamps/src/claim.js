@@ -2,7 +2,7 @@
 // Reads use a TzKT-style indexer for big_map access (simplest client path);
 // swap VITE_INDEXER for your own if needed.
 const REGISTRY = import.meta.env.VITE_REGISTRY_ADDRESS || "";
-const INDEXER = import.meta.env.VITE_INDEXER || "https://api.ghostnet.tzkt.io";
+const INDEXER = import.meta.env.VITE_INDEXER || "https://api.shadownet.tzkt.io";
 
 const hex2str = (h) => decodeURIComponent(h.replace(/../g, "%$&"));
 

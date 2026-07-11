@@ -1,5 +1,5 @@
-// Deploy contracts/faucet.tz to Ghostnet.
-// Requires: .env with ADMIN_KEY (an unencrypted Ghostnet secret key, edsk...)
+// Deploy contracts/faucet.tz to Shadownet.
+// Requires: .env with ADMIN_KEY (an unencrypted Shadownet secret key, edsk...)
 // and contracts/faucet.tz compiled from faucet.jsligo (see README).
 
 import { TezosToolkit } from "@taquito/taquito";
@@ -7,7 +7,7 @@ import { InMemorySigner } from "@taquito/signer";
 import { readFileSync } from "node:fs";
 import "dotenv/config";
 
-const RPC = process.env.RPC || "https://ghostnet.tezos.ecadinfra.com";
+const RPC = process.env.RPC || "https://rpc.shadownet.teztnets.com";
 const KEY = process.env.ADMIN_KEY;
 if (!KEY) throw new Error("Set ADMIN_KEY in .env");
 

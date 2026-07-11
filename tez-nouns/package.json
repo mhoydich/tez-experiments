@@ -8,9 +8,11 @@
     "render": "node src/render.js"
   },
   "dependencies": {
-    "@taquito/signer": "^20.1.0",
-    "@taquito/taquito": "^20.1.0",
+    "@taquito/signer": "^25.0.0",
+    "@taquito/taquito": "^25.0.0",
     "@taquito/utils": "^20.1.0"
   },
-  "devDependencies": { "dotenv": "^16.4.5" }
+  "devDependencies": {
+    "dotenv": "^16.4.5"
+  }
 }

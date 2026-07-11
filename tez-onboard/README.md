@@ -1,5 +1,8 @@
 # tez-onboard
 
+**Deployed (Shadownet)**: faucet `KT1SYzUfvC7oP6Yvt4cHqsJMFFqK3qwmgskk`
+(LIGO 1.15.6), funded with 20 tez. Relayer = admin until rotated.
+
 A clean-room starter for Tezos apps where the wallet is the front door **and** the memory.
 
 Connect with Kukai (social login — no seed phrase ceremony), get seeded with enough tez to act, and start accumulating on-chain history. This is template #1 in a series of small, composable Tezos experiment templates:
@@ -19,7 +22,7 @@ tez-onboard/
 ├── contracts/
 │   └── faucet.jsligo    # Seeding faucet contract (jsLIGO)
 ├── scripts/
-│   ├── deploy.js        # Deploy faucet to Ghostnet via Taquito
+│   ├── deploy.js        # Deploy faucet to Shadownet via Taquito
 │   └── fund.js          # Top up the faucet from an admin key
 ├── index.html
 └── package.json
@@ -37,7 +40,7 @@ tez-onboard/
 
 ```bash
 npm install
-npm run dev          # Vite dev server, points at Ghostnet
+npm run dev          # Vite dev server, points at Shadownet
 ```
 
 Deploy your own faucet:
@@ -47,7 +50,7 @@ Deploy your own faucet:
 docker run --rm -v "$PWD":"$PWD" -w "$PWD" ligolang/ligo:1.6.0 \
   compile contract contracts/faucet.jsligo -o contracts/faucet.tz
 
-# Deploy to Ghostnet (set ADMIN_KEY in .env — get free testnet tez from https://faucet.ghostnet.teztnets.com)
+# Deploy to Shadownet (set ADMIN_KEY in .env — get free testnet tez from https://faucet.shadownet.teztnets.com)
 node scripts/deploy.js
 
 # Fund it
@@ -62,8 +65,8 @@ Then set `VITE_FAUCET_ADDRESS` in `.env` and restart the dev server.
 
 - **Kukai first.** DirectAuth social login is the lowest-friction wallet on any chain. Beacon means Temple/Umami users connect too, for free.
 - **Faucet is a contract, not a backend.** The seeding logic (one claim per address, claim amount, cooldown) lives on-chain and is auditable. The only trust is that the admin keeps it funded.
-- **Claim-once-per-address** with a small amount. Sybil resistance here is deliberately weak — this is a Ghostnet/onboarding pattern, not a mainnet money spigot. For mainnet, gate `claim` behind a verificational (see tez-stamps) or a relayer with its own checks.
-- **Ghostnet by default.** Flip `NETWORK` in `.env` for mainnet.
+- **Claim-once-per-address** with a small amount. Sybil resistance here is deliberately weak — this is a Shadownet/onboarding pattern, not a mainnet money spigot. For mainnet, gate `claim` behind a verificational (see tez-stamps) or a relayer with its own checks.
+- **Shadownet by default.** Flip `NETWORK` in `.env` for mainnet.
 
 ## Composing forward
 

@@ -3,7 +3,7 @@ import { InMemorySigner } from "@taquito/signer";
 import { readFileSync } from "node:fs";
 import "dotenv/config";
 
-const Tezos = new TezosToolkit(process.env.RPC || "https://ghostnet.tezos.ecadinfra.com");
+const Tezos = new TezosToolkit(process.env.RPC || "https://rpc.shadownet.teztnets.com");
 Tezos.setSignerProvider(await InMemorySigner.fromSecretKey(process.env.ADMIN_KEY));
 const admin = await Tezos.signer.publicKeyHash();
 const code = readFileSync("contracts/nouns.tz", "utf8");
@@ -17,7 +17,7 @@ const op = await Tezos.contract.originate({
     ledger: new Map(), nouns: new Map(), personal_minted: new Map(),
     pool_sizes: { background: 4, body: 2, head: 2, glasses: 1, aura: 3 },
     accessory_rules: new Map(),      // set via set_accessory_rule after deploy
-    default_accessory_pool: [0, 1],  // "plain"
+    default_accessory_pool: { 9: 0, 10: 1 }, // "plain" (Taquito positional keys for the unannotated pair)
     qualifying_stamp: 0,             // stamp id required for personal mint
     art: new Map(),
     decay_period: 60 * 60 * 24 * 30, // 30 days to dim

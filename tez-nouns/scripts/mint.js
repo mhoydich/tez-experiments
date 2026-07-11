@@ -4,7 +4,7 @@ import { InMemorySigner } from "@taquito/signer";
 import "dotenv/config";
 
 const kind = process.argv[2] || "personal";
-const Tezos = new TezosToolkit(process.env.RPC || "https://ghostnet.tezos.ecadinfra.com");
+const Tezos = new TezosToolkit(process.env.RPC || "https://rpc.shadownet.teztnets.com");
 Tezos.setSignerProvider(await InMemorySigner.fromSecretKey(process.env.USER_KEY || process.env.ADMIN_KEY));
 const c = await Tezos.contract.at(process.env.NOUNS_ADDRESS);
 const op = await c.methodsObject.mint(kind === "personal" ? { personal: null } : { auction: null }).send();

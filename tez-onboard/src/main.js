@@ -6,22 +6,21 @@ import { BeaconWallet } from "@taquito/beacon-wallet";
 import { NetworkType } from "@airgap/beacon-sdk";
 import { maybeSeed } from "./faucet.js";
 
-const NETWORK = import.meta.env.VITE_NETWORK || "ghostnet";
+const NETWORK = import.meta.env.VITE_NETWORK || "shadownet";
 const RPC =
   import.meta.env.VITE_RPC ||
   (NETWORK === "mainnet"
     ? "https://mainnet.tezos.ecadinfra.com"
-    : "https://ghostnet.tezos.ecadinfra.com");
+    : "https://rpc.shadownet.teztnets.com");
 
 export const Tezos = new TezosToolkit(RPC);
 
 export const wallet = new BeaconWallet({
   name: "tez-onboard",
   // Beacon v4: network is set on the client, not on requestPermissions()
-  network: {
-    type: NETWORK === "mainnet" ? NetworkType.MAINNET : NetworkType.GHOSTNET,
-    rpcUrl: RPC,
-  },
+  network: NETWORK === "mainnet"
+    ? { type: NetworkType.MAINNET, rpcUrl: RPC }
+    : { type: NetworkType.CUSTOM, name: "Shadownet", rpcUrl: RPC },
   // Surfacing Kukai first is the whole onboarding thesis:
   featuredWallets: ["kukai", "temple", "umami"],
 });

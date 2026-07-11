@@ -1,5 +1,9 @@
 # tez-stamps
 
+**Deployed (Shadownet)**: registry `KT1MSMyZDAhhNN7TLHoZYttRBfpURnnzgg3P`
+(LIGO 1.15.6). Types 0 "First Steps" (open), 1 "Showed Up" (open),
+2 "Shipped" (signed) — thumbnails are on-chain data URIs.
+
 **Live at [stampz.xyz](https://stampz.xyz)** — Cloudflare Pages project
 `stampz` (deploy: `npx vite build && npx wrangler pages deploy dist
 --project-name stampz`). DNS: Namecheap ALIAS @ / CNAME www →

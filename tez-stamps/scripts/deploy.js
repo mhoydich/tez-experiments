@@ -1,10 +1,10 @@
-// Originate the stamps registry on Ghostnet.
+// Originate the stamps registry on Shadownet.
 import { TezosToolkit } from "@taquito/taquito";
 import { InMemorySigner } from "@taquito/signer";
 import { readFileSync } from "node:fs";
 import "dotenv/config";
 
-const Tezos = new TezosToolkit(process.env.RPC || "https://ghostnet.tezos.ecadinfra.com");
+const Tezos = new TezosToolkit(process.env.RPC || "https://rpc.shadownet.teztnets.com");
 Tezos.setSignerProvider(await InMemorySigner.fromSecretKey(process.env.ADMIN_KEY));
 
 const code = readFileSync("contracts/stamps.tz", "utf8");

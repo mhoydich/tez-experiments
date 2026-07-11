@@ -56,7 +56,7 @@ export function composeSVG(seed) {
 // CLI: fetch seed from chain and print SVG
 if (process.argv[2] !== undefined) {
   const id = Number(process.argv[2]);
-  const RPC = process.env.RPC || "https://ghostnet.tezos.ecadinfra.com";
+  const RPC = process.env.RPC || "https://rpc.shadownet.teztnets.com";
   const addr = process.env.NOUNS_ADDRESS;
   if (!addr) { // offline demo: random seed
     const seed = { background: id % 4, body: id % 2, head: id % 2, glasses: 0, accessory: id % 4, aura: 0 };

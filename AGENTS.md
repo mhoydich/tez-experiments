@@ -35,7 +35,16 @@ design spec bridging 02→03. tez-nouns/contracts/NOTES.md lists known gaps.
   polyfills + Beacon-bundle aliases and the Beacon v4 constructor network
   option — see commit history for the why.
 - The renderer (`tez-nouns/src/render.js`) IS tested offline and works.
-- Nothing is deployed. Ghostnet is the only target until told otherwise.
+- DEPLOYED to Shadownet 2026-07-11 (Ghostnet NO LONGER EXISTS — it died
+  upstream; Shadownet at rpc.shadownet.teztnets.com is the long-running
+  testnet, chain NetXsqzbfFenSTS). Addresses in each repo README.
+  Gotchas that cost time: Taquito >= 25 required (protocol 025 forging;
+  v20 signs invalid ops), plain JS Map silently encodes as EMPTY
+  michelson map (use MichelsonMap), char2Bytes is now stringToBytes,
+  unannotated tuple fields want positional keys ({9:..,10:..}) in
+  storage objects. Fund testnet keys programmatically with
+  `npx @tacoinfra/get-tez <addr> --amount 100 --network shadownet`.
+- tez-stamps frontend is LIVE at stampz.xyz (see tez-stamps/README).
 
 ## Environment
 
@@ -46,9 +55,9 @@ design spec bridging 02→03. tez-nouns/contracts/NOTES.md lists known gaps.
   - or static binary from ligolang.org if no docker
   - if 1.6.0 syntax rejects something, try the latest 1.x and note the
     version that works in the repo README
-- Ghostnet RPC: https://ghostnet.tezos.ecadinfra.com
+- Shadownet RPC: https://rpc.shadownet.teztnets.com
 - Testnet keys: NEVER commit. `.env` per repo (gitignored), `.env.example`
-  documents shape. Fund via https://faucet.ghostnet.teztnets.com
+  documents shape. Fund via https://faucet.shadownet.teztnets.com
 
 ## Task backlog (work top to bottom; one PR/commit per task)
 
@@ -62,7 +71,7 @@ P0 — make it real
    (spec + snippet in tez-nouns/contracts/NOTES.md). Recompile.
 
 P1 — close the honest gaps
-4. Deploy all three to Ghostnet; record addresses in each README.
+4. Deploy all three to Shadownet; record addresses in each README.
    [READY 2026-07-11: deploy key generated in each repo's .env
    (tz1XgXN2aTxcwiGvUqMrqU7vuBtRZnGCPcUZ) — waiting on faucet funding,
    then run each repo's deploy script.]
