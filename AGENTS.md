@@ -63,10 +63,15 @@ P0 — make it real
 
 P1 — close the honest gaps
 4. Deploy all three to Ghostnet; record addresses in each README.
-5. Faucet relayer: tiny `claim_for(address)` path so truly-empty wallets
-   can be seeded (see note in tez-onboard/src/faucet.js). Keep it optional.
-6. tez-nouns `token_metadata` off-chain view returning TZIP-21 with
-   data-URI SVG (shape already in src/metadata.js).
+   [READY 2026-07-11: deploy key generated in each repo's .env
+   (tz1XgXN2aTxcwiGvUqMrqU7vuBtRZnGCPcUZ) — waiting on faucet funding,
+   then run each repo's deploy script.]
+5. ~~Faucet relayer~~ DONE: claim_for(address) gated on a relayer address
+   (defaults to admin; rotate via set_relayer). Compiles clean.
+6. ~~tez-nouns token_metadata view~~ DONE: on-chain view composing the
+   TZIP-21 data-URI SVG from the art big_map; interpreter-verified.
+   Also done: stamp-type art vendored (tez-stamps/art/) and
+   add-stamp-type.js --image inlines it as a data-URI thumbnailUri.
 
 P2 — extend
 7. venice-drum-circle MVP per its SCOPE.md cutlist (one page + two keeper
