@@ -119,3 +119,12 @@ footer p {
   padding-top: 1rem;
   margin-top: 2rem;
 }
+
+/* The thesis, illustrated: a passport by the pool (art by Mike, Midjourney). */
+.passport-photo {
+  margin: 2rem 0 2.25rem;
+  border: 1.5px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--stamp);
+  line-height: 0;
+}
+.passport-photo img { width: 100%; height: auto; }
