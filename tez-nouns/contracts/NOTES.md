@@ -28,3 +28,13 @@ move to a commit-reveal or randomness beacon before mainnet.
   stringify at runtime). Verified with `ligo run interpret` on the RLE
   decoder incl. row-boundary splits. Uses the manifest palette; if the
   palette changes, update palette_hex in nouns.jsligo to match.
+
+## LIGO 1.15.6 footgun (hit in production, fixed)
+
+`Bytes.concats` on a long list literal (~20+ elements) mis-compiles:
+elements silently vanish in the deployed Michelson. `ligo run interpret`
+does NOT reproduce it (interpreter semantics differ from compiled
+output) — it only shows up on-chain. Keep concats lists short (the
+attr() helper pattern); verify views against a real deployment.
+Also: the lexer counts string quotes inside block comments — keep
+comments quote-balanced or quote-free.

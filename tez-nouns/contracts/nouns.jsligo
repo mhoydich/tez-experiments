@@ -305,14 +305,23 @@ const token_metadata = (id: token_id, s: storage): token_metadata_ret => {
     when (Personal()): bytes`706572736f6e616c` /* "personal" */;
     when (Auction()): bytes`61756374696f6e` /* "auction" */
   };
+  // One attribute at a time: LIGO 1.15.6 mis-compiles Bytes.concats on
+  // long list literals (~20+ elements) — elements silently vanish on-chain
+  // (the interpreter is fine, which is how it slipped past the first test).
+  const attr = (k: bytes, v: bytes): bytes =>
+    Bytes.concats(list([bytes`7b226e616d65223a22` /* {name: */, k,
+      bytes`222c2276616c7565223a22` /* ,value: */, v, bytes`227d` /* } */]));
+  const comma = bytes`2c`;
   const attributes = Bytes.concats(list([
-    bytes`5b7b226e616d65223a22736572696573222c2276616c7565223a22` /* "[{"name":"series","value":"" */, series_b, bytes`227d2c` /* ""}," */,
-    bytes`7b226e616d65223a226261636b67726f756e64222c2276616c7565223a22` /* "{"name":"background","value":"" */, nat_to_dec(n.seed.background), bytes`227d2c` /* ""}," */,
-    bytes`7b226e616d65223a22626f6479222c2276616c7565223a22` /* "{"name":"body","value":"" */, nat_to_dec(n.seed.body), bytes`227d2c` /* ""}," */,
-    bytes`7b226e616d65223a2268656164222c2276616c7565223a22` /* "{"name":"head","value":"" */, nat_to_dec(n.seed.head), bytes`227d2c` /* ""}," */,
-    bytes`7b226e616d65223a22676c6173736573222c2276616c7565223a22` /* "{"name":"glasses","value":"" */, nat_to_dec(n.seed.glasses), bytes`227d2c` /* ""}," */,
-    bytes`7b226e616d65223a226163636573736f7279222c2276616c7565223a22` /* "{"name":"accessory","value":"" */, nat_to_dec(n.seed.accessory), bytes`227d2c` /* ""}," */,
-    bytes`7b226e616d65223a2261757261222c2276616c7565223a22` /* "{"name":"aura","value":"" */, nat_to_dec(n.seed.aura), bytes`227d5d` /* ""}]" */,
+    bytes`5b` /* [ */,
+    attr(bytes`736572696573` /* series */, series_b), comma,
+    attr(bytes`6261636b67726f756e64` /* background */, nat_to_dec(n.seed.background)), comma,
+    attr(bytes`626f6479` /* body */, nat_to_dec(n.seed.body)), comma,
+    attr(bytes`68656164` /* head */, nat_to_dec(n.seed.head)), comma,
+    attr(bytes`676c6173736573` /* glasses */, nat_to_dec(n.seed.glasses)), comma,
+    attr(bytes`6163636573736f7279` /* accessory */, nat_to_dec(n.seed.accessory)), comma,
+    attr(bytes`61757261` /* aura */, nat_to_dec(n.seed.aura)),
+    bytes`5d` /* ] */,
   ]));
   const info = Map.literal(list([
     ["name", Bytes.concat(bytes`54657a204e6f756e20` /* "Tez Noun " */, nat_to_dec(id))],

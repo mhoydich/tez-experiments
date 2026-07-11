@@ -1,8 +1,8 @@
 # tez-nouns
 
-**Deployed (Shadownet)**: `KT1T1Kk1hmsedj4tLGjd6wt546oZKrFUg6Ta` (LIGO
+**Deployed (Shadownet)**: `KT1JzbnZM6FJ9JqLvg3i6szb29dPRAMyrNM9` (LIGO
 1.15.6), wired to stamps registry `KT1MSMyZDAhhNN7TLHoZYttRBfpURnnzgg3P`,
-qualifying stamp id 0. Art big_map is empty until upload-art lands.
+qualifying stamp id 0. Art uploaded (scripts/upload-art.js); noun #0 minted; token_metadata view verified on-chain (valid TZIP-21 JSON + 8.3KB SVG).
 
 Template #3 in the tez-experiments series. A clean-room, CC0 Nouns-style
 protocol for Tezos where some traits are **earned**, not rolled.
