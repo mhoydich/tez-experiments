@@ -8,7 +8,8 @@ const RPC = import.meta.env.VITE_RPC || "https://ghostnet.tezos.ecadinfra.com";
 export const Tezos = new TezosToolkit(RPC);
 export const wallet = new BeaconWallet({
   name: "tez-stamps",
-  preferredNetwork: NetworkType.GHOSTNET,
+  // Beacon v4: network is set on the client, not on requestPermissions()
+  network: { type: NetworkType.GHOSTNET, rpcUrl: RPC },
   featuredWallets: ["kukai", "temple", "umami"],
 });
 Tezos.setWalletProvider(wallet);
@@ -48,9 +49,7 @@ async function render() {
 }
 
 $("connect").addEventListener("click", async () => {
-  await wallet.requestPermissions({
-    network: { type: NetworkType.GHOSTNET, rpcUrl: RPC },
-  });
+  await wallet.requestPermissions();
   render();
 });
 

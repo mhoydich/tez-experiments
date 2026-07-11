@@ -17,8 +17,11 @@ export const Tezos = new TezosToolkit(RPC);
 
 export const wallet = new BeaconWallet({
   name: "tez-onboard",
-  preferredNetwork:
-    NETWORK === "mainnet" ? NetworkType.MAINNET : NetworkType.GHOSTNET,
+  // Beacon v4: network is set on the client, not on requestPermissions()
+  network: {
+    type: NETWORK === "mainnet" ? NetworkType.MAINNET : NetworkType.GHOSTNET,
+    rpcUrl: RPC,
+  },
   // Surfacing Kukai first is the whole onboarding thesis:
   featuredWallets: ["kukai", "temple", "umami"],
 });
@@ -50,12 +53,7 @@ async function refreshUI() {
 $("connect").addEventListener("click", async () => {
   try {
     $("status").textContent = "Opening wallet…";
-    await wallet.requestPermissions({
-      network: {
-        type: NETWORK === "mainnet" ? NetworkType.MAINNET : NetworkType.GHOSTNET,
-        rpcUrl: RPC,
-      },
-    });
+    await wallet.requestPermissions();
     $("status").textContent = "";
     await refreshUI();
   } catch (e) {
