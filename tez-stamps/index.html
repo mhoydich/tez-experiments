@@ -16,13 +16,26 @@
     <button id="connect" class="enter">Open my passport</button>
 
     <section id="passport" hidden>
-      <p class="mono" id="address"></p>
+      <div class="profile-bar">
+        <div>
+          <p class="mono" id="address"></p>
+          <p class="profile-links">
+            <button id="copy-address" class="linkish" type="button">copy</button>
+            <a id="tzkt-link" href="#" target="_blank" rel="noopener">tzkt</a>
+            <a id="share-link" href="#">share passport</a>
+          </p>
+        </div>
+        <button id="disconnect" class="ghost" type="button">Log out</button>
+      </div>
+      <h2 class="section-label">Stamps</h2>
       <ul id="stamps" class="stamp-grid" aria-label="Your stamps"></ul>
       <div id="claimable"></div>
+      <h2 class="section-label">Nouns</h2>
+      <div id="nouns" class="noun-shelf"></div>
     </section>
 
     <p id="status" class="status" role="status"></p>
-    <footer><p>Ghostnet · CC0 · reads/writes the stamps registry contract</p></footer>
+    <footer><p>Mainnet · CC0 · reads/writes the stamps registry contract</p></footer>
   </main>
   <script type="module" src="/src/main.js"></script>
 </body>
