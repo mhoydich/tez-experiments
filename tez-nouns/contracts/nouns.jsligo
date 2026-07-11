@@ -209,3 +209,118 @@ const get_art = (k: [string, nat], s: storage): bytes =>
   match(Big_map.find_opt(k, s.art)) {
     when (Some(b)): b; when (None()): failwith("NO_ART")
   };
+
+// ---------- token_metadata view (TZIP-12 shape, TZIP-21 keys) ----------
+// Mirrors src/metadata.js. Michelson can't stringify at runtime, so the
+// whole pipeline works in bytes: decimal digits, SVG fragments, and the
+// data URI are all bytes-literal concats. One <rect> per RLE run (format:
+// [paletteIndex, runLength] pairs, row-major 32x32; palette 0 = skip),
+// so the SVG stays compact. '#' in colors is %23-escaped for the URI.
+
+const nat_to_dec = (n: nat): bytes => {
+  if (n == 0n) return bytes`30`; // "0"
+  let acc = bytes``;
+  let m = n;
+  while (m > 0n) {
+    const d = m % 10n;
+    const digit =
+      d == 0n ? bytes`30` : d == 1n ? bytes`31` : d == 2n ? bytes`32` :
+      d == 3n ? bytes`33` : d == 4n ? bytes`34` : d == 5n ? bytes`35` :
+      d == 6n ? bytes`36` : d == 7n ? bytes`37` : d == 8n ? bytes`38` : bytes`39`;
+    acc = Bytes.concat(digit, acc);
+    m = m / 10n;
+  };
+  return acc;
+};
+
+// Palette from art/manifest.json, '#' pre-escaped as %23 for the data URI.
+const palette_hex = (i: nat): bytes =>
+  i == 1n ? bytes`253233643564376531` /* "%23d5d7e1" */ : i == 2n ? bytes`253233653164376435` /* "%23e1d7d5" */ :
+  i == 3n ? bytes`253233316631643239` /* "%231f1d29" */ : i == 4n ? bytes`253233306636316666` /* "%230f61ff" */ :
+  i == 5n ? bytes`253233623334303261` /* "%23b3402a" */ : i == 6n ? bytes`253233663361303032` /* "%23f3a002" */ :
+  i == 7n ? bytes`253233326139643866` /* "%232a9d8f" */ : i == 8n ? bytes`253233666666666666` /* "%23ffffff" */ :
+  i == 9n ? bytes`253233313033313265` /* "%2310312e" */ : bytes``;
+
+const px: nat = 10n;
+const grid: nat = 32n;
+
+// Emit rects for one RLE-encoded layer, splitting runs at row boundaries.
+const layer_rects = (rle: bytes): bytes => {
+  let out = bytes``;
+  let i = 0n;
+  let pos = 0n;
+  const len = Bytes.length(rle);
+  while (i + 1n < len + 1n && i + 2n <= len) {
+    const c = nat(Bytes.sub(i, 1n, rle));
+    let run = nat(Bytes.sub(i + 1n, 1n, rle));
+    i = i + 2n;
+    if (c == 0n) { pos = pos + run; run = 0n; }
+    while (run > 0n) {
+      const x = pos % grid;
+      const y = pos / grid;
+      const row_left = abs(grid - x);
+      const w = run < row_left ? run : row_left;
+      out = Bytes.concats(list([
+        out,
+        bytes`3c7265637420783d27` /* "<rect x='" */, nat_to_dec(x * px),
+        bytes`2720793d27` /* "' y='" */, nat_to_dec(y * px),
+        bytes`272077696474683d27` /* "' width='" */, nat_to_dec(w * px),
+        bytes`27206865696768743d27` /* "' height='" */, nat_to_dec(px),
+        bytes`272066696c6c3d27` /* "' fill='" */, palette_hex(c), bytes`272f3e` /* "'/>" */,
+      ]));
+      pos = pos + w;
+      run = abs(run - w);
+    };
+  };
+  return out;
+};
+
+const layer_svg = (s: storage, layer: string, idx: nat): bytes =>
+  match(Big_map.find_opt([layer, idx], s.art)) {
+    when (Some(rle)): layer_rects(rle);
+    when (None()): bytes``
+  };
+
+const compose_svg = (s: storage, sd: seed): bytes =>
+  Bytes.concats(list([
+    bytes`646174613a696d6167652f7376672b786d6c3b757466382c` /* "data:image/svg+xml;utf8," */,
+    bytes`3c73766720786d6c6e733d27687474703a2f2f7777772e77332e6f72672f323030302f737667272077696474683d2733323027206865696768743d27333230272073686170652d72656e646572696e673d2763726973704564676573273e` /* "<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320' shape-rendering='crispEdges'>" */,
+    layer_svg(s, "background", sd.background),
+    layer_svg(s, "body", sd.body),
+    layer_svg(s, "accessory", sd.accessory),
+    layer_svg(s, "head", sd.head),
+    layer_svg(s, "glasses", sd.glasses),
+    layer_svg(s, "aura", sd.aura),
+    bytes`3c2f7376673e` /* "</svg>" */,
+  ]));
+
+type token_metadata_ret = { token_id: nat, token_info: map<string, bytes> };
+
+@view
+const token_metadata = (id: token_id, s: storage): token_metadata_ret => {
+  const n = match(Big_map.find_opt(id, s.nouns)) {
+    when (Some(x)): x; when (None()): failwith("NO_NOUN")
+  };
+  const series_b = match(n.series) {
+    when (Personal()): bytes`706572736f6e616c` /* "personal" */;
+    when (Auction()): bytes`61756374696f6e` /* "auction" */
+  };
+  const attributes = Bytes.concats(list([
+    bytes`5b7b226e616d65223a22736572696573222c2276616c7565223a22` /* "[{"name":"series","value":"" */, series_b, bytes`227d2c` /* ""}," */,
+    bytes`7b226e616d65223a226261636b67726f756e64222c2276616c7565223a22` /* "{"name":"background","value":"" */, nat_to_dec(n.seed.background), bytes`227d2c` /* ""}," */,
+    bytes`7b226e616d65223a22626f6479222c2276616c7565223a22` /* "{"name":"body","value":"" */, nat_to_dec(n.seed.body), bytes`227d2c` /* ""}," */,
+    bytes`7b226e616d65223a2268656164222c2276616c7565223a22` /* "{"name":"head","value":"" */, nat_to_dec(n.seed.head), bytes`227d2c` /* ""}," */,
+    bytes`7b226e616d65223a22676c6173736573222c2276616c7565223a22` /* "{"name":"glasses","value":"" */, nat_to_dec(n.seed.glasses), bytes`227d2c` /* ""}," */,
+    bytes`7b226e616d65223a226163636573736f7279222c2276616c7565223a22` /* "{"name":"accessory","value":"" */, nat_to_dec(n.seed.accessory), bytes`227d2c` /* ""}," */,
+    bytes`7b226e616d65223a2261757261222c2276616c7565223a22` /* "{"name":"aura","value":"" */, nat_to_dec(n.seed.aura), bytes`227d5d` /* ""}]" */,
+  ]));
+  const info = Map.literal(list([
+    ["name", Bytes.concat(bytes`54657a204e6f756e20` /* "Tez Noun " */, nat_to_dec(id))],
+    ["description", bytes`4f6e65206e6f756e2c206561726e65642e204163636573736f727920646572697665732066726f6d20746865206d696e7465722773207374616d70733b206175726120697320616c6976652e` /* "One noun, earned. Accessory derives from the minter's stamps; aura is alive." */],
+    ["decimals", bytes`30`],
+    ["isBooleanAmount", bytes`74727565` /* "true" */],
+    ["artifactUri", compose_svg(s, n.seed)],
+    ["attributes", attributes],
+  ]));
+  return { token_id: id, token_info: info };
+};

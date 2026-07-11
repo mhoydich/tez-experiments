@@ -22,6 +22,9 @@ move to a commit-reveal or randomness beacon before mainnet.
 
 - Auction house contract (wire a standard English auction; admin-mint until then)
 - balance_of / update_operators FA2 plumbing (copy from tez-stamps, invert soulbound)
-- token_metadata view emitting TZIP-21 with data-URI SVG — src/metadata.js
-  shows the exact shape; porting it into a view is straightforward once art
-  is final
+- ~~token_metadata view~~ DONE: on-chain @view token_metadata (TZIP-12
+  shape, TZIP-21 keys) composes the data-URI SVG from the art big_map —
+  one <rect> per RLE run, bytes-literal pipeline (Michelson can't
+  stringify at runtime). Verified with `ligo run interpret` on the RLE
+  decoder incl. row-boundary splits. Uses the manifest palette; if the
+  palette changes, update palette_hex in nouns.jsligo to match.
