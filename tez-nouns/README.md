@@ -1,8 +1,11 @@
 # tez-nouns
 
-**Deployed (MAINNET)**: `KT1NK5vQABzaYy8x9rNhiLL4BVVEsJJZ4VgT` (LIGO
-1.15.6), registry `KT1PT6DHgiH4dxhUS2Tj8dzaeNsc4ygy5nBo`, art on-chain,
-noun #0 minted.
+**Deployed (MAINNET)**: `KT1XJ6DE7NwnKu34BH54ULirT4Z1ApDqqw2D` (LIGO
+1.15.6) — REAL Nouns CC0 trait art (@nouns/assets): 8 heads, 4 bodies,
+4 noggle colorways, 8 accessories in 4 earned pools, 50-color palette in
+storage. Registry `KT1PT6DHgiH4dxhUS2Tj8dzaeNsc4ygy5nBo`; noun #0 minted.
+(v1 `KT1NK5vQABzaYy8x9rNhiLL4BVVEsJJZ4VgT` with placeholder art is
+abandoned — the palette lived hardcoded in its view.)
 
 **Deployed (Shadownet)**: `KT1JzbnZM6FJ9JqLvg3i6szb29dPRAMyrNM9` (LIGO
 1.15.6), wired to stamps registry `KT1MSMyZDAhhNN7TLHoZYttRBfpURnnzgg3P`,

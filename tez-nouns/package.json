@@ -8,6 +8,8 @@
     "render": "node src/render.js"
   },
   "dependencies": {
+    "@nouns/assets": "^0.10.0",
+    "@nouns/sdk": "^1.2.0",
     "@taquito/signer": "^25.0.0",
     "@taquito/taquito": "^25.0.0",
     "@taquito/utils": "^20.1.0"

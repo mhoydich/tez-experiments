@@ -37,6 +37,8 @@ type storage = {
   qualifying_stamp: nat,
   // on-chain art: (layer_name, index) packed key -> RLE bytes
   art: big_map<[string, nat], bytes>,
+  // SVG palette: index -> color bytes ready for the data URI (e.g. "%23d5d7e1")
+  palette: big_map<nat, bytes>,
   decay_period: int,               // seconds of inactivity before aura decays
   metadata: big_map<string, bytes>,
 };
@@ -169,6 +171,12 @@ const set_art = (p: { layer: string, index: nat, rle: bytes }, s: storage): ret 
 };
 
 @entry
+const set_palette = (p: { index: nat, color: bytes }, s: storage): ret => {
+  if (Tezos.get_sender() != s.admin) failwith("NOT_ADMIN");
+  return [list([]), { ...s, palette: Big_map.update(p.index, Some(p.color), s.palette) }];
+};
+
+@entry
 const set_accessory_rule = (p: { stamp_id: nat, pool: [nat, nat] }, s: storage): ret => {
   if (Tezos.get_sender() != s.admin) failwith("NOT_ADMIN");
   return [list([]), { ...s, accessory_rules: Big_map.update(p.stamp_id, Some(p.pool), s.accessory_rules) }];
@@ -233,19 +241,18 @@ const nat_to_dec = (n: nat): bytes => {
   return acc;
 };
 
-// Palette from art/manifest.json, '#' pre-escaped as %23 for the data URI.
-const palette_hex = (i: nat): bytes =>
-  i == 1n ? bytes`253233643564376531` /* "%23d5d7e1" */ : i == 2n ? bytes`253233653164376435` /* "%23e1d7d5" */ :
-  i == 3n ? bytes`253233316631643239` /* "%231f1d29" */ : i == 4n ? bytes`253233306636316666` /* "%230f61ff" */ :
-  i == 5n ? bytes`253233623334303261` /* "%23b3402a" */ : i == 6n ? bytes`253233663361303032` /* "%23f3a002" */ :
-  i == 7n ? bytes`253233326139643866` /* "%232a9d8f" */ : i == 8n ? bytes`253233666666666666` /* "%23ffffff" */ :
-  i == 9n ? bytes`253233313033313265` /* "%2310312e" */ : bytes``;
+// Palette lives in storage (set_palette) so real Nouns art fits.
+const palette_hex = (s: storage, i: nat): bytes =>
+  match(Big_map.find_opt(i, s.palette)) {
+    when (Some(c)): c;
+    when (None()): bytes``
+  };
 
 const px: nat = 10n;
 const grid: nat = 32n;
 
 // Emit rects for one RLE-encoded layer, splitting runs at row boundaries.
-const layer_rects = (rle: bytes): bytes => {
+const layer_rects = (s: storage, rle: bytes): bytes => {
   let out = bytes``;
   let i = 0n;
   let pos = 0n;
@@ -266,7 +273,7 @@ const layer_rects = (rle: bytes): bytes => {
         bytes`2720793d27` /* "' y='" */, nat_to_dec(y * px),
         bytes`272077696474683d27` /* "' width='" */, nat_to_dec(w * px),
         bytes`27206865696768743d27` /* "' height='" */, nat_to_dec(px),
-        bytes`272066696c6c3d27` /* "' fill='" */, palette_hex(c), bytes`272f3e` /* "'/>" */,
+        bytes`272066696c6c3d27` /* "' fill='" */, palette_hex(s, c), bytes`272f3e` /* "'/>" */,
       ]));
       pos = pos + w;
       run = abs(run - w);
@@ -277,7 +284,7 @@ const layer_rects = (rle: bytes): bytes => {
 
 const layer_svg = (s: storage, layer: string, idx: nat): bytes =>
   match(Big_map.find_opt([layer, idx], s.art)) {
-    when (Some(rle)): layer_rects(rle);
+    when (Some(rle)): layer_rects(s, rle);
     when (None()): bytes``
   };
 

@@ -15,11 +15,12 @@ const op = await Tezos.contract.originate({
     stamps_registry: process.env.STAMPS_REGISTRY,
     next_id: 0,
     ledger: new Map(), nouns: new Map(), personal_minted: new Map(),
-    pool_sizes: { background: 4, body: 2, head: 2, glasses: 1, aura: 3 },
+    pool_sizes: { background: 2, body: 4, head: 8, glasses: 4, aura: 3 },
     accessory_rules: new Map(),      // set via set_accessory_rule after deploy
     default_accessory_pool: { 9: 0, 10: 1 }, // "plain" (Taquito positional keys for the unannotated pair)
     qualifying_stamp: 0,             // stamp id required for personal mint
     art: new Map(),
+    palette: new Map(),
     decay_period: 60 * 60 * 24 * 30, // 30 days to dim
     metadata: new Map(),
   },
