@@ -5,8 +5,8 @@
 // Note: a truly-empty wallet can't pay fees to call `claim` itself. Two options:
 //   A) keep SEED_THRESHOLD tiny and ask users to grab dust from a public
 //      Ghostnet faucet once (link shown in UI), then your faucet tops them up
-//   B) run a relayer: your server calls `claim_for(address)` — left as an
-//      exercise / see the relayer note in README. For Ghostnet demos, (A) is fine.
+//   B) run a relayer: your server (holding the relayer key) calls the
+//      contract's `claim_for(address)` entrypoint. For Ghostnet demos, (A) is fine.
 
 const FAUCET = import.meta.env.VITE_FAUCET_ADDRESS || "";
 const SEED_THRESHOLD = Number(import.meta.env.VITE_SEED_THRESHOLD || 0.1); // tez

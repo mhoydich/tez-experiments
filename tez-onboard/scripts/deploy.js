@@ -21,6 +21,7 @@ const op = await Tezos.contract.originate({
   code,
   storage: {
     admin,
+    relayer: admin,       // point at your relayer key later via set_relayer
     drip: 500_000,        // 0.5 tez in mutez
     max_balance: 100_000, // 0.1 tez threshold (informational)
     claimed: new Map(),

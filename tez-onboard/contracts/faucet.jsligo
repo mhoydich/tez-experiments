@@ -4,6 +4,7 @@
 
 type storage = {
   admin: address,
+  relayer: address,                // may call claim_for on behalf of empty wallets
   drip: tez,                       // amount sent per claim (e.g. 0.5tez)
   max_balance: tez,                // claims rejected if claimer already holds >= this
   claimed: big_map<address, timestamp>, // one claim per address, timestamped
@@ -38,6 +39,32 @@ const claim = (_u: unit, s: storage): ret => {
   const op = Tezos.transaction(unit, s.drip, dest);
   const claimed = Big_map.add(who, Tezos.get_now(), s.claimed);
   return [list([op]), { ...s, claimed: claimed }];
+};
+
+// Relayer path: a truly-empty wallet can't pay fees to call claim itself.
+// A designated relayer (your server; defaults to admin at deploy) claims on
+// its behalf. Same one-claim-per-address rule; the drip goes to `who`.
+@entry
+const claim_for = (who: address, s: storage): ret => {
+  if (s.paused) failwith("FAUCET_PAUSED");
+  if (Tezos.get_sender() != s.relayer) failwith("NOT_RELAYER");
+  if (Big_map.mem(who, s.claimed)) failwith("ALREADY_CLAIMED");
+
+  const contract_opt: option<contract<unit>> = Tezos.get_contract_opt(who);
+  const dest = match(contract_opt) {
+    when (Some(c)): c;
+    when (None()): failwith("BAD_ADDRESS")
+  };
+
+  const op = Tezos.transaction(unit, s.drip, dest);
+  const claimed = Big_map.add(who, Tezos.get_now(), s.claimed);
+  return [list([op]), { ...s, claimed: claimed }];
+};
+
+@entry
+const set_relayer = (r: address, s: storage): ret => {
+  if (Tezos.get_sender() != s.admin) failwith("NOT_ADMIN");
+  return [list([]), { ...s, relayer: r }];
 };
 
 @entry
