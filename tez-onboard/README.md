@@ -54,6 +54,8 @@ node scripts/deploy.js
 node scripts/fund.js 10   # sends 10 tez to the faucet
 ```
 
+> Verified: compiles clean with LIGO **1.15.6** (any 1.x should work; expect only `Tezos` → `Tezos.Next` deprecation warnings). No docker on your machine? A static `ligo` binary works the same: `ligo compile contract <file> -o <out>`.
+
 Then set `VITE_FAUCET_ADDRESS` in `.env` and restart the dev server.
 
 ## Design decisions (and why)

@@ -77,6 +77,8 @@ node scripts/mint.js personal          # mints yours, if your stamps qualify
 node src/render.js 0 > noun-0.svg      # render token 0 locally
 ```
 
+> Verified: compiles clean with LIGO **1.15.6** (any 1.x should work; expect only `Tezos` → `Tezos.Next` deprecation warnings). No docker on your machine? A static `ligo` binary works the same: `ligo compile contract <file> -o <out>`.
+
 `art/manifest.json` ships with a tiny placeholder set (4 backgrounds, 2
 bodies, 2 heads, 1 glasses, 4 accessories, 3 auras) so the pipeline runs
 end-to-end. Swap in real 32×32 art; the original Nouns art is CC0 if you

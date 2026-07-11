@@ -52,6 +52,8 @@ node scripts/add-stamp-type.js "First Steps" "Completed onboarding" open
 npm run dev
 ```
 
+> Verified: compiles clean with LIGO **1.15.6** (any 1.x should work; expect only `Tezos` → `Tezos.Next` deprecation warnings). No docker on your machine? A static `ligo` binary works the same: `ligo compile contract <file> -o <out>`.
+
 ## Education through activity
 
 A curriculum is just an ordered list of stamp types with `signed` gates. The chain is the gradebook:
