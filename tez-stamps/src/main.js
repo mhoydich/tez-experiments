@@ -1,29 +1,64 @@
-// tez-stamps — connect and render the wallet's stamp passport.
-// Profile modes: connected (Beacon wallet, can claim + log out) or
-// view-only via ?view=<address> — a shareable passport link.
-import { TezosToolkit } from "@taquito/taquito";
-import { BeaconWallet } from "@taquito/beacon-wallet";
-import { NetworkType } from "@airgap/beacon-sdk";
-import { loadStampTypes, walletHolds, loadNouns, claimOpen } from "./claim.js";
+// tez-stamps — the passport office.
+// Landing renders live registry state from the indexer alone (light).
+// The wallet stack loads lazily: on connect click, or when a previous
+// Beacon session / remembered visitor exists. ?view=<address> renders any
+// passport read-only. Revisits: last address is remembered in localStorage.
+import { loadStampTypes, walletHolds, loadNouns, recentPassports } from "./board.js";
 
 const NETWORK = import.meta.env.VITE_NETWORK || "shadownet";
-const RPC = import.meta.env.VITE_RPC ||
-  (NETWORK === "mainnet" ? "https://mainnet.smartpy.io" : "https://rpc.shadownet.teztnets.com");
-export const Tezos = new TezosToolkit(RPC);
-export const wallet = new BeaconWallet({
-  name: "tez-stamps",
-  // Beacon v4: network is set on the client, not on requestPermissions()
-  network: NETWORK === "mainnet"
-    ? { type: NetworkType.MAINNET, rpcUrl: RPC }
-    : { type: NetworkType.CUSTOM, name: "Shadownet", rpcUrl: RPC },
-  featuredWallets: ["kukai", "temple", "umami"],
-});
-Tezos.setWalletProvider(wallet);
+const TZKT_UI = NETWORK === "mainnet" ? "https://tzkt.io" : "https://shadownet.tzkt.io";
+const LAST_KEY = "stampz:last-address";
 
 const $ = (id) => document.getElementById(id);
-const TZKT_UI = NETWORK === "mainnet" ? "https://tzkt.io" : "https://shadownet.tzkt.io";
+const short = (a) => `${a.slice(0, 7)}…${a.slice(-4)}`;
 const viewParam = new URLSearchParams(location.search).get("view");
 
+let walletMod = null; // lazy
+const loadWallet = async () => (walletMod ??= await import("./wallet.js"));
+
+// ---------- landing board (no wallet needed) ----------
+async function renderLanding() {
+  const types = await loadStampTypes();
+  const board = $("board");
+  board.innerHTML = "";
+  for (const t of types) {
+    const li = document.createElement("li");
+    li.className = "stamp held";
+    li.innerHTML = `${t.thumb ? `<img src="${t.thumb}" alt="${t.name}" loading="lazy" />` : ""}
+      <div><strong>${t.name}</strong><span>${t.description}</span>
+      <span class="count">${t.total} issued · ${t.gate} gate</span></div>`;
+    board.appendChild(li);
+  }
+
+  const recent = await recentPassports(6);
+  const ul = $("recent");
+  ul.innerHTML = recent.length ? "" : "<li>Nobody yet — be the first.</li>";
+  for (const a of recent) {
+    const li = document.createElement("li");
+    li.innerHTML = `<a href="/?view=${a}">${short(a)}</a>`;
+    ul.appendChild(li);
+  }
+
+  const latest = await loadNouns(null, 1);
+  if (latest.length) {
+    $("latest-noun").innerHTML = `
+      <figure class="noun-card">${latest[0].svg}
+        <figcaption>${latest[0].name} · <a href="/?view=${latest[0].owner}">${short(latest[0].owner)}</a></figcaption>
+      </figure>`;
+  }
+}
+
+// ---------- welcome back ----------
+function renderWelcomeBack() {
+  const last = localStorage.getItem(LAST_KEY);
+  if (!last || viewParam) return;
+  $("welcome-back").hidden = false;
+  $("wb-address").textContent = short(last);
+  $("wb-resume").onclick = () => connectFlow();
+  $("wb-peek").href = `/?view=${last}`;
+}
+
+// ---------- passport ----------
 function showProfileBar(address, viewOnly) {
   $("address").textContent = address;
   $("tzkt-link").href = `${TZKT_UI}/${address}`;
@@ -39,36 +74,34 @@ function showProfileBar(address, viewOnly) {
   }
 }
 
-async function render(address, { viewOnly = false } = {}) {
+async function renderPassport(address, { viewOnly = false } = {}) {
+  $("landing").hidden = true;
   $("connect").hidden = true;
+  $("welcome-back").hidden = true;
   $("passport").hidden = false;
   showProfileBar(address, viewOnly);
 
-  const types = await loadStampTypes(Tezos);
+  const types = await loadStampTypes();
   const grid = $("stamps");
   const claimable = $("claimable");
   grid.innerHTML = ""; claimable.innerHTML = "";
 
   for (const t of types) {
-    const held = await walletHolds(Tezos, address, t.id);
+    const held = await walletHolds(address, t.id);
     if (held) {
       const li = document.createElement("li");
       li.className = "stamp held";
-      if (t.thumb) {
-        const img = document.createElement("img");
-        img.src = t.thumb;
-        img.alt = t.name;
-        li.appendChild(img);
-      }
-      const label = document.createElement("div");
-      label.innerHTML = `<strong>${t.name}</strong><span>${t.description ?? ""}</span>`;
-      li.appendChild(label);
+      li.innerHTML = `${t.thumb ? `<img src="${t.thumb}" alt="${t.name}" />` : ""}
+        <div><strong>${t.name}</strong><span>${t.description ?? ""}</span></div>`;
       grid.appendChild(li);
     } else if (t.gate === "open" && !viewOnly) {
       const b = document.createElement("button");
       b.className = "claim";
       b.textContent = `Claim: ${t.name}`;
-      b.onclick = () => claimOpen(Tezos, t.id, $("status")).then(() => render(address));
+      b.onclick = async () => {
+        const w = await loadWallet();
+        if (await w.claimOpen(t.id, $("status"))) renderPassport(address);
+      };
       claimable.appendChild(b);
     }
   }
@@ -76,17 +109,14 @@ async function render(address, { viewOnly = false } = {}) {
     grid.innerHTML = `<li class="stamp empty">No stamps yet — go do something.</li>`;
   }
 
-  // Nouns shelf — images come straight from the contract's token_metadata view.
   const shelf = $("nouns");
   shelf.innerHTML = `<p class="noun-empty">Checking the vault…</p>`;
-  const nouns = await loadNouns(Tezos, address);
+  const nouns = await loadNouns(address);
   shelf.innerHTML = "";
   for (const n of nouns) {
     const fig = document.createElement("figure");
     fig.className = "noun-card";
-    fig.innerHTML = n.image
-      ? `<img src="${n.image}" alt="${n.name}" /><figcaption>${n.name}</figcaption>`
-      : `<figcaption>${n.name} (image view unavailable)</figcaption>`;
+    fig.innerHTML = `${n.svg}<figcaption>${n.name}</figcaption>`;
     shelf.appendChild(fig);
   }
   if (!nouns.length) {
@@ -94,23 +124,48 @@ async function render(address, { viewOnly = false } = {}) {
   }
 }
 
-async function boot() {
-  if (viewParam) return render(viewParam, { viewOnly: true });
-  const account = await wallet.client.getActiveAccount();
-  if (account) return render(account.address);
+async function connectFlow() {
+  $("status").textContent = "Opening wallet…";
+  const w = await loadWallet();
+  try {
+    const address = await w.connect();
+    if (address) {
+      localStorage.setItem(LAST_KEY, address);
+      $("status").textContent = "";
+      renderPassport(address);
+    }
+  } catch (e) {
+    $("status").textContent = e?.message || "Connection cancelled.";
+  }
 }
 
-$("connect").addEventListener("click", async () => {
-  await wallet.requestPermissions();
-  const account = await wallet.client.getActiveAccount();
-  if (account) render(account.address);
-});
+// ---------- boot ----------
+async function boot() {
+  if (viewParam) {
+    renderPassport(viewParam, { viewOnly: true });
+    return;
+  }
+  renderLanding();
+  renderWelcomeBack();
+  // Resume an existing Beacon session (only pay the wallet download if
+  // there is a session to resume — localStorage remembers that for us).
+  if (localStorage.getItem(LAST_KEY)) {
+    const w = await loadWallet();
+    const account = await w.getActiveAccount();
+    if (account) renderPassport(account.address);
+  }
+}
+
+$("connect").addEventListener("click", connectFlow);
 
 $("disconnect").addEventListener("click", async () => {
-  await wallet.clearActiveAccount();
+  const w = await loadWallet();
+  await w.disconnect();
   $("passport").hidden = true;
+  $("landing").hidden = false;
   $("connect").hidden = false;
   $("status").textContent = "Logged out.";
+  renderWelcomeBack();
 });
 
 boot();

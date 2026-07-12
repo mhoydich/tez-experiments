@@ -3,7 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>tez-stamps — your passport</title>
+  <title>stampz — proof you showed up</title>
+  <meta name="description" content="Soulbound stamps on Tezos: earned by doing, bound to your wallet, readable by any app. Your wallet is your passport." />
+  <meta property="og:title" content="stampz — proof you showed up" />
+  <meta property="og:description" content="Soulbound stamps on Tezos. Earn stamps, grow your passport, mint the portrait." />
+  <meta property="og:image" content="https://www.stampz.xyz/og.webp" />
+  <meta property="og:url" content="https://www.stampz.xyz" />
+  <meta name="twitter:card" content="summary" />
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
@@ -13,7 +19,28 @@
     <p class="lede">Every stamp on this page is a soulbound token —
        earned by doing, bound to your wallet, readable by any app.</p>
 
+    <div id="welcome-back" class="welcome-back" hidden>
+      <p>Welcome back, <span id="wb-address" class="mono-inline"></span>.</p>
+      <p class="profile-links"><button id="wb-resume" class="linkish" type="button">resume my passport</button>
+      <a id="wb-peek" href="#">just peek</a></p>
+    </div>
+
     <button id="connect" class="enter">Open my passport</button>
+
+    <section id="landing">
+      <h2 class="section-label">Now stamping</h2>
+      <ul id="board" class="stamp-grid" aria-label="Available stamps"></ul>
+      <div class="landing-cols">
+        <div>
+          <h2 class="section-label">Recent passports</h2>
+          <ul id="recent" class="recent-list"></ul>
+        </div>
+        <div>
+          <h2 class="section-label">Latest noun</h2>
+          <div id="latest-noun"></div>
+        </div>
+      </div>
+    </section>
 
     <section id="passport" hidden>
       <div class="profile-bar">

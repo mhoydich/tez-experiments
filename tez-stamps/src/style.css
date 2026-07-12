@@ -92,3 +92,15 @@ footer p {
 .noun-card img { width: 100%; height: auto; display: block; image-rendering: pixelated; }
 .noun-card figcaption { font-family: ui-monospace, Menlo, monospace; font-size: 0.7rem; margin-top: 0.4rem; }
 .noun-empty, .viewing-note { font-size: 0.8rem; color: #6b6259; }
+
+/* ---------- landing board ---------- */
+.stamp .count { display: block; margin-top: 0.3rem; font-family: ui-monospace, Menlo, monospace; font-size: 0.62rem; letter-spacing: 0.08em; color: #8a8178; }
+.landing-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; align-items: start; }
+.recent-list { list-style: none; margin: 0.75rem 0; padding: 0; display: grid; gap: 0.45rem; }
+.recent-list li { font-family: ui-monospace, Menlo, monospace; font-size: 0.78rem; }
+.recent-list a { color: var(--tezos-blue); }
+.welcome-back { border: 1.5px dashed var(--tezos-blue); padding: 0.8rem 1rem; margin-bottom: 1.25rem; background: #fff; }
+.welcome-back p { margin: 0 0 0.3rem; font-size: 0.9rem; }
+.mono-inline { font-family: ui-monospace, Menlo, monospace; font-size: 0.85em; }
+.noun-card svg { width: 100%; height: auto; display: block; }
+@media (max-width: 480px) { .landing-cols { grid-template-columns: 1fr; } }
