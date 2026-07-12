@@ -27,8 +27,10 @@ tez-rally/            # 06 — pickleball rating desk: self-declared soulbound
                       #      MAINNET KT1X4iLYF11LvZhU6PFRamLioKjrcgDJEUoT
                       #      (Kukai web = mainnet-only, so the live site
                       #      points there), Shadownet
-                      #      KT1C2EEKHEDjcFAeR8rBLdvX5agq2XnUz5AZ,
-                      #      live at tez-rally.pages.dev
+                      #      KT1C2EEKHEDjcFAeR8rBLdvX5agq2XnUz5AZ.
+                      #      Passport book (geoconfirmed court stamps):
+                      #      MAINNET KT1Q1g8Sv3uL2beaA7h89hTViJyZmXxfUS9D.
+                      #      Live at tez-rally.pages.dev
 ```
 
 Read each repo's README.md before touching it. tez-stamps/TRAITS.md is the
