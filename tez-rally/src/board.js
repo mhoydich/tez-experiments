@@ -29,8 +29,11 @@ export async function playerOf(address) {
   const res = await fetch(
     `${INDEXER}/v1/contracts/${RALLY}/bigmaps/players/keys/${address}`
   );
-  if (!res.ok) return null;
-  const row = await res.json();
+  // TzKT answers 204 (empty body) for a key that has never existed
+  if (!res.ok || res.status === 204) return null;
+  const text = await res.text();
+  if (!text) return null;
+  const row = JSON.parse(text);
   return row?.active ? asPlayer(row.key, row.value) : null;
 }
 
