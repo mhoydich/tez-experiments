@@ -81,6 +81,30 @@ export async function publishCast({ kind, body }, statusEl) {
   }
 }
 
+// ---- rally: declare your pickleball level ----
+const RALLY = import.meta.env.VITE_RALLY_ADDRESS || "";
+
+// milli-rating: 4250 = 4.250. Free to re-declare until your first
+// finalized match — after that the contract answers RATING_IS_EARNED.
+export async function declareRally(milli, statusEl) {
+  try {
+    statusEl.textContent = "Declaring…";
+    const c = await Tezos.wallet.at(RALLY);
+    const op = await c.methodsObject.declare(milli).send();
+    statusEl.textContent = "Confirming…";
+    await op.confirmation(1);
+    statusEl.textContent = "Declared. Now go earn it.";
+    return true;
+  } catch (e) {
+    const msg = String(e?.message || e);
+    statusEl.textContent = msg.includes("RATING_IS_EARNED")
+      ? "Your rating is earned now — it only moves through matches."
+      : msg.includes("DECLARE_RANGE") ? "Levels run 2.000–8.000."
+      : msg;
+    return false;
+  }
+}
+
 // ---- nouns: mint + postcard ----
 const NOUNS = import.meta.env.VITE_NOUNS_ADDRESS || "";
 const POSTCARDS = import.meta.env.VITE_POSTCARDS_ADDRESS || "";

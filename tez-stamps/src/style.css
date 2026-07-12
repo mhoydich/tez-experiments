@@ -229,3 +229,9 @@ footer p {
 .broadcaster:hover { box-shadow: 3px 3px 0 var(--ink); }
 .broadcaster img { width: 34px; height: 34px; image-rendering: pixelated; border: 1px solid var(--line); display: block; }
 .broadcaster .who { font-family: ui-monospace, Menlo, monospace; font-size: 0.7rem; color: var(--tezos-blue); text-decoration: underline; }
+
+/* ---------- rally: rating desk on the passport ---------- */
+.rally-card { margin-bottom: 0.5rem; }
+.rally-declare { display: flex; gap: 0.6rem; margin: 0.4rem 0; }
+.rally-declare input { width: 7rem; font-family: ui-monospace, Menlo, monospace; font-size: 0.95rem; padding: 0.45rem 0.6rem; border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink); }
+#rally .noun-empty { margin: 0.3rem 0 0.8rem; }

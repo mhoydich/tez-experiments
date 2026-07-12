@@ -75,6 +75,23 @@ export async function topStamped(limit = 5) {
     .slice(0, limit);
 }
 
+// ---- rally: the pickleball rating desk (tez-rally template) ----
+const RALLY = import.meta.env.VITE_RALLY_ADDRESS || "";
+
+export async function getRallyPlayer(addr) {
+  if (!RALLY) return null;
+  const r = await j(`${INDEXER}/v1/contracts/${RALLY}/bigmaps/players/keys/${addr}`);
+  if (!r?.value || r.active === false) return null;
+  const v = r.value;
+  return {
+    declared: Number(v.declared),
+    rating: Number(v.rating),
+    matches: Number(v.matches),
+    wins: Number(v.wins),
+    declaredAt: v.declared_at,
+  };
+}
+
 // ---- account vitals (any address) ----
 export async function getAccount(addr) {
   const a = await j(`${INDEXER}/v1/accounts/${addr}`);

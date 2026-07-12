@@ -6,7 +6,8 @@
 import { loadStampTypes, walletHolds, loadNouns, recentPassports,
          loadPostcards, POSTCARD_BGS } from "./board.js";
 import { getCasts, getCast, getCastCount, topCasters, topStamped,
-         getAccount, getBalanceHistory, getActivity, KINDS } from "./cast.js";
+         getAccount, getBalanceHistory, getActivity, getRallyPlayer,
+         KINDS } from "./cast.js";
 
 const NETWORK = import.meta.env.VITE_NETWORK || "shadownet";
 const TZKT_UI = NETWORK === "mainnet" ? "https://tzkt.io" : "https://shadownet.tzkt.io";
@@ -95,6 +96,7 @@ async function renderLanding() {
     ["nouns", import.meta.env.VITE_NOUNS_ADDRESS],
     ["postcards", import.meta.env.VITE_POSTCARDS_ADDRESS],
     ["cast tower", import.meta.env.VITE_CAST_ADDRESS],
+    ["rally rating desk", import.meta.env.VITE_RALLY_ADDRESS],
   ].filter(([, a]) => a);
   $("machinery").innerHTML = contracts.map(([n, a]) =>
     `<li><span>${n}</span><a href="${TZKT_UI}/${a}" target="_blank" rel="noopener">${short(a)}</a></li>`
@@ -188,6 +190,7 @@ async function renderPassport(address, { viewOnly = false } = {}) {
   $("passport").hidden = false;
   showProfileBar(address, viewOnly);
   renderTower(address, viewOnly); // vitals + charts + casts, concurrently
+  renderRally(address, viewOnly); // pickleball rating card, concurrently
 
   // Feature: mail a noun to the passport you're viewing.
   const mailBtn = $("mail-viewed");
@@ -298,6 +301,49 @@ async function renderPassport(address, { viewOnly = false } = {}) {
 
 const escapeHTML = (s) => s.replace(/[&<>"']/g, (c) =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+// ---------- rally: pickleball rating card + declaration ----------
+const milliFmt = (m) => (m / 1000).toFixed(3);
+
+async function renderRally(address, viewOnly) {
+  const box = $("rally");
+  const p = await getRallyPlayer(address);
+
+  const card = p ? `
+    <ul class="vitals rally-card">
+      <li><span class="num">${milliFmt(p.rating)}</span><span class="vlabel">rating</span></li>
+      <li><span class="num">${milliFmt(p.declared)}</span><span class="vlabel">declared</span></li>
+      <li><span class="num">${p.wins}–${p.matches - p.wins}</span><span class="vlabel">record</span></li>
+    </ul>
+    <p class="noun-empty">${p.matches > 0
+      ? "Earned — this number only moves through countersigned matches."
+      : "A claim, not a record — it hardens once opponents countersign matches."}
+      Report matches at <a href="https://tez-rally.pages.dev" target="_blank" rel="noopener">tez-rally</a>.</p>`
+    : viewOnly
+      ? `<p class="noun-empty">No player card — this passport hasn't declared a level.</p>`
+      : "";
+
+  const canDeclare = !viewOnly && (!p || p.matches === 0);
+  const declareUI = canDeclare ? `
+    <div class="rally-declare">
+      <input id="rally-level" type="number" min="2" max="8" step="0.05"
+             placeholder="4.25" inputmode="decimal" />
+      <button id="rally-declare-btn" class="ghost" type="button">
+        ${p ? "Re-declare my level" : "Declare my level"}</button>
+    </div>
+    <p class="noun-empty">Self-declare 2.000–8.000 (DUPR-ish). Mints a soulbound
+      player card; free to adjust until your first finalized match.</p>` : "";
+
+  box.innerHTML = card + declareUI;
+  if (canDeclare) {
+    $("rally-declare-btn").onclick = async () => {
+      const v = parseFloat($("rally-level").value);
+      if (!(v >= 2 && v <= 8)) { $("status").textContent = "Levels run 2.000–8.000."; return; }
+      const w = await loadWallet();
+      if (await w.declareRally(Math.round(v * 1000), $("status"))) renderRally(address, viewOnly);
+    };
+  }
+}
 
 // ---------- wallet vitals + broadcast (the tower) ----------
 async function renderTower(address, viewOnly) {
