@@ -244,3 +244,79 @@ footer p {
 .pane.dragging { opacity: 0.45; outline: 1.5px dashed var(--tezos-blue); outline-offset: 4px; }
 .pane-reset-row { margin-top: 1.6rem; }
 .pane-reset-row .linkish { color: #8a8178; font-size: 0.72rem; font-family: ui-monospace, Menlo, monospace; letter-spacing: 0.08em; }
+
+/* ---------- the page — the office's public one-sheet (?p=) ---------- */
+.page-sheet { position: relative; padding-top: 0.4rem; }
+.page-stamp {
+  position: absolute; top: -1.6rem; right: -0.8rem; transform: rotate(6deg);
+  border: 2px solid var(--stamp); color: var(--stamp); background: #fff;
+  font-family: ui-monospace, Menlo, monospace; font-size: 0.6rem;
+  letter-spacing: 0.2em; text-transform: uppercase; padding: 0.3rem 0.65rem;
+}
+.page-head { display: flex; gap: 1.1rem; align-items: center; margin: 0.4rem 0 1.3rem; }
+.page-avatar { width: 96px; height: 96px; }
+.page-id { min-width: 0; }
+.page-name {
+  font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600;
+  font-size: clamp(1.7rem, 6vw, 2.3rem); line-height: 1; margin: 0;
+}
+.page-addr { margin: 0.3rem 0 0; }
+.page-facts {
+  font-family: ui-monospace, Menlo, monospace; font-size: 0.62rem;
+  letter-spacing: 0.14em; text-transform: uppercase; color: #8a8178;
+  margin: 0.4rem 0 0;
+}
+.page-links { display: grid; gap: 0.6rem; margin: 1rem 0 1.4rem; }
+.page-link {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  border: 1.5px dashed var(--stamp); background: #fff; padding: 0.8rem 1rem;
+  transform: rotate(-0.6deg); text-decoration: none; color: var(--ink);
+  font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.35rem;
+  transition: box-shadow 0.08s ease, transform 0.08s ease;
+}
+.page-link:nth-child(even) { transform: rotate(0.7deg); border-color: var(--tezos-blue); }
+.page-link:hover { box-shadow: 4px 4px 0 var(--ink); transform: rotate(0deg); }
+.page-link .host { font-family: ui-monospace, Menlo, monospace; font-size: 0.6rem; color: #8a8178; letter-spacing: 0.05em; flex-shrink: 0; }
+.page-stamps { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0.6rem 0 1.3rem; align-items: center; }
+.page-stamps img { width: 56px; height: 56px; border: 1.5px solid var(--ink); background: #fff; padding: 4px; }
+.page-actions { display: flex; gap: 1rem; align-items: center; border-top: 1px solid var(--line); padding-top: 1rem; flex-wrap: wrap; }
+.page-qr { width: 84px; height: 84px; border: 1.5px solid var(--ink); background: #fff; }
+.page-btns { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+.page-btns .ghost { text-decoration: none; color: var(--ink); font-size: 0.78rem; }
+.embed-snippet {
+  width: 100%; font-family: ui-monospace, Menlo, monospace; font-size: 0.68rem;
+  border: 1.5px dashed var(--ink); padding: 0.5rem; margin-top: 0.8rem;
+  background: var(--paper); color: var(--ink); resize: none;
+}
+.page-printed {
+  font-family: ui-monospace, Menlo, monospace; font-size: 0.62rem;
+  letter-spacing: 0.14em; text-transform: uppercase; color: #8a8178; margin-top: 1.4rem;
+}
+.page-printed a { color: var(--tezos-blue); }
+
+/* ---------- the page desk (on your passport) ---------- */
+.desk-links { display: grid; gap: 0.35rem; margin: 0.5rem 0; }
+.desk-link {
+  display: flex; gap: 0.8rem; align-items: baseline; font-size: 0.95rem;
+  border-bottom: 1px dashed var(--line); padding: 0.3rem 0;
+}
+.desk-link .u { font-family: ui-monospace, Menlo, monospace; font-size: 0.66rem; color: #8a8178; word-break: break-all; flex: 1; }
+.desk-retire { font-size: 0.72rem; }
+.desk-add { display: grid; grid-template-columns: 1fr 2fr auto; gap: 0.5rem; margin: 0.6rem 0 0.4rem; }
+.desk-add input {
+  font-family: ui-monospace, Menlo, monospace; font-size: 0.8rem;
+  padding: 0.5rem 0.6rem; border: 1.5px solid var(--ink);
+  background: var(--paper); color: var(--ink); min-width: 0;
+}
+@media (max-width: 480px) { .desk-add { grid-template-columns: 1fr; } }
+
+/* ---------- embed mode: bare card, no office chrome ---------- */
+body.embed { background: #fff; background-image: none; place-items: stretch; }
+body.embed .office { width: 100%; border: none; box-shadow: none; padding: 1rem 1.1rem; }
+body.embed .eyebrow, body.embed .wordmark, body.embed .tagline,
+body.embed .lede, body.embed footer { display: none; }
+.embed-head { display: flex; gap: 0.8rem; align-items: center; margin-bottom: 0.8rem; }
+.embed-head .passport-avatar { width: 56px; height: 56px; }
+.embed-head .page-name { font-size: 1.4rem; }
+.embed-links { gap: 0.45rem; margin: 0.5rem 0; }
+.embed-links .page-link { padding: 0.55rem 0.8rem; font-size: 1.1rem; }

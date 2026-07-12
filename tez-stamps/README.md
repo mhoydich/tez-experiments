@@ -17,6 +17,25 @@ Template #2 in the tez-experiments series. The verificational primitive:
 
 A stamp is a soulbound FA2 token — non-transferable proof of participation, bound to the wallet forever. Stamps are what turn a seeded wallet (see `tez-onboard`) into an accumulating identity, and they're the raw material for activity-derived traits in `tez-nouns`.
 
+## Pages — the office prints public one-sheets
+
+**stampz.xyz/?p=`tz1…`&nbsp;or&nbsp;`name.tez`** — every passport gets a public
+page: portrait, name, links, and the stamp strip. A link-in-bio where every
+fact is already on-chain, and nothing new had to be deployed:
+
+- **Links are casts.** A `link`-kind cast of `label | https://url` prints a
+  link on your page; the newest cast per label wins; `label |` (empty url)
+  retires it. The page is the current reading of your append-only tower.
+- **Names are Tezos Domains.** `?p=name.tez` resolves through tzkt; a
+  reverse record becomes the page's display name and canonical URL.
+- **Utility:** QR code of the page, `save contact` (vCard with your links),
+  `embed` (iframe snippet, served bare at `?embed=addr`), and the office
+  lookup accepts addresses and `.tez` names alike.
+
+Edit from your passport's **page desk** pane — every edit is a public cast,
+forever. Growth path: signed-stamp issuers can print QR pages at events;
+any app that reads the tower can render the same page.
+
 ## The model
 
 ```

@@ -8,6 +8,8 @@ import { loadStampTypes, walletHolds, loadNouns, recentPassports,
 import { getCasts, getCast, getCastCount, topCasters, topStamped,
          getAccount, getBalanceHistory, getActivity, getRallyPlayer,
          KINDS } from "./cast.js";
+import { isAddress, isDomain, resolveDomain, pageLinks, pageIdentity,
+         qrDataUrl, downloadVcard } from "./page.js";
 
 const NETWORK = import.meta.env.VITE_NETWORK || "shadownet";
 const TZKT_UI = NETWORK === "mainnet" ? "https://tzkt.io" : "https://shadownet.tzkt.io";
@@ -20,6 +22,8 @@ const fmtDate = (iso) => new Date(iso).toLocaleDateString(undefined, { month: "s
 const viewParam = new URLSearchParams(location.search).get("view");
 const castParam = new URLSearchParams(location.search).get("cast");
 const wireParam = new URLSearchParams(location.search).has("wire");
+const pageParam = new URLSearchParams(location.search).get("p");
+const embedParam = new URLSearchParams(location.search).get("embed");
 let currentAddress = null;
 
 const fmt = (n, d = 2) => Number(n).toLocaleString("en-US", { maximumFractionDigits: d });
@@ -191,6 +195,7 @@ async function renderPassport(address, { viewOnly = false } = {}) {
   showProfileBar(address, viewOnly);
   renderTower(address, viewOnly); // vitals + charts + casts, concurrently
   renderRally(address, viewOnly); // pickleball rating card, concurrently
+  renderPageDesk(address, viewOnly); // your public page's editing desk
 
   // Feature: mail a noun to the passport you're viewing.
   const mailBtn = $("mail-viewed");
@@ -375,7 +380,7 @@ function initPanes() {
 
   $("reset-panes").addEventListener("click", () => {
     localStorage.removeItem(PANE_KEY);
-    const order = ["vitals", "stamps", "nouns", "postcards", "rally", "broadcast"];
+    const order = ["vitals", "page", "stamps", "nouns", "postcards", "rally", "broadcast"];
     for (const name of order) wrap.appendChild(wrap.querySelector(`[data-pane="${name}"]`));
   });
 
@@ -611,6 +616,161 @@ async function renderCastView(id) {
   document.title = c ? `cast № ${c.id} — stampz` : "cast — stampz";
 }
 
+// ---------- the page — the office's public one-sheet (?p=) ----------
+const heldStamps = async (addr) => {
+  const types = await loadStampTypes();
+  const out = [];
+  for (const t of types) if (await walletHolds(addr, t.id)) out.push(t);
+  return out;
+};
+
+const linkRowHTML = (l) => {
+  let host = "";
+  try { host = new URL(l.url).hostname.replace(/^www\./, ""); } catch { /* shown bare */ }
+  return `<a class="page-link" href="${escapeHTML(l.url)}" target="_blank" rel="noopener">
+    <span>${escapeHTML(l.label)}</span><span class="host">${escapeHTML(host)}</span></a>`;
+};
+
+async function resolvePageQuery(q) {
+  const v = decodeURIComponent(q || "").trim();
+  if (isAddress(v)) return v;
+  if (isDomain(v)) return await resolveDomain(v);
+  return null;
+}
+
+async function renderPageView(q) {
+  $("landing").hidden = true;
+  $("connect").hidden = true;
+  $("welcome-back").hidden = true;
+  $("page-view").hidden = false;
+
+  const addr = await resolvePageQuery(q);
+  if (!addr) {
+    $("page-name").textContent = "No such page";
+    $("page-addr").textContent = `${q} — not an address, and no .tez record found.`;
+    return;
+  }
+
+  const [identity, links, stamps, nouns] = await Promise.all([
+    pageIdentity(addr), pageLinks(addr), heldStamps(addr), loadNouns(addr),
+  ]);
+
+  const title = identity.name || short(addr);
+  document.title = `${title} — a stampz page`;
+  $("page-name").textContent = title;
+  $("page-addr").textContent = addr;
+  const since = identity.since
+    ? new Date(identity.since).toLocaleDateString("en-US", { month: "short", year: "numeric" })
+    : null;
+  $("page-facts").textContent = [
+    since ? `citizen since ${since}` : null,
+    `${stamps.length} stamp${stamps.length === 1 ? "" : "s"}`,
+    `${identity.castCount} cast${identity.castCount === 1 ? "" : "s"}`,
+  ].filter(Boolean).join(" · ");
+
+  $("page-avatar").innerHTML = nouns.length ? nouns[0].svg
+    : `<img src="https://noun-api.com/beta/pfp?name=${addr}&size=192" alt="" loading="lazy" />`;
+
+  $("page-links").innerHTML = links.length
+    ? links.map(linkRowHTML).join("")
+    : `<p class="noun-empty">No links on this page yet — its owner casts them from the tower.</p>`;
+
+  $("page-stamps").innerHTML = stamps.length
+    ? stamps.map((t) => t.thumb
+        ? `<img src="${t.thumb}" alt="${escapeHTML(t.name)}" title="${escapeHTML(t.name)}" loading="lazy"/>`
+        : `<span class="ctag note">${escapeHTML(t.name)}</span>`).join("")
+    : `<p class="noun-empty">No stamps yet — the strip fills as they do things.</p>`;
+
+  // canonical URL prefers the .tez name
+  const canonical = `${location.origin}/?p=${identity.domain || addr}`;
+  $("page-full").href = `/?view=${addr}`;
+  $("page-copy").onclick = () =>
+    navigator.clipboard.writeText(canonical).then(() => {
+      $("page-copy").textContent = "copied";
+      setTimeout(() => ($("page-copy").textContent = "copy link"), 1200);
+    });
+  $("page-vcard").onclick = () => downloadVcard(identity, links);
+  $("page-embed-btn").onclick = () => {
+    const snip = $("embed-snippet");
+    snip.value = `<iframe src="${location.origin}/?embed=${addr}" width="360" height="420" style="border:1.5px solid #241f1c" title="${escapeHTML(title)} — stampz page"></iframe>`;
+    snip.hidden = !snip.hidden;
+    if (!snip.hidden) { snip.focus(); snip.select(); }
+  };
+
+  const qr = await qrDataUrl(canonical);
+  if (qr) { $("page-qr").src = qr; $("page-qr").hidden = false; }
+}
+
+// minimal card for iframes (?embed=)
+async function renderEmbed(q) {
+  document.body.classList.add("embed");
+  $("landing").hidden = true;
+  $("connect").hidden = true;
+  $("welcome-back").hidden = true;
+  $("embed-view").hidden = false;
+  const addr = await resolvePageQuery(q);
+  if (!addr) { $("embed-head").textContent = "no such page"; return; }
+  const [identity, links, nouns] = await Promise.all([
+    pageIdentity(addr), pageLinks(addr), loadNouns(addr),
+  ]);
+  const title = identity.name || short(addr);
+  document.title = `${title} — stampz`;
+  $("embed-head").innerHTML = `
+    <div class="passport-avatar">${nouns.length ? nouns[0].svg
+      : `<img src="https://noun-api.com/beta/pfp?name=${addr}&size=96" alt=""/>`}</div>
+    <div><p class="page-name">${escapeHTML(title)}</p>
+    <p class="mono page-addr">${short(addr)}</p></div>`;
+  $("embed-links").innerHTML = links.slice(0, 6).map(linkRowHTML).join("")
+    || `<p class="noun-empty">no links yet</p>`;
+}
+
+// ---------- the page desk — edit your page from your passport ----------
+// Every edit is a cast: append-only, latest reading wins. The desk shows
+// the current reading and prints the next edit as a `link` cast.
+async function renderPageDesk(address, viewOnly) {
+  const pane = $("page-pane");
+  pane.hidden = viewOnly;
+  if (viewOnly) return;
+  const desk = $("page-desk");
+  desk.innerHTML = `<p class="noun-empty">Reading your tower…</p>`;
+  const links = await pageLinks(address);
+  const domain = (await pageIdentity(address)).domain;
+  $("my-page-link").href = `/?p=${domain || address}`;
+
+  desk.innerHTML = `
+    <div class="desk-links">${links.length ? links.map((l) => `
+      <div class="desk-link"><span>${escapeHTML(l.label)}</span>
+        <span class="u">${escapeHTML(l.url)}</span>
+        <button class="linkish desk-retire" data-label="${escapeHTML(l.label)}" type="button">retire</button>
+      </div>`).join("") : `<p class="noun-empty">Your page has no links yet — print the first below.</p>`}
+    </div>
+    <div class="desk-add">
+      <input id="desk-label" placeholder="label" maxlength="40" autocomplete="off"/>
+      <input id="desk-url" placeholder="https://…" maxlength="230" autocomplete="off" inputmode="url"/>
+      <button id="desk-print" class="ghost" type="button">print link</button>
+    </div>
+    <p class="noun-empty">Edits are casts — public, append-only, forever. The page shows the
+      latest reading. <a href="/?p=${domain || address}">view your page →</a></p>`;
+
+  $("desk-print").onclick = async () => {
+    const label = $("desk-label").value.trim();
+    const url = $("desk-url").value.trim();
+    if (!label || !/^https?:\/\/\S+$/.test(url)) {
+      $("status").textContent = "A label and a full https:// url, please."; return;
+    }
+    if (label.includes("|")) { $("status").textContent = "Labels can't contain |."; return; }
+    const w = await loadWallet();
+    if (await w.publishCast({ kind: 1, body: `${label} | ${url}` }, $("status")))
+      renderPageDesk(address, false);
+  };
+  desk.querySelectorAll(".desk-retire").forEach((b) =>
+    b.addEventListener("click", async () => {
+      const w = await loadWallet();
+      if (await w.publishCast({ kind: 1, body: `${b.dataset.label} |` }, $("status")))
+        renderPageDesk(address, false);
+    }));
+}
+
 async function connectFlow() {
   $("status").textContent = "Opening wallet…";
   const w = await loadWallet();
@@ -628,6 +788,14 @@ async function connectFlow() {
 
 // ---------- boot ----------
 async function boot() {
+  if (embedParam) {
+    renderEmbed(embedParam);
+    return;
+  }
+  if (pageParam) {
+    renderPageView(pageParam);
+    return;
+  }
   if (wireParam) {
     renderWirePage();
     return;
@@ -655,9 +823,9 @@ $("connect").addEventListener("click", connectFlow);
 
 // ---------- passport lookup ----------
 $("lookup-go").addEventListener("click", () => {
-  const v = $("lookup").value.trim();
-  if (/^(tz[1-4]|KT1)[1-9A-HJ-NP-Za-km-z]{33}$/.test(v)) location.href = `/?view=${v}`;
-  else $("status").textContent = "That doesn't look like a Tezos address.";
+  const v = $("lookup").value.trim().toLowerCase();
+  if (isAddress(v) || isDomain(v)) location.href = `/?p=${v}`;
+  else $("status").textContent = "That doesn't look like a Tezos address or a .tez name.";
 });
 $("lookup").addEventListener("keydown", (e) => {
   if (e.key === "Enter") $("lookup-go").click();

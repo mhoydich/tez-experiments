@@ -34,8 +34,8 @@
 
     <section id="landing">
       <div class="lookup">
-        <input id="lookup" placeholder="tz1… peek at any passport" spellcheck="false" autocomplete="off" />
-        <button id="lookup-go" class="ghost" type="button">view</button>
+        <input id="lookup" placeholder="tz1… or name.tez — open any page" spellcheck="false" autocomplete="off" />
+        <button id="lookup-go" class="ghost" type="button">open</button>
       </div>
 
       <h2 class="section-label">Now stamping</h2>
@@ -66,6 +66,11 @@
         <li><strong>Cast.</strong> Every passport has a broadcast tower: short
           notes, append-only, no edit, no delete, no admin. The wire below
           belongs to everyone, forever.</li>
+        <li><strong>Print your page.</strong> Every passport gets a public
+          one-sheet — portrait, links, stamp strip — at one address, yours to
+          share. Links are casts, so the page is just the latest reading of a
+          permanent log. Works with your <em>.tez</em> name, folds into a QR
+          code, saves as a contact card, embeds anywhere.</li>
       </ol>
 
       <h2 class="section-label">The machinery</h2>
@@ -109,6 +114,42 @@
       <p class="profile-links"><a href="/">← back to the office</a></p>
     </section>
 
+    <!-- the page — the office's public one-sheet (?p=tz1…|name.tez) -->
+    <section id="page-view" hidden>
+      <div class="page-sheet">
+        <p class="page-stamp">stampz · page</p>
+        <div class="page-head">
+          <div id="page-avatar" class="passport-avatar page-avatar"></div>
+          <div class="page-id">
+            <p id="page-name" class="page-name"></p>
+            <p id="page-addr" class="mono page-addr"></p>
+            <p id="page-facts" class="page-facts"></p>
+          </div>
+        </div>
+        <div id="page-links" class="page-links"></div>
+        <h2 class="section-label">Proof — the stamp strip</h2>
+        <div id="page-stamps" class="page-stamps"></div>
+        <div class="page-actions">
+          <img id="page-qr" class="page-qr" alt="QR code for this page" hidden />
+          <div class="page-btns">
+            <button id="page-copy" class="ghost" type="button">copy link</button>
+            <button id="page-vcard" class="ghost" type="button">save contact</button>
+            <button id="page-embed-btn" class="ghost" type="button">embed</button>
+            <a id="page-full" class="ghost" href="#">full passport</a>
+          </div>
+        </div>
+        <textarea id="embed-snippet" class="embed-snippet" rows="2" readonly hidden></textarea>
+        <p class="page-printed">printed by the passport office · <a href="/">stampz.xyz</a></p>
+      </div>
+    </section>
+
+    <!-- embeddable mini page (?embed=tz1…) -->
+    <section id="embed-view" hidden>
+      <div id="embed-head" class="embed-head"></div>
+      <div id="embed-links" class="page-links embed-links"></div>
+      <p class="page-printed"><a href="/" target="_blank" rel="noopener">stampz.xyz</a></p>
+    </section>
+
     <section id="passport" hidden>
       <div class="profile-bar">
         <div id="passport-avatar" class="passport-avatar" hidden></div>
@@ -119,6 +160,7 @@
             <button id="copy-address" class="linkish" type="button">copy</button>
             <a id="tzkt-link" href="#" target="_blank" rel="noopener">tzkt</a>
             <a id="share-link" href="#">share passport</a>
+            <a id="my-page-link" href="#">public page</a>
           </p>
         </div>
         <button id="disconnect" class="ghost" type="button">Log out</button>
@@ -139,6 +181,11 @@
               <div class="chart-card" id="pulse-card"></div>
             </div>
           </div>
+        </section>
+
+        <section class="pane" data-pane="page" id="page-pane">
+          <h2 class="section-label">Your page — the office's one-sheet</h2>
+          <div id="page-desk"></div>
         </section>
 
         <section class="pane" data-pane="stamps">
