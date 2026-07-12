@@ -91,6 +91,22 @@ Soulbound FA2 surface (token_id = venue id) + views `page_of`, `venue_of`,
 the pointcast.xyz/rally iframe needs `allow="geolocation"` on the frame;
 use "Open direct" to stamp until that lands.
 
+## MCP — the desk, agent-readable
+
+`functions/api/mcp.ts` serves Model Context Protocol at
+**tez-rally.pages.dev/api/mcp** (stateless JSON-RPC POST; GET is a
+discovery page). Add it as a custom connector and any MCP client gets:
+
+- `ladder`, `player_card`, `recent_matches`, `courts`, `head_to_head`
+- `scouting_report` — a matchup brief derived entirely from the ledger
+  (form, upset profile, format splits, venues); it says so out loud.
+- `verify_replay` — recomputes every rating from declared seeds + the
+  countersigned log (same integer Elo, `Math.floor` matching Michelson
+  EDIV, settlement-ordered by finalization level) and diffs chain state.
+  The "replayable by anyone" claim as a tool call.
+
+All read-only chain reads via TzKT; writes stay wallet-signed on the site.
+
 ## Honest gaps (template-grade, not anti-cheat-grade)
 
 - Two friendly wallets can farm each other. Mitigations when it matters:
