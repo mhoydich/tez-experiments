@@ -4,7 +4,7 @@
 import {
   getAccount, getBalanceHistory, getActivity, getTokens,
   getCasts, getCastCount, getStamps, getNouns, getPostcards,
-  POSTCARD_BGS, INDEXER,
+  POSTCARD_BGS, NETWORK,
 } from "./tz.js";
 
 const app = document.getElementById("app");
@@ -102,14 +102,13 @@ function sparklineSVG(hist) {
     <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-label="balance history">
       <defs>
         <linearGradient id="fillg" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="rgba(0,229,255,0.25)"/>
-          <stop offset="100%" stop-color="rgba(0,229,255,0)"/>
+          <stop offset="0%" stop-color="rgba(15,97,255,0.14)"/>
+          <stop offset="100%" stop-color="rgba(15,97,255,0)"/>
         </linearGradient>
       </defs>
       <polygon points="${P},${H - P} ${pts.join(" ")} ${W - P},${H - P}" fill="url(#fillg)"/>
-      <polyline points="${pts.join(" ")}" fill="none" stroke="#00e5ff" stroke-width="2"
-        style="filter: drop-shadow(0 0 6px rgba(0,229,255,0.6))"/>
-      <circle cx="${lx}" cy="${ly}" r="4" fill="#ffd700"/>
+      <polyline points="${pts.join(" ")}" fill="none" stroke="#0f61ff" stroke-width="2"/>
+      <circle cx="${lx}" cy="${ly}" r="4" fill="#b3402a"/>
     </svg>`;
 }
 
@@ -131,8 +130,9 @@ async function renderWire() {
 
   app.innerHTML = navHTML() + `
     <div class="hero">
-      <h1>Your wallet,<br/>broadcasting.</h1>
-      <div class="tagline">PERSONAL PAGES · ON-CHAIN · FOREVER</div>
+      <p class="eyebrow">Broadcast tower · Tezos ${NETWORK}</p>
+      <h1>your wallet,<br/><em>broadcasting.</em></h1>
+      <p class="tagline">a page for every address. <em>a transmitter for yours.</em></p>
       <p class="lede">Every Tezos address is already a story — balance, activity,
       stamps, nouns. tez-cast gives it a page and a transmitter. Cast something;
       it can never be taken down.</p>
@@ -160,8 +160,9 @@ async function renderWire() {
         : `<div class="empty">dead air — be the first to cast</div>`}
     </section>
 
-    <div class="signature">Michael Hoydich — El Segundo, 2026</div>
-    <span class="location-tag">33.9192 N / 118.4165 W — EL SEGUNDO, CA</span>`;
+    <footer>tez-cast — an append-only broadcast tower on Tezos ·
+    CC0 · Michael Hoydich, El Segundo CA · sibling of
+    <a href="https://stampz.xyz">stampz.xyz</a></footer>`;
 
   wireNav();
   const input = document.getElementById("lookup");
@@ -191,10 +192,10 @@ async function renderPage(addr) {
 
   const mine = me === addr;
   const vitals = [
-    { num: `${fmt(acct.balance)}<small> ꜩ</small>`, label: "balance", accent: "var(--neon-gold)" },
-    { num: fmt(acct.ops, 0), label: "operations", accent: "var(--neon-cyan)" },
-    { num: String(stamps.length), label: "stamps", accent: "var(--neon-orange)" },
-    { num: fmt(castCount, 0), label: "casts", accent: "var(--neon-pink)" },
+    { num: `${fmt(acct.balance)}<small> ꜩ</small>`, label: "balance" },
+    { num: fmt(acct.ops, 0), label: "operations" },
+    { num: String(stamps.length), label: "stamps" },
+    { num: fmt(castCount, 0), label: "casts" },
   ];
 
   app.innerHTML = navHTML() + `
@@ -213,7 +214,7 @@ async function renderPage(addr) {
 
     <section class="vitals">
       ${vitals.map((v) => `
-        <div class="vital" style="--accent:${v.accent}">
+        <div class="vital">
           <div class="num">${v.num}</div>
           <div class="label">${v.label}</div>
         </div>`).join("")}
@@ -296,8 +297,9 @@ async function renderPage(addr) {
       </div>
     </section>` : ""}
 
-    <div class="signature">Michael Hoydich — El Segundo, 2026</div>
-    <span class="location-tag">33.9192 N / 118.4165 W — EL SEGUNDO, CA</span>`;
+    <footer>tez-cast — an append-only broadcast tower on Tezos ·
+    CC0 · Michael Hoydich, El Segundo CA · sibling of
+    <a href="https://stampz.xyz">stampz.xyz</a></footer>`;
 
   wireNav();
   document.getElementById("copy-addr")?.addEventListener("click", () =>

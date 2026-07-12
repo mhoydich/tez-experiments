@@ -1,6 +1,6 @@
 // Indexer reads for the personal page — TzKT JSON only. No Taquito, no
 // Beacon: viewing any wallet never pays the wallet-stack download.
-const NETWORK = import.meta.env.VITE_NETWORK || "shadownet";
+export const NETWORK = import.meta.env.VITE_NETWORK || "shadownet";
 export const INDEXER = import.meta.env.VITE_INDEXER ||
   (NETWORK === "mainnet" ? "https://api.tzkt.io" : "https://api.shadownet.tzkt.io");
 
