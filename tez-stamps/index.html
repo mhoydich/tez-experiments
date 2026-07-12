@@ -129,7 +129,10 @@
       </div>
       <div id="nouns" class="noun-shelf"></div>
 
-      <h2 class="section-label">Postcards received</h2>
+      <div class="shelf-head">
+        <h2 class="section-label">Postcards received</h2>
+        <button id="send-postcard" class="ghost" type="button" hidden>✉ Send a postcard</button>
+      </div>
       <div id="postcards" class="postcard-wall"></div>
 
       <h2 class="section-label">Broadcast — <span id="cast-count">0</span> on the air, forever</h2>
@@ -148,8 +151,14 @@
     <!-- send-a-postcard dialog -->
     <dialog id="send-dialog" class="send-dialog">
       <form method="dialog" id="send-form">
-        <h3 class="dialog-title">Mail this noun</h3>
-        <div id="send-preview" class="send-preview"></div>
+        <h3 class="dialog-title">Postcard builder</h3>
+        <div class="postcard pv" id="pv-card">
+          <div class="stamp-window" id="pv-window"></div>
+          <div class="body">
+            <p class="note" id="pv-note">wish you were here…</p>
+            <p class="meta" id="pv-meta"></p>
+          </div>
+        </div>
         <label class="field" id="send-noun-field" hidden>Which noun
           <select id="send-noun-pick"></select>
         </label>

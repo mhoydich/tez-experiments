@@ -214,3 +214,11 @@ footer p {
 .passport-avatar { width: 72px; height: 72px; flex-shrink: 0; border: 1.5px solid var(--ink); background: #fff; }
 .passport-avatar svg, .passport-avatar img { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
 .passport-alias { font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.45rem; font-weight: 600; margin: 0 0 0.15rem; line-height: 1; }
+
+/* ---------- postcard builder ---------- */
+/* mail buttons visible always — hover-only hid the whole feature on touch */
+.noun-card .mail-btn { opacity: 1; }
+.postcard.pv { margin: 0; }
+.postcard.pv .note { min-height: 1.2em; }
+/* hidden must always win, even over explicit display values */
+[hidden] { display: none !important; }

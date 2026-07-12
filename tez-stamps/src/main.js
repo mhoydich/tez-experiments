@@ -268,6 +268,11 @@ async function renderPassport(address, { viewOnly = false } = {}) {
     shelf.innerHTML = `<p class="noun-empty">No nouns yet — earn stamps, then mint your portrait.</p>`;
   }
 
+  // The postcard builder, out in the open.
+  const sendBtn = $("send-postcard");
+  sendBtn.hidden = viewOnly || !nouns.length;
+  sendBtn.onclick = () => openSendDialog(nouns[0], { myNouns: nouns });
+
   // Postcards received — the community wall.
   const wall = $("postcards");
   wall.innerHTML = `<p class="noun-empty">Checking the mailbox…</p>`;
@@ -341,9 +346,18 @@ async function renderTower(address, viewOnly) {
 
 // ---------- send-a-postcard dialog ----------
 let sendState = { noun: null, background: 0 };
+
+// The builder shows the postcard exactly as it will hang on their wall.
+function pvUpdate(noun) {
+  if (noun) {
+    $("pv-window").innerHTML = noun.svg;
+    $("pv-meta").textContent = `Noun ${noun.id} · from you · today`;
+  }
+  $("pv-window").style.background = POSTCARD_BGS[sendState.background].css;
+}
+
 function openSendDialog(noun, { to = "", myNouns = null } = {}) {
   sendState = { noun: noun.id, background: 0 };
-  $("send-preview").innerHTML = noun.svg;
   const pickField = $("send-noun-field");
   const pick = $("send-noun-pick");
   if (myNouns && myNouns.length > 1) {
@@ -352,7 +366,7 @@ function openSendDialog(noun, { to = "", myNouns = null } = {}) {
     pick.value = String(noun.id);
     pick.onchange = () => {
       const sel = myNouns.find((n) => n.id === Number(pick.value));
-      if (sel) { sendState.noun = sel.id; $("send-preview").innerHTML = sel.svg; }
+      if (sel) { sendState.noun = sel.id; pvUpdate(sel); }
     };
   } else {
     pickField.hidden = true;
@@ -360,6 +374,7 @@ function openSendDialog(noun, { to = "", myNouns = null } = {}) {
   $("send-to").value = to;
   $("send-note").value = "";
   $("note-count").textContent = "0";
+  $("pv-note").textContent = "wish you were here…";
   const picker = $("bg-picker");
   picker.innerHTML = "";
   POSTCARD_BGS.forEach((bg, i) => {
@@ -370,14 +385,17 @@ function openSendDialog(noun, { to = "", myNouns = null } = {}) {
     b.onclick = () => {
       sendState.background = i;
       [...picker.children].forEach((c, j) => c.setAttribute("aria-pressed", j === i ? "true" : "false"));
+      pvUpdate();
     };
     picker.appendChild(b);
   });
+  pvUpdate(noun);
   $("send-dialog").showModal();
 }
 
 $("send-note").addEventListener("input", (e) => {
   $("note-count").textContent = String(e.target.value.length);
+  $("pv-note").textContent = e.target.value.trim() || "wish you were here…";
 });
 
 $("send-form").addEventListener("submit", async (e) => {
