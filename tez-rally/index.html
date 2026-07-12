@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>rally — your rating, on the record</title>
+  <meta name="description" content="A self-declared pickleball rating on Tezos, hardened by countersigned match results. Open integer Elo, replayable by anyone, owned by no one." />
+  <meta property="og:title" content="rally — your rating, on the record" />
+  <meta property="og:description" content="Declare a pickleball rating, mint a soulbound player card, then let countersigned matches move the number." />
+  <meta name="twitter:card" content="summary" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <main class="office">
+    <p class="eyebrow">tez-rally · template 06</p>
+    <h1 class="wordmark">rally</h1>
+    <p class="tagline">Your rating, <em>on the record.</em></p>
+    <p class="lede">Declare your pickleball rating — it mints a soulbound
+       player card. From then on the number only moves when a match is
+       countersigned by everyone on the court: open integer Elo, replayable
+       by anyone, owned by no one.</p>
+
+    <div id="welcome-back" class="welcome-back" hidden>
+      <p>Welcome back, <span id="wb-address" class="mono-inline"></span>.</p>
+      <p class="profile-links"><button id="wb-resume" class="linkish" type="button">back to my card</button>
+      <a id="wb-peek" href="#">just peek</a></p>
+    </div>
+
+    <button id="connect" class="enter">Step up to the desk</button>
+
+    <section id="desk" hidden>
+      <div class="profile-bar">
+        <div>
+          <p class="mono" id="address"></p>
+          <p class="profile-links">
+            <button id="copy-address" class="linkish" type="button">copy</button>
+            <a id="tzkt-link" href="#" target="_blank" rel="noopener">tzkt</a>
+            <a id="share-link" href="#">share card</a>
+          </p>
+        </div>
+        <button id="disconnect" class="ghost" type="button">Log out</button>
+      </div>
+
+      <div id="card" class="player-card" hidden>
+        <div class="rating-big"><span id="card-rating"></span></div>
+        <div class="card-facts">
+          <p id="card-tier" class="tier-badge"></p>
+          <p class="card-line">declared <strong id="card-declared"></strong></p>
+          <p class="card-line">record <strong id="card-record"></strong></p>
+        </div>
+      </div>
+
+      <form id="declare-form" hidden>
+        <h2 class="section-label">Declare your rating</h2>
+        <p class="form-hint">Honor system to start — pick the number you'd say
+           out loud at open play. It's free to adjust until your first
+           countersigned match; after that, the ladder owns it.</p>
+        <div class="declare-row">
+          <select id="declare-rating" aria-label="rating"></select>
+          <button type="submit" class="enter enter-sm">Declare &amp; mint card</button>
+        </div>
+      </form>
+
+      <form id="report-form">
+        <h2 class="section-label">Report a match</h2>
+        <div class="format-row" role="radiogroup" aria-label="format">
+          <label><input type="radio" name="format" value="singles" checked /> singles</label>
+          <label><input type="radio" name="format" value="doubles" /> doubles</label>
+        </div>
+        <label class="field" id="partner-field" hidden>My partner
+          <input id="partner" placeholder="tz1… address" autocomplete="off" />
+        </label>
+        <label class="field">Opponent
+          <input id="opp1" placeholder="tz1… address" required autocomplete="off" />
+        </label>
+        <label class="field" id="opp2-field" hidden>Their partner
+          <input id="opp2" placeholder="tz1… address" autocomplete="off" />
+        </label>
+        <div class="score-row">
+          <label class="field">Us
+            <input id="score-us" type="number" min="0" max="99" required />
+          </label>
+          <span class="score-dash">–</span>
+          <label class="field">Them
+            <input id="score-them" type="number" min="0" max="99" required />
+          </label>
+        </div>
+        <label class="field">Venue
+          <select id="venue">
+            <option>California Smash</option>
+            <option>Hollyglen Park</option>
+            <option>El Segundo Rec Park</option>
+            <option value="__other">Elsewhere…</option>
+          </select>
+        </label>
+        <label class="field" id="venue-other-field" hidden>Where
+          <input id="venue-other" placeholder="court name" autocomplete="off" />
+        </label>
+        <p class="form-hint">Everyone on the court signs before it counts.
+           Report losses too — an honest log is the whole point.</p>
+        <button type="submit" class="enter enter-sm">Report result</button>
+      </form>
+
+      <h2 class="section-label">Awaiting signatures</h2>
+      <ul id="pending" class="match-list"></ul>
+    </section>
+
+    <section id="board">
+      <h2 class="section-label">The ladder</h2>
+      <ol id="ladder" class="ladder"></ol>
+
+      <h2 class="section-label">Recent matches</h2>
+      <ul id="matches" class="match-list"></ul>
+    </section>
+
+    <p id="status" class="status" role="status"></p>
+    <footer><p>Shadownet · CC0 · integer Elo, replayable from contract storage</p></footer>
+  </main>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

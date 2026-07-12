@@ -21,6 +21,11 @@ tez-cast/             # 05 — personal page for any wallet (balance/activity/
                       #      stamps/nouns viz) + append-only broadcast tower.
                       #      MAINNET KT1NgPnaHLtZ2cNpb2hWGDxFH9fUCABaiaE1,
                       #      live at tez-cast.pages.dev
+tez-rally/            # 06 — pickleball rating desk: self-declared soulbound
+                      #      card hardened by countersigned matches; integer
+                      #      Elo settled on-chain. Shadownet
+                      #      KT1C2EEKHEDjcFAeR8rBLdvX5agq2XnUz5AZ,
+                      #      live at tez-rally.pages.dev
 ```
 
 Read each repo's README.md before touching it. tez-stamps/TRAITS.md is the
@@ -49,6 +54,11 @@ design spec bridging 02→03. tez-nouns/contracts/NOTES.md lists known gaps.
   storage objects. Fund testnet keys programmatically with
   `npx @tacoinfra/get-tez <addr> --amount 100 --network shadownet`.
 - tez-stamps frontend is LIVE at stampz.xyz (see tez-stamps/README).
+- tez-rally (06) deployed to Shadownet 2026-07-11 and smoke-tested end to
+  end (two throwaway players: declare → report → countersign → Elo settles;
+  scripts/smoke.js replays it). Frontend LIVE at tez-rally.pages.dev.
+  jsLIGO gotcha learned: UPPERCASE identifiers parse as data constructors —
+  constants must be lowercase.
 
 ## Environment
 

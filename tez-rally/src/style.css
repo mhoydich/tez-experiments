@@ -1,0 +1,173 @@
+/* tez-rally — same passport-office family as tez-onboard/tez-stamps,
+   ink flipped again: court green leads, tezos blue supports. */
+:root {
+  --paper: #f2efe9;
+  --ink: #241f1c;
+  --court: #1e7a52;
+  --tezos-blue: #0f61ff;
+  --line: #d8d2c6;
+  --muted: #6b6259;
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; min-height: 100dvh; display: grid; place-items: center;
+  background: var(--paper); color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+  background-image: radial-gradient(var(--line) 1px, transparent 1px);
+  background-size: 28px 28px;
+  padding: 2rem 0;
+}
+.office {
+  width: min(560px, 92vw); background: #fff;
+  border: 1.5px solid var(--ink); padding: 3rem 2.5rem 2rem;
+  box-shadow: 8px 8px 0 var(--court);
+}
+.eyebrow {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--court); margin: 0 0 1rem;
+}
+.wordmark {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 600; font-size: clamp(4.5rem, 18vw, 8rem); line-height: 0.82;
+  letter-spacing: -0.02em; margin: 0.2rem 0 0; color: var(--ink);
+  text-transform: lowercase; font-feature-settings: "liga" 1;
+}
+.tagline {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(1.5rem, 5vw, 2.1rem); font-weight: 500;
+  margin: 0 0 1.4rem; letter-spacing: 0.01em;
+}
+.tagline em { font-style: italic; color: var(--court); }
+.lede { font-size: 1.02rem; line-height: 1.55; margin: 0 0 2rem; }
+.mono { font-family: ui-monospace, Menlo, monospace; font-size: 0.8rem; word-break: break-all; }
+.mono-inline { font-family: ui-monospace, Menlo, monospace; font-size: 0.85em; }
+.enter {
+  font: inherit; font-size: 1.05rem; width: 100%; padding: 0.9rem 1.2rem;
+  background: var(--court); color: #fff; border: 1.5px solid var(--ink);
+  cursor: pointer; box-shadow: 4px 4px 0 var(--ink);
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+.enter:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--ink); }
+.enter:active { transform: translate(3px,3px); box-shadow: 1px 1px 0 var(--ink); }
+.enter:focus-visible, .ghost:focus-visible, .linkish:focus-visible { outline: 3px solid var(--tezos-blue); outline-offset: 2px; }
+.enter-sm { width: auto; font-size: 0.95rem; padding: 0.6rem 1.1rem; box-shadow: 3px 3px 0 var(--ink); }
+.ghost {
+  font: inherit; font-size: 0.85rem; background: none; padding: 0.45rem 0.9rem;
+  border: 1.5px solid var(--ink); cursor: pointer; white-space: nowrap;
+}
+.ghost:hover { background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.linkish {
+  font: inherit; color: var(--tezos-blue); background: none; border: none;
+  padding: 0; cursor: pointer; text-decoration: underline;
+}
+.section-label {
+  font-family: ui-monospace, Menlo, monospace; font-size: 0.72rem;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
+  margin: 1.8rem 0 0.4rem;
+}
+.status { min-height: 1.4em; font-size: 0.9rem; color: var(--court); }
+footer p {
+  font-family: ui-monospace, Menlo, monospace; font-size: 0.68rem;
+  letter-spacing: 0.1em; color: var(--muted);
+  border-top: 1px solid var(--line); padding-top: 1rem; margin-top: 2rem;
+}
+.welcome-back { border: 1.5px dashed var(--tezos-blue); padding: 0.8rem 1rem; margin-bottom: 1.25rem; background: #fff; }
+.welcome-back p { margin: 0 0 0.3rem; font-size: 0.9rem; }
+.profile-links { margin: 0.35rem 0 0; font-size: 0.72rem; display: flex; gap: 0.9rem; }
+.profile-links a { color: var(--tezos-blue); }
+.profile-bar {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 1rem; border: 1.5px solid var(--ink); padding: 0.8rem 1rem;
+  background: var(--paper); box-shadow: 4px 4px 0 var(--line);
+  margin-bottom: 1.5rem;
+}
+.profile-bar .mono { margin: 0; }
+
+/* ---------- the player card ---------- */
+.player-card {
+  display: grid; grid-template-columns: auto 1fr; gap: 1.2rem; align-items: center;
+  border: 1.5px solid var(--ink); background: #fff; padding: 1rem 1.2rem;
+  box-shadow: 4px 4px 0 var(--court); margin-bottom: 1.5rem;
+  transform: rotate(-0.6deg);
+}
+.rating-big {
+  font-family: "Cormorant Garamond", Georgia, serif; font-weight: 700;
+  font-size: clamp(3rem, 12vw, 4.2rem); line-height: 1; color: var(--court);
+  font-variant-numeric: tabular-nums;
+}
+.card-facts { display: grid; gap: 0.25rem; }
+.card-line { margin: 0; font-size: 0.85rem; color: var(--muted); }
+.card-line strong { color: var(--ink); font-variant-numeric: tabular-nums; }
+.tier-badge {
+  margin: 0 0 0.2rem; font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: #fff; background: var(--court); padding: 3px 8px; width: fit-content;
+}
+.tier-badge.self { background: var(--muted); }
+
+/* ---------- forms ---------- */
+form { margin: 0 0 1.2rem; }
+.form-hint { font-size: 0.8rem; color: var(--muted); margin: 0.2rem 0 0.8rem; line-height: 1.45; }
+.field { display: grid; gap: 0.3rem; margin: 0.6rem 0; font-size: 0.72rem; font-family: ui-monospace, Menlo, monospace; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.field input, .field select {
+  font-family: ui-monospace, Menlo, monospace; font-size: 0.9rem;
+  text-transform: none; letter-spacing: 0; padding: 0.5rem 0.6rem;
+  border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink);
+}
+.declare-row { display: flex; gap: 0.6rem; align-items: stretch; }
+.declare-row select {
+  flex: 1; font-family: ui-monospace, Menlo, monospace; font-size: 1rem;
+  padding: 0.5rem 0.6rem; border: 1.5px solid var(--ink); background: var(--paper);
+}
+.format-row { display: flex; gap: 1.2rem; font-size: 0.9rem; margin: 0.4rem 0; }
+.format-row label { cursor: pointer; }
+.score-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0.6rem; align-items: end; }
+.score-dash { padding-bottom: 0.7rem; color: var(--muted); }
+
+/* ---------- ladder ---------- */
+.ladder { list-style: none; margin: 0.75rem 0; padding: 0; counter-reset: rung; display: grid; gap: 0.4rem; }
+.ladder li {
+  counter-increment: rung;
+  display: grid; grid-template-columns: 2rem 1fr auto auto; gap: 0.7rem;
+  align-items: baseline; border: 1.5px solid var(--line); padding: 0.55rem 0.8rem;
+  background: #fff;
+}
+.ladder li:nth-child(1) { border-color: var(--court); box-shadow: 3px 3px 0 var(--court); }
+.ladder li::before {
+  content: counter(rung); font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.75rem; color: var(--muted);
+}
+.ladder .who { font-family: ui-monospace, Menlo, monospace; font-size: 0.78rem; }
+.ladder .who a { color: var(--tezos-blue); }
+.ladder .num {
+  font-family: "Cormorant Garamond", Georgia, serif; font-weight: 700;
+  font-size: 1.25rem; color: var(--court); font-variant-numeric: tabular-nums;
+}
+.ladder .rec { font-family: ui-monospace, Menlo, monospace; font-size: 0.68rem; color: var(--muted); }
+.ladder .empty { grid-template-columns: 1fr; text-align: center; color: var(--muted); font-size: 0.85rem; }
+.ladder .empty::before { content: none; }
+
+/* ---------- matches ---------- */
+.match-list { list-style: none; margin: 0.75rem 0; padding: 0; display: grid; gap: 0.5rem; }
+.match-list li {
+  border: 1.5px dashed var(--court); padding: 0.6rem 0.8rem; background: #fff;
+  transform: rotate(-0.4deg);
+}
+.match-list li:nth-child(even) { transform: rotate(0.5deg); border-color: var(--tezos-blue); }
+.match-list li.empty { border-style: solid; border-color: var(--line); transform: none; text-align: center; color: var(--muted); font-size: 0.85rem; }
+.scoreline { margin: 0; font-size: 0.92rem; }
+.scoreline .score { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 700; font-size: 1.15rem; color: var(--court); }
+.scoreline a { color: var(--tezos-blue); }
+.match-meta {
+  margin: 0.25rem 0 0; font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.62rem; letter-spacing: 0.05em; color: var(--muted);
+}
+.match-list .countersign { margin-top: 0.5rem; }
+@media (max-width: 480px) {
+  .office { padding: 2rem 1.4rem 1.6rem; }
+  .player-card { grid-template-columns: 1fr; gap: 0.5rem; }
+}

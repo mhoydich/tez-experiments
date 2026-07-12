@@ -1,0 +1,235 @@
+// tez-rally — the rating desk. A pickleball rating you declare yourself,
+// then harden with countersigned match results. Declaring mints a soulbound
+// player card (FA2-shaped, token_id 0, transfer-disabled — same surface as
+// tez-stamps). Ratings only MOVE via matches confirmed by every participant:
+// self-declared is a claim; a match log is a record.
+// Rating math is integer Elo, linear-approximated (see elo_delta) so the
+// whole ladder is replayable by anyone from this contract's storage.
+// jsLIGO (LIGO >= 1.x)
+
+type milli = nat; // rating in thousandths: 4250 = 4.250 (DUPR-ish 2.000–8.000)
+
+type player = {
+  declared: milli,       // the self-declared seed
+  rating: milli,         // current rating; starts at declared
+  matches: nat,          // finalized matches
+  wins: nat,
+  declared_at: timestamp,
+};
+
+type team = { p1: address, p2: option<address> }; // singles or doubles
+
+type match_rec = {
+  team_a: team,
+  team_b: team,
+  score_a: nat,          // game score, e.g. 11–7; no ties in pickleball
+  score_b: nat,
+  venue: string,         // free text; the site offers known courts
+  video_hash: option<bytes>, // sha256 of archived match video (tier-3 provenance)
+  proposed_by: address,
+  proposed_at: timestamp,
+  confirmations: set<address>,
+  finalized: bool,
+};
+
+type storage = {
+  next_match: nat,
+  players: big_map<address, player>,
+  matches: big_map<nat, match_rec>,
+  metadata: big_map<string, bytes>,  // contract metadata (TZIP-16)
+};
+
+type ret = [list<operation>, storage];
+
+// ---------- rating constants (milli-rating) ----------
+
+const rating_min: milli = 2000n;   // 2.000
+const rating_max: milli = 8000n;   // 8.000
+const rating_floor: milli = 1000n; // losses never push below 1.000
+const k_base: int = 50;   // exchange between equals: 0.050
+const k_min: int = 10;    // favorite beating an underdog still moves 0.010
+const k_max: int = 150;   // upset ceiling: 0.150
+const slope: int = 10;    // each 0.010 of favorite's edge shaves 0.001 off
+
+// ---------- helpers ----------
+
+const get_player = (s: storage, a: address): player =>
+  match(Big_map.find_opt(a, s.players)) {
+    when (Some(p)): p;
+    when (None()): failwith("UNRATED_PLAYER")
+  };
+
+const members = (t: team): list<address> =>
+  match(t.p2) {
+    when (Some(p2)): list([t.p1, p2]);
+    when (None()): list([t.p1])
+  };
+
+const roster = (m: match_rec): list<address> =>
+  List.fold_left(([acc, a]: [list<address>, address]) => list([a, ...acc]),
+    members(m.team_b), members(m.team_a));
+
+const team_rating = (s: storage, t: team): milli =>
+  match(t.p2) {
+    when (Some(p2)): (get_player(s, t.p1).rating + get_player(s, p2).rating) / 2n;
+    when (None()): get_player(s, t.p1).rating
+  };
+
+// Linear-approximation Elo: exchange = k_base - edge/slope, clamped.
+// Equals trade 0.050; a 0.500-underdog winning takes 0.100; favorites
+// grinding out expected wins take the k_min dust. Integer division is
+// euclidean (Michelson EDIV) — deterministic, replayable, template-grade.
+const elo_delta = (winner_avg: milli, loser_avg: milli): milli => {
+  const edge: int = winner_avg - loser_avg; // >0 when the favorite won
+  const raw: int = k_base - (edge / slope);
+  const clamped: int = raw < k_min ? k_min : (raw > k_max ? k_max : raw);
+  return abs(clamped);
+};
+
+const settle_side = (s: storage, side: list<address>, delta: milli, won: bool): storage =>
+  List.fold_left(([st, a]: [storage, address]) => {
+    const p = get_player(st, a);
+    const rating = won
+      ? p.rating + delta
+      : (p.rating >= delta + rating_floor ? abs(p.rating - delta) : rating_floor);
+    const np = { ...p, rating, matches: p.matches + 1n, wins: won ? p.wins + 1n : p.wins };
+    return { ...st, players: Big_map.update(a, Some(np), st.players) };
+  }, s, side);
+
+const finalize = (s: storage, m: match_rec): storage => {
+  const a_won = m.score_a > m.score_b;
+  const [w_team, l_team] = a_won ? [m.team_a, m.team_b] : [m.team_b, m.team_a];
+  const delta = elo_delta(team_rating(s, w_team), team_rating(s, l_team));
+  const s1 = settle_side(s, members(w_team), delta, true);
+  return settle_side(s1, members(l_team), delta, false);
+};
+
+// ---------- entrypoints ----------
+
+// Self-declare: mint (or re-seed) your player card. Free to adjust until
+// your first finalized match — after that the ladder owns your number.
+@entry
+const declare = (rating: milli, s: storage): ret => {
+  if (rating < rating_min || rating > rating_max) failwith("DECLARE_RANGE");
+  const who = Tezos.get_sender();
+  const p: player = match(Big_map.find_opt(who, s.players)) {
+    when (Some(old)): do {
+      if (old.matches > 0n) failwith("RATING_IS_EARNED");
+      return { ...old, declared: rating, rating, declared_at: Tezos.get_now() };
+    };
+    when (None()): {
+      declared: rating, rating, matches: 0n, wins: 0n,
+      declared_at: Tezos.get_now(),
+    }
+  };
+  return [list([]), { ...s, players: Big_map.update(who, Some(p), s.players) }];
+};
+
+// Any participant reports the result; reporting counts as their signature.
+@entry
+const propose_match = (
+  p: { team_a: team, team_b: team, score_a: nat, score_b: nat,
+       venue: string, video_hash: option<bytes> },
+  s: storage
+): ret => {
+  // even formats only: singles vs singles, doubles vs doubles
+  const even = match(p.team_a.p2) {
+    when (Some(_x)): match(p.team_b.p2) { when (Some(_y)): true; when (None()): false };
+    when (None()): match(p.team_b.p2) { when (Some(_y)): false; when (None()): true }
+  };
+  if (!even) failwith("TEAMS_UNEVEN");
+  if (p.score_a == p.score_b) failwith("NO_TIES");
+
+  const m: match_rec = {
+    team_a: p.team_a, team_b: p.team_b,
+    score_a: p.score_a, score_b: p.score_b,
+    venue: p.venue, video_hash: p.video_hash,
+    proposed_by: Tezos.get_sender(),
+    proposed_at: Tezos.get_now(),
+    confirmations: Set.literal(list([Tezos.get_sender()])),
+    finalized: false,
+  };
+  const everyone = roster(m);
+  const expected = List.length(everyone);
+  const uniq = List.fold_left(([acc, a]: [set<address>, address]) => Set.add(a, acc),
+    Set.empty as set<address>, everyone);
+  if (Set.cardinal(uniq) != expected) failwith("DUPLICATE_PLAYER");
+  if (!Set.mem(Tezos.get_sender(), uniq)) failwith("NOT_A_PLAYER");
+  // every participant must already hold a card — declare first
+  const _check = List.map((a: address) => get_player(s, a), everyone);
+
+  return [list([]), {
+    ...s,
+    next_match: s.next_match + 1n,
+    matches: Big_map.add(s.next_match, m, s.matches),
+  }];
+};
+
+// Countersign a reported match. The last signature finalizes it and moves
+// every participant's rating — atomically, in this call.
+@entry
+const confirm_match = (id: nat, s: storage): ret => {
+  const m = match(Big_map.find_opt(id, s.matches)) {
+    when (Some(x)): x;
+    when (None()): failwith("UNKNOWN_MATCH")
+  };
+  if (m.finalized) failwith("ALREADY_FINAL");
+  const who = Tezos.get_sender();
+  const everyone = roster(m);
+  const uniq = List.fold_left(([acc, a]: [set<address>, address]) => Set.add(a, acc),
+    Set.empty as set<address>, everyone);
+  if (!Set.mem(who, uniq)) failwith("NOT_A_PLAYER");
+  if (Set.mem(who, m.confirmations)) failwith("ALREADY_CONFIRMED");
+
+  const confirmations = Set.add(who, m.confirmations);
+  const complete = Set.cardinal(confirmations) == Set.cardinal(uniq);
+  const m2 = { ...m, confirmations, finalized: complete };
+  const s1 = { ...s, matches: Big_map.update(id, Some(m2), s.matches) };
+  return [list([]), complete ? finalize(s1, m2) : s1];
+};
+
+// ---------- FA2 surface (read-compatible, transfer-disabled) ----------
+// The player card is token_id 0: balance 1 once you've declared. Soulbound —
+// same pattern as tez-stamps; your record isn't for sale.
+
+type transfer_dest = { to_: address, token_id: nat, amount: nat };
+type transfer_item = { from_: address, txs: list<transfer_dest> };
+
+@entry
+const transfer = (_t: list<transfer_item>, _s: storage): ret =>
+  failwith("SOULBOUND: player cards are non-transferable");
+
+type balance_request = { owner: address, token_id: nat };
+type balance_response = { request: balance_request, balance: nat };
+
+@entry
+const balance_of = (
+  p: { requests: list<balance_request>, callback: contract<list<balance_response>> },
+  s: storage
+): ret => {
+  const respond = (r: balance_request): balance_response =>
+    ({ request: r,
+       balance: r.token_id == 0n && Big_map.mem(r.owner, s.players) ? 1n : 0n });
+  const responses = List.map(respond, p.requests);
+  return [list([Tezos.transaction(responses, 0mutez, p.callback)]), s];
+};
+
+@entry
+const update_operators = (_p: unit, _s: storage): ret =>
+  failwith("SOULBOUND: no operators");
+
+// ---------- views (compose forward: gate traits/stamps on rating) ----------
+
+@view
+const rating_of = (a: address, s: storage): milli =>
+  match(Big_map.find_opt(a, s.players)) {
+    when (Some(p)): p.rating;
+    when (None()): 0n
+  };
+
+@view
+const player_of = (a: address, s: storage): option<player> =>
+  Big_map.find_opt(a, s.players);
+
+@view
+const match_count = (_u: unit, s: storage): nat => s.next_match;
