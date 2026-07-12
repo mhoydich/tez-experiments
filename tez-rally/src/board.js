@@ -51,6 +51,36 @@ const asMatch = (r) => ({
   finalized: r.value.finalized,
 });
 
+// ---- the passport book (courts contract) ----
+const COURTS = import.meta.env.VITE_COURTS_ADDRESS || "";
+
+export async function loadCourts() {
+  if (!COURTS) return [];
+  const res = await fetch(
+    `${INDEXER}/v1/contracts/${COURTS}/bigmaps/venues/keys?active=true&limit=50`
+  );
+  const rows = await res.json();
+  return rows
+    .map((r) => ({
+      id: Number(r.key),
+      name: r.value.name,
+      visits: Number(r.value.visits),
+    }))
+    .sort((a, b) => a.id - b.id);
+}
+
+export async function bookOf(address) {
+  if (!COURTS) return new Map();
+  const res = await fetch(
+    `${INDEXER}/v1/contracts/${COURTS}/bigmaps/book/keys?key.address=${address}&active=true`
+  );
+  const rows = await res.json();
+  return new Map(rows.map((r) => [Number(r.key.nat), {
+    count: Number(r.value.count),
+    firstAt: r.value.first_at,
+  }]));
+}
+
 export async function loadMatches(limit = 20) {
   if (!RALLY) return [];
   const res = await fetch(

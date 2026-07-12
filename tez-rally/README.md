@@ -12,6 +12,14 @@ Pages project `tez-rally` (deploy: `npx vite build && npx wrangler pages
 deploy dist --project-name tez-rally`). Rebuild + redeploy after changing
 `VITE_RALLY_ADDRESS`.
 
+**Passport book (MAINNET)**: courts `KT1Q1g8Sv3uL2beaA7h89hTViJyZmXxfUS9D`
+(LIGO 1.15.6) — geoconfirmed court stamps, one per court per UTC day.
+Venues 0–2 seeded: California Smash, Hollyglen Park, El Segundo Rec Park.
+Oracle: `edpkvBizDU8VGQv6XiXmCSccGDdj6QcsdZfJrBe5n4JLJmX5xgvf47` (rotate via
+`set_oracle`); signer lives in `functions/api/geostamp.ts` as a Pages
+Function with the `ORACLE_KEY` secret. Shadownet smoke: `node
+scripts/smoke-courts.js` (originates fresh, stamps, proves the rate limit).
+
 A pickleball rating you declare yourself, then harden with countersigned
 match results. Template #06 in the tez-experiments series.
 
@@ -66,6 +74,23 @@ npm run deploy          # originates with ADMIN_KEY on RPC
 npm run smoke           # declare → report → countersign → ladder moves
 ```
 
+## The passport book
+
+`contracts/courts.jsligo` — each venue is a page; showing up stamps it:
+
+1. Browser shares position → `POST /api/geostamp` with `{address, lat, lon}`.
+2. The worker checks the haversine distance against the court's fence
+   (stored on-chain in the venue record for transparency) and, if inside,
+   signs `pack([visitor, venue_id, unix_day, contract])` with the oracle key.
+3. `stamp(venue, sig)` — the contract recomputes today's unix day, verifies
+   the voucher, inks the page (`count`, `first_at`), bumps the court's
+   total. `STAMPED_TODAY` guards one stamp per court per day.
+
+Soulbound FA2 surface (token_id = venue id) + views `page_of`, `venue_of`,
+`courts_visited` — gate anything on showing up. Note: geolocation inside
+the pointcast.xyz/rally iframe needs `allow="geolocation"` on the frame;
+use "Open direct" to stamp until that lands.
+
 ## Honest gaps (template-grade, not anti-cheat-grade)
 
 - Two friendly wallets can farm each other. Mitigations when it matters:
@@ -76,6 +101,9 @@ npm run smoke           # declare → report → countersign → ladder moves
   upgrade path is an off-chain deterministic rater reading the same match
   log — the log is the product, the formula is swappable.
 - `video_hash` is stored but nothing verifies or serves video yet.
+- Geoconfirm trusts browser-reported coordinates — spoofable with dev tools.
+  The oracle voucher is the honest-by-default fence, not anti-cheat; upgrade
+  paths are a venue wifi challenge or keeper co-signing.
 - Scores aren't validated as legal pickleball scores (win by 2, to 11/15).
   The countersignature is the validity check.
 

@@ -3,7 +3,7 @@
 // The wallet stack loads lazily: on connect click, or when a previous
 // Beacon session / remembered visitor exists. ?view=<address> renders any
 // player card read-only. Revisits: last address is remembered in localStorage.
-import { loadLadder, loadMatches, playerOf } from "./board.js";
+import { loadLadder, loadMatches, playerOf, loadCourts, bookOf } from "./board.js";
 
 const NETWORK = import.meta.env.VITE_NETWORK || "shadownet";
 const TZKT_UI = NETWORK === "mainnet" ? "https://tzkt.io" : "https://shadownet.tzkt.io";
@@ -124,6 +124,9 @@ async function renderDesk(address, { viewOnly = false } = {}) {
   $("declare-form").hidden = !canDeclare;
   $("report-form").hidden = viewOnly || !p;
 
+  $("stamp-btn").hidden = viewOnly;
+  renderBook(address);
+
   // pending signatures involving this player
   const all = await loadMatches(50);
   const pending = all.filter((m) =>
@@ -137,6 +140,65 @@ async function renderDesk(address, { viewOnly = false } = {}) {
 }
 
 const refresh = () => Promise.all([renderDesk(currentAddress), renderBoard()]);
+
+// ---------- the passport book ----------
+async function renderBook(address) {
+  const [courts, book] = await Promise.all([loadCourts(), bookOf(address)]);
+  const ul = $("passport");
+  ul.innerHTML = courts.length ? "" :
+    `<li>No courts in the book yet.</li>`;
+  for (const c of courts) {
+    const pg = book.get(c.id);
+    const li = document.createElement("li");
+    li.className = pg ? "stamped" : "";
+    li.innerHTML = pg
+      ? `<span class="court-name">${c.name}</span>
+         <span class="stamp-count">×${pg.count} stamped</span>
+         <span class="stamp-date">since ${fmtDate(pg.firstAt)}</span>`
+      : `<span class="court-name">${c.name}</span>
+         <span class="stamp-count">unstamped</span>`;
+    ul.appendChild(li);
+  }
+}
+
+$("stamp-btn").addEventListener("click", () => {
+  const status = $("status");
+  if (!navigator.geolocation) {
+    status.textContent = "This browser won't share a location.";
+    return;
+  }
+  status.textContent = "Where are you? Asking the browser…";
+  navigator.geolocation.getCurrentPosition(async (pos) => {
+    status.textContent = "Checking the fence…";
+    let j;
+    try {
+      const r = await fetch("/api/geostamp", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          address: currentAddress,
+          lat: pos.coords.latitude,
+          lon: pos.coords.longitude,
+        }),
+      });
+      j = await r.json();
+      if (!r.ok) {
+        status.textContent = j.nearest
+          ? `Nearest court is ${j.nearest.name}, ${(j.nearest.distance_m / 1000).toFixed(1)} km away — go play first.`
+          : (j.error || "The fence said no.");
+        return;
+      }
+    } catch {
+      status.textContent = "Couldn't reach the geoconfirm oracle.";
+      return;
+    }
+    status.textContent = `At ${j.name} (${j.distance_m} m inside the fence) — sign to ink it.`;
+    const w = await loadWallet();
+    if (await w.stampCourt(j.venue, j.sig, status)) renderBook(currentAddress);
+  }, () => {
+    status.textContent = "Location denied — the passport needs to see the court.";
+  }, { enableHighAccuracy: true, timeout: 12000 });
+});
 
 // ---------- forms ----------
 (function initDeclare() {

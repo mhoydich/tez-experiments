@@ -1,0 +1,148 @@
+// tez-rally courts — the passport book. Each venue is a page; showing up
+// stamps it. A geoconfirm oracle (the site's worker) checks your position
+// against the court's coordinates and signs a voucher; the contract verifies
+// the signature and inks the stamp. One stamp per court per UTC day.
+// Soulbound FA2 surface (token_id = venue id, balance 1 once visited) —
+// same shape as tez-stamps; your travel isn't for sale.
+// jsLIGO (LIGO >= 1.x). Constants lowercase: UPPERCASE parses as constructors.
+
+type venue = {
+  name: string,
+  lat_e6: int,        // microdegrees, stored for transparency + replayability
+  lon_e6: int,
+  radius_m: nat,      // the oracle's fence, on the record
+  added_at: timestamp,
+  visits: nat,        // total stamps inked at this court, all wallets
+};
+
+type page = {
+  count: nat,         // stamps on this page
+  first_at: timestamp,
+  last_day: nat,      // unix day of latest stamp — the daily rate limit
+};
+
+type storage = {
+  admin: address,
+  oracle: key,        // signs pack([visitor, venue, day, self]) after geoconfirm
+  next_venue: nat,
+  venues: big_map<nat, venue>,
+  book: big_map<[address, nat], page>,
+  metadata: big_map<string, bytes>,  // contract metadata (TZIP-16)
+};
+
+type ret = [list<operation>, storage];
+
+const epoch: timestamp = ("1970-01-01T00:00:00Z" as timestamp);
+
+const unix_day = (): nat => abs(Tezos.get_now() - epoch) / 86400n;
+
+const get_venue = (s: storage, id: nat): venue =>
+  match(Big_map.find_opt(id, s.venues)) {
+    when (Some(v)): v;
+    when (None()): failwith("UNKNOWN_COURT")
+  };
+
+// ---------- admin ----------
+
+@entry
+const add_venue = (
+  p: { name: string, lat_e6: int, lon_e6: int, radius_m: nat },
+  s: storage
+): ret => {
+  if (Tezos.get_sender() != s.admin) failwith("NOT_ADMIN");
+  const v: venue = {
+    name: p.name, lat_e6: p.lat_e6, lon_e6: p.lon_e6, radius_m: p.radius_m,
+    added_at: Tezos.get_now(), visits: 0n,
+  };
+  return [list([]), {
+    ...s,
+    venues: Big_map.add(s.next_venue, v, s.venues),
+    next_venue: s.next_venue + 1n,
+  }];
+};
+
+@entry
+const set_oracle = (k: key, s: storage): ret => {
+  if (Tezos.get_sender() != s.admin) failwith("NOT_ADMIN");
+  return [list([]), { ...s, oracle: k }];
+};
+
+// ---------- the stamp ----------
+
+// Voucher = oracle signature over pack([visitor, venue_id, unix_day, this
+// contract]). The day binds freshness (contract recomputes it), the contract
+// address binds scope. The oracle only signs after a live position check —
+// see the site's /api/geostamp worker.
+@entry
+const stamp = (p: { venue: nat, sig: signature }, s: storage): ret => {
+  const who = Tezos.get_sender();
+  const v = get_venue(s, p.venue);
+  const day = unix_day();
+  const payload = Bytes.pack([who, p.venue, day, Tezos.get_self_address()]);
+  if (!Crypto.check(s.oracle, p.sig, payload)) failwith("BAD_VOUCHER");
+
+  const pg: page = match(Big_map.find_opt([who, p.venue], s.book)) {
+    when (Some(old)): do {
+      if (old.last_day >= day) failwith("STAMPED_TODAY");
+      return { ...old, count: old.count + 1n, last_day: day };
+    };
+    when (None()): { count: 1n, first_at: Tezos.get_now(), last_day: day }
+  };
+  return [list([]), {
+    ...s,
+    book: Big_map.update([who, p.venue], Some(pg), s.book),
+    venues: Big_map.update(p.venue, Some({ ...v, visits: v.visits + 1n }), s.venues),
+  }];
+};
+
+// ---------- FA2 surface (read-compatible, transfer-disabled) ----------
+
+type transfer_dest = { to_: address, token_id: nat, amount: nat };
+type transfer_item = { from_: address, txs: list<transfer_dest> };
+
+@entry
+const transfer = (_t: list<transfer_item>, _s: storage): ret =>
+  failwith("SOULBOUND: passport stamps are non-transferable");
+
+type balance_request = { owner: address, token_id: nat };
+type balance_response = { request: balance_request, balance: nat };
+
+@entry
+const balance_of = (
+  p: { requests: list<balance_request>, callback: contract<list<balance_response>> },
+  s: storage
+): ret => {
+  const respond = (r: balance_request): balance_response =>
+    ({ request: r,
+       balance: Big_map.mem([r.owner, r.token_id], s.book) ? 1n : 0n });
+  const responses = List.map(respond, p.requests);
+  return [list([Tezos.transaction(responses, 0mutez, p.callback)]), s];
+};
+
+@entry
+const update_operators = (_p: unit, _s: storage): ret =>
+  failwith("SOULBOUND: no operators");
+
+// ---------- views (compose forward: gate anything on showing up) ----------
+
+@view
+const page_of = (p: [address, nat], s: storage): option<page> =>
+  Big_map.find_opt([p[0], p[1]], s.book);
+
+@view
+const venue_of = (id: nat, s: storage): option<venue> =>
+  Big_map.find_opt(id, s.venues);
+
+@view
+const venue_count = (_u: unit, s: storage): nat => s.next_venue;
+
+@view
+const courts_visited = (who: address, s: storage): nat => {
+  // template shortcut: iterate a bounded venue range; fine for small books
+  let n = 0n; let i = 0n;
+  while (i < 32n) {
+    if (Big_map.mem([who, i], s.book)) n = n + 1n;
+    i = i + 1n;
+  };
+  return n;
+};

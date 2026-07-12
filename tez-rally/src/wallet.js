@@ -63,3 +63,23 @@ export const proposeMatch = (p, statusEl) =>
 export const confirmMatch = (id, statusEl) =>
   run(statusEl, "Countersigning…", "Countersigned.",
     (c) => c.methodsObject.confirm_match(id).send());
+
+// ---- the passport book ----
+const COURTS = import.meta.env.VITE_COURTS_ADDRESS || "";
+
+export async function stampCourt(venue, sig, statusEl) {
+  try {
+    statusEl.textContent = "Inking the stamp…";
+    const c = await Tezos.wallet.at(COURTS);
+    const op = await c.methodsObject.stamp({ venue, sig }).send();
+    await op.confirmation(1);
+    statusEl.textContent = "Stamped. The book remembers.";
+    return true;
+  } catch (e) {
+    const msg = String(e?.message || e);
+    statusEl.textContent = msg.includes("STAMPED_TODAY")
+      ? "Already stamped here today — one a day keeps it honest."
+      : msg;
+    return false;
+  }
+}
