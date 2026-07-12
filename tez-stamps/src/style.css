@@ -104,3 +104,59 @@ footer p {
 .mono-inline { font-family: ui-monospace, Menlo, monospace; font-size: 0.85em; }
 .noun-card svg { width: 100%; height: auto; display: block; }
 @media (max-width: 480px) { .landing-cols { grid-template-columns: 1fr; } }
+
+/* ---------- 80s Garamond identity ---------- */
+.wordmark {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 600; font-size: clamp(4.5rem, 18vw, 8rem); line-height: 0.82;
+  letter-spacing: -0.02em; margin: 0.2rem 0 0; color: var(--ink);
+  text-transform: lowercase; font-feature-settings: "liga" 1;
+}
+.tagline {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(1.5rem, 5vw, 2.1rem); font-weight: 500; font-style: normal;
+  margin: 0 0 1.4rem; letter-spacing: 0.01em;
+}
+.tagline em { font-style: italic; color: var(--stamp); }
+
+/* ---------- shelf head + mint ---------- */
+.shelf-head { display: flex; align-items: center; justify-content: space-between; margin-top: 1.8rem; }
+.shelf-head .section-label { margin: 0; }
+
+/* ---------- postcards ---------- */
+.postcard-wall { display: grid; gap: 0.75rem; margin: 1rem 0; }
+.postcard {
+  display: grid; grid-template-columns: 84px 1fr; gap: 0.8rem; align-items: stretch;
+  border: 1.5px solid var(--ink); box-shadow: 4px 4px 0 var(--line); background: #fff;
+}
+.postcard .stamp-window { display: grid; place-items: center; padding: 8px; }
+.postcard .stamp-window svg { width: 100%; height: auto; image-rendering: pixelated; }
+.postcard .body { padding: 0.7rem 0.8rem 0.7rem 0; border-left: 1px dashed var(--line); }
+.postcard .note { font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.15rem; line-height: 1.25; margin: 0 0 0.4rem; }
+.postcard .meta { font-family: ui-monospace, Menlo, monospace; font-size: 0.62rem; color: #8a8178; letter-spacing: 0.05em; }
+.postcard .meta a { color: var(--tezos-blue); }
+.postcard-wall .noun-empty { margin: 0; }
+
+/* ---------- send dialog ---------- */
+.send-dialog { border: 1.5px solid var(--ink); box-shadow: 10px 10px 0 var(--stamp); padding: 0; max-width: 420px; width: 92vw; background: #fff; }
+.send-dialog::backdrop { background: rgba(36,31,28,0.45); }
+.send-dialog form { padding: 1.4rem 1.4rem 1.2rem; display: grid; gap: 0.9rem; }
+.dialog-title { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 1.9rem; margin: 0; }
+.send-preview { justify-self: center; width: 128px; border: 1.5px solid var(--ink); }
+.send-preview svg { display: block; width: 100%; height: auto; image-rendering: pixelated; }
+.field { display: grid; gap: 0.3rem; font-size: 0.82rem; font-family: ui-monospace, Menlo, monospace; letter-spacing: 0.04em; text-transform: uppercase; color: #6b6259; }
+.field input, .field textarea { font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.05rem; text-transform: none; letter-spacing: 0; padding: 0.5rem 0.6rem; border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink); }
+.field-hint { text-transform: none; color: #a39a8f; }
+.bg-picker { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.bg-swatch { aspect-ratio: 1; border: 2px solid transparent; cursor: pointer; border-radius: 2px; }
+.bg-swatch[aria-pressed="true"] { border-color: var(--ink); box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--ink); }
+.dialog-actions { display: flex; gap: 0.6rem; justify-content: flex-end; margin-top: 0.3rem; }
+.enter-sm { width: auto; font-size: 0.95rem; padding: 0.6rem 1.1rem; box-shadow: 3px 3px 0 var(--ink); }
+.noun-card { position: relative; }
+.noun-card .mail-btn {
+  position: absolute; top: 6px; right: 6px; font: inherit; font-size: 0.62rem;
+  font-family: ui-monospace, Menlo, monospace; letter-spacing: 0.05em;
+  background: #fff; border: 1.5px solid var(--ink); padding: 2px 6px; cursor: pointer;
+  opacity: 0; transition: opacity 0.12s ease;
+}
+.noun-card:hover .mail-btn, .noun-card:focus-within .mail-btn { opacity: 1; }

@@ -3,15 +3,19 @@
 // The wallet stack loads lazily: on connect click, or when a previous
 // Beacon session / remembered visitor exists. ?view=<address> renders any
 // passport read-only. Revisits: last address is remembered in localStorage.
-import { loadStampTypes, walletHolds, loadNouns, recentPassports } from "./board.js";
+import { loadStampTypes, walletHolds, loadNouns, recentPassports,
+         loadPostcards, POSTCARD_BGS } from "./board.js";
 
 const NETWORK = import.meta.env.VITE_NETWORK || "shadownet";
 const TZKT_UI = NETWORK === "mainnet" ? "https://tzkt.io" : "https://shadownet.tzkt.io";
+const QUALIFYING_STAMP = 0; // First Steps — gates the personal mint
 const LAST_KEY = "stampz:last-address";
 
 const $ = (id) => document.getElementById(id);
 const short = (a) => `${a.slice(0, 7)}…${a.slice(-4)}`;
+const fmtDate = (iso) => new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" });
 const viewParam = new URLSearchParams(location.search).get("view");
+let currentAddress = null;
 
 let walletMod = null; // lazy
 const loadWallet = async () => (walletMod ??= await import("./wallet.js"));
@@ -75,6 +79,7 @@ function showProfileBar(address, viewOnly) {
 }
 
 async function renderPassport(address, { viewOnly = false } = {}) {
+  currentAddress = address;
   $("landing").hidden = true;
   $("connect").hidden = true;
   $("welcome-back").hidden = true;
@@ -86,8 +91,10 @@ async function renderPassport(address, { viewOnly = false } = {}) {
   const claimable = $("claimable");
   grid.innerHTML = ""; claimable.innerHTML = "";
 
+  let holdsQualifying = false;
   for (const t of types) {
     const held = await walletHolds(address, t.id);
+    if (held && t.id === QUALIFYING_STAMP) holdsQualifying = true;
     if (held) {
       const li = document.createElement("li");
       li.className = "stamp held";
@@ -109,6 +116,15 @@ async function renderPassport(address, { viewOnly = false } = {}) {
     grid.innerHTML = `<li class="stamp empty">No stamps yet — go do something.</li>`;
   }
 
+  // Mint button appears once you hold the qualifying stamp (contract also
+  // enforces this — the button just saves a wasted signature).
+  const mintBtn = $("mint-noun");
+  mintBtn.hidden = viewOnly || !holdsQualifying;
+  mintBtn.onclick = async () => {
+    const w = await loadWallet();
+    if (await w.mintPersonal($("status"))) renderPassport(address);
+  };
+
   const shelf = $("nouns");
   shelf.innerHTML = `<p class="noun-empty">Checking the vault…</p>`;
   const nouns = await loadNouns(address);
@@ -117,12 +133,82 @@ async function renderPassport(address, { viewOnly = false } = {}) {
     const fig = document.createElement("figure");
     fig.className = "noun-card";
     fig.innerHTML = `${n.svg}<figcaption>${n.name}</figcaption>`;
+    if (!viewOnly) {
+      const mail = document.createElement("button");
+      mail.className = "mail-btn"; mail.type = "button"; mail.textContent = "✉ mail";
+      mail.onclick = () => openSendDialog(n);
+      fig.appendChild(mail);
+    }
     shelf.appendChild(fig);
   }
   if (!nouns.length) {
     shelf.innerHTML = `<p class="noun-empty">No nouns yet — earn stamps, then mint your portrait.</p>`;
   }
+
+  // Postcards received — the community wall.
+  const wall = $("postcards");
+  wall.innerHTML = `<p class="noun-empty">Checking the mailbox…</p>`;
+  const cards = await loadPostcards(address);
+  wall.innerHTML = "";
+  for (const c of cards) {
+    const div = document.createElement("div");
+    div.className = "postcard";
+    const bg = POSTCARD_BGS[c.background] || POSTCARD_BGS[0];
+    div.innerHTML = `
+      <div class="stamp-window" style="background:${bg.css}">${c.svg}</div>
+      <div class="body">
+        <p class="note">${escapeHTML(c.note) || "—"}</p>
+        <p class="meta">Noun ${c.noun} · from <a href="/?view=${c.from}">${short(c.from)}</a> · ${fmtDate(c.sentAt)}</p>
+      </div>`;
+    wall.appendChild(div);
+  }
+  if (!cards.length) {
+    wall.innerHTML = `<p class="noun-empty">No postcards yet — nouns arrive here with a note.</p>`;
+  }
 }
+
+const escapeHTML = (s) => s.replace(/[&<>"']/g, (c) =>
+  ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+// ---------- send-a-postcard dialog ----------
+let sendState = { noun: null, background: 0 };
+function openSendDialog(noun) {
+  sendState = { noun: noun.id, background: 0 };
+  $("send-preview").innerHTML = noun.svg;
+  $("send-to").value = "";
+  $("send-note").value = "";
+  $("note-count").textContent = "0";
+  const picker = $("bg-picker");
+  picker.innerHTML = "";
+  POSTCARD_BGS.forEach((bg, i) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "bg-swatch"; b.title = bg.name;
+    b.style.background = bg.css;
+    b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+    b.onclick = () => {
+      sendState.background = i;
+      [...picker.children].forEach((c, j) => c.setAttribute("aria-pressed", j === i ? "true" : "false"));
+    };
+    picker.appendChild(b);
+  });
+  $("send-dialog").showModal();
+}
+
+$("send-note").addEventListener("input", (e) => {
+  $("note-count").textContent = String(e.target.value.length);
+});
+
+$("send-form").addEventListener("submit", async (e) => {
+  if (e.submitter?.value !== "send") return; // cancel just closes
+  e.preventDefault();
+  const to_ = $("send-to").value.trim();
+  if (!/^tz[123][A-Za-z0-9]{33}$/.test(to_)) { $("send-to").focus(); return; }
+  const note = $("send-note").value.trim();
+  $("send-dialog").close();
+  const w = await loadWallet();
+  const ok = await w.sendPostcard({ to_, noun: sendState.noun, background: sendState.background, note }, $("status"));
+  if (ok) renderPassport(currentAddress);
+});
 
 async function connectFlow() {
   $("status").textContent = "Opening wallet…";

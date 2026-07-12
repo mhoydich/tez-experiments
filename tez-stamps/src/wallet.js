@@ -59,3 +59,50 @@ export async function claimSigned(id, sig, statusEl) {
     return false;
   }
 }
+
+// ---- nouns: mint + postcard ----
+const NOUNS = import.meta.env.VITE_NOUNS_ADDRESS || "";
+const POSTCARDS = import.meta.env.VITE_POSTCARDS_ADDRESS || "";
+
+// Personal mint: contract checks the qualifying stamp on-chain (EARN_YOUR_NOUN).
+export async function mintPersonal(statusEl) {
+  try {
+    statusEl.textContent = "Minting your noun…";
+    const c = await Tezos.wallet.at(NOUNS);
+    const op = await c.methodsObject.mint({ personal: null }).send();
+    await op.confirmation(1);
+    statusEl.textContent = "Minted. Welcome to the collection.";
+    return true;
+  } catch (e) {
+    const msg = String(e?.message || e);
+    statusEl.textContent = msg.includes("EARN_YOUR_NOUN")
+      ? "Earn the qualifying stamp first (claim First Steps)."
+      : msg.includes("ONE_PER_WALLET") ? "You've already minted your personal noun."
+      : msg;
+    return false;
+  }
+}
+
+// Send a noun as a postcard: FA2 transfer + on-chain note/background, batched.
+export async function sendPostcard({ to_, noun, background, note }, statusEl) {
+  try {
+    statusEl.textContent = "Sending…";
+    const nounsC = await Tezos.wallet.at(NOUNS);
+    const pcC = await Tezos.wallet.at(POSTCARDS);
+    const me = (await getActiveAccount())?.address;
+    const noteHex = Array.from(new TextEncoder().encode(note))
+      .map((b) => b.toString(16).padStart(2, "0")).join("");
+    const op = await Tezos.wallet.batch()
+      .withContractCall(nounsC.methodsObject.transfer([
+        { from_: me, txs: [{ to_, token_id: noun, amount: 1 }] },
+      ]))
+      .withContractCall(pcC.methodsObject.default({ to_, noun, background, note: noteHex }))
+      .send();
+    await op.confirmation(1);
+    statusEl.textContent = "Postcard sent.";
+    return true;
+  } catch (e) {
+    statusEl.textContent = String(e?.message || e);
+    return false;
+  }
+}

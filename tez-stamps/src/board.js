@@ -114,3 +114,50 @@ export async function loadNouns(address, limit = 8) {
   }
   return out;
 }
+
+// ---- postcards ----
+const POSTCARDS = import.meta.env.VITE_POSTCARDS_ADDRESS || "";
+
+// Postcard backgrounds — named gradients the sender picks. Index is on-chain;
+// the art is here, so it can evolve without touching storage.
+export const POSTCARD_BGS = [
+  { name: "Blue hour", css: "linear-gradient(160deg,#1a2a6c,#b21f66,#fdbb2d)" },
+  { name: "El Segundo dusk", css: "linear-gradient(160deg,#f5e6d3,#cc5500,#5c1a1a)" },
+  { name: "Kelp", css: "linear-gradient(160deg,#0f3443,#34e89e)" },
+  { name: "Cotton candy", css: "linear-gradient(160deg,#ff9a9e,#fad0c4,#a18cd1)" },
+  { name: "Grid paper", css: "linear-gradient(160deg,#e0eafc,#cfdef3)" },
+  { name: "Noir", css: "linear-gradient(160deg,#232526,#414345)" },
+];
+
+export async function loadPostcards(address) {
+  if (!POSTCARDS) return [];
+  const res = await fetch(
+    `${INDEXER}/v1/contracts/${POSTCARDS}/bigmaps/cards/keys?value.to_=${address}&active=true&sort.desc=id&limit=20`
+  );
+  const rows = await res.json();
+  const out = [];
+  for (const r of rows) {
+    const v = r.value;
+    out.push({
+      from: v.from_,
+      noun: Number(v.noun),
+      background: Number(v.background),
+      note: v.note ? hex2str(v.note) : "",
+      sentAt: v.sent_at,
+      svg: await composeNounSVG(await nounSeed(Number(v.noun))),
+    });
+  }
+  return out;
+}
+
+async function nounSeed(id) {
+  const rows = await fetch(
+    `${INDEXER}/v1/contracts/${NOUNS}/bigmaps/nouns/keys/${id}`
+  ).then((r) => r.json());
+  const seed = rows?.value?.seed || {};
+  return Object.fromEntries(Object.entries(seed).map(([k, v]) => [k, Number(v)]));
+}
+
+export async function nounSVGById(id) {
+  return composeNounSVG(await nounSeed(id));
+}

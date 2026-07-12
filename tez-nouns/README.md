@@ -1,5 +1,9 @@
 # tez-nouns
 
+**Postcards (MAINNET)**: `KT1Pth2poSPnDmVnH2bST9ADo3xphiBSESyR` — send
+a noun with a public note + background; the site batches the FA2 transfer
+with send_postcard. (Shadownet `KT1S9oyCKPBec5Zu4ewn5MWjbKfS4D4CwnMh`.)
+
 **Deployed (MAINNET)**: `KT1XJ6DE7NwnKu34BH54ULirT4Z1ApDqqw2D` (LIGO
 1.15.6) — REAL Nouns CC0 trait art (@nouns/assets): 8 heads, 4 bodies,
 4 noggle colorways, 8 accessories in 4 earned pools, 50-color palette in

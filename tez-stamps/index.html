@@ -10,14 +10,19 @@
   <meta property="og:image" content="https://www.stampz.xyz/og.webp" />
   <meta property="og:url" content="https://www.stampz.xyz" />
   <meta name="twitter:card" content="summary" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
   <main class="office">
     <p class="eyebrow">tez-stamps · template 02</p>
-    <h1>Proof you<br /><em>showed up.</em></h1>
-    <p class="lede">Every stamp on this page is a soulbound token —
-       earned by doing, bound to your wallet, readable by any app.</p>
+    <h1 class="wordmark">stampz</h1>
+    <p class="tagline">Proof you <em>showed up.</em></p>
+    <p class="lede">Every stamp here is a soulbound token — earned by doing,
+       bound to your wallet, readable by any app. Collect them, mint your
+       portrait, mail it to a friend.</p>
 
     <div id="welcome-back" class="welcome-back" hidden>
       <p>Welcome back, <span id="wb-address" class="mono-inline"></span>.</p>
@@ -57,9 +62,38 @@
       <h2 class="section-label">Stamps</h2>
       <ul id="stamps" class="stamp-grid" aria-label="Your stamps"></ul>
       <div id="claimable"></div>
-      <h2 class="section-label">Nouns</h2>
+      <div class="shelf-head">
+        <h2 class="section-label">Nouns</h2>
+        <button id="mint-noun" class="ghost" type="button" hidden>Mint my noun</button>
+      </div>
       <div id="nouns" class="noun-shelf"></div>
+
+      <h2 class="section-label">Postcards received</h2>
+      <div id="postcards" class="postcard-wall"></div>
     </section>
+
+    <!-- send-a-postcard dialog -->
+    <dialog id="send-dialog" class="send-dialog">
+      <form method="dialog" id="send-form">
+        <h3 class="dialog-title">Mail this noun</h3>
+        <div id="send-preview" class="send-preview"></div>
+        <label class="field">To
+          <input id="send-to" name="to" placeholder="tz1… / tz2… address" required
+                 pattern="tz[123][A-Za-z0-9]{33}" autocomplete="off" />
+        </label>
+        <label class="field">Background
+          <div id="bg-picker" class="bg-picker"></div>
+        </label>
+        <label class="field">Note <span class="field-hint">public, forever · <span id="note-count">0</span>/140</span>
+          <textarea id="send-note" name="note" maxlength="140" rows="2"
+                    placeholder="wish you were here…"></textarea>
+        </label>
+        <div class="dialog-actions">
+          <button value="cancel" class="ghost" type="submit">Cancel</button>
+          <button id="send-confirm" value="send" class="enter enter-sm" type="submit">Send postcard</button>
+        </div>
+      </form>
+    </dialog>
 
     <p id="status" class="status" role="status"></p>
     <footer><p>Mainnet · CC0 · reads/writes the stamps registry contract</p></footer>

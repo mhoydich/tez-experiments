@@ -1,0 +1,40 @@
+// postcards — send a noun with a small note and a chosen background.
+// The postcard is public by design (that's what a postcard is): the site
+// batches an FA2 transfer of the noun with a send_postcard call, so the
+// note + background ride the same confirmation. Append-only; no admin.
+// jsLIGO (LIGO >= 1.x)
+
+type card = {
+  from_: address,
+  to_: address,
+  noun: nat,          // token id in the nouns contract
+  background: nat,    // postcard background index (site defines the art)
+  note: bytes,        // utf8 — emoji-safe; keep it short and kind, it is public forever
+  sent_at: timestamp,
+};
+
+type storage = {
+  next_id: nat,
+  cards: big_map<nat, card>,
+};
+
+type ret = [list<operation>, storage];
+
+@entry
+const send_postcard = (
+  p: { to_: address, noun: nat, background: nat, note: bytes },
+  s: storage
+): ret => {
+  const c: card = {
+    from_: Tezos.get_sender(),
+    to_: p.to_,
+    noun: p.noun,
+    background: p.background,
+    note: p.note,
+    sent_at: Tezos.get_now(),
+  };
+  return [list([]), {
+    next_id: s.next_id + 1n,
+    cards: Big_map.add(s.next_id, c, s.cards),
+  }];
+};
