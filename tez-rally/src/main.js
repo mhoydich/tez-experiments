@@ -121,6 +121,15 @@ async function renderDesk(address, { viewOnly = false } = {}) {
     }
   }
 
+  // second opinion: Glicko-2 over the same log, via our own /api/glicko
+  $("card-glicko-line").hidden = true;
+  fetch("/api/glicko").then((r) => r.json()).then((j) => {
+    const me = j.players?.find((x) => x.address === address);
+    if (!me) return;
+    $("card-glicko").textContent = `${fmt(me.glicko)} ± ${fmt(me.rd)}`;
+    $("card-glicko-line").hidden = false;
+  }).catch(() => {});
+
   // trajectory sparkline + form, replayed live from the match log
   $("card-spark").hidden = true;
   $("card-form-line").hidden = true;

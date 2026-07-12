@@ -11,76 +11,18 @@
  * reporting and countersigning stay wallet-signed on the site.
  */
 
+import { RALLY, COURTS, SITE, loadPlayers, loadMatches, loadCourts, bookOf, settledMatches } from '../_lib/chain';
+import type { Player, Match } from '../_lib/chain';
+import { rate } from '../_lib/glicko';
+
 const MCP_PROTOCOL_VERSION = '2025-06-18';
-const SERVER = { name: 'rally', version: '0.1.0' };
-const INDEXER = 'https://api.tzkt.io';
-const RALLY = 'KT1X4iLYF11LvZhU6PFRamLioKjrcgDJEUoT';   // rating desk (mainnet)
-const COURTS = 'KT1Q1g8Sv3uL2beaA7h89hTViJyZmXxfUS9D';  // passport book (mainnet)
-const SITE = 'https://tez-rally.pages.dev';
+const SERVER = { name: 'rally', version: '0.2.0' };
 
 const JSON_HEADERS = {
   'content-type': 'application/json',
   'access-control-allow-origin': '*',
   'access-control-allow-methods': 'GET, POST, OPTIONS',
   'access-control-allow-headers': 'content-type, mcp-session-id, mcp-protocol-version',
-};
-
-// ---------- chain reads (TzKT, read-only) ----------
-
-const tzkt = async (path: string) => {
-  const res = await fetch(`${INDEXER}${path}`);
-  if (!res.ok) throw new Error(`tzkt ${res.status} on ${path}`);
-  return res.json();
-};
-
-interface Player { address: string; declared: number; rating: number; matches: number; wins: number; declaredAt: string; }
-interface Match {
-  id: number; teamA: string[]; teamB: string[]; scoreA: number; scoreB: number;
-  venue: string; proposedAt: string; confirmations: string[]; finalized: boolean;
-}
-
-const loadPlayers = async (): Promise<Player[]> =>
-  (await tzkt(`/v1/contracts/${RALLY}/bigmaps/players/keys?active=true&limit=500`))
-    .map((r: any) => ({
-      address: r.key,
-      declared: Number(r.value.declared),
-      rating: Number(r.value.rating),
-      matches: Number(r.value.matches),
-      wins: Number(r.value.wins),
-      declaredAt: r.value.declared_at,
-    }))
-    .sort((a: Player, b: Player) => b.rating - a.rating);
-
-const loadMatches = async (): Promise<Match[]> =>
-  (await tzkt(`/v1/contracts/${RALLY}/bigmaps/matches/keys?active=true&limit=1000`))
-    .map((r: any) => ({
-      id: Number(r.key),
-      teamA: [r.value.team_a.p1, r.value.team_a.p2].filter(Boolean),
-      teamB: [r.value.team_b.p1, r.value.team_b.p2].filter(Boolean),
-      scoreA: Number(r.value.score_a),
-      scoreB: Number(r.value.score_b),
-      venue: r.value.venue,
-      proposedAt: r.value.proposed_at,
-      confirmations: r.value.confirmations || [],
-      finalized: r.value.finalized,
-    }))
-    .sort((a: Match, b: Match) => a.id - b.id);
-
-const loadCourts = async () =>
-  (await tzkt(`/v1/contracts/${COURTS}/bigmaps/venues/keys?active=true&limit=50`))
-    .map((r: any) => ({ id: Number(r.key), name: r.value.name, visits: Number(r.value.visits) }))
-    .sort((a: any, b: any) => a.id - b.id);
-
-const bookOf = async (address: string) =>
-  (await tzkt(`/v1/contracts/${COURTS}/bigmaps/book/keys?key.address=${address}&active=true`))
-    .map((r: any) => ({ venue: Number(r.key.nat), count: Number(r.value.count), firstAt: r.value.first_at }));
-
-// finalization level per match — settlement order is confirmation order,
-// not proposal order, so the replay sorts by when finalized flipped true
-const finalizationLevel = async (id: number): Promise<number> => {
-  const updates = await tzkt(`/v1/contracts/${RALLY}/bigmaps/matches/keys/${id}/updates`);
-  for (const u of updates) if (u.value?.finalized) return u.level;
-  return Number.MAX_SAFE_INTEGER;
 };
 
 // ---------- the replay (mirrors rally.jsligo exactly) ----------
@@ -97,9 +39,7 @@ interface ReplayState { ratings: Map<string, number>; log: Array<{ id: number; p
 
 const replay = async (): Promise<{ state: ReplayState; players: Player[]; matches: Match[] }> => {
   const [players, matches] = await Promise.all([loadPlayers(), loadMatches()]);
-  const done = matches.filter((m) => m.finalized);
-  const levels = new Map(await Promise.all(done.map(async (m) => [m.id, await finalizationLevel(m.id)] as [number, number])));
-  done.sort((a, b) => (levels.get(a.id)! - levels.get(b.id)!) || (a.id - b.id));
+  const done = await settledMatches(matches);
 
   const ratings = new Map(players.map((p) => [p.address, p.declared]));
   const log: ReplayState['log'] = [];
@@ -141,6 +81,7 @@ const TOOLS = [
   { name: 'scouting_report', description: 'A pickleball scouting report for one player, derived entirely from the on-chain ledger: form, upset profile, format splits, venues, matchup plan. No shot-level data — bring your own eyes for the dinks.', inputSchema: { type: 'object', properties: { address: { type: 'string', description: 'tz address of the opponent to scout' } }, required: ['address'] } },
   { name: 'head_to_head', description: 'Every finalized match where two players were on opposite sides, with the running score between them.', inputSchema: { type: 'object', properties: { a: { type: 'string' }, b: { type: 'string' } }, required: ['a', 'b'] } },
   { name: 'verify_replay', description: 'Recompute every rating from declared seeds + the countersigned match log (same integer Elo the contract runs) and diff against live chain state. This is the "replayable by anyone" claim, as a tool call.', inputSchema: { type: 'object', properties: {} } },
+  { name: 'second_opinion', description: 'The same countersigned log read through Glicko-2 instead of the on-chain integer Elo: ratings with confidence intervals (±RD). Self-declared seeds start wide (±0.700) and narrow with matches. Disagreement with the official number is the feature — the log is the product, the formula is swappable. Also at GET /api/glicko as JSON.', inputSchema: { type: 'object', properties: {} } },
 ];
 
 async function dispatchTool(name: string, args: Record<string, unknown>) {
@@ -249,6 +190,24 @@ async function dispatchTool(name: string, args: Record<string, unknown>) {
       `**Avoid:** ${upsetsFor > 0 ? 'writing them off on rating — they punch up' : 'long warmups; they start ' + (form.startsWith('W') ? 'hot' : 'slow')}.`,
       `**Game plan:** confirm everything at the kitchen line — this report is ledger-derived only (scores, ratings, formats, venues). No shot-level data on-chain yet; bring your own eyes for the dinks.`,
     ].join('\n\n'));
+  }
+
+  if (name === 'second_opinion') {
+    const [players, matches] = await Promise.all([loadPlayers(), loadMatches()]);
+    if (!players.length) return text('Nobody on the ladder yet.');
+    const done = await settledMatches(matches);
+    const rated = rate(players, done);
+    const rows = [...rated.entries()]
+      .map(([address, g]) => ({ address, ...g, chain: players.find((p) => p.address === address)!.rating }))
+      .sort((a, b) => b.rating - a.rating);
+    return text([
+      `Second opinion · Glicko-2 over the same countersigned log (${done.length} settled match(es)):`,
+      '',
+      ...rows.map((r, i) =>
+        `${i + 1}. ${short(r.address)}  ${fmt(r.rating)} ± ${fmt(r.rd)}  (chain Elo ${fmt(r.chain)} · ${r.games} game(s))`),
+      '',
+      'Wide ± means the ledger barely knows them yet — a self-declared seed is a claim until matches narrow it. Where the two formulas disagree, believe the one whose reasoning you can read: both, here.',
+    ].join('\n'));
   }
 
   if (name === 'verify_replay') {
