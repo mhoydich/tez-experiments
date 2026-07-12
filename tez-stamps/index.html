@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
+  <aside id="wallet-dash" class="wallet-dash" hidden aria-label="wallet session"></aside>
   <main class="office">
     <p class="eyebrow">tez-stamps · template 02</p>
     <h1 class="wordmark">stampz</h1>
@@ -186,6 +187,17 @@
         <section class="pane" data-pane="page" id="page-pane">
           <h2 class="section-label">Your page — the office's one-sheet</h2>
           <div id="page-desk"></div>
+        </section>
+
+        <section class="pane" data-pane="links" id="links-pane">
+          <div class="shelf-head">
+            <h2 class="section-label">Links — your rail</h2>
+            <button id="link-add" class="ghost" type="button">+ add link</button>
+          </div>
+          <div id="linktree" class="linktree"></div>
+          <p class="noun-empty link-hint">Saved in this browser only — instant,
+            free, no chain. To put a link on your public page, cast
+            <span class="mono-inline">label | url</span> from your tower.</p>
         </section>
 
         <section class="pane" data-pane="stamps">

@@ -320,3 +320,55 @@ body.embed .lede, body.embed footer { display: none; }
 .embed-head .page-name { font-size: 1.4rem; }
 .embed-links { gap: 0.45rem; margin: 0.5rem 0; }
 .embed-links .page-link { padding: 0.55rem 0.8rem; font-size: 1.1rem; }
+
+/* ---------- links: the editable rail ---------- */
+.linktree { display: grid; gap: 0.5rem; margin: 0.6rem 0 0.4rem; }
+.link-row { display: grid; grid-template-columns: minmax(90px, 1fr) 2fr auto; gap: 0.5rem; align-items: center; }
+.link-row input { font-family: ui-monospace, Menlo, monospace; font-size: 0.8rem; padding: 0.45rem 0.55rem; border: 1.5px solid var(--line); background: #fff; color: var(--ink); min-width: 0; }
+.link-row input:focus { border-color: var(--ink); outline: none; }
+.link-row .l-label { font-family: Georgia, serif; font-size: 0.9rem; }
+.l-tools { display: flex; gap: 0.25rem; align-items: center; }
+.l-tools button, .l-tools a { font: inherit; font-size: 0.8rem; line-height: 1; background: #fff; border: 1.5px solid var(--line); padding: 0.35rem 0.45rem; cursor: pointer; color: var(--ink); text-decoration: none; }
+.l-tools button:hover, .l-tools a[href]:hover { border-color: var(--ink); box-shadow: 2px 2px 0 var(--line); }
+.l-tools a.dead { opacity: 0.3; cursor: default; }
+.link-hint { margin-top: 0.5rem; }
+@media (max-width: 520px) { .link-row { grid-template-columns: 1fr; } .l-tools { justify-content: flex-end; } }
+
+/* ---------- the wallet dash — the desk badge, clipped top-left ---------- */
+.wallet-dash {
+  position: fixed; top: 14px; left: 14px; z-index: 50;
+  display: flex; gap: 0.6rem; align-items: center;
+  background: #fff; border: 1.5px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--stamp);
+  padding: 0.4rem 0.75rem 0.4rem 0.4rem; max-width: 215px;
+}
+.wallet-dash img {
+  width: 40px; height: 40px; border: 1px solid var(--line);
+  image-rendering: pixelated; display: block; flex-shrink: 0;
+}
+.dash-id { display: grid; gap: 3px; min-width: 0; }
+.dash-name {
+  font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600;
+  font-size: 1.05rem; line-height: 1;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.dash-name.mono-inline { font-family: ui-monospace, Menlo, monospace; font-size: 0.7rem; }
+.dash-links { display: flex; gap: 0.55rem; }
+.dash-links a, .dash-links .linkish {
+  color: var(--tezos-blue); text-decoration: underline;
+  font-size: 0.66rem; font-family: ui-monospace, Menlo, monospace;
+  letter-spacing: 0.04em;
+}
+.dash-connect {
+  font: inherit; font-size: 0.8rem; background: var(--stamp); color: #fff;
+  border: 1.5px solid var(--ink); padding: 0.45rem 0.85rem; cursor: pointer;
+  box-shadow: 2px 2px 0 var(--ink);
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+.dash-connect:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--ink); }
+.dash-connect:active { transform: translate(2px,2px); box-shadow: 0 0 0 var(--ink); }
+/* narrow screens: the badge sits above the office sheet instead of floating */
+@media (max-width: 1099px) {
+  body { align-content: start; row-gap: 12px; padding-top: 12px; }
+  .wallet-dash { position: static; justify-self: center; box-shadow: 3px 3px 0 var(--line); }
+}

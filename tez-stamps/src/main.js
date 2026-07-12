@@ -195,6 +195,7 @@ async function renderPassport(address, { viewOnly = false } = {}) {
   showProfileBar(address, viewOnly);
   renderTower(address, viewOnly); // vitals + charts + casts, concurrently
   renderRally(address, viewOnly); // pickleball rating card, concurrently
+  renderLinksPane(address, viewOnly); // your rail — local, editable, no chain
   renderPageDesk(address, viewOnly); // your public page's editing desk
 
   // Feature: mail a noun to the passport you're viewing.
@@ -380,13 +381,99 @@ function initPanes() {
 
   $("reset-panes").addEventListener("click", () => {
     localStorage.removeItem(PANE_KEY);
-    const order = ["vitals", "page", "stamps", "nouns", "postcards", "rally", "broadcast"];
+    const order = ["vitals", "page", "links", "stamps", "nouns", "postcards", "rally", "broadcast"];
     for (const name of order) wrap.appendChild(wrap.querySelector(`[data-pane="${name}"]`));
   });
 
   applyPaneOrder();
 }
 initPanes();
+
+// ---------- links: your rail — an editable linktree, chain not required ----------
+// Lives in localStorage, edits are instant and free. The public page reads
+// link CASTS (label | url) — this pane is the private, no-gas counterpart.
+const LINKS_KEY = "stampz:links";
+const loadLinks = () => {
+  try { return JSON.parse(localStorage.getItem(LINKS_KEY)) || []; }
+  catch { return []; }
+};
+const saveLinks = (ls) => localStorage.setItem(LINKS_KEY, JSON.stringify(ls));
+
+function renderLinksPane(address, viewOnly) {
+  const pane = $("links-pane");
+  // The rail is yours: shown on your own passport (connected, or viewing
+  // your remembered address). Visitors never see it — it isn't published.
+  const mine = !viewOnly || address === localStorage.getItem(LAST_KEY);
+  pane.hidden = !mine;
+  if (!mine) return;
+
+  const box = $("linktree");
+  const links = loadLinks();
+  box.innerHTML = "";
+  if (!links.length) {
+    box.innerHTML = `<p class="noun-empty">No links yet — add your first. Label and URL are editable in place.</p>`;
+  }
+  links.forEach((l, i) => {
+    const row = document.createElement("div");
+    row.className = "link-row";
+    const label = document.createElement("input");
+    label.value = l.label; label.placeholder = "label";
+    label.className = "l-label";
+    const url = document.createElement("input");
+    url.value = l.url; url.placeholder = "https://…";
+    url.className = "l-url"; url.inputMode = "url"; url.spellcheck = false;
+    const persist = () => {
+      links[i] = { label: label.value.trim(), url: url.value.trim() };
+      saveLinks(links);
+    };
+    label.addEventListener("change", persist);
+    url.addEventListener("change", persist);
+
+    const tools = document.createElement("span");
+    tools.className = "l-tools";
+    const mk = (txt, title, fn) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.textContent = txt; b.title = title;
+      b.onclick = fn; return b;
+    };
+    tools.append(
+      mk("↑", "move up", () => {
+        if (i === 0) return;
+        [links[i - 1], links[i]] = [links[i], links[i - 1]];
+        saveLinks(links); renderLinksPane(address, viewOnly);
+      }),
+      mk("↓", "move down", () => {
+        if (i === links.length - 1) return;
+        [links[i + 1], links[i]] = [links[i], links[i + 1]];
+        saveLinks(links); renderLinksPane(address, viewOnly);
+      }),
+    );
+    const open = document.createElement("a");
+    open.textContent = "↗"; open.title = "open";
+    open.target = "_blank"; open.rel = "noopener";
+    const setHref = () => {
+      const v = url.value.trim();
+      if (/^https?:\/\/\S+$/.test(v)) { open.href = v; open.classList.remove("dead"); }
+      else { open.removeAttribute("href"); open.classList.add("dead"); }
+    };
+    setHref();
+    url.addEventListener("change", setHref);
+    tools.append(open, mk("✕", "remove", () => {
+      links.splice(i, 1);
+      saveLinks(links); renderLinksPane(address, viewOnly);
+    }));
+
+    row.append(label, url, tools);
+    box.appendChild(row);
+  });
+
+  $("link-add").onclick = () => {
+    links.push({ label: "", url: "" });
+    saveLinks(links);
+    renderLinksPane(address, viewOnly);
+    box.querySelector(".link-row:last-child .l-label")?.focus();
+  };
+}
 
 // ---------- rally: pickleball rating card + declaration ----------
 const milliFmt = (m) => (m / 1000).toFixed(3);
@@ -779,11 +866,56 @@ async function connectFlow() {
     if (address) {
       localStorage.setItem(LAST_KEY, address);
       $("status").textContent = "";
+      renderWalletDash();
       renderPassport(address);
     }
   } catch (e) {
     $("status").textContent = e?.message || "Connection cancelled.";
   }
+}
+
+// ---------- the wallet dash — the login/logout badge, clipped top-left ----------
+// Session state without paying for the wallet stack: Beacon keeps its
+// active account in localStorage; LAST_KEY remembers the visitor. The
+// wallet module only loads when someone actually clicks.
+const beaconActive = () => {
+  const v = localStorage.getItem("beacon:active-account");
+  return v && v !== "undefined" && v !== "null";
+};
+
+async function renderWalletDash() {
+  const dash = $("wallet-dash");
+  if (embedParam) return; // bare embeds stay bare
+  dash.hidden = false;
+  const last = localStorage.getItem(LAST_KEY);
+
+  if (!(last && beaconActive())) {
+    dash.innerHTML = `<button class="dash-connect" type="button">connect wallet</button>`;
+    dash.querySelector("button").onclick = () => connectFlow();
+    return;
+  }
+
+  dash.innerHTML = `
+    <img src="https://noun-api.com/beta/pfp?name=${last}&size=76" alt="" loading="lazy"/>
+    <div class="dash-id">
+      <span class="dash-name mono-inline" title="${last}">${short(last)}</span>
+      <span class="dash-links">
+        <a href="/" title="your passport">passport</a>
+        <a href="/?p=${last}" title="your public page">page</a>
+        <button class="linkish" type="button" id="dash-out">log out</button>
+      </span>
+    </div>`;
+  dash.querySelector("#dash-out").onclick = async () => {
+    const w = await loadWallet();
+    await w.disconnect();
+    localStorage.removeItem(LAST_KEY);
+    location.href = "/";
+  };
+  // upgrade the label to a .tez name or alias once the indexer answers
+  pageIdentity(last).then((idn) => {
+    const el = dash.querySelector(".dash-name");
+    if (el && idn.name) { el.textContent = idn.name; el.classList.remove("mono-inline"); }
+  }).catch(() => { /* short address stays */ });
 }
 
 // ---------- boot ----------
@@ -792,6 +924,7 @@ async function boot() {
     renderEmbed(embedParam);
     return;
   }
+  renderWalletDash();
   if (pageParam) {
     renderPageView(pageParam);
     return;
@@ -838,6 +971,7 @@ $("disconnect").addEventListener("click", async () => {
   $("landing").hidden = false;
   $("connect").hidden = false;
   $("status").textContent = "Logged out.";
+  renderWalletDash();
   renderWelcomeBack();
 });
 
