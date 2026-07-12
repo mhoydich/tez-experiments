@@ -5,6 +5,8 @@
 // passport read-only. Revisits: last address is remembered in localStorage.
 import { loadStampTypes, walletHolds, loadNouns, recentPassports,
          loadPostcards, POSTCARD_BGS } from "./board.js";
+import { getCasts, getCast, getCastCount, topCasters, topStamped,
+         getAccount, getBalanceHistory, getActivity, KINDS } from "./cast.js";
 
 const NETWORK = import.meta.env.VITE_NETWORK || "shadownet";
 const TZKT_UI = NETWORK === "mainnet" ? "https://tzkt.io" : "https://shadownet.tzkt.io";
@@ -15,7 +17,71 @@ const $ = (id) => document.getElementById(id);
 const short = (a) => `${a.slice(0, 7)}…${a.slice(-4)}`;
 const fmtDate = (iso) => new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" });
 const viewParam = new URLSearchParams(location.search).get("view");
+const castParam = new URLSearchParams(location.search).get("cast");
 let currentAddress = null;
+
+const fmt = (n, d = 2) => Number(n).toLocaleString("en-US", { maximumFractionDigits: d });
+const ago = (t) => {
+  const s = (Date.now() - new Date(t).getTime()) / 1000;
+  if (s < 60) return "just now";
+  if (s < 3600) return `${(s / 60) | 0}m ago`;
+  if (s < 86400) return `${(s / 3600) | 0}h ago`;
+  if (s < 86400 * 30) return `${(s / 86400) | 0}d ago`;
+  return fmtDate(t);
+};
+
+// ---------- cast rendering ----------
+function castBodyHTML(c) {
+  const b = c.body;
+  if (c.kind === 1 && /^https?:\/\/\S+$/.test(b))
+    return `<a href="${escapeHTML(b)}" target="_blank" rel="noopener">${escapeHTML(b)}</a>`;
+  if (c.kind === 2 && /^data:image\/(svg\+xml|png|jpeg|gif|webp)[;,]/.test(b))
+    return `<img src="${escapeHTML(b)}" alt="cast art" loading="lazy" />`;
+  return escapeHTML(b);
+}
+
+function castItemHTML(c, { withAuthor = true, single = false } = {}) {
+  return `<div class="cast-item${single ? " single" : ""}">
+    <div class="meta">
+      <span class="ctag ${KINDS[c.kind] || "note"}">${KINDS[c.kind] || "note"}</span>
+      ${withAuthor ? `<a href="/?view=${c.author}">${short(c.author)}</a>` : ""}
+      <span>${ago(c.at)}</span>
+      <a href="/?cast=${c.id}" title="permalink">№ ${c.id}</a>
+    </div>
+    <div class="cbody">${castBodyHTML(c)}</div>
+  </div>`;
+}
+
+// ---------- charts ----------
+function sparklineSVG(hist) {
+  if (hist.length < 2) return "";
+  const vs = hist.map((h) => h.v);
+  const min = Math.min(...vs), max = Math.max(...vs);
+  const span = max - min || 1;
+  const W = 320, H = 84, P = 5;
+  const pts = hist.map((h, i) => {
+    const x = P + (i / (hist.length - 1)) * (W - 2 * P);
+    const y = H - P - ((h.v - min) / span) * (H - 2 * P);
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  });
+  const [lx, ly] = pts[pts.length - 1].split(",");
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-label="balance history">
+    <defs><linearGradient id="bfill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(15,97,255,0.14)"/>
+      <stop offset="100%" stop-color="rgba(15,97,255,0)"/>
+    </linearGradient></defs>
+    <polygon points="${P},${H - P} ${pts.join(" ")} ${W - P},${H - P}" fill="url(#bfill)"/>
+    <polyline points="${pts.join(" ")}" fill="none" stroke="#0f61ff" stroke-width="1.5"/>
+    <circle cx="${lx}" cy="${ly}" r="3" fill="#b3402a"/>
+  </svg>`;
+}
+
+const heatHTML = (buckets) => {
+  const max = Math.max(...buckets, 1);
+  return `<div class="heat">${buckets.map((n) =>
+    `<div class="day ${n >= max * 0.7 && n > 0 ? "hot" : ""}" style="height:${Math.max(4, (n / max) * 100)}%" title="${n} ops"></div>`
+  ).join("")}</div>`;
+};
 
 let walletMod = null; // lazy
 const loadWallet = async () => (walletMod ??= await import("./wallet.js"));
@@ -49,6 +115,29 @@ async function renderLanding() {
       <figure class="noun-card">${latest[0].svg}
         <figcaption>${latest[0].name} · <a href="/?view=${latest[0].owner}">${short(latest[0].owner)}</a></figcaption>
       </figure>`;
+  }
+
+  // The wire — latest casts across every tower.
+  const casts = await getCasts({ limit: 8 });
+  $("wire").innerHTML = casts.length
+    ? casts.map((c) => castItemHTML(c)).join("")
+    : `<p class="noun-empty">Dead air — open your passport and cast the first.</p>`;
+
+  // Lineage boards.
+  const [stamped, casters] = await Promise.all([topStamped(5), topCasters(5)]);
+  $("top-stamped").innerHTML = stamped.length ? "" : "<li>Nobody yet.</li>";
+  for (const r of stamped) {
+    const li = document.createElement("li");
+    li.innerHTML = `<a href="/?view=${r.address}">${short(r.address)}</a>
+      <span class="count-chip">· ${r.count} stamp${r.count === 1 ? "" : "s"}</span>`;
+    $("top-stamped").appendChild(li);
+  }
+  $("top-casters").innerHTML = casters.length ? "" : "<li>All towers silent.</li>";
+  for (const r of casters) {
+    const li = document.createElement("li");
+    li.innerHTML = `<a href="/?view=${r.address}">${short(r.address)}</a>
+      <span class="count-chip">· ${r.count} cast${r.count === 1 ? "" : "s"}</span>`;
+    $("top-casters").appendChild(li);
   }
 }
 
@@ -85,6 +174,22 @@ async function renderPassport(address, { viewOnly = false } = {}) {
   $("welcome-back").hidden = true;
   $("passport").hidden = false;
   showProfileBar(address, viewOnly);
+  renderTower(address, viewOnly); // vitals + charts + casts, concurrently
+
+  // Feature: mail a noun to the passport you're viewing.
+  const mailBtn = $("mail-viewed");
+  const myAddr = localStorage.getItem(LAST_KEY);
+  mailBtn.hidden = !(viewOnly && myAddr && myAddr !== address);
+  mailBtn.onclick = async () => {
+    $("status").textContent = "Fetching your nouns…";
+    const mine = await loadNouns(myAddr);
+    if (!mine.length) {
+      $("status").textContent = "You need a noun to mail — earn stamps and mint one on your passport.";
+      return;
+    }
+    $("status").textContent = "";
+    openSendDialog(mine[0], { to: address, myNouns: mine });
+  };
 
   const types = await loadStampTypes();
   const grid = $("stamps");
@@ -170,12 +275,67 @@ async function renderPassport(address, { viewOnly = false } = {}) {
 const escapeHTML = (s) => s.replace(/[&<>"']/g, (c) =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
+// ---------- wallet vitals + broadcast (the tower) ----------
+async function renderTower(address, viewOnly) {
+  const acct = await getAccount(address);
+  const [hist, activity, casts, castCount] = await Promise.all([
+    getBalanceHistory(address, acct), getActivity(address),
+    getCasts({ author: address, limit: 30 }), getCastCount(address),
+  ]);
+
+  const since = acct?.firstSeen
+    ? new Date(acct.firstSeen).toLocaleDateString("en-US", { month: "short", year: "numeric" })
+    : "pure passport";
+  $("vitals").innerHTML = [
+    [`${fmt(acct?.balance ?? 0)}<small> ꜩ</small>`, "balance"],
+    [fmt(acct?.ops ?? 0, 0), "operations"],
+    [String(castCount), "casts"],
+    [since, "on chain since"],
+  ].map(([num, label]) =>
+    `<li><span class="num">${num}</span><span class="vlabel">${label}</span></li>`
+  ).join("");
+
+  const bWrap = $("balance-chart");
+  bWrap.hidden = hist.length < 2;
+  if (hist.length >= 2) {
+    $("balance-card").innerHTML = sparklineSVG(hist) + `
+      <div class="chart-meta">
+        <span>${fmtDate(hist[0].t)}</span>
+        <span>peak ${fmt(Math.max(...hist.map((h) => h.v)))} ꜩ</span>
+        <span>now</span>
+      </div>`;
+  }
+  const pWrap = $("pulse-chart");
+  const hasPulse = activity.some((n) => n > 0);
+  pWrap.hidden = !hasPulse;
+  if (hasPulse) $("pulse-card").innerHTML = heatHTML(activity);
+
+  $("cast-count").textContent = String(castCount);
+  $("composer").hidden = viewOnly;
+  $("casts").innerHTML = casts.length
+    ? casts.map((c) => castItemHTML(c, { withAuthor: false })).join("")
+    : `<p class="noun-empty">${viewOnly ? "This tower is silent." : "Your tower is silent — cast the first."}</p>`;
+}
+
 // ---------- send-a-postcard dialog ----------
 let sendState = { noun: null, background: 0 };
-function openSendDialog(noun) {
+function openSendDialog(noun, { to = "", myNouns = null } = {}) {
   sendState = { noun: noun.id, background: 0 };
   $("send-preview").innerHTML = noun.svg;
-  $("send-to").value = "";
+  const pickField = $("send-noun-field");
+  const pick = $("send-noun-pick");
+  if (myNouns && myNouns.length > 1) {
+    pickField.hidden = false;
+    pick.innerHTML = myNouns.map((n) => `<option value="${n.id}">${n.name}</option>`).join("");
+    pick.value = String(noun.id);
+    pick.onchange = () => {
+      const sel = myNouns.find((n) => n.id === Number(pick.value));
+      if (sel) { sendState.noun = sel.id; $("send-preview").innerHTML = sel.svg; }
+    };
+  } else {
+    pickField.hidden = true;
+  }
+  $("send-to").value = to;
   $("send-note").value = "";
   $("note-count").textContent = "0";
   const picker = $("bg-picker");
@@ -207,8 +367,52 @@ $("send-form").addEventListener("submit", async (e) => {
   $("send-dialog").close();
   const w = await loadWallet();
   const ok = await w.sendPostcard({ to_, noun: sendState.noun, background: sendState.background, note }, $("status"));
-  if (ok) renderPassport(currentAddress);
+  if (ok) renderPassport(currentAddress, { viewOnly: !!viewParam });
 });
+
+// ---------- composer (broadcast) ----------
+let castKind = 0;
+{
+  const kinds = $("kinds");
+  KINDS.forEach((k, i) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "kind"; b.textContent = k;
+    b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+    b.onclick = () => {
+      castKind = i;
+      [...kinds.children].forEach((c, j) =>
+        c.setAttribute("aria-pressed", j === i ? "true" : "false"));
+    };
+    kinds.appendChild(b);
+  });
+}
+$("cast-body").addEventListener("input", (e) => {
+  $("cast-chars").textContent = String(e.target.value.length);
+});
+$("cast-send").addEventListener("click", async () => {
+  const body = $("cast-body").value.trim();
+  if (!body) return;
+  const w = await loadWallet();
+  const ok = await w.publishCast({ kind: castKind, body }, $("status"));
+  if (ok) {
+    $("cast-body").value = "";
+    $("cast-chars").textContent = "0";
+    renderTower(currentAddress, false);
+  }
+});
+
+// ---------- single cast permalink ----------
+async function renderCastView(id) {
+  $("landing").hidden = true;
+  $("connect").hidden = true;
+  $("welcome-back").hidden = true;
+  $("cast-view").hidden = false;
+  const c = await getCast(id);
+  $("cast-single").innerHTML = c
+    ? castItemHTML(c, { single: true })
+    : `<p class="noun-empty">No cast № ${escapeHTML(id)} — yet.</p>`;
+  document.title = c ? `cast № ${c.id} — stampz` : "cast — stampz";
+}
 
 async function connectFlow() {
   $("status").textContent = "Opening wallet…";
@@ -227,6 +431,10 @@ async function connectFlow() {
 
 // ---------- boot ----------
 async function boot() {
+  if (castParam) {
+    renderCastView(castParam);
+    return;
+  }
   if (viewParam) {
     renderPassport(viewParam, { viewOnly: true });
     return;

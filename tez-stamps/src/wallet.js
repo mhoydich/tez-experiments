@@ -60,6 +60,27 @@ export async function claimSigned(id, sig, statusEl) {
   }
 }
 
+// ---- cast tower ----
+const CAST = import.meta.env.VITE_CAST_ADDRESS || "";
+
+// Publish a cast. Body travels as raw utf8 bytes — emoji-safe.
+export async function publishCast({ kind, body }, statusEl) {
+  try {
+    statusEl.textContent = "Broadcasting…";
+    const hex = Array.from(new TextEncoder().encode(body))
+      .map((b) => b.toString(16).padStart(2, "0")).join("");
+    const c = await Tezos.wallet.at(CAST);
+    const op = await c.methodsObject.default({ kind, body: hex }).send();
+    statusEl.textContent = "Confirming…";
+    await op.confirmation(1);
+    statusEl.textContent = "On the air. Forever.";
+    return true;
+  } catch (e) {
+    statusEl.textContent = String(e?.message || e);
+    return false;
+  }
+}
+
 // ---- nouns: mint + postcard ----
 const NOUNS = import.meta.env.VITE_NOUNS_ADDRESS || "";
 const POSTCARDS = import.meta.env.VITE_POSTCARDS_ADDRESS || "";

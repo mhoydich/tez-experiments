@@ -45,6 +45,25 @@
           <div id="latest-noun"></div>
         </div>
       </div>
+      <h2 class="section-label">The wire — latest casts</h2>
+      <div id="wire" class="cast-feed"></div>
+      <div class="landing-cols">
+        <div>
+          <h2 class="section-label">Most stamped</h2>
+          <ul id="top-stamped" class="recent-list"></ul>
+        </div>
+        <div>
+          <h2 class="section-label">Loudest towers</h2>
+          <ul id="top-casters" class="recent-list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- single cast permalink (?cast=N) -->
+    <section id="cast-view" hidden>
+      <h2 class="section-label">Cast — permanent record</h2>
+      <div id="cast-single" class="cast-feed"></div>
+      <p class="profile-links"><a href="/">← back to the office</a></p>
     </section>
 
     <section id="passport" hidden>
@@ -58,7 +77,21 @@
           </p>
         </div>
         <button id="disconnect" class="ghost" type="button">Log out</button>
+        <button id="mail-viewed" class="ghost" type="button" hidden>✉ Mail this passport a noun</button>
       </div>
+
+      <ul id="vitals" class="vitals" aria-label="Wallet vitals"></ul>
+      <div class="landing-cols charts-row">
+        <div id="balance-chart" hidden>
+          <h2 class="section-label">Balance — lifetime</h2>
+          <div class="chart-card" id="balance-card"></div>
+        </div>
+        <div id="pulse-chart" hidden>
+          <h2 class="section-label">Pulse — 8 weeks</h2>
+          <div class="chart-card" id="pulse-card"></div>
+        </div>
+      </div>
+
       <h2 class="section-label">Stamps</h2>
       <ul id="stamps" class="stamp-grid" aria-label="Your stamps"></ul>
       <div id="claimable"></div>
@@ -70,6 +103,18 @@
 
       <h2 class="section-label">Postcards received</h2>
       <div id="postcards" class="postcard-wall"></div>
+
+      <h2 class="section-label">Broadcast — <span id="cast-count">0</span> on the air, forever</h2>
+      <div id="composer" class="composer" hidden>
+        <textarea id="cast-body" maxlength="280" rows="2"
+                  placeholder="say something permanent…"></textarea>
+        <div class="composer-row">
+          <div id="kinds" class="kinds"></div>
+          <span class="field-hint"><span id="cast-chars">0</span>/280</span>
+          <button id="cast-send" class="enter enter-sm" type="button">Cast</button>
+        </div>
+      </div>
+      <div id="casts" class="cast-feed"></div>
     </section>
 
     <!-- send-a-postcard dialog -->
@@ -77,6 +122,9 @@
       <form method="dialog" id="send-form">
         <h3 class="dialog-title">Mail this noun</h3>
         <div id="send-preview" class="send-preview"></div>
+        <label class="field" id="send-noun-field" hidden>Which noun
+          <select id="send-noun-pick"></select>
+        </label>
         <label class="field">To
           <input id="send-to" name="to" placeholder="tz1… / tz2… address" required
                  pattern="tz[123][A-Za-z0-9]{33}" autocomplete="off" />
