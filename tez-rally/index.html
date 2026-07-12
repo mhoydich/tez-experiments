@@ -50,7 +50,9 @@
           <p id="card-tier" class="tier-badge"></p>
           <p class="card-line">declared <strong id="card-declared"></strong></p>
           <p class="card-line">record <strong id="card-record"></strong></p>
+          <p class="card-line" id="card-form-line" hidden>form <strong id="card-form"></strong></p>
         </div>
+        <div id="card-spark" class="card-spark" hidden></div>
       </div>
 
       <form id="declare-form" hidden>
@@ -99,6 +101,12 @@
         <label class="field" id="venue-other-field" hidden>Where
           <input id="venue-other" placeholder="court name" autocomplete="off" />
         </label>
+        <label class="field">The tape <span class="field-hint">optional</span>
+          <input id="tape" type="file" accept="video/*" />
+        </label>
+        <p class="form-hint">Attach match video and its sha256 fingerprint is
+           hashed in your browser and anchored on-chain with the result —
+           tamper-evident forever. Keep the file; hosted playback comes later.</p>
         <p class="form-hint">Everyone on the court signs before it counts.
            Report losses too — an honest log is the whole point.</p>
         <button type="submit" class="enter enter-sm">Report result</button>

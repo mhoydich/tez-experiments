@@ -50,14 +50,15 @@ export const declare = (milli, statusEl) =>
   run(statusEl, "Declaring…", "Declared. Card minted — now go earn it.",
     (c) => c.methodsObject.declare(milli).send());
 
-// p = { teamA: [addr, addr?], teamB: [addr, addr?], scoreA, scoreB, venue }
+// p = { teamA: [addr, addr?], teamB: [addr, addr?], scoreA, scoreB, venue,
+//       videoHash? }  — videoHash is a sha256 hex string, anchored on-chain
 export const proposeMatch = (p, statusEl) =>
   run(statusEl, "Reporting to the desk…", "Reported — awaiting countersignatures.",
     (c) => c.methodsObject.propose_match({
       team_a: { p1: p.teamA[0], p2: p.teamA[1] ?? null },
       team_b: { p1: p.teamB[0], p2: p.teamB[1] ?? null },
       score_a: p.scoreA, score_b: p.scoreB,
-      venue: p.venue, video_hash: null,
+      venue: p.venue, video_hash: p.videoHash ?? null,
     }).send());
 
 export const confirmMatch = (id, statusEl) =>

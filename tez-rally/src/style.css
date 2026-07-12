@@ -112,6 +112,14 @@ footer p {
 }
 .tier-badge.self { background: var(--muted); }
 
+.card-spark { grid-column: 1 / -1; border-top: 1px dashed var(--line); padding-top: 0.5rem; }
+.card-spark svg { display: block; width: 100%; height: auto; max-height: 48px; }
+.spark-label {
+  font-family: ui-monospace, Menlo, monospace; font-size: 0.62rem;
+  letter-spacing: 0.08em; color: var(--muted);
+}
+.tape { color: var(--court); cursor: help; }
+
 /* ---------- forms ---------- */
 form { margin: 0 0 1.2rem; }
 .form-hint { font-size: 0.8rem; color: var(--muted); margin: 0.2rem 0 0.8rem; line-height: 1.45; }

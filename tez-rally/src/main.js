@@ -3,7 +3,7 @@
 // The wallet stack loads lazily: on connect click, or when a previous
 // Beacon session / remembered visitor exists. ?view=<address> renders any
 // player card read-only. Revisits: last address is remembered in localStorage.
-import { loadLadder, loadMatches, playerOf, loadCourts, bookOf } from "./board.js";
+import { loadLadder, loadMatches, playerOf, loadCourts, bookOf, trajectoryOf } from "./board.js";
 
 const NETWORK = import.meta.env.VITE_NETWORK || "shadownet";
 const TZKT_UI = NETWORK === "mainnet" ? "https://tzkt.io" : "https://shadownet.tzkt.io";
@@ -53,10 +53,12 @@ function matchRow(m, { mine = null } = {}) {
   const names = (t) => t.map(whoLink).join(" / ");
   const li = document.createElement("li");
   const sigs = `${m.confirmations.length}/${m.teamA.length + m.teamB.length} signed`;
+  const tape = m.videoHash
+    ? ` · <span class="tape" title="sha256 ${m.videoHash}">🎞 tape anchored</span>` : "";
   li.innerHTML = `
     <p class="scoreline">${names(wTeam)} <span class="score">${wScore}–${lScore}</span> ${names(lTeam)}</p>
     <p class="match-meta">#${m.id} · ${m.teamA.length === 1 ? "singles" : "doubles"}
-      · ${m.venue} · ${fmtDate(m.proposedAt)}${m.finalized ? "" : ` · ${sigs}`}</p>`;
+      · ${m.venue} · ${fmtDate(m.proposedAt)}${m.finalized ? "" : ` · ${sigs}`}${tape}</p>`;
   if (mine && !m.finalized && !m.confirmations.includes(mine)) {
     const b = document.createElement("button");
     b.className = "ghost countersign";
@@ -119,6 +121,19 @@ async function renderDesk(address, { viewOnly = false } = {}) {
     }
   }
 
+  // trajectory sparkline + form, replayed live from the match log
+  $("card-spark").hidden = true;
+  $("card-form-line").hidden = true;
+  if (p && p.matches > 0) {
+    trajectoryOf(address).then((t) => {
+      if (!t || t.points.length < 2) return;
+      $("card-spark").innerHTML = sparkline(t.points);
+      $("card-spark").hidden = false;
+      $("card-form").textContent = t.form.join(" ");
+      $("card-form-line").hidden = false;
+    });
+  }
+
   // declare form: shown until the ladder owns your number
   const canDeclare = !viewOnly && (!p || p.matches === 0);
   $("declare-form").hidden = !canDeclare;
@@ -140,6 +155,22 @@ async function renderDesk(address, { viewOnly = false } = {}) {
 }
 
 const refresh = () => Promise.all([renderDesk(currentAddress), renderBoard()]);
+
+// tiny inline SVG polyline — declared seed to current rating
+function sparkline(points) {
+  const w = 240, h = 44, pad = 5;
+  const min = Math.min(...points), max = Math.max(...points);
+  const span = Math.max(max - min, 50);
+  const x = (i) => pad + (i * (w - 2 * pad)) / (points.length - 1);
+  const y = (v) => h - pad - ((v - min) * (h - 2 * pad)) / span;
+  const pts = points.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(" ");
+  const last = points[points.length - 1];
+  return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="rating trajectory ${fmt(points[0])} to ${fmt(last)}">
+    <polyline points="${pts}" fill="none" stroke="var(--court)" stroke-width="2" />
+    <circle cx="${x(points.length - 1).toFixed(1)}" cy="${y(last).toFixed(1)}" r="3" fill="var(--court)" />
+  </svg>
+  <span class="spark-label">${fmt(points[0])} → ${fmt(last)} over ${points.length - 1} match${points.length === 2 ? "" : "es"}</span>`;
+}
 
 // ---------- the passport book ----------
 async function renderBook(address) {
@@ -241,12 +272,20 @@ $("stamp-btn").addEventListener("click", () => {
     }
     const venue = $("venue").value === "__other"
       ? (addr("venue-other") || "elsewhere") : $("venue").value;
+    let videoHash = null;
+    const tape = $("tape").files[0];
+    if (tape) {
+      status.textContent = "Hashing the tape…";
+      const digest = await crypto.subtle.digest("SHA-256", await tape.arrayBuffer());
+      videoHash = [...new Uint8Array(digest)]
+        .map((b) => b.toString(16).padStart(2, "0")).join("");
+    }
     const w = await loadWallet();
     const ok = await w.proposeMatch({
       teamA, teamB,
       scoreA: Number($("score-us").value),
       scoreB: Number($("score-them").value),
-      venue,
+      venue, videoHash,
     }, status);
     if (ok) { $("report-form").reset(); $("partner-field").hidden = true; $("opp2-field").hidden = true; refresh(); }
   });

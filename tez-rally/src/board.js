@@ -51,6 +51,37 @@ const asMatch = (r) => ({
   finalized: r.value.finalized,
 });
 
+// Replay the ladder from the countersigned log — same integer Elo the
+// contract runs. Returns {points, form} for one player: rating after each
+// of their matches (starting at the declared seed) and last-5 W/L.
+// Client shortcut: matches replay in id order; the MCP verify_replay tool
+// does exact finalization-level ordering.
+export async function trajectoryOf(address) {
+  if (!RALLY) return null;
+  const [pRes, mRes] = await Promise.all([
+    fetch(`${INDEXER}/v1/contracts/${RALLY}/bigmaps/players/keys?active=true&limit=500`),
+    fetch(`${INDEXER}/v1/contracts/${RALLY}/bigmaps/matches/keys?active=true&limit=1000`),
+  ]);
+  const players = await pRes.json();
+  const matches = (await mRes.json()).map(asMatch).filter((m) => m.finalized)
+    .sort((a, b) => a.id - b.id);
+  const ratings = new Map(players.map((r) => [r.key, Number(r.value.declared)]));
+  const delta = (w, l) => Math.max(10, Math.min(150, 50 - Math.floor((w - l) / 10)));
+  const points = [ratings.get(address)];
+  const form = [];
+  for (const m of matches) {
+    const avg = (t) => Math.floor(t.reduce((s, a) => s + (ratings.get(a) ?? 0), 0) / t.length);
+    const aWon = m.scoreA > m.scoreB;
+    const [w, l] = aWon ? [m.teamA, m.teamB] : [m.teamB, m.teamA];
+    const d = delta(avg(w), avg(l));
+    for (const a of w) ratings.set(a, (ratings.get(a) ?? 0) + d);
+    for (const a of l) ratings.set(a, Math.max(1000, (ratings.get(a) ?? 0) - d));
+    if (w.includes(address)) { points.push(ratings.get(address)); form.push("W"); }
+    if (l.includes(address)) { points.push(ratings.get(address)); form.push("L"); }
+  }
+  return points[0] === undefined ? null : { points, form: form.slice(-5) };
+}
+
 // ---- the passport book (courts contract) ----
 const COURTS = import.meta.env.VITE_COURTS_ADDRESS || "";
 
