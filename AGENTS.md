@@ -23,7 +23,10 @@ tez-cast/             # 05 — personal page for any wallet (balance/activity/
                       #      live at tez-cast.pages.dev
 tez-rally/            # 06 — pickleball rating desk: self-declared soulbound
                       #      card hardened by countersigned matches; integer
-                      #      Elo settled on-chain. Shadownet
+                      #      Elo settled on-chain.
+                      #      MAINNET KT1X4iLYF11LvZhU6PFRamLioKjrcgDJEUoT
+                      #      (Kukai web = mainnet-only, so the live site
+                      #      points there), Shadownet
                       #      KT1C2EEKHEDjcFAeR8rBLdvX5agq2XnUz5AZ,
                       #      live at tez-rally.pages.dev
 ```

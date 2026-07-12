@@ -1,5 +1,8 @@
 # tez-rally
 
+**Deployed (MAINNET)**: rating desk `KT1X4iLYF11LvZhU6PFRamLioKjrcgDJEUoT`
+(LIGO 1.15.6) — tez-rally.pages.dev points here. Kukai's web wallet only
+speaks mainnet, so mainnet is where real players connect.
 **Deployed (Shadownet)**: rating desk `KT1C2EEKHEDjcFAeR8rBLdvX5agq2XnUz5AZ`
 (LIGO 1.15.6) — smoke-tested end to end: declare → report → countersign →
 Elo settles (`npm run smoke` replays it).
