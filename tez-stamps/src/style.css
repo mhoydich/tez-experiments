@@ -199,3 +199,18 @@ footer p {
 .ctag.art { color: #6d4fa3; }
 .recent-list .count-chip { color: #8a8178; }
 #send-noun-pick { font-family: ui-monospace, Menlo, monospace; font-size: 0.85rem; padding: 0.4rem; border: 1.5px solid var(--ink); background: var(--paper); text-transform: none; letter-spacing: 0; }
+
+/* ---------- home page: lookup + how-it-works + machinery ---------- */
+.lookup { display: flex; gap: 0.6rem; margin: 0.9rem 0 0.4rem; }
+.lookup input { flex: 1; font-family: ui-monospace, Menlo, monospace; font-size: 0.85rem; padding: 0.55rem 0.7rem; border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink); }
+.how { margin: 0.4rem 0 1.4rem; padding-left: 1.3rem; display: grid; gap: 0.55rem; font-size: 0.95rem; line-height: 1.5; }
+.how li::marker { font-family: ui-monospace, Menlo, monospace; font-size: 0.8rem; color: var(--stamp); }
+.how strong { font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.15rem; }
+.machinery li { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+
+/* ---------- passport identity ---------- */
+.profile-bar { align-items: center; }
+.profile-id { flex: 1; }
+.passport-avatar { width: 72px; height: 72px; flex-shrink: 0; border: 1.5px solid var(--ink); background: #fff; }
+.passport-avatar svg, .passport-avatar img { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+.passport-alias { font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.45rem; font-weight: 600; margin: 0 0 0.15rem; line-height: 1; }

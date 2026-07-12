@@ -33,6 +33,11 @@
     <button id="connect" class="enter">Open my passport</button>
 
     <section id="landing">
+      <div class="lookup">
+        <input id="lookup" placeholder="tz1… peek at any passport" spellcheck="false" autocomplete="off" />
+        <button id="lookup-go" class="ghost" type="button">view</button>
+      </div>
+
       <h2 class="section-label">Now stamping</h2>
       <ul id="board" class="stamp-grid" aria-label="Available stamps"></ul>
       <div class="landing-cols">
@@ -45,6 +50,27 @@
           <div id="latest-noun"></div>
         </div>
       </div>
+      <h2 class="section-label">How it works</h2>
+      <ol class="how">
+        <li><strong>Connect.</strong> Kukai social login or any Tezos wallet —
+          sixty seconds, no seed-phrase drama. Your address becomes your passport.</li>
+        <li><strong>Earn stamps.</strong> Soulbound tokens for things you actually
+          did. Open stamps claim right here; signed ones take a voucher from the
+          issuer. They can never be bought, sold, or moved.</li>
+        <li><strong>Mint your noun.</strong> Hold <em>First Steps</em> and the
+          office lets you mint a portrait — CC0 pixel art stored entirely
+          on-chain, accessories earned from your stamps.</li>
+        <li><strong>Mail postcards.</strong> Send a noun to a friend with a
+          public note that rides the same confirmation. It hangs on their
+          wall forever.</li>
+        <li><strong>Cast.</strong> Every passport has a broadcast tower: short
+          notes, append-only, no edit, no delete, no admin. The wire below
+          belongs to everyone, forever.</li>
+      </ol>
+
+      <h2 class="section-label">The machinery</h2>
+      <ul id="machinery" class="recent-list machinery"></ul>
+
       <h2 class="section-label">The wire — latest casts</h2>
       <div id="wire" class="cast-feed"></div>
       <div class="landing-cols">
@@ -68,7 +94,9 @@
 
     <section id="passport" hidden>
       <div class="profile-bar">
-        <div>
+        <div id="passport-avatar" class="passport-avatar" hidden></div>
+        <div class="profile-id">
+          <p id="alias" class="passport-alias" hidden></p>
           <p class="mono" id="address"></p>
           <p class="profile-links">
             <button id="copy-address" class="linkish" type="button">copy</button>

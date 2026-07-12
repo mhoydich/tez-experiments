@@ -88,6 +88,18 @@ const loadWallet = async () => (walletMod ??= await import("./wallet.js"));
 
 // ---------- landing board (no wallet needed) ----------
 async function renderLanding() {
+  // The machinery — every contract this office reads and writes.
+  const contracts = [
+    ["stamps registry", import.meta.env.VITE_REGISTRY_ADDRESS],
+    ["nouns", import.meta.env.VITE_NOUNS_ADDRESS],
+    ["postcards", import.meta.env.VITE_POSTCARDS_ADDRESS],
+    ["cast tower", import.meta.env.VITE_CAST_ADDRESS],
+  ].filter(([, a]) => a);
+  $("machinery").innerHTML = contracts.map(([n, a]) =>
+    `<li><span>${n}</span><a href="${TZKT_UI}/${a}" target="_blank" rel="noopener">${short(a)}</a></li>`
+  ).join("") + `<li><span class="count-chip">all CC0 · no admin on the tower ·
+    standalone reader at</span> <a href="https://tez-cast.pages.dev" target="_blank" rel="noopener">tez-cast.pages.dev</a></li>`;
+
   const types = await loadStampTypes();
   const board = $("board");
   board.innerHTML = "";
@@ -233,6 +245,12 @@ async function renderPassport(address, { viewOnly = false } = {}) {
   const shelf = $("nouns");
   shelf.innerHTML = `<p class="noun-empty">Checking the vault…</p>`;
   const nouns = await loadNouns(address);
+  // Identity: your first noun is your portrait; visitors without one get
+  // a deterministic Noun from the official CC0 trait set.
+  const av = $("passport-avatar");
+  av.hidden = false;
+  av.innerHTML = nouns.length ? nouns[0].svg
+    : `<img src="https://noun-api.com/beta/pfp?name=${address}&size=144" alt="" loading="lazy" />`;
   shelf.innerHTML = "";
   for (const n of nouns) {
     const fig = document.createElement("figure");
@@ -282,6 +300,10 @@ async function renderTower(address, viewOnly) {
     getBalanceHistory(address, acct), getActivity(address),
     getCasts({ author: address, limit: 30 }), getCastCount(address),
   ]);
+
+  const aliasEl = $("alias");
+  aliasEl.hidden = !acct?.alias;
+  if (acct?.alias) aliasEl.textContent = acct.alias;
 
   const since = acct?.firstSeen
     ? new Date(acct.firstSeen).toLocaleDateString("en-US", { month: "short", year: "numeric" })
@@ -451,6 +473,16 @@ async function boot() {
 }
 
 $("connect").addEventListener("click", connectFlow);
+
+// ---------- passport lookup ----------
+$("lookup-go").addEventListener("click", () => {
+  const v = $("lookup").value.trim();
+  if (/^(tz[1-4]|KT1)[1-9A-HJ-NP-Za-km-z]{33}$/.test(v)) location.href = `/?view=${v}`;
+  else $("status").textContent = "That doesn't look like a Tezos address.";
+});
+$("lookup").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") $("lookup-go").click();
+});
 
 $("disconnect").addEventListener("click", async () => {
   const w = await loadWallet();
