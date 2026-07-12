@@ -18,6 +18,7 @@ const short = (a) => `${a.slice(0, 7)}…${a.slice(-4)}`;
 const fmtDate = (iso) => new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" });
 const viewParam = new URLSearchParams(location.search).get("view");
 const castParam = new URLSearchParams(location.search).get("cast");
+const wireParam = new URLSearchParams(location.search).has("wire");
 let currentAddress = null;
 
 const fmt = (n, d = 2) => Number(n).toLocaleString("en-US", { maximumFractionDigits: d });
@@ -441,6 +442,35 @@ $("cast-send").addEventListener("click", async () => {
   }
 });
 
+// ---------- the wire — public broadcast page (?wire) ----------
+let wireTimer = null;
+async function renderWirePage() {
+  document.title = "the wire — stampz";
+  $("landing").hidden = true;
+  $("connect").hidden = true;
+  $("welcome-back").hidden = true;
+  $("wire-page").hidden = false;
+
+  const [casts, casters] = await Promise.all([getCasts({ limit: 50 }), topCasters(12)]);
+  $("wire-broadcasters").innerHTML = casters.length ? casters.map((r) => `
+    <a class="broadcaster" href="/?view=${r.address}">
+      <img src="https://noun-api.com/beta/pfp?name=${r.address}&size=68" alt="" loading="lazy"/>
+      <span><span class="who">${short(r.address)}</span><br/>
+      <span class="count-chip">${r.count} cast${r.count === 1 ? "" : "s"}</span></span>
+    </a>`).join("") : `<p class="noun-empty">No broadcasters yet.</p>`;
+  $("wire-all").innerHTML = casts.length
+    ? casts.map((c) => castItemHTML(c)).join("")
+    : `<p class="noun-empty">Dead air — open your passport and cast the first.</p>`;
+
+  // A broadcast page should feel live: re-check quietly, redraw on news.
+  const topId = casts[0]?.id ?? -1;
+  clearInterval(wireTimer);
+  wireTimer = setInterval(async () => {
+    const fresh = await getCasts({ limit: 1 });
+    if ((fresh[0]?.id ?? -1) !== topId) renderWirePage();
+  }, 45000);
+}
+
 // ---------- single cast permalink ----------
 async function renderCastView(id) {
   $("landing").hidden = true;
@@ -471,6 +501,10 @@ async function connectFlow() {
 
 // ---------- boot ----------
 async function boot() {
+  if (wireParam) {
+    renderWirePage();
+    return;
+  }
   if (castParam) {
     renderCastView(castParam);
     return;

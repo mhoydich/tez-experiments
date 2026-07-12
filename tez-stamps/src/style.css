@@ -222,3 +222,10 @@ footer p {
 .postcard.pv .note { min-height: 1.2em; }
 /* hidden must always win, even over explicit display values */
 [hidden] { display: none !important; }
+
+/* ---------- the wire page ---------- */
+.broadcasters { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0.75rem 0 1.2rem; }
+.broadcaster { display: flex; gap: 0.55rem; align-items: center; text-decoration: none; background: #fff; border: 1.5px solid var(--ink); padding: 0.35rem 0.75rem 0.35rem 0.35rem; color: var(--ink); transition: box-shadow 0.08s ease; }
+.broadcaster:hover { box-shadow: 3px 3px 0 var(--ink); }
+.broadcaster img { width: 34px; height: 34px; image-rendering: pixelated; border: 1px solid var(--line); display: block; }
+.broadcaster .who { font-family: ui-monospace, Menlo, monospace; font-size: 0.7rem; color: var(--tezos-blue); text-decoration: underline; }
