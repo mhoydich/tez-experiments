@@ -1,0 +1,53 @@
+// cast — an on-chain broadcaster. A wallet publishes short posts ("casts"),
+// append-only, forever. No admin, no delete, no edit — a broadcast tower,
+// not a moderated feed. The personal page (this repo's frontend) is the
+// reader; anything else can read the same big_maps or call the views.
+// jsLIGO (LIGO >= 1.x)
+
+type cast = {
+  author: address,
+  kind: nat,          // 0 = note, 1 = link, 2 = art… the site defines meaning
+  body: bytes,        // utf8 — emoji-safe (Michelson strings reject non-ASCII)
+  cast_at: timestamp,
+};
+
+type storage = {
+  next_id: nat,
+  casts: big_map<nat, cast>,
+  by_author: big_map<address, nat>,  // casts published per author
+};
+
+type ret = [list<operation>, storage];
+
+@entry
+const cast = (p: { kind: nat, body: bytes }, s: storage): ret => {
+  const author = Tezos.get_sender();
+  const prev = match(Big_map.find_opt(author, s.by_author)) {
+    when (Some(n)): n;
+    when (None()): 0n;
+  };
+  const c: cast = {
+    author,
+    kind: p.kind,
+    body: p.body,
+    cast_at: Tezos.get_now(),
+  };
+  return [list([]), {
+    next_id: s.next_id + 1n,
+    casts: Big_map.add(s.next_id, c, s.casts),
+    by_author: Big_map.update(author, Some(prev + 1n), s.by_author),
+  }];
+};
+
+// Total casts ever published (also the next cast's id).
+@view
+const cast_count = (_u: unit, s: storage): nat => s.next_id;
+
+// How many casts an author has published — lets other contracts gate on
+// "has broadcast at least N times", same pattern as stamps' has_stamp.
+@view
+const author_count = (a: address, s: storage): nat =>
+  match(Big_map.find_opt(a, s.by_author)) {
+    when (Some(n)): n;
+    when (None()): 0n;
+  };

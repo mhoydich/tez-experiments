@@ -17,6 +17,10 @@ tez-nouns/            # 03 — Nouns-style NFT; accessory EARNED from stamps,
                       #      aura LIVING (mutable). See tez-stamps/TRAITS.md
 venice-drum-circle/   # 04 — SCOPE.md only: physical drum circle dispensing
                       #      session badges. Zero new contracts needed.
+tez-cast/             # 05 — personal page for any wallet (balance/activity/
+                      #      stamps/nouns viz) + append-only broadcast tower.
+                      #      MAINNET KT1NgPnaHLtZ2cNpb2hWGDxFH9fUCABaiaE1,
+                      #      live at tez-cast.pages.dev
 ```
 
 Read each repo's README.md before touching it. tez-stamps/TRAITS.md is the

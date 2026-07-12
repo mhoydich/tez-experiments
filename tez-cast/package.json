@@ -1,0 +1,23 @@
+{
+  "name": "tez-cast",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "deploy": "node scripts/deploy.js"
+  },
+  "dependencies": {
+    "@airgap/beacon-sdk": "^4.3.1",
+    "@taquito/beacon-wallet": "^25.0.0",
+    "@taquito/signer": "^25.0.0",
+    "@taquito/taquito": "^25.0.0",
+    "@taquito/utils": "^25.0.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5",
+    "vite": "^5.4.0",
+    "vite-plugin-node-polyfills": "^0.28.0"
+  }
+}
