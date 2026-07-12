@@ -125,47 +125,66 @@
         <button id="mail-viewed" class="ghost" type="button" hidden>✉ Mail this passport a noun</button>
       </div>
 
-      <ul id="vitals" class="vitals" aria-label="Wallet vitals"></ul>
-      <div class="landing-cols charts-row">
-        <div id="balance-chart" hidden>
-          <h2 class="section-label">Balance — lifetime</h2>
-          <div class="chart-card" id="balance-card"></div>
-        </div>
-        <div id="pulse-chart" hidden>
-          <h2 class="section-label">Pulse — 8 weeks</h2>
-          <div class="chart-card" id="pulse-card"></div>
-        </div>
-      </div>
+      <div id="panes">
+        <section class="pane" data-pane="vitals">
+          <h2 class="section-label">Vitals</h2>
+          <ul id="vitals" class="vitals" aria-label="Wallet vitals"></ul>
+          <div class="landing-cols charts-row">
+            <div id="balance-chart" hidden>
+              <h2 class="section-label">Balance — lifetime</h2>
+              <div class="chart-card" id="balance-card"></div>
+            </div>
+            <div id="pulse-chart" hidden>
+              <h2 class="section-label">Pulse — 8 weeks</h2>
+              <div class="chart-card" id="pulse-card"></div>
+            </div>
+          </div>
+        </section>
 
-      <h2 class="section-label">Stamps</h2>
-      <ul id="stamps" class="stamp-grid" aria-label="Your stamps"></ul>
-      <div id="claimable"></div>
-      <div class="shelf-head">
-        <h2 class="section-label">Nouns</h2>
-        <button id="mint-noun" class="ghost" type="button" hidden>Mint my noun</button>
-      </div>
-      <div id="nouns" class="noun-shelf"></div>
+        <section class="pane" data-pane="stamps">
+          <h2 class="section-label">Stamps</h2>
+          <ul id="stamps" class="stamp-grid" aria-label="Your stamps"></ul>
+          <div id="claimable"></div>
+        </section>
 
-      <div class="shelf-head">
-        <h2 class="section-label">Postcards received</h2>
-        <button id="send-postcard" class="ghost" type="button" hidden>✉ Send a postcard</button>
-      </div>
-      <div id="postcards" class="postcard-wall"></div>
+        <section class="pane" data-pane="nouns">
+          <div class="shelf-head">
+            <h2 class="section-label">Nouns</h2>
+            <button id="mint-noun" class="ghost" type="button" hidden>Mint my noun</button>
+          </div>
+          <div id="nouns" class="noun-shelf"></div>
+        </section>
 
-      <h2 class="section-label">Pickleball — the rating desk</h2>
-      <div id="rally"></div>
+        <section class="pane" data-pane="postcards">
+          <div class="shelf-head">
+            <h2 class="section-label">Postcards received</h2>
+            <button id="send-postcard" class="ghost" type="button" hidden>✉ Send a postcard</button>
+          </div>
+          <div id="postcards" class="postcard-wall"></div>
+        </section>
 
-      <h2 class="section-label">Broadcast — <span id="cast-count">0</span> on the air, forever</h2>
-      <div id="composer" class="composer" hidden>
-        <textarea id="cast-body" maxlength="280" rows="2"
-                  placeholder="say something permanent…"></textarea>
-        <div class="composer-row">
-          <div id="kinds" class="kinds"></div>
-          <span class="field-hint"><span id="cast-chars">0</span>/280</span>
-          <button id="cast-send" class="enter enter-sm" type="button">Cast</button>
-        </div>
+        <section class="pane" data-pane="rally">
+          <h2 class="section-label">Pickleball — the rating desk</h2>
+          <div id="rally"></div>
+        </section>
+
+        <section class="pane" data-pane="broadcast">
+          <h2 class="section-label">Broadcast — <span id="cast-count">0</span> on the air, forever</h2>
+          <div id="composer" class="composer" hidden>
+            <textarea id="cast-body" maxlength="280" rows="2"
+                      placeholder="say something permanent…"></textarea>
+            <div class="composer-row">
+              <div id="kinds" class="kinds"></div>
+              <span class="field-hint"><span id="cast-chars">0</span>/280</span>
+              <button id="cast-send" class="enter enter-sm" type="button">Cast</button>
+            </div>
+          </div>
+          <div id="casts" class="cast-feed"></div>
+        </section>
       </div>
-      <div id="casts" class="cast-feed"></div>
+      <p class="profile-links pane-reset-row">
+        <button id="reset-panes" class="linkish" type="button">reset arrangement</button>
+      </p>
     </section>
 
     <!-- send-a-postcard dialog -->

@@ -235,3 +235,12 @@ footer p {
 .rally-declare { display: flex; gap: 0.6rem; margin: 0.4rem 0; }
 .rally-declare input { width: 7rem; font-family: ui-monospace, Menlo, monospace; font-size: 0.95rem; padding: 0.45rem 0.6rem; border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink); }
 #rally .noun-empty { margin: 0.3rem 0 0.8rem; }
+
+/* ---------- draggable panes ---------- */
+.pane { position: relative; }
+.pane-handle { font: inherit; font-size: 0.8rem; line-height: 1; background: none; border: none; padding: 0 0.45rem 0 0; margin: 0; color: #c9c2b6; cursor: grab; vertical-align: baseline; }
+.pane-handle:hover, .pane-handle:focus-visible { color: var(--stamp); }
+.pane-handle:active { cursor: grabbing; }
+.pane.dragging { opacity: 0.45; outline: 1.5px dashed var(--tezos-blue); outline-offset: 4px; }
+.pane-reset-row { margin-top: 1.6rem; }
+.pane-reset-row .linkish { color: #8a8178; font-size: 0.72rem; font-family: ui-monospace, Menlo, monospace; letter-spacing: 0.08em; }

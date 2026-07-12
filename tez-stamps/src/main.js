@@ -302,6 +302,87 @@ async function renderPassport(address, { viewOnly = false } = {}) {
 const escapeHTML = (s) => s.replace(/[&<>"']/g, (c) =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
+// ---------- draggable panes: arrange your own passport ----------
+// HTML5 drag & drop, vanilla: grab a section by its ⠿ handle, drop it where
+// it reads best. Order persists in this browser via localStorage. Arrow keys
+// on a focused handle move the pane too (and cover touch-less reordering).
+const PANE_KEY = "stampz:pane-order";
+
+function savePaneOrder() {
+  localStorage.setItem(PANE_KEY, JSON.stringify(
+    [...$("panes").children].map((p) => p.dataset.pane)));
+}
+
+function applyPaneOrder() {
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(PANE_KEY) || "null"); } catch { /* fresh */ }
+  if (!Array.isArray(saved)) return;
+  const wrap = $("panes");
+  for (const name of saved) {
+    const el = wrap.querySelector(`[data-pane="${name}"]`);
+    if (el) wrap.appendChild(el);
+  }
+}
+
+function initPanes() {
+  const wrap = $("panes");
+  wrap.querySelectorAll(".pane").forEach((pane) => {
+    const label = pane.querySelector(".section-label");
+    const h = document.createElement("button");
+    h.type = "button"; h.className = "pane-handle";
+    h.title = "drag to rearrange (or arrow keys)";
+    h.setAttribute("aria-label", `move ${pane.dataset.pane} section`);
+    h.textContent = "⠿";
+    label.prepend(h);
+
+    // draggable only while the grip is held — text selection stays normal
+    h.addEventListener("mousedown", () => (pane.draggable = true));
+    pane.addEventListener("dragstart", (e) => {
+      pane.classList.add("dragging");
+      e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.setData("text/plain", pane.dataset.pane);
+    });
+    pane.addEventListener("dragend", () => {
+      pane.draggable = false;
+      pane.classList.remove("dragging");
+      savePaneOrder();
+    });
+    h.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowUp" && e.key !== "ArrowDown") return;
+      e.preventDefault();
+      if (e.key === "ArrowUp" && pane.previousElementSibling)
+        wrap.insertBefore(pane, pane.previousElementSibling);
+      if (e.key === "ArrowDown" && pane.nextElementSibling)
+        wrap.insertBefore(pane.nextElementSibling, pane);
+      savePaneOrder();
+      h.focus();
+    });
+  });
+
+  // live reorder while dragging — the drop preview IS the drop
+  wrap.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    const dragging = wrap.querySelector(".dragging");
+    if (!dragging) return;
+    const after = [...wrap.querySelectorAll(".pane:not(.dragging)")].find((p) => {
+      const r = p.getBoundingClientRect();
+      return e.clientY < r.top + r.height / 2;
+    });
+    if (after) wrap.insertBefore(dragging, after);
+    else wrap.appendChild(dragging);
+  });
+  wrap.addEventListener("drop", (e) => e.preventDefault());
+
+  $("reset-panes").addEventListener("click", () => {
+    localStorage.removeItem(PANE_KEY);
+    const order = ["vitals", "stamps", "nouns", "postcards", "rally", "broadcast"];
+    for (const name of order) wrap.appendChild(wrap.querySelector(`[data-pane="${name}"]`));
+  });
+
+  applyPaneOrder();
+}
+initPanes();
+
 // ---------- rally: pickleball rating card + declaration ----------
 const milliFmt = (m) => (m / 1000).toFixed(3);
 
