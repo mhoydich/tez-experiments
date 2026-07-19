@@ -4,9 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>rally — your rating, on the record</title>
-  <meta name="description" content="A self-declared pickleball rating on Tezos, hardened by countersigned match results. Open integer Elo, replayable by anyone, owned by no one." />
+  <meta name="description" content="Make a pickleball portrait, save it to your Tezos profile, and keep your self-declared rating on the record through countersigned matches." />
   <meta property="og:title" content="rally — your rating, on the record" />
-  <meta property="og:description" content="Declare a pickleball rating, mint a soulbound player card, then let countersigned matches move the number." />
+  <meta property="og:description" content="Upload a player or team photo, pick a frame, add a ridiculous superlative, and save the portrait to your Tezos Rally profile." />
   <meta name="twitter:card" content="summary" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -22,6 +22,72 @@
        player card. From then on the number only moves when a match is
        countersigned by everyone on the court: open integer Elo, replayable
        by anyone, owned by no one.</p>
+
+    <section id="booth" class="booth" aria-labelledby="booth-title">
+      <div class="booth-head">
+        <div>
+          <p class="eyebrow">new at the desk · photo day</p>
+          <h2 id="booth-title">The Rally Booth</h2>
+        </div>
+        <button id="booth-surprise" class="ghost" type="button">Surprise me</button>
+      </div>
+      <p class="booth-deck">Upload a player, doubles pair, or whole team. Pick a frame,
+        hand out a superlative, then download it or wallet-sign it into your Rally profile.</p>
+
+      <canvas id="booth-canvas" width="1024" height="1024"
+        role="img" aria-label="Preview of your framed Rally pickleball portrait"></canvas>
+
+      <label class="upload-card" for="booth-upload">
+        <span>1 · Choose the shot</span>
+        <strong>Upload player or team photo</strong>
+        <small>JPG, PNG, HEIC · stays in this browser</small>
+        <input id="booth-upload" type="file" accept="image/*" />
+      </label>
+
+      <label class="field booth-zoom">Crop / zoom
+        <input id="booth-zoom" type="range" min="1" max="2.5" value="1" step="0.01" />
+        <span class="field-hint">Drag the photo in the preview to reposition it.</span>
+      </label>
+
+      <fieldset class="frame-picker">
+        <legend>2 · Pick a frame</legend>
+        <button type="button" data-booth-frame="court-club" aria-pressed="true">
+          <img src="/frames/court-club.png" alt="" /><span>Court Club</span>
+        </button>
+        <button type="button" data-booth-frame="kitchen-royalty" aria-pressed="false">
+          <img src="/frames/kitchen-royalty.png" alt="" /><span>Kitchen Royalty</span>
+        </button>
+        <button type="button" data-booth-frame="golden-hour" aria-pressed="false">
+          <img src="/frames/golden-hour.png" alt="" /><span>Golden Hour</span>
+        </button>
+        <button type="button" data-booth-frame="team-tape" aria-pressed="false">
+          <img src="/frames/team-tape.png" alt="" /><span>Team Tape</span>
+        </button>
+      </fieldset>
+
+      <div class="booth-copy">
+        <label class="field">3 · Player / duo / team name
+          <input id="booth-name" maxlength="34" value="El Segundo Open Play" autocomplete="off" />
+        </label>
+        <label class="field">The superlative
+          <select id="booth-superlative"></select>
+        </label>
+        <label class="field" id="booth-custom-field" hidden>Custom superlative
+          <input id="booth-custom" maxlength="48" placeholder="Most Likely to…" autocomplete="off" />
+        </label>
+        <label class="field">The quote
+          <input id="booth-quote" maxlength="72" value="Mine was in." autocomplete="off" />
+        </label>
+      </div>
+
+      <div class="booth-actions">
+        <button id="booth-download" class="enter enter-sm" type="button">Download portrait</button>
+        <button id="booth-share" class="ghost" type="button">Share</button>
+        <button id="booth-save" class="ghost save-profile" type="button">Save to Tezos profile</button>
+      </div>
+      <p class="booth-note">Saving asks your wallet for a gas-free signature. The portrait is
+        private to this browser for now; the signature proves which Tezos profile made it.</p>
+    </section>
 
     <div id="welcome-back" class="welcome-back" hidden>
       <p>Welcome back, <span id="wb-address" class="mono-inline"></span>.</p>
@@ -54,6 +120,16 @@
           <p class="card-line" id="card-glicko-line" hidden>second opinion <strong id="card-glicko"></strong></p>
         </div>
         <div id="card-spark" class="card-spark" hidden></div>
+      </div>
+
+      <div id="booth-profile-card" class="booth-profile-card" hidden>
+        <img id="booth-profile-image" alt="Saved Rally portrait" />
+        <div>
+          <p class="eyebrow">rally portrait</p>
+          <h3 id="booth-profile-title"></h3>
+          <p id="booth-profile-meta"></p>
+          <button id="booth-profile-edit" class="linkish" type="button">make another portrait</button>
+        </div>
       </div>
 
       <form id="declare-form" hidden>

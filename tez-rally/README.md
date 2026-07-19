@@ -23,6 +23,18 @@ scripts/smoke-courts.js` (originates fresh, stamps, proves the rate limit).
 A pickleball rating you declare yourself, then harden with countersigned
 match results. Template #06 in the tez-experiments series.
 
+## The Rally Booth
+
+Photo day now lives at the top of the app. A player, doubles pair, or team can
+upload a photo, drag and zoom the crop, choose one of four generated pickleball
+frames, add a superlative and quote, then download or share a 1024px portrait.
+
+`Save to Tezos profile` connects through Beacon and requests a gas-free
+Micheline message signature over the portrait's SHA-256 hash. The signed
+portrait is stored in browser storage under the active wallet address in this
+first private version; no photo bytes are sent to Tezos or the Rally contract.
+The generated frame sources are in `public/frames/`.
+
 **The trust ladder:**
 
 ```

@@ -3,7 +3,7 @@
 // connects (or already has a session to resume).
 import { TezosToolkit } from "@taquito/taquito";
 import { BeaconWallet } from "@taquito/beacon-wallet";
-import { NetworkType } from "@airgap/beacon-sdk";
+import { NetworkType, SigningType } from "@airgap/beacon-sdk";
 
 const NETWORK = import.meta.env.VITE_NETWORK || "shadownet";
 const RPC = import.meta.env.VITE_RPC ||
@@ -30,6 +30,32 @@ export async function connect() {
 
 export async function disconnect() {
   await wallet.clearActiveAccount();
+}
+
+function packedString(text) {
+  const bytes = new TextEncoder().encode(text);
+  const hex = [...bytes].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+  return `0501${bytes.length.toString(16).padStart(8, "0")}${hex}`;
+}
+
+// A gas-free wallet signature links a locally saved portrait to the active
+// Rally profile. No photo bytes or transaction are sent to Tezos.
+export async function signBoothProfile(imageHash) {
+  const account = await getActiveAccount();
+  if (!account?.address) throw new Error("Connect a Tezos wallet to save this portrait.");
+  const signedAt = new Date().toISOString();
+  const message = `Tezos Signed Message: tez-rally.pages.dev ${signedAt} I save Rally portrait sha256:${imageHash}.`;
+  const result = await wallet.client.requestSignPayload({
+    signingType: SigningType.MICHELINE,
+    payload: packedString(message),
+  });
+  return {
+    address: account.address,
+    publicKey: account.publicKey || "",
+    signature: result.signature,
+    signedAt,
+    message,
+  };
 }
 
 const run = async (statusEl, busy, done, send) => {

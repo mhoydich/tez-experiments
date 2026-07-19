@@ -4,6 +4,7 @@
 // Beacon session / remembered visitor exists. ?view=<address> renders any
 // player card read-only. Revisits: last address is remembered in localStorage.
 import { loadLadder, loadMatches, playerOf, loadCourts, bookOf, trajectoryOf } from "./board.js";
+import { initBooth } from "./booth.js";
 
 const NETWORK = import.meta.env.VITE_NETWORK || "shadownet";
 const TZKT_UI = NETWORK === "mainnet" ? "https://tzkt.io" : "https://shadownet.tzkt.io";
@@ -104,6 +105,7 @@ async function renderDesk(address, { viewOnly = false } = {}) {
   $("welcome-back").hidden = true;
   $("desk").hidden = false;
   showProfileBar(address, viewOnly);
+  booth.renderSavedProfile(address);
 
   const p = await playerOf(address);
   $("card").hidden = !p;
@@ -310,10 +312,12 @@ async function connectFlow() {
       localStorage.setItem(LAST_KEY, address);
       $("status").textContent = "";
       renderDesk(address);
+      return address;
     }
   } catch (e) {
     $("status").textContent = e?.message || "Connection cancelled.";
   }
+  return null;
 }
 
 $("connect").addEventListener("click", connectFlow);
@@ -324,7 +328,26 @@ $("disconnect").addEventListener("click", async () => {
   $("desk").hidden = true;
   $("connect").hidden = false;
   $("status").textContent = "Logged out.";
+  booth.renderSavedProfile(null);
   renderWelcomeBack();
+});
+
+const booth = initBooth({
+  statusEl: $("status"),
+  authorizeSave: async (imageHash) => {
+    const w = await loadWallet();
+    let account = await w.getActiveAccount();
+    if (!account) {
+      const address = await connectFlow();
+      if (!address) return null;
+      account = await w.getActiveAccount();
+    }
+    if (account?.address && currentAddress !== account.address) {
+      await renderDesk(account.address);
+    }
+    $("status").textContent = "Check your wallet — sign the portrait, no tez required.";
+    return w.signBoothProfile(imageHash);
+  },
 });
 
 async function boot() {

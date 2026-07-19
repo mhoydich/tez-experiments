@@ -56,7 +56,8 @@ body {
 }
 .enter:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--ink); }
 .enter:active { transform: translate(3px,3px); box-shadow: 1px 1px 0 var(--ink); }
-.enter:focus-visible, .ghost:focus-visible, .linkish:focus-visible { outline: 3px solid var(--tezos-blue); outline-offset: 2px; }
+.enter:focus-visible, .ghost:focus-visible, .linkish:focus-visible,
+.frame-picker button:focus-visible, .upload-card:focus-within { outline: 3px solid var(--tezos-blue); outline-offset: 2px; }
 .enter-sm { width: auto; font-size: 0.95rem; padding: 0.6rem 1.1rem; box-shadow: 3px 3px 0 var(--ink); }
 .ghost {
   font: inherit; font-size: 0.85rem; background: none; padding: 0.45rem 0.9rem;
@@ -89,6 +90,74 @@ footer p {
   margin-bottom: 1.5rem;
 }
 .profile-bar .mono { margin: 0; }
+
+/* ---------- the Rally photo booth ---------- */
+.booth {
+  border: 1.5px solid var(--ink); padding: 1.2rem; margin: 0 0 2rem;
+  background: #fff; box-shadow: 6px 6px 0 var(--tezos-blue);
+}
+.booth-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.booth-head .eyebrow { margin-bottom: 0.3rem; }
+.booth h2 {
+  margin: 0; font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(2rem, 8vw, 3.3rem); line-height: 0.95;
+}
+.booth-deck { margin: 0.7rem 0 1rem; color: var(--muted); font-size: 0.9rem; line-height: 1.45; }
+#booth-canvas {
+  display: block; width: 100%; height: auto; border: 1.5px solid var(--ink);
+  background: var(--paper); cursor: grab; touch-action: none;
+}
+#booth-canvas.dragging { cursor: grabbing; }
+.upload-card {
+  display: grid; gap: 0.2rem; margin-top: 0.8rem; padding: 0.8rem 0.9rem;
+  border: 1.5px dashed var(--court); background: #f6faf7; cursor: pointer;
+}
+.upload-card span, .frame-picker legend {
+  font-family: ui-monospace, Menlo, monospace; font-size: 0.66rem;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--court);
+}
+.upload-card strong { font-size: 1rem; }
+.upload-card small { color: var(--muted); }
+.upload-card input { margin-top: 0.45rem; font: 0.75rem ui-monospace, Menlo, monospace; }
+.booth-zoom { margin-top: 0.9rem; }
+.booth-zoom input { accent-color: var(--court); padding: 0; border: 0; background: transparent; }
+.field-hint { text-transform: none; letter-spacing: 0; font-family: Georgia, serif; color: var(--muted); }
+.frame-picker {
+  border: 0; padding: 0; margin: 1rem 0; display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.5rem;
+}
+.frame-picker legend { grid-column: 1 / -1; padding: 0 0 0.4rem; }
+.frame-picker button {
+  min-width: 0; border: 1.5px solid var(--line); background: #fff;
+  padding: 0.3rem; cursor: pointer; color: var(--ink);
+}
+.frame-picker button[aria-pressed="true"] { border-color: var(--ink); box-shadow: 3px 3px 0 var(--court); }
+.frame-picker img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
+.frame-picker span {
+  display: block; margin-top: 0.35rem; font: 0.58rem ui-monospace, Menlo, monospace;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.booth-copy { display: grid; grid-template-columns: 1fr 1fr; gap: 0 0.8rem; }
+.booth-copy .field { margin-block: 0.45rem; }
+.booth-actions { display: flex; align-items: stretch; flex-wrap: wrap; gap: 0.55rem; margin-top: 1rem; }
+.booth-actions .enter { flex: 1 1 180px; }
+.booth-actions .ghost { flex: 0 1 auto; }
+.booth-actions .save-profile { border-color: var(--tezos-blue); color: var(--tezos-blue); }
+.booth-actions button:disabled { opacity: 0.55; cursor: wait; }
+.booth-note { margin: 0.85rem 0 0; color: var(--muted); font-size: 0.72rem; line-height: 1.4; }
+
+.booth-profile-card {
+  display: grid; grid-template-columns: 132px 1fr; gap: 1rem; align-items: center;
+  border: 1.5px solid var(--tezos-blue); padding: 0.7rem; margin: -0.5rem 0 1.5rem;
+  background: #f5f8ff; box-shadow: 4px 4px 0 var(--tezos-blue);
+}
+.booth-profile-card img { display: block; width: 132px; height: 132px; object-fit: cover; border: 1px solid var(--ink); }
+.booth-profile-card .eyebrow { margin: 0 0 0.25rem; color: var(--tezos-blue); }
+.booth-profile-card h3 {
+  margin: 0; font: 700 1.35rem/1 "Cormorant Garamond", Georgia, serif;
+  text-transform: uppercase;
+}
+.booth-profile-card p:not(.eyebrow) { margin: 0.4rem 0; color: var(--muted); font-size: 0.72rem; }
 
 /* ---------- the player card ---------- */
 .player-card {
@@ -204,4 +273,11 @@ form { margin: 0 0 1.2rem; }
 @media (max-width: 480px) {
   .office { padding: 2rem 1.4rem 1.6rem; }
   .player-card { grid-template-columns: 1fr; gap: 0.5rem; }
+  .booth { padding: 0.8rem; margin-inline: -0.35rem; }
+  .booth-head { align-items: flex-start; }
+  .frame-picker { grid-template-columns: 1fr 1fr; }
+  .booth-copy { grid-template-columns: 1fr; }
+  .booth-actions .ghost { flex: 1 1 42%; }
+  .booth-profile-card { grid-template-columns: 92px 1fr; }
+  .booth-profile-card img { width: 92px; height: 92px; }
 }
