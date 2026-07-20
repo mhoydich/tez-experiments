@@ -17,6 +17,7 @@ const fmt = (milli) => (milli / 1000).toFixed(3);
 const fmtDate = (iso) => new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" });
 const whoLink = (a) => `<a href="/?view=${a}">${short(a)}</a>`;
 const viewParam = new URLSearchParams(location.search).get("view");
+const inviteParam = new URLSearchParams(location.search).get("invite");
 let currentAddress = null;
 
 let walletMod = null; // lazy
@@ -350,8 +351,35 @@ const booth = initBooth({
   },
 });
 
+$("invite-partner").addEventListener("click", async () => {
+  const inviteUrl = `${location.origin}/?invite=doubles#booth`;
+  const share = {
+    title: "Make a Rally doubles card with me",
+    text: "Pick our team award, add your photo, and meet me at the kitchen.",
+    url: inviteUrl,
+  };
+  try {
+    if (navigator.share) {
+      await navigator.share(share);
+      $("invite-status").textContent = "Invite opened.";
+    } else {
+      await navigator.clipboard.writeText(`${share.text} ${inviteUrl}`);
+      $("invite-status").textContent = "Partner invite copied.";
+    }
+  } catch (error) {
+    if (error?.name !== "AbortError") {
+      $("invite-status").textContent = "Copy this link: " + inviteUrl;
+    }
+  }
+});
+
 async function boot() {
   renderBoard();
+  if (inviteParam === "doubles") {
+    $("invite-banner").hidden = false;
+    $("booth-name").value = "Our Doubles Team";
+    $("booth-name").dispatchEvent(new Event("input"));
+  }
   if (viewParam) {
     renderDesk(viewParam, { viewOnly: true });
     return;

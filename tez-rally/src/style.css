@@ -59,7 +59,8 @@ body {
 .enter:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--ink); }
 .enter:active { transform: translate(3px,3px); box-shadow: 1px 1px 0 var(--ink); }
 .enter:focus-visible, .ghost:focus-visible, .linkish:focus-visible,
-.frame-picker button:focus-visible, .upload-card:focus-within { outline: 3px solid var(--tezos-blue); outline-offset: 2px; }
+.frame-picker button:focus-visible, .award-picker button:focus-visible,
+.house-use:focus-visible, .upload-card:focus-within { outline: 3px solid var(--tezos-blue); outline-offset: 2px; }
 .enter-sm { width: auto; font-size: 0.95rem; padding: 0.6rem 1.1rem; box-shadow: 3px 3px 0 var(--ink); }
 .ghost {
   font: inherit; font-size: 0.85rem; background: none; padding: 0.45rem 0.9rem;
@@ -166,6 +167,77 @@ footer p {
 .landing-proof p { margin: 0 0 1rem; color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
 .landing-proof a { color: var(--tezos-blue); font: 0.68rem/1.3 ui-monospace, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.06em; }
 
+.house-league { padding: 3.5rem 0 4rem; scroll-margin-top: 1rem; }
+.house-head {
+  display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 3rem; align-items: end;
+  padding: 0 clamp(0.5rem, 3vw, 2.4rem) 2rem;
+}
+.house-head .eyebrow { margin-bottom: 0.7rem; }
+.house-head h2 {
+  margin: 0; font: 600 clamp(3.2rem, 6vw, 5.4rem)/0.86 "Cormorant Garamond", Georgia, serif;
+  letter-spacing: -0.035em;
+}
+.house-head h2 em { color: var(--court); font-weight: 500; }
+.house-head > p { margin: 0; color: var(--muted); font-size: 0.98rem; line-height: 1.55; }
+.house-grid {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem;
+  padding: 0 clamp(0.5rem, 3vw, 2.4rem);
+}
+.house-card {
+  display: flex; flex-direction: column; min-width: 0; padding: 0.65rem 0.65rem 1rem;
+  border: 1.5px solid var(--ink); background: #fff; box-shadow: 5px 5px 0 var(--line);
+}
+.house-card:nth-child(2n) { transform: translateY(1.6rem) rotate(0.5deg); }
+.house-card:nth-child(3n) { transform: rotate(-0.45deg); }
+.house-image { position: relative; overflow: hidden; border: 1px solid var(--ink); background: var(--paper); }
+.house-image img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; transition: transform 0.35s ease; }
+.house-card:hover .house-image img { transform: scale(1.025); }
+.house-award {
+  position: absolute; right: 0.65rem; top: 0.65rem; width: 3.2rem; height: 3.2rem;
+  display: grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--ink);
+  background: #f7c84b; box-shadow: 3px 3px 0 var(--ink); font-size: 1.45rem; transform: rotate(8deg);
+}
+.source-pill {
+  width: fit-content; margin: 0.75rem 0 0; padding: 0.25rem 0.42rem; background: #e8f1ec; color: var(--court);
+  font: 0.54rem/1 ui-monospace, Menlo, monospace; letter-spacing: 0.07em; text-transform: uppercase;
+}
+.source-pill.source-mj { background: #edf2ff; color: var(--tezos-blue); }
+.source-pill.source-reve { background: #241f1c; color: #f7c84b; }
+.house-card h3 { margin: 0.7rem 0 0.35rem; font: 700 2rem/0.9 "Cormorant Garamond", Georgia, serif; }
+.house-card > p:not(.source-pill) { margin: 0 0 0.9rem; color: var(--muted); font-size: 0.82rem; line-height: 1.4; }
+.house-use {
+  width: 100%; margin-top: auto; padding: 0.62rem; border: 1.5px solid var(--ink); background: var(--paper);
+  color: var(--ink); cursor: pointer; font: 0.62rem/1 ui-monospace, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.08em;
+}
+.house-use:hover { color: #fff; background: var(--court); box-shadow: 2px 2px 0 var(--ink); }
+.house-card-night { background: #151c2e; color: #fff; }
+.house-card-night > p:not(.source-pill) { color: #c9cfdf; }
+
+.zero-two {
+  display: grid; grid-template-columns: 1fr 1.4fr auto; gap: 1.5rem; align-items: center;
+  margin: 4.5rem clamp(0.5rem, 3vw, 2.4rem) 0; padding: 1.5rem;
+  border: 1.5px solid var(--ink); background: #f7c84b; box-shadow: 6px 6px 0 var(--ink);
+}
+.zero-two .eyebrow { margin-bottom: 0.45rem; color: var(--ink); }
+.zero-two h3 { margin: 0; font: 700 1.75rem/1 "Cormorant Garamond", Georgia, serif; }
+.zero-two ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; counter-reset: growth; }
+.zero-two li { display: grid; grid-template-columns: auto 1fr; gap: 0 0.65rem; counter-increment: growth; }
+.zero-two li::before { content: counter(growth); grid-row: 1 / 3; font: 700 1.5rem/1 "Cormorant Garamond", Georgia, serif; }
+.zero-two li strong { font-size: 0.82rem; }
+.zero-two li span { color: #51483c; font-size: 0.72rem; }
+.zero-two .enter { background: var(--court); min-width: 175px; }
+.invite-status { grid-column: 3; margin: -0.75rem 0 0; min-height: 1em; text-align: center; font-size: 0.7rem; }
+.house-honesty {
+  max-width: 690px; margin: 1.2rem auto 0; text-align: center; color: var(--muted);
+  font: 0.64rem/1.45 ui-monospace, Menlo, monospace; letter-spacing: 0.04em;
+}
+.invite-banner {
+  display: grid; grid-template-columns: auto 1fr; gap: 0.8rem; align-items: center;
+  border: 1.5px dashed var(--tezos-blue); padding: 0.9rem 1rem; margin: 0 0 1.2rem; background: #f5f8ff;
+}
+.invite-banner > span { font-size: 1.7rem; }
+.invite-banner p { margin: 0; font-size: 0.82rem; line-height: 1.35; }
+
 .landing-marquee {
   display: flex; width: calc(100% + 2.4rem); margin-left: -1.2rem; overflow: hidden;
   border-block: 1.5px solid var(--ink); background: var(--court); color: #fff; transform: rotate(-1deg);
@@ -209,7 +281,7 @@ footer p {
 .field-hint { text-transform: none; letter-spacing: 0; font-family: Georgia, serif; color: var(--muted); }
 .frame-picker {
   border: 0; padding: 0; margin: 1rem 0; display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.5rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem;
 }
 .frame-picker legend { grid-column: 1 / -1; padding: 0 0 0.4rem; }
 .frame-picker button {
@@ -224,6 +296,21 @@ footer p {
 }
 .booth-copy { display: grid; grid-template-columns: 1fr 1fr; gap: 0 0.8rem; }
 .booth-copy .field { margin-block: 0.45rem; }
+.award-picker {
+  border: 0; padding: 0; margin: 1rem 0 0; display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.45rem;
+}
+.award-picker legend {
+  grid-column: 1 / -1; padding: 0 0 0.45rem; color: var(--court);
+  font: 0.66rem/1 ui-monospace, Menlo, monospace; letter-spacing: 0.14em; text-transform: uppercase;
+}
+.award-picker button {
+  min-width: 0; display: flex; align-items: center; gap: 0.4rem; padding: 0.45rem;
+  border: 1.5px solid var(--line); background: #fff; cursor: pointer; color: var(--ink);
+}
+.award-picker button[aria-pressed="true"] { border-color: var(--ink); background: #fff9df; box-shadow: 2px 2px 0 #f7c84b; }
+.award-picker b { font-size: 1.15rem; }
+.award-picker span { font: 0.55rem/1.15 ui-monospace, Menlo, monospace; text-transform: uppercase; text-align: left; }
 .booth-actions { display: flex; align-items: stretch; flex-wrap: wrap; gap: 0.55rem; margin-top: 1rem; }
 .booth-actions .enter { flex: 1 1 180px; }
 .booth-actions .ghost { flex: 0 1 auto; }
@@ -379,12 +466,26 @@ form { margin: 0 0 1.2rem; }
   .landing-proof { grid-template-columns: 1fr; margin: 0 0 2.5rem; }
   .landing-proof article { padding: 1.4rem; border-right: 0; border-bottom: 1px solid var(--line); }
   .landing-proof article:last-child { border-bottom: 0; }
+  .house-league { padding: 2.6rem 0 3.2rem; }
+  .house-head { grid-template-columns: 1fr; gap: 1rem; padding: 0 0.45rem 1.5rem; }
+  .house-head h2 { font-size: clamp(3.3rem, 17vw, 4.5rem); }
+  .house-grid { grid-template-columns: 1fr 1fr; gap: 0.65rem; padding: 0; }
+  .house-card { padding: 0.42rem 0.42rem 0.75rem; box-shadow: 3px 3px 0 var(--line); }
+  .house-card:nth-child(2n), .house-card:nth-child(3n) { transform: none; }
+  .house-award { right: 0.4rem; top: 0.4rem; width: 2.55rem; height: 2.55rem; font-size: 1.1rem; box-shadow: 2px 2px 0 var(--ink); }
+  .house-card h3 { font-size: 1.45rem; }
+  .house-card > p:not(.source-pill) { font-size: 0.72rem; }
+  .source-pill { font-size: 0.45rem; }
+  .zero-two { grid-template-columns: 1fr; gap: 1rem; margin: 2.4rem 0 0; padding: 1.1rem; }
+  .zero-two .enter { width: 100%; }
+  .invite-status { grid-column: 1; margin: -0.4rem 0 0; }
   .app-intro { padding: 4rem 0.65rem 0; }
   .player-card { grid-template-columns: 1fr; gap: 0.5rem; }
   .booth { padding: 0.8rem; margin-inline: -0.35rem; }
   .booth-head { align-items: flex-start; }
   .frame-picker { grid-template-columns: 1fr 1fr; }
   .booth-copy { grid-template-columns: 1fr; }
+  .award-picker { grid-template-columns: 1fr 1fr; }
   .booth-actions .ghost { flex: 1 1 42%; }
   .booth-profile-card { grid-template-columns: 92px 1fr; }
   .booth-profile-card img { width: 92px; height: 92px; }

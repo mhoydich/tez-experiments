@@ -41,6 +41,36 @@ const frames = [
     ink: "#fffaf0",
     accent: "#ff731c",
   },
+  {
+    id: "midjourney-color-court",
+    name: "Color Court · Midjourney",
+    src: "/frames/midjourney-color-court.jpg",
+    photo: { x: 116, y: 158, w: 792, h: 510 },
+    captionY: 650,
+    panel: "rgba(255, 255, 255, 0.94)",
+    ink: "#131313",
+    accent: "#ff2f91",
+  },
+  {
+    id: "reve-electric-night",
+    name: "Electric Night · Reve",
+    src: "/frames/reve-electric-night.jpg",
+    photo: { x: 140, y: 342, w: 744, h: 390 },
+    captionY: 700,
+    panel: "rgba(7, 24, 48, 0.94)",
+    ink: "#fff2c2",
+    accent: "#72d6d4",
+  },
+];
+
+const awards = [
+  { id: "founding-player", name: "Founding Player", emoji: "🏆" },
+  { id: "kitchen-mayor", name: "Kitchen Mayor", emoji: "👑" },
+  { id: "dink-scientist", name: "Dink Scientist", emoji: "🧪" },
+  { id: "chaos-agent", name: "Chaos Agent", emoji: "⚡" },
+  { id: "court-warrior", name: "Court Warrior", emoji: "🛡️" },
+  { id: "best-dressed", name: "Best Dressed", emoji: "💅" },
+  { id: "electric-night", name: "Electric Night", emoji: "🌩️" },
 ];
 
 const superlatives = [
@@ -97,9 +127,11 @@ export function initBooth({ authorizeSave, statusEl }) {
   const customField = document.getElementById("booth-custom-field");
   const quote = document.getElementById("booth-quote");
   const frameButtons = [...document.querySelectorAll("[data-booth-frame]")];
+  const awardButtons = [...document.querySelectorAll("[data-booth-award]")];
 
   const state = {
     frame: 0,
+    award: 0,
     photo: null,
     zoom: 1,
     panX: 0,
@@ -129,6 +161,33 @@ export function initBooth({ authorizeSave, statusEl }) {
     return superlative.value === "custom"
       ? (custom.value.trim() || "Most Likely to Dink")
       : superlative.value;
+  }
+
+  function setSuperlative(label) {
+    const existing = [...superlative.options].find((option) => option.value === label);
+    if (existing) {
+      superlative.value = label;
+      customField.hidden = true;
+      return;
+    }
+    superlative.value = "custom";
+    custom.value = label;
+    customField.hidden = false;
+  }
+
+  function setFrame(id) {
+    const index = frames.findIndex((frame) => frame.id === id);
+    if (index < 0) return;
+    state.frame = index;
+    frameButtons.forEach((item, i) => item.setAttribute("aria-pressed", String(i === index)));
+  }
+
+  function setAward(id) {
+    const index = awards.findIndex((award) => award.id === id);
+    if (index < 0) return;
+    state.award = index;
+    awardButtons.forEach((item) =>
+      item.setAttribute("aria-pressed", String(item.dataset.boothAward === id)));
   }
 
   function drawPhoto(frame) {
@@ -196,13 +255,29 @@ export function initBooth({ authorizeSave, statusEl }) {
     ctx.fillText(name, x + 28, y + 28);
 
     ctx.fillStyle = frame.ink;
-    const titleSize = fitText(ctx, title, w - 56, 43, 25, '"Cormorant Garamond", Georgia, serif');
+    const titleSize = fitText(ctx, title, w - 154, 43, 25, '"Cormorant Garamond", Georgia, serif');
     ctx.font = `700 ${titleSize}px "Cormorant Garamond", Georgia, serif`;
     ctx.fillText(title, x + 28, y + 70);
 
     ctx.font = 'italic 18px Georgia, serif';
     const quoteText = `“${line.slice(0, 72)}”`;
     ctx.fillText(quoteText, x + 28, y + 100);
+
+    const award = awards[state.award];
+    const badgeX = x + w - 54;
+    const badgeY = y + 58;
+    ctx.beginPath();
+    ctx.arc(badgeX, badgeY, 39, 0, Math.PI * 2);
+    ctx.fillStyle = frame.accent;
+    ctx.fill();
+    ctx.strokeStyle = frame.ink;
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.fillStyle = frame.ink;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.font = '36px "Apple Color Emoji", "Segoe UI Emoji", sans-serif';
+    ctx.fillText(award.emoji, badgeX, badgeY + 1);
   }
 
   function draw() {
@@ -224,13 +299,14 @@ export function initBooth({ authorizeSave, statusEl }) {
 
   function profileRecord(address, image, proof) {
     return {
-      version: 1,
+      version: 2,
       address,
       image,
       frame: frames[state.frame].id,
       name: nameInput.value.trim() || "Rally Open Play",
       superlative: activeSuperlative(),
       quote: quote.value.trim() || "Mine was in.",
+      award: awards[state.award],
       savedAt: proof.signedAt,
       signature: proof.signature,
       publicKey: proof.publicKey,
@@ -286,7 +362,7 @@ export function initBooth({ authorizeSave, statusEl }) {
     document.getElementById("booth-profile-image").src = record.image;
     document.getElementById("booth-profile-title").textContent = record.superlative;
     document.getElementById("booth-profile-meta").textContent =
-      `${record.name} · wallet-signed ${new Date(record.savedAt).toLocaleDateString()}`;
+      `${record.award?.emoji || "🏆"} ${record.award?.name || "Rally award"} · ${record.name} · wallet-signed ${new Date(record.savedAt).toLocaleDateString()}`;
   }
 
   upload.addEventListener("change", () => {
@@ -336,6 +412,23 @@ export function initBooth({ authorizeSave, statusEl }) {
     draw();
   }));
 
+  awardButtons.forEach((button) => button.addEventListener("click", () => {
+    setAward(button.dataset.boothAward);
+    draw();
+  }));
+
+  for (const button of document.querySelectorAll("[data-house-starter]")) {
+    button.addEventListener("click", () => {
+      setSuperlative(button.dataset.superlative);
+      quote.value = button.dataset.quote;
+      setAward(button.dataset.award);
+      setFrame(button.dataset.frame);
+      draw();
+      document.getElementById("booth").scrollIntoView({ behavior: "smooth", block: "start" });
+      statusEl.textContent = `Loaded ${button.dataset.superlative} — add your photo or team name.`;
+    });
+  }
+
   canvas.addEventListener("pointerdown", (event) => {
     if (!state.photo) return;
     canvas.setPointerCapture(event.pointerId);
@@ -359,10 +452,13 @@ export function initBooth({ authorizeSave, statusEl }) {
 
   document.getElementById("booth-surprise").addEventListener("click", () => {
     state.frame = Math.floor(Math.random() * frames.length);
+    state.award = Math.floor(Math.random() * awards.length);
     superlative.value = superlatives[Math.floor(Math.random() * superlatives.length)];
     quote.value = quotes[Math.floor(Math.random() * quotes.length)];
     customField.hidden = true;
     frameButtons.forEach((item, i) => item.setAttribute("aria-pressed", String(i === state.frame)));
+    awardButtons.forEach((item) =>
+      item.setAttribute("aria-pressed", String(item.dataset.boothAward === awards[state.award].id)));
     draw();
   });
 
@@ -375,7 +471,7 @@ export function initBooth({ authorizeSave, statusEl }) {
     const blob = await canvasBlob();
     const file = new File([blob], "rally-photo.png", { type: "image/png" });
     if (navigator.share && navigator.canShare?.({ files: [file] })) {
-      await navigator.share({ title: activeSuperlative(), text: "Made in Rally", files: [file] });
+      await navigator.share({ title: activeSuperlative(), text: `${awards[state.award].emoji} ${awards[state.award].name} · Made in Rally`, files: [file] });
     } else {
       downloadBlob(blob, "rally-photo.png");
       statusEl.textContent = "Downloaded — this browser shares from the saved file.";

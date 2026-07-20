@@ -18,9 +18,9 @@
     <header class="site-nav">
       <a class="nav-mark" href="#top" aria-label="Rally home">rally</a>
       <nav aria-label="Primary navigation">
+        <a href="#house-league">House league</a>
         <a href="#booth">Photo booth</a>
         <a href="#desk-entry">Player card</a>
-        <a href="#board">The ladder</a>
       </nav>
       <a class="nav-cta" href="#booth">Make yours</a>
     </header>
@@ -76,6 +76,79 @@
       </article>
     </section>
 
+    <section id="house-league" class="house-league" aria-labelledby="house-title">
+      <header class="house-head">
+        <div>
+          <p class="eyebrow">zero-player mode · art before network effects</p>
+          <h2 id="house-title">Meet the <em>House League.</em></h2>
+        </div>
+        <p>Six imaginary pickleball energies made with ChatGPT, Midjourney, and
+          Reve. They are prompts, not pretend users—pick one, make it yours,
+          and invite the first real person.</p>
+      </header>
+
+      <div class="house-grid">
+        <article class="house-card house-card-tall">
+          <div class="house-image"><img src="/house/chatgpt-kitchen-mayor.jpg" alt="Fictional older pickleball player holding a giant blue paddle" /><span class="house-award">👑</span></div>
+          <p class="source-pill">ChatGPT image · house character</p>
+          <h3>Kitchen Mayor</h3>
+          <p>Knows every court rule, every birthday, and whose ball was definitely out.</p>
+          <button class="house-use" type="button" data-house-starter data-superlative="Kitchen Royalty" data-quote="The kitchen recognizes my authority." data-award="kitchen-mayor" data-frame="court-club">Use this energy</button>
+        </article>
+        <article class="house-card">
+          <div class="house-image"><img src="/house/chatgpt-dink-scientist.jpg" alt="Fictional pickleball player conducting a colorful courtside experiment" /><span class="house-award">🧪</span></div>
+          <p class="source-pill">ChatGPT image · house character</p>
+          <h3>Dink Scientist</h3>
+          <p>Peer-reviewed third shots. Findings remain controversial at open play.</p>
+          <button class="house-use" type="button" data-house-starter data-superlative="Dink Scientist" data-quote="The control group popped it up." data-award="dink-scientist" data-frame="kitchen-royalty">Use this energy</button>
+        </article>
+        <article class="house-card house-card-tall">
+          <div class="house-image"><img src="/house/chatgpt-team-chaos.jpg" alt="Fictional group of four exuberant pickleball teammates" /><span class="house-award">⚡</span></div>
+          <p class="source-pill">ChatGPT image · house character</p>
+          <h3>Team Chaos</h3>
+          <p>Four paddles, one group chat, no agreed interpretation of the score.</p>
+          <button class="house-use" type="button" data-house-starter data-superlative="Team Nobody Asked For" data-quote="The formation is mostly emotional." data-award="chaos-agent" data-frame="team-tape">Use this energy</button>
+        </article>
+        <article class="house-card">
+          <div class="house-image"><img src="/editorial/midjourney-court-warrior.jpg" alt="Illustrated pickleball court warrior in an ornate helmet" /><span class="house-award">🛡️</span></div>
+          <p class="source-pill source-mj">Midjourney original · editorial seed</p>
+          <h3>Court Warrior</h3>
+          <p>Arrives dressed for the bronze-medal match and a minor mythological dispute.</p>
+          <button class="house-use" type="button" data-house-starter data-superlative="Court Warrior" data-quote="No soft game without honor." data-award="court-warrior" data-frame="midjourney-color-court">Use this energy</button>
+        </article>
+        <article class="house-card house-card-tall">
+          <div class="house-image"><img src="/editorial/midjourney-best-dressed.jpg" alt="Fashion editorial illustration of a pickleball player in floral clothes" /><span class="house-award">💅</span></div>
+          <p class="source-pill source-mj">Midjourney original · editorial seed</p>
+          <h3>Best Dressed</h3>
+          <p>The rating is provisional. The look has already cleared review.</p>
+          <button class="house-use" type="button" data-house-starter data-superlative="Best Dressed at Open Play" data-quote="The outfit was never in question." data-award="best-dressed" data-frame="golden-hour">Use this energy</button>
+        </article>
+        <article class="house-card house-card-night">
+          <div class="house-image"><img src="/editorial/reve-electric-night.jpg" alt="Vintage pickleball magazine cover with lightning over a tropical court" /><span class="house-award">🌩️</span></div>
+          <p class="source-pill source-reve">Reve image · limited wildcard</p>
+          <h3>Electric Night</h3>
+          <p>For matches with weather, lore, and entirely too much cinematic importance.</p>
+          <button class="house-use" type="button" data-house-starter data-superlative="Electric Night Rallier" data-quote="The forecast said one more game." data-award="electric-night" data-frame="reve-electric-night">Use this energy</button>
+        </article>
+      </div>
+
+      <aside class="zero-two" aria-labelledby="zero-two-title">
+        <div>
+          <p class="eyebrow">the zero → two move</p>
+          <h3 id="zero-two-title">Rally starts as a toy. Then it becomes a record.</h3>
+        </div>
+        <ol>
+          <li><strong>Make one funny card</strong><span>No wallet, opponent, or rating required.</span></li>
+          <li><strong>Send one doubles invite</strong><span>Your partner lands directly in the booth.</span></li>
+          <li><strong>Only then keep score</strong><span>Real signatures wake up the public ladder.</span></li>
+        </ol>
+        <button id="invite-partner" class="enter enter-sm" type="button">Invite my first partner</button>
+        <p id="invite-status" class="invite-status" role="status"></p>
+      </aside>
+      <p class="house-honesty">House characters have no wallets, ratings, or match history.
+        Fun awards are self-applied; Rally’s competitive record still comes only from real player signatures.</p>
+    </section>
+
     <div class="landing-marquee" aria-hidden="true">
       <span>PORTRAITS · PLAYER CARDS · COUNTERSIGNED MATCHES · COURT STAMPS · OPEN ELO · </span>
       <span>PORTRAITS · PLAYER CARDS · COUNTERSIGNED MATCHES · COURT STAMPS · OPEN ELO · </span>
@@ -89,6 +162,11 @@
         <p class="lede">Start with a portrait, then connect a Tezos wallet for your
           player card, match log, and passport. Your photo stays in this browser.</p>
       </header>
+
+    <div id="invite-banner" class="invite-banner" hidden>
+      <span aria-hidden="true">🤝</span>
+      <p><strong>You were invited to a doubles card.</strong><br />Choose a shot and an award; your partner can make the matching half.</p>
+    </div>
 
     <section id="booth" class="booth" aria-labelledby="booth-title">
       <div class="booth-head">
@@ -130,6 +208,12 @@
         <button type="button" data-booth-frame="team-tape" aria-pressed="false">
           <img src="/frames/team-tape.png" alt="" /><span>Team Tape</span>
         </button>
+        <button type="button" data-booth-frame="midjourney-color-court" aria-pressed="false">
+          <img src="/frames/midjourney-color-court.jpg" alt="" /><span>Color Court · MJ</span>
+        </button>
+        <button type="button" data-booth-frame="reve-electric-night" aria-pressed="false">
+          <img src="/frames/reve-electric-night.jpg" alt="" /><span>Electric Night · Reve</span>
+        </button>
       </fieldset>
 
       <div class="booth-copy">
@@ -146,6 +230,17 @@
           <input id="booth-quote" maxlength="72" value="Mine was in." autocomplete="off" />
         </label>
       </div>
+
+      <fieldset class="award-picker">
+        <legend>4 · Pin an award</legend>
+        <button type="button" data-booth-award="founding-player" aria-pressed="true"><b>🏆</b><span>Founding Player</span></button>
+        <button type="button" data-booth-award="kitchen-mayor" aria-pressed="false"><b>👑</b><span>Kitchen Mayor</span></button>
+        <button type="button" data-booth-award="dink-scientist" aria-pressed="false"><b>🧪</b><span>Dink Scientist</span></button>
+        <button type="button" data-booth-award="chaos-agent" aria-pressed="false"><b>⚡</b><span>Chaos Agent</span></button>
+        <button type="button" data-booth-award="court-warrior" aria-pressed="false"><b>🛡️</b><span>Court Warrior</span></button>
+        <button type="button" data-booth-award="best-dressed" aria-pressed="false"><b>💅</b><span>Best Dressed</span></button>
+        <button type="button" data-booth-award="electric-night" aria-pressed="false"><b>🌩️</b><span>Electric Night</span></button>
+      </fieldset>
 
       <div class="booth-actions">
         <button id="booth-download" class="enter enter-sm" type="button">Download portrait</button>

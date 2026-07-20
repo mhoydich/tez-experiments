@@ -17,6 +17,24 @@ pickleball portraits, wallet-owned player cards, countersigned match records,
 and geoconfirmed court passport stamps. The working booth and rating desk stay
 on the same page immediately below the introduction.
 
+## House League and the zero-user loop
+
+The House League gives Rally visual life before the competitive network exists.
+Its six cards are explicitly fictional prompts—not accounts, ratings, or match
+history—and combine three sources: local Midjourney originals, ChatGPT-generated
+characters, and a Reve pickleball-magazine wildcard. Each card can load a booth
+superlative, quote, award emoji, and frame.
+
+The acquisition loop is intentionally useful at 0 → 2 players:
+
+1. Make a funny portrait without a wallet.
+2. Share it or send a doubles invite that lands directly in the booth.
+3. Connect wallets only when players want a profile or countersigned record.
+
+The public ladder stays truthful and may remain empty; Rally does not manufacture
+users or match history to make the page look populated. Source assets live in
+`public/house/`, `public/editorial/`, and `public/frames/`.
+
 **Passport book (MAINNET)**: courts `KT1Q1g8Sv3uL2beaA7h89hTViJyZmXxfUS9D`
 (LIGO 1.15.6) — geoconfirmed court stamps, one per court per UTC day.
 Venues 0–2 seeded: California Smash, Hollyglen Park, El Segundo Rec Park.
