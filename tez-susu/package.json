@@ -11,7 +11,9 @@
     "deploy:stamps": "node scripts/deploy-stamps.js",
     "smoke:stamps": "node scripts/smoke-stamps.js",
     "deploy:fountain": "node scripts/deploy-fountain.js",
-    "smoke:fountain": "node scripts/smoke-fountain.js"
+    "smoke:fountain": "node scripts/smoke-fountain.js",
+    "export:code": "node scripts/export-code.js",
+    "smoke:print": "node scripts/smoke-print.js"
   },
   "dependencies": {
     "@taquito/signer": "^25.0.0",
