@@ -179,6 +179,8 @@
     box-shadow:4px 4px 0 var(--line); padding:.9rem 1rem;
     display:grid; grid-template-columns:96px 1fr; gap:1rem; align-items:center;
   }
+  .circle.share-target{outline:3px solid var(--stamp); outline-offset:3px; animation:shareTarget 1s ease-in-out 3}
+  @keyframes shareTarget{50%{box-shadow:7px 7px 0 rgba(179,64,42,.35)}}
   .ring{position:relative; width:96px; height:96px}
   .ring .pot{
     position:absolute; inset:26px; border:1.5px dashed var(--ink); border-radius:50%;
@@ -541,7 +543,8 @@ function cardHTML(c){
     if((st==='recruiting'||st==='active') && (isOrg || (mySeat!==null && graceOver)))
       acts.push(`<button class="ghost" onclick="disband(${c.id})">disband</button>`);
   }
-  return `<div class="circle">
+  acts.push(`<button class="ghost" onclick="shareCircle(${c.id})">share</button>`);
+  return `<div class="circle" data-circle-id="${c.id}">
     ${ringHTML(v)}
     <div class="cbody">
       <p class="cname"><em>${fromHex(v.name).replace(/</g,'&lt;')}</em> <span style="color:var(--dim);font-size:.8rem">#${c.id}</span></p>
@@ -556,9 +559,31 @@ function renderList(){
   const past = circles.filter(c=>!['recruiting','active'].includes(statusOf(c.v)));
   const mine = (c) => address && (c.v.seat_of||{})[address]!==undefined;
   live.sort((a,b)=> (mine(b)-mine(a)) || b.id-a.id);
-  const html = [...live, ...past.slice(0,5)].map(cardHTML).join('');
+  const shown = [...live, ...past.slice(0,5)];
+  const sharedId = circleIdFromHash();
+  const shared = sharedId===null ? null : circles.find(c=>c.id===sharedId);
+  if(shared && !shown.some(c=>c.id===shared.id)) shown.push(shared);
+  const html = shown.map(cardHTML).join('');
   $('list').innerHTML = html || `<p class="empty">no circles on the books yet — the town is waiting for its first. put a pot on the table ↑</p>`;
+  requestAnimationFrame(highlightSharedCircle);
 }
+
+let highlightedHash = null;
+function circleIdFromHash(){
+  const id = new URLSearchParams(location.hash.slice(1)).get('c');
+  return id && /^\d+$/.test(id) ? Number(id) : null;
+}
+function highlightSharedCircle(){
+  const id = circleIdFromHash();
+  if(id===null || highlightedHash===location.hash) return;
+  const card = document.querySelector(`[data-circle-id="${id}"]`);
+  if(!card) return;
+  highlightedHash = location.hash;
+  card.classList.add('share-target');
+  card.scrollIntoView({ behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth', block:'center' });
+  setTimeout(()=>card.classList.remove('share-target'), 5000);
+}
+window.addEventListener('hashchange', ()=>{ highlightedHash=null; renderList(); });
 
 /* ================= wallet (Beacon) ================= */
 let client;
@@ -619,6 +644,15 @@ window.payIn = (id, mutez) => sendOp('contribute', {int:String(id)}, mutez, 'pay
 window.disband = (id) => {
   if(!confirm('Disband this circle? Current-round payments are refunded; past pots stay where they went.')) return;
   return sendOp('disband', {int:String(id)}, '0', 'disbanding…');
+};
+window.shareCircle = async (id) => {
+  const url = `https://tez-susu.pages.dev/c/${id}`;
+  try{
+    await navigator.clipboard.writeText(url);
+    setStatus('link copied — hand it to a neighbor');
+  }catch{
+    setStatus(`share this circle: <a href="${url}">${url}</a>`);
+  }
 };
 
 $('openForm').addEventListener('submit', async (e)=>{

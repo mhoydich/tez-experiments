@@ -3,5 +3,10 @@
   //   npx wrangler pages deploy public --project-name=tez-susu
   "name": "tez-susu",
   "compatibility_date": "2026-07-12",
-  "pages_build_output_dir": "public"
+  "compatibility_flags": ["nodejs_compat"],
+  "pages_build_output_dir": "public",
+  "vars": {
+    "INDEXER": "https://api.tzkt.io",
+    "HOUSE": "KT19HJaK1hNmc337yv6DM4ZfYyPPQnzj277G"
+  }
 }

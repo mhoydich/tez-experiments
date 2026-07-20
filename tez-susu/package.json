@@ -16,9 +16,12 @@
   "dependencies": {
     "@taquito/signer": "^25.0.0",
     "@taquito/taquito": "^25.0.0",
-    "@taquito/utils": "^25.0.0"
+    "@taquito/utils": "^25.0.0",
+    "workers-og": "^0.0.27"
   },
   "devDependencies": {
-    "dotenv": "^16.4.5"
+    "@cloudflare/workers-types": "^5.20260719.1",
+    "dotenv": "^16.4.5",
+    "typescript": "^7.0.2"
   }
 }
