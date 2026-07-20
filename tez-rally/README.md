@@ -12,6 +12,11 @@ Pages project `tez-rally` (deploy: `npx vite build && npx wrangler pages
 deploy dist --project-name tez-rally`). Rebuild + redeploy after changing
 `VITE_RALLY_ADDRESS`.
 
+The landing page is the front door for the full Rally identity system:
+pickleball portraits, wallet-owned player cards, countersigned match records,
+and geoconfirmed court passport stamps. The working booth and rating desk stay
+on the same page immediately below the introduction.
+
 **Passport book (MAINNET)**: courts `KT1Q1g8Sv3uL2beaA7h89hTViJyZmXxfUS9D`
 (LIGO 1.15.6) — geoconfirmed court stamps, one per court per UTC day.
 Venues 0–2 seeded: California Smash, Hollyglen Park, El Segundo Rec Park.

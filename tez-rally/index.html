@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>rally — your rating, on the record</title>
-  <meta name="description" content="Make a pickleball portrait, save it to your Tezos profile, and keep your self-declared rating on the record through countersigned matches." />
-  <meta property="og:title" content="rally — your rating, on the record" />
-  <meta property="og:description" content="Upload a player or team photo, pick a frame, add a ridiculous superlative, and save the portrait to your Tezos Rally profile." />
+  <title>Rally — pickleball, on the record</title>
+  <meta name="description" content="Make a pickleball portrait, own your player card, countersign match results, and collect court stamps with Rally on Tezos." />
+  <meta property="og:title" content="Rally — pickleball, on the record" />
+  <meta property="og:description" content="The playful, wallet-owned home for pickleball portraits, ratings, match records, and court passports." />
   <meta name="twitter:card" content="summary" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,13 +15,80 @@
 </head>
 <body>
   <main class="office">
-    <p class="eyebrow">tez-rally · template 06</p>
-    <h1 class="wordmark">rally</h1>
-    <p class="tagline">Your rating, <em>on the record.</em></p>
-    <p class="lede">Declare your pickleball rating — it mints a soulbound
-       player card. From then on the number only moves when a match is
-       countersigned by everyone on the court: open integer Elo, replayable
-       by anyone, owned by no one.</p>
+    <header class="site-nav">
+      <a class="nav-mark" href="#top" aria-label="Rally home">rally</a>
+      <nav aria-label="Primary navigation">
+        <a href="#booth">Photo booth</a>
+        <a href="#desk-entry">Player card</a>
+        <a href="#board">The ladder</a>
+      </nav>
+      <a class="nav-cta" href="#booth">Make yours</a>
+    </header>
+
+    <section id="top" class="landing-hero" aria-labelledby="landing-title">
+      <div class="hero-copy">
+        <p class="eyebrow">the pickleball identity club · built on Tezos</p>
+        <h1 id="landing-title">Pickleball has <em>receipts</em> now.</h1>
+        <p class="hero-deck">Make the portrait. Own the rating. Prove the match.
+          Rally turns open play into a player card you can carry from court to court.</p>
+        <div class="hero-actions">
+          <a class="enter hero-primary" href="#booth">Make a Rally portrait</a>
+          <a class="ghost hero-secondary" href="#desk-entry">Build my player card</a>
+        </div>
+        <p class="hero-trust"><span>Mainnet</span><span>Gas-free profile saves</span><span>CC0</span></p>
+      </div>
+
+      <div class="hero-art" aria-label="A fan of colorful Rally pickleball portrait frames">
+        <article class="hero-card hero-card-left" aria-hidden="true">
+          <img src="/frames/golden-hour.png" alt="" />
+          <div class="hero-card-copy"><b>BEST<br />DINK<br />ENERGY</b><small>golden hour club</small></div>
+        </article>
+        <article class="hero-card hero-card-right" aria-hidden="true">
+          <img src="/frames/team-tape.png" alt="" />
+          <div class="hero-card-copy"><b>TEAM<br />CHAOS</b><small>we called it in</small></div>
+        </article>
+        <article class="hero-card hero-card-main">
+          <img src="/frames/court-club.png" alt="Colorful vintage pickleball portrait frame" />
+          <div class="hero-card-copy"><b>MOST<br />LIKELY<br />TO RALLY</b><small>el segundo open play</small></div>
+        </article>
+        <p class="hero-sticker">Yours in<br /><strong>60 sec.</strong></p>
+      </div>
+    </section>
+
+    <section class="landing-proof" aria-label="What Rally does">
+      <article>
+        <span class="proof-number">01</span>
+        <h2>Strike a pose</h2>
+        <p>Upload a player or team shot, choose a frame, and add the superlative the group chat already knows is true.</p>
+        <a href="#booth">Open the booth →</a>
+      </article>
+      <article>
+        <span class="proof-number">02</span>
+        <h2>Own your number</h2>
+        <p>Declare a rating, then let countersigned wins and losses move it with an open, replayable integer Elo.</p>
+        <a href="#desk-entry">Get a player card →</a>
+      </article>
+      <article>
+        <span class="proof-number">03</span>
+        <h2>Bring receipts</h2>
+        <p>Log the score, gather every player signature, and stamp your passport when you show up at the court.</p>
+        <a href="#board">See the public record →</a>
+      </article>
+    </section>
+
+    <div class="landing-marquee" aria-hidden="true">
+      <span>PORTRAITS · PLAYER CARDS · COUNTERSIGNED MATCHES · COURT STAMPS · OPEN ELO · </span>
+      <span>PORTRAITS · PLAYER CARDS · COUNTERSIGNED MATCHES · COURT STAMPS · OPEN ELO · </span>
+    </div>
+
+    <div class="app-column">
+      <header class="app-intro">
+        <p class="eyebrow">the club desk is open</p>
+        <h2 class="wordmark">rally</h2>
+        <p class="tagline">Your rating, <em>on the record.</em></p>
+        <p class="lede">Start with a portrait, then connect a Tezos wallet for your
+          player card, match log, and passport. Your photo stays in this browser.</p>
+      </header>
 
     <section id="booth" class="booth" aria-labelledby="booth-title">
       <div class="booth-head">
@@ -89,13 +156,15 @@
         private to this browser for now; the signature proves which Tezos profile made it.</p>
     </section>
 
-    <div id="welcome-back" class="welcome-back" hidden>
-      <p>Welcome back, <span id="wb-address" class="mono-inline"></span>.</p>
-      <p class="profile-links"><button id="wb-resume" class="linkish" type="button">back to my card</button>
-      <a id="wb-peek" href="#">just peek</a></p>
-    </div>
+    <div id="desk-entry" class="desk-entry">
+      <div id="welcome-back" class="welcome-back" hidden>
+        <p>Welcome back, <span id="wb-address" class="mono-inline"></span>.</p>
+        <p class="profile-links"><button id="wb-resume" class="linkish" type="button">back to my card</button>
+        <a id="wb-peek" href="#">just peek</a></p>
+      </div>
 
-    <button id="connect" class="enter">Step up to the desk</button>
+      <button id="connect" class="enter">Step up to the desk</button>
+    </div>
 
     <section id="desk" hidden>
       <div class="profile-bar">
@@ -213,6 +282,7 @@
     <p id="status" class="status" role="status"></p>
     <footer><p>Mainnet · CC0 · integer Elo, replayable from contract storage
       · <a href="/api/mcp" style="color:inherit">MCP for agents</a></p></footer>
+    </div>
   </main>
   <script type="module" src="/src/main.js"></script>
 </body>
