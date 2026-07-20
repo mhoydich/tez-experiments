@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>susu — the savings circle</title>
-<meta name="description" content="An old-world savings circle on Tezos. Neighbors pay a fixed amount each round; every round one member takes the whole pot, in join order, until everyone has had a turn. No house, no chance — just turns." />
+<meta name="description" content="An old-world savings circle on Tezos. Play a pretend circle in thirty seconds, then open a real one: neighbors pay a fixed amount each round; every round one member takes the whole pot, in join order. No house, no chance — just turns." />
 <!-- Beacon (Kukai / Temple / etc.) — CDN global `beacon`, no build step -->
 <script src="https://cdn.jsdelivr.net/npm/@airgap/beacon-sdk@4.5.1/dist/walletbeacon.min.js"></script>
 <style>
@@ -23,7 +23,7 @@
     padding:32px 12px 48px;
   }
   .office{
-    width:min(560px,94vw); background:#fff; border:1.5px solid var(--ink);
+    width:min(620px,94vw); background:#fff; border:1.5px solid var(--ink);
     padding:2.2rem 2rem 1.6rem; box-shadow:8px 8px 0 var(--stamp);
   }
   .eyebrow{
@@ -35,9 +35,106 @@
   h1 em{font-style:italic; color:var(--stamp)}
   .lede{font-size:.95rem; line-height:1.55; margin:0 0 1.4rem; color:#3a332e}
 
+  h2{
+    font-family:ui-monospace,Menlo,monospace; font-weight:400; font-size:.72rem;
+    letter-spacing:.22em; text-transform:uppercase; color:var(--dim);
+    border-bottom:1px solid var(--line); padding-bottom:.4rem; margin:1.8rem 0 .9rem;
+    display:flex; justify-content:space-between; align-items:baseline;
+  }
+  h2 button{font-size:.66rem}
+
+  /* ---------- the pretend circle (demo game) ---------- */
+  .demo{
+    border:1.5px solid var(--ink); background:var(--paper);
+    box-shadow:4px 4px 0 var(--line); padding:1.1rem; position:relative; overflow:hidden;
+  }
+  .dgrid{display:grid; grid-template-columns:270px 1fr; gap:1rem; align-items:center}
+  @media (max-width:560px){ .dgrid{grid-template-columns:1fr; justify-items:center} }
+  .dstage{position:relative; width:270px; height:270px}
+  .dpot{
+    position:absolute; inset:88px; border:1.5px dashed var(--ink); border-radius:50%;
+    display:grid; place-items:center; text-align:center; background:#fff;
+    font-family:ui-monospace,Menlo,monospace; font-size:.8rem; line-height:1.3;
+  }
+  .dpot b{font-size:1.3rem; color:var(--stamp)}
+  .dpot.full{background:#fdf3f1}
+  .dseat{
+    position:absolute; width:64px; height:64px; margin:-32px 0 0 -32px; border-radius:50%;
+    border:1.5px solid var(--ink); background:#fff; display:grid; place-items:center;
+    text-align:center; font-family:ui-monospace,Menlo,monospace; font-size:.6rem;
+    letter-spacing:.05em; line-height:1.2; transition:box-shadow .2s, background .2s;
+  }
+  .dseat .nm{display:block; font-size:.62rem; text-transform:uppercase}
+  .dseat .st{display:block; color:var(--dim); font-size:.55rem}
+  .dseat.you{border-width:2.5px}
+  .dseat.turn{background:#fdf3f1; box-shadow:0 0 0 4px rgba(179,64,42,.25); border-color:var(--stamp)}
+  .dseat.paid .st{color:var(--go)}
+  .dseat.flash{background:#eef5ef; border-color:var(--go); box-shadow:0 0 0 4px rgba(46,107,58,.3)}
+  .dcoin{
+    position:absolute; z-index:6; pointer-events:none; font-family:ui-monospace,Menlo,monospace;
+    font-weight:700; color:var(--stamp); font-size:.9rem; background:#fff;
+    border:1.5px solid var(--ink); border-radius:50%; width:34px; height:34px;
+    display:grid; place-items:center; box-shadow:2px 2px 0 var(--ink);
+    transition:left .45s cubic-bezier(.45,-.15,.55,1.15), top .45s cubic-bezier(.45,-.15,.55,1.15), opacity .2s;
+  }
+  .dcoin.big{width:48px; height:48px; font-size:1rem; color:#fff; background:var(--stamp)}
+  .tally{width:100%; border:1.5px solid var(--ink); background:#fff; box-shadow:3px 3px 0 var(--line)}
+  .tally table{width:100%; border-collapse:collapse; font-family:ui-monospace,Menlo,monospace; font-size:.68rem}
+  .tally caption{
+    font-family:ui-monospace,Menlo,monospace; font-size:.6rem; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--dim); text-align:left; padding:.5rem .6rem .2rem;
+  }
+  .tally th{font-weight:400; color:var(--dim); text-transform:uppercase; font-size:.55rem; letter-spacing:.12em; text-align:right; padding:.2rem .6rem}
+  .tally th:first-child{text-align:left}
+  .tally td{padding:.28rem .6rem; text-align:right; border-top:1px solid var(--line)}
+  .tally td:first-child{text-align:left; text-transform:uppercase; letter-spacing:.06em}
+  .tally tr.you td{font-weight:700}
+  .tally td.neg{color:var(--stamp)} .tally td.pos{color:var(--go)}
+  .caller{
+    font-family:ui-monospace,Menlo,monospace; font-size:.72rem; letter-spacing:.08em;
+    text-align:center; margin:.9rem 0 .6rem; min-height:1.2em; color:var(--ink);
+  }
+  .caller b{color:var(--stamp)}
+  .play{
+    display:block; margin:0 auto; font:inherit; font-size:1rem; padding:.75rem 1.6rem;
+    background:var(--stamp); color:#fff; border:1.5px solid var(--ink); cursor:pointer;
+    box-shadow:4px 4px 0 var(--ink); transition:transform .08s, box-shadow .08s;
+  }
+  .play:hover:not(:disabled){transform:translate(-1px,-1px); box-shadow:5px 5px 0 var(--ink)}
+  .play:active:not(:disabled){transform:translate(3px,3px); box-shadow:1px 1px 0 var(--ink)}
+  .play:disabled{background:var(--line); color:var(--dim); cursor:wait; box-shadow:none}
+  .verdict{
+    position:absolute; inset:0; display:grid; place-items:center; background:rgba(242,239,233,.88);
+    opacity:0; pointer-events:none; transition:opacity .4s; z-index:10;
+  }
+  .verdict.show{opacity:1; pointer-events:auto}
+  .verdict .stampbox{
+    border:3px double var(--stamp); color:var(--stamp); padding:1rem 1.4rem; background:#fff;
+    transform:rotate(-6deg); text-align:center; font-family:ui-monospace,Menlo,monospace;
+    letter-spacing:.14em; text-transform:uppercase; box-shadow:6px 6px 0 rgba(179,64,42,.25);
+  }
+  .verdict .stampbox b{font-size:1.05rem; display:block; margin-bottom:.3rem}
+  .verdict .stampbox small{font-size:.6rem; color:var(--ink); display:block; margin-bottom:.6rem}
+  .fine{font-size:.8rem; color:var(--dim); font-style:italic; margin:.8rem 0 0; line-height:1.5; text-align:center}
+
+  /* why chips */
+  .why{display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem; margin-top:1rem}
+  @media (max-width:560px){ .why{grid-template-columns:1fr} }
+  .why div{border:1.5px solid var(--ink); background:#fff; padding:.6rem .7rem; box-shadow:3px 3px 0 var(--line)}
+  .why b{display:block; font-size:.82rem; margin-bottom:.15rem}
+  .why span{font-size:.72rem; color:var(--dim); font-family:ui-monospace,Menlo,monospace; letter-spacing:.02em; line-height:1.4; display:block}
+
+  /* town ledger tiles */
+  .tiles{display:grid; grid-template-columns:repeat(4,1fr); gap:.7rem}
+  @media (max-width:560px){ .tiles{grid-template-columns:repeat(2,1fr)} }
+  .tile{border:1.5px solid var(--ink); background:#fff; padding:.6rem .7rem; box-shadow:3px 3px 0 var(--line)}
+  .tile b{display:block; font-size:1.4rem; font-family:ui-monospace,Menlo,monospace; color:var(--stamp)}
+  .tile span{font-size:.56rem; font-family:ui-monospace,Menlo,monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--dim)}
+
+  /* wallet bar */
   .bar{
     display:flex; align-items:center; justify-content:space-between; gap:.75rem;
-    border:1.5px solid var(--ink); padding:.55rem .75rem; margin-bottom:1.4rem;
+    border:1.5px solid var(--ink); padding:.55rem .75rem; margin:1.4rem 0;
     background:var(--paper); box-shadow:4px 4px 0 var(--line);
   }
   .bar .who{font-family:ui-monospace,Menlo,monospace; font-size:.74rem; overflow:hidden}
@@ -49,14 +146,6 @@
   }
   .ghost:hover{background:#fff; box-shadow:2px 2px 0 var(--ink)}
   .ghost:active{transform:translate(2px,2px); box-shadow:none}
-
-  h2{
-    font-family:ui-monospace,Menlo,monospace; font-weight:400; font-size:.72rem;
-    letter-spacing:.22em; text-transform:uppercase; color:var(--dim);
-    border-bottom:1px solid var(--line); padding-bottom:.4rem; margin:1.6rem 0 .9rem;
-    display:flex; justify-content:space-between; align-items:baseline;
-  }
-  h2 button{font-size:.66rem}
 
   /* open-a-circle form */
   form.open{
@@ -135,12 +224,54 @@
   <main class="office">
     <p class="eyebrow"><span>tezos · el segundo</span><span>rung 08</span></p>
     <h1><em>susu</em> — the savings circle</h1>
-    <p class="lede">An old-world money club, on-chain. Neighbors pay a fixed amount each round; every round <em>one</em> member takes the whole pot, in join order, until everyone has had a turn. Everyone ends net-zero. No house, no chance — just turns.</p>
+    <p class="lede">The oldest money club in the world, now on-chain. Five neighbors, one pot, everyone takes a turn. Don't read about it — <strong>play one:</strong></p>
+
+    <!-- ================= the pretend circle ================= -->
+    <h2 id="play"><span>play a circle — thirty seconds, pretend money</span></h2>
+    <div class="demo">
+      <div class="dgrid">
+        <div class="dstage" id="dstage">
+          <div class="dpot" id="dpot"><span><b id="dpotAmt">0ꜩ</b>the pot<br><span id="dpotSub">of 5ꜩ</span></span></div>
+        </div>
+        <div class="tally">
+          <table>
+            <caption>the tally — nobody loses a cent</caption>
+            <thead><tr><th>neighbor</th><th>paid in</th><th>took pot</th><th>net</th></tr></thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+      </div>
+      <p class="caller" id="caller">five seats · 1ꜩ a round · pot goes around in join order — <b>you are seat 2, third to take the pot</b></p>
+      <button class="play" id="playBtn">deal me in</button>
+      <div class="verdict" id="verdict">
+        <div class="stampbox">
+          <b>everyone made whole ✓</b>
+          <small>five rounds · five lump sums · net zero for all —<br>the pot was your own money coming back, in one useful piece</small>
+          <button class="ghost" id="again">run it again</button>
+        </div>
+      </div>
+    </div>
+    <p class="fine">that's the whole game. the contract only adds what a kitchen-table susu can't enforce: the turns are honored, the pot can't be skimmed, and a stalled circle breaks up with refunds.</p>
+
+    <div class="why">
+      <div><b>lump sums do things drips can't.</b><span>a deposit, a paddle, a plane ticket — saved socially, arriving all at once</span></div>
+      <div><b>no house. no interest. no odds.</b><span>nothing is won and nothing is lost — the pot is turns, not chance</span></div>
+      <div><b>trust is the collateral.</b><span>circles are made of people who know each other. that's the feature</span></div>
+    </div>
+
+    <!-- ================= live dashboard ================= -->
+    <h2><span>the town ledger — live on mainnet</span><button class="ghost" id="refresh">refresh</button></h2>
+    <div class="tiles">
+      <div class="tile"><b id="tCircles">—</b><span>circles opened</span></div>
+      <div class="tile"><b id="tLive">—</b><span>turning now</span></div>
+      <div class="tile"><b id="tRounds">—</b><span>rounds settled</span></div>
+      <div class="tile"><b id="tVolume">—</b><span>ꜩ gone around</span></div>
+    </div>
 
     <div class="bar">
       <div class="who">
         <b id="whoLabel">not connected</b>
-        <span id="who">connect a wallet to open or join a circle</span>
+        <span id="who">connect a wallet to open or join a real circle</span>
       </div>
       <button class="ghost" id="connect">connect</button>
     </div>
@@ -166,7 +297,7 @@
       <button class="put" id="putBtn" type="submit">put the pot on the table</button>
     </form>
 
-    <h2><span>the circles</span><button class="ghost" id="refresh">refresh</button></h2>
+    <h2><span>the circles</span></h2>
     <div id="list"><p class="empty">reading the ledger…</p></div>
 
     <p class="status" id="status"></p>
@@ -178,7 +309,7 @@
   </main>
 
 <script>
-/* ---- config: flip ACTIVE to 'mainnet' after mainnet origination ---- */
+/* ---- config: flip ACTIVE between nets ---- */
 const NETWORKS = {
   shadownet: {
     kind:'custom', label:'Shadownet',
@@ -205,10 +336,132 @@ const fromHex = (h) => { try{ return new TextDecoder().decode(new Uint8Array((h.
 const fmtTez = (mutez) => { const t = Number(mutez)/1e6; return (Number.isInteger(t)?t:t.toFixed(Math.min(6,(String(mutez).replace(/0+$/,'').length)))).toString().replace(/\.?0+$/,'')||'0'; };
 const statusOf = (v) => typeof v.status==='string' ? v.status : Object.keys(v.status||{recruiting:1})[0];
 
-let address = null;
-let circles = [];   // [{id, v}]
+/* ================= the pretend circle ================= */
+const DN = ['rosa','kenji','you','amara','pete'];
+const YOU = 2, SEATS = 5;
+const D = { round:0, paid:new Set(), spent:[0,0,0,0,0], got:[0,0,0,0,0], state:'idle', busy:false };
+const dstage = $('dstage');
+const seatEls = [];
+const seatPos = [];
 
-/* ---------------- indexer reads (TzKT) ---------------- */
+/* a little coin-purse of synthesized sound */
+let actx;
+function boot(){ if(!actx) actx = new (window.AudioContext||window.webkitAudioContext)(); if(actx.state==='suspended') actx.resume(); }
+function plink(freq=880){
+  if(!actx) return;
+  const t=actx.currentTime, o=actx.createOscillator(), g=actx.createGain();
+  o.type='triangle'; o.frequency.setValueAtTime(freq,t);
+  o.frequency.exponentialRampToValueAtTime(freq*1.4,t+0.07);
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.22,t+0.01);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+0.18);
+  o.connect(g).connect(actx.destination); o.start(t); o.stop(t+0.2);
+}
+function chord(){ [523,659,784].forEach((f,i)=>setTimeout(()=>plink(f),i*45)); }
+
+function buildDemo(){
+  for(let i=0;i<SEATS;i++){
+    const ang = -Math.PI/2 + (i/SEATS)*2*Math.PI;
+    const x = 135 + 108*Math.cos(ang), y = 135 + 108*Math.sin(ang);
+    seatPos[i] = [x,y];
+    const el = document.createElement('div');
+    el.className = 'dseat'+(i===YOU?' you':'');
+    el.style.left = x+'px'; el.style.top = y+'px';
+    el.innerHTML = `<span><span class="nm">${DN[i]}</span><span class="st" id="dst${i}">seat ${i}</span></span>`;
+    dstage.appendChild(el); seatEls.push(el);
+  }
+  renderDemo();
+}
+function coin(from,to,label,big,dur=450){
+  const c = document.createElement('div');
+  c.className = 'dcoin'+(big?' big':'');
+  c.textContent = label;
+  c.style.left = (from[0]-(big?24:17))+'px'; c.style.top = (from[1]-(big?24:17))+'px';
+  dstage.appendChild(c);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    c.style.left = (to[0]-(big?24:17))+'px'; c.style.top = (to[1]-(big?24:17))+'px';
+  }));
+  setTimeout(()=>{ c.style.opacity='0'; }, dur);
+  setTimeout(()=>c.remove(), dur+220);
+}
+const CENTER = [135,135];
+const sleep = (ms)=>new Promise(r=>setTimeout(r,ms));
+
+function renderDemo(){
+  const pot = D.paid.size;
+  $('dpotAmt').textContent = pot+'ꜩ';
+  $('dpot').classList.toggle('full', pot===SEATS);
+  const tb = [];
+  for(let i=0;i<SEATS;i++){
+    const net = D.got[i]-D.spent[i];
+    tb.push(`<tr class="${i===YOU?'you':''}"><td>${DN[i]}</td><td>${D.spent[i]}ꜩ</td><td>${D.got[i]?D.got[i]+'ꜩ':'—'}</td><td class="${net<0?'neg':net>0?'pos':''}">${net>0?'+':''}${net}ꜩ</td></tr>`);
+    seatEls[i].classList.toggle('turn', D.state!=='idle' && D.state!=='done' && i===D.round);
+    seatEls[i].classList.toggle('paid', D.paid.has(i));
+    $('dst'+i).textContent = D.state==='idle' ? 'seat '+i :
+      D.got[i] ? 'got '+D.got[i]+'ꜩ ✓' : D.paid.has(i) ? 'paid ✓' : 'seat '+i;
+  }
+  $('tbody').innerHTML = tb.join('');
+  const btn = $('playBtn');
+  if(D.state==='idle'){ btn.textContent='deal me in'; btn.disabled=false; }
+  else if(D.state==='pay'){ btn.textContent = `pay in your 1ꜩ — round ${D.round+1} of ${SEATS}`; btn.disabled=D.busy; }
+  else { btn.disabled=true; }
+}
+function call(html){ $('caller').innerHTML = html; }
+
+async function playStep(){
+  boot();
+  if(D.state==='idle'){
+    D.state='pay'; D.round=0;
+    call(`round 1 of ${SEATS} — this pot goes to <b>${DN[0]}</b>. everyone pays in.`);
+    renderDemo(); return;
+  }
+  if(D.state!=='pay' || D.busy) return;
+  D.busy=true; renderDemo();
+  // you pay first (it's your click)…
+  coin(seatPos[YOU], CENTER, 'ꜩ'); plink(700);
+  await sleep(420); D.paid.add(YOU); D.spent[YOU]++; renderDemo();
+  // …then the neighbors drop theirs in
+  for(let i=0;i<SEATS;i++){
+    if(i===YOU) continue;
+    coin(seatPos[i], CENTER, 'ꜩ'); plink(560+i*90);
+    await sleep(330); D.paid.add(i); D.spent[i]++; renderDemo();
+  }
+  await sleep(350);
+  // the pot goes to this round's seat
+  const taker = D.round;
+  coin(CENTER, seatPos[taker], SEATS+'ꜩ', true, 520); chord();
+  await sleep(560);
+  D.got[taker]+=SEATS; D.paid.clear();
+  seatEls[taker].classList.add('flash');
+  setTimeout(()=>seatEls[taker].classList.remove('flash'), 900);
+  call(taker===YOU ? `<b>your turn — you take the whole ${SEATS}ꜩ pot.</b> same money, one useful piece.`
+                   : `<b>${DN[taker]}</b> takes the ${SEATS}ꜩ pot — ${taker<YOU?'your turn is coming.':'already had yours? you still pay. that\'s the deal.'}`);
+  D.round++;
+  if(D.round===SEATS){
+    D.state='done'; D.busy=false; renderDemo();
+    await sleep(900);
+    $('verdict').classList.add('show');
+  } else {
+    await sleep(200);
+    D.busy=false; renderDemo();
+    const nxt = DN[D.round];
+    $('caller').innerHTML += ` &nbsp;·&nbsp; round ${D.round+1}: pot goes to <b>${nxt}</b>.`;
+  }
+}
+function resetDemo(){
+  D.round=0; D.paid.clear(); D.spent=[0,0,0,0,0]; D.got=[0,0,0,0,0];
+  D.state='idle'; D.busy=false;
+  $('verdict').classList.remove('show');
+  call(`five seats · 1ꜩ a round · pot goes around in join order — <b>you are seat 2, third to take the pot</b>`);
+  renderDemo();
+}
+$('playBtn').onclick = playStep;
+$('again').onclick = resetDemo;
+buildDemo();
+
+/* ================= live reads (TzKT) ================= */
+let address = null;
+let circles = [];
+
 async function readCircles(){
   try{
     const res = await fetch(`${NET.indexer}/v1/contracts/${NET.kt1}/bigmaps/circles/keys?active=true&limit=500`);
@@ -216,6 +469,7 @@ async function readCircles(){
     const rows = await res.json();
     circles = rows.map(r => ({ id:Number(r.key), v:r.value }))
                   .sort((a,b)=>b.id-a.id);
+    $('tLive').textContent = circles.filter(c=>['recruiting','active'].includes(statusOf(c.v))).length;
     renderList();
   }catch{}
 }
@@ -224,12 +478,15 @@ async function readTown(){
     const res = await fetch(`${NET.indexer}/v1/contracts/${NET.kt1}/storage`);
     if(!res.ok) return;
     const s = await res.json();
+    $('tCircles').textContent = Number(s.circles_opened).toLocaleString();
+    $('tRounds').textContent = Number(s.rounds_settled).toLocaleString();
+    $('tVolume').textContent = fmtTez(s.volume);
     $('town').innerHTML = `the town has settled <b>${Number(s.rounds_settled).toLocaleString()}</b> round${Number(s.rounds_settled)===1?'':'s'} · <b>${fmtTez(s.volume)}ꜩ</b> has gone around`;
   }catch{}
 }
 const refresh = () => { readCircles(); readTown(); };
 
-/* ---------------- render ---------------- */
+/* ================= render circles ================= */
 function ringHTML(v){
   const seats = Number(v.seats), joined = Number(v.joined), round = Number(v.round);
   const st = statusOf(v);
@@ -299,10 +556,10 @@ function renderList(){
   const mine = (c) => address && (c.v.seat_of||{})[address]!==undefined;
   live.sort((a,b)=> (mine(b)-mine(a)) || b.id-a.id);
   const html = [...live, ...past.slice(0,5)].map(cardHTML).join('');
-  $('list').innerHTML = html || `<p class="empty">no circles yet — be the first to put a pot on the table.</p>`;
+  $('list').innerHTML = html || `<p class="empty">no circles on the books yet — the town is waiting for its first. put a pot on the table ↑</p>`;
 }
 
-/* ---------------- wallet (Beacon) ---------------- */
+/* ================= wallet (Beacon) ================= */
 let client;
 function beaconNetwork(){
   return NET.kind==='mainnet'
@@ -327,7 +584,7 @@ async function disconnect(){
   try{ await getClient().clearActiveAccount(); }catch{}
   address=null;
   $('whoLabel').textContent='not connected';
-  $('who').textContent='connect a wallet to open or join a circle';
+  $('who').textContent='connect a wallet to open or join a real circle';
   $('connect').textContent='connect'; $('connect').onclick=connect;
   renderList();
 }
@@ -338,7 +595,7 @@ function onConnected(){
   renderList();
 }
 
-/* ---------------- ops ---------------- */
+/* ================= ops ================= */
 async function sendOp(entrypoint, value, amountMutez='0', doing='sending…'){
   setStatus(doing);
   try{
@@ -380,7 +637,7 @@ $('openForm').addEventListener('submit', async (e)=>{
   if(ok){ $('openForm').reset(); $('openForm').hidden = true; }
 });
 
-/* ---------------- init ---------------- */
+/* ================= init ================= */
 function setStatus(html){ $('status').innerHTML = html; }
 $('connect').onclick = connect;
 $('refresh').onclick = refresh;
