@@ -122,6 +122,9 @@
   .bar .who{font-family:ui-monospace,Menlo,monospace; font-size:.74rem; overflow:hidden}
   .bar .who b{display:block; color:var(--dim); font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; font-weight:400}
   .bar .who span{overflow-wrap:anywhere}
+  .bar .away{display:block;color:var(--tezos-blue);font-size:.62rem;letter-spacing:.08em;margin-top:.18rem}
+  .bar .away[hidden]{display:none}
+  .bar .away a{color:var(--stamp)}
   .ghost{
     font:inherit; font-size:.82rem; background:none; padding:.45rem .8rem;
     border:1.5px solid var(--ink); cursor:pointer; white-space:nowrap;
@@ -186,6 +189,7 @@
       <div class="who">
         <b id="whoLabel">not connected</b>
         <span id="who">connect a wallet to toss a coin</span>
+        <span class="away" id="away" hidden>away game: <strong id="awayName"></strong> · <a href="/fountain">back to the first fountain</a></span>
       </div>
       <button class="ghost" id="connect">connect</button>
     </div>
@@ -228,7 +232,12 @@ const NETWORKS = {
   },
 };
 const ACTIVE = 'mainnet';
-const NET = NETWORKS[ACTIVE];
+const FLAGSHIP = NETWORKS[ACTIVE];
+const NET = {...FLAGSHIP};
+const KT1_PATTERN = /^KT1[1-9A-HJ-NP-Za-km-z]{33}$/;
+const query = new URLSearchParams(location.search);
+const fountainOverride = KT1_PATTERN.test(query.get('fountain')||'') ? query.get('fountain') : '';
+if(fountainOverride) NET.kt1=fountainOverride;
 
 const $ = (id) => document.getElementById(id);
 const shorten = (a) => a ? a.slice(0,5)+'…'+a.slice(-4) : '';
@@ -239,6 +248,18 @@ const fmtTez = (mutez) => { const t = Number(mutez)/1e6; return (Number.isIntege
 let address = null;
 let S = null;          // contract storage snapshot
 let myCoins = 0;
+
+async function showAwayGame(){
+  if(!fountainOverride) return;
+  $('away').hidden=false;
+  $('awayName').textContent=shorten(NET.kt1);
+  try{
+    const response=await fetch(`${NET.indexer}/v1/contracts/${NET.kt1}`);
+    if(!response.ok) return;
+    const info=await response.json();
+    if(info.metadata?.name) $('awayName').textContent=info.metadata.name;
+  }catch{}
+}
 
 /* ---------- audio: coin & water ---------- */
 let actx;
@@ -428,6 +449,7 @@ $('connect').onclick = connect;
 $('refresh').onclick = refresh;
 $('explorer').href = NET.kt1 ? `${NET.explorer}/${NET.kt1}` : '#';
 refresh();
+showAwayGame();
 setInterval(refresh, 30000);
 setInterval(()=>renderFountain(), 1000);   // live countdown
 (async()=>{ try{ const acc = await getClient().getActiveAccount(); if(acc){ address=acc.address; onConnected(); } }catch{} })();

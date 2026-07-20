@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>the print shop — tez-susu</title>
+<meta name="description" content="Print a sovereign susu house or fountain from the byte-identical tez-susu contract family." />
+<script src="https://cdn.jsdelivr.net/npm/@airgap/beacon-sdk@4.5.1/dist/walletbeacon.min.js"></script>
+<style>
+  :root{--paper:#f2efe9;--ink:#241f1c;--stamp:#b3402a;--tezos-blue:#0f61ff;--line:#d8d2c6;--dim:#6b6259;--go:#2e6b3a}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100dvh;display:grid;justify-items:center;align-content:start;padding:32px 12px 48px;background:var(--paper);color:var(--ink);font-family:Georgia,"Times New Roman",serif;background-image:radial-gradient(var(--line) 1px,transparent 1px);background-size:28px 28px}
+  .office{width:min(620px,94vw);background:#fff;border:1.5px solid var(--ink);padding:2.2rem 2rem 1.6rem;box-shadow:8px 8px 0 var(--stamp)}
+  .eyebrow{display:flex;justify-content:space-between;gap:1rem;margin:0 0 .5rem;color:var(--stamp);font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase}
+  .eyebrow a{color:var(--stamp);text-decoration:none}
+  h1{margin:0 0 .5rem;font-size:clamp(2.2rem,9vw,3rem);line-height:1;font-weight:500}
+  h1 em{color:var(--stamp);font-style:italic}
+  .lede{margin:0 0 1.4rem;color:#3a332e;font-size:.95rem;line-height:1.55}
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin:1.2rem 0;border:1.5px solid var(--ink);padding:.55rem .75rem;background:var(--paper);box-shadow:4px 4px 0 var(--line)}
+  .who{min-width:0;font-family:ui-monospace,Menlo,monospace;font-size:.74rem;overflow-wrap:anywhere}
+  .who b{display:block;color:var(--dim);font-size:.62rem;font-weight:400;letter-spacing:.14em;text-transform:uppercase}
+  .ghost{border:1.5px solid var(--ink);padding:.45rem .8rem;background:none;font:inherit;font-size:.82rem;cursor:pointer;white-space:nowrap}
+  .ghost:hover{background:#fff;box-shadow:2px 2px 0 var(--ink)}
+  form{display:grid;gap:.9rem;border:1.5px solid var(--ink);padding:1rem;background:var(--paper);box-shadow:4px 4px 0 var(--line)}
+  fieldset{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:0;border:0;padding:0}
+  .kind{position:relative;display:block;border:1.5px solid var(--ink);padding:.8rem;background:#fff;cursor:pointer}
+  .kind:has(input:checked){outline:3px solid var(--stamp);outline-offset:-3px}
+  .kind input{position:absolute;opacity:0}
+  .kind b{display:block;color:var(--stamp);font-size:1rem}.kind span{display:block;margin-top:.15rem;color:var(--dim);font-family:ui-monospace,Menlo,monospace;font-size:.62rem;line-height:1.45}
+  label.field{display:block;color:var(--dim);font-family:ui-monospace,Menlo,monospace;font-size:.62rem;letter-spacing:.13em;text-transform:uppercase}
+  input[type="text"],select{width:100%;margin-top:.3rem;border:1.5px solid var(--ink);border-radius:0;padding:.55rem .6rem;background:#fff;color:var(--ink);font:inherit;font-size:.92rem}
+  input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--tezos-blue);outline-offset:2px}
+  .press{border:1.5px solid var(--ink);padding:.8rem 1rem;background:var(--stamp);color:#fff;box-shadow:4px 4px 0 var(--ink);font:inherit;font-size:.92rem;cursor:pointer}
+  .press:hover:not(:disabled){transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink)}
+  .press:disabled{background:var(--line);color:var(--dim);box-shadow:none;cursor:wait}
+  .cost{margin:0;color:var(--dim);font-size:.78rem;font-style:italic;line-height:1.45;text-align:center}
+  .status{min-height:1.4em;margin:.9rem 0 0;color:var(--stamp);font-size:.85rem;text-align:center}
+  .result{margin-top:1rem;border:3px double var(--stamp);padding:1rem;background:#fff;box-shadow:4px 4px 0 rgba(179,64,42,.2)}
+  .result[hidden]{display:none}
+  .result h2{margin:0 0 .4rem;color:var(--stamp);font-size:1.2rem;font-weight:500}
+  .result code{display:block;margin:.5rem 0;padding:.55rem;border:1px solid var(--line);background:var(--paper);font-size:.72rem;overflow-wrap:anywhere}
+  .result p{margin:.5rem 0;color:var(--dim);font-size:.82rem;line-height:1.5}
+  .result a{color:var(--tezos-blue)}
+  .result .ghost{margin-top:.4rem;color:var(--ink)}
+  footer{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:1.6rem;border-top:1px solid var(--line);padding-top:.9rem;color:var(--dim);font-family:ui-monospace,Menlo,monospace;font-size:.64rem;letter-spacing:.08em}
+  footer a{color:var(--dim)}
+  @media(max-width:520px){fieldset{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+  <main class="office">
+    <p class="eyebrow"><span>tezos · el segundo</span><a href="/">← the town square</a></p>
+    <h1><em>the print shop</em></h1>
+    <p class="lede">Every print runs the same law as the first one. Your wallet originates byte-identical contract code; its name and clock live only in initial storage. No registry and no proprietor.</p>
+
+    <div class="bar">
+      <div class="who"><b id="whoLabel">not connected · mainnet</b><span id="who">connect a wallet to run the press</span></div>
+      <button class="ghost" id="connect">connect</button>
+    </div>
+
+    <form id="printForm">
+      <fieldset aria-label="what to print">
+        <label class="kind"><input type="radio" name="kind" value="susu" checked /><b>a susu house</b><span>open circles, keep turns, move the pot</span></label>
+        <label class="kind"><input type="radio" name="kind" value="fountain" /><b>a fountain</b><span>one-tez coins, wishes, equal overflows</span></label>
+      </fieldset>
+      <label class="field" for="printName">name your place
+        <input id="printName" type="text" maxlength="60" placeholder="mariposa ave" required />
+      </label>
+      <label class="field" id="epochField" for="epochLen" hidden>fountain rhythm
+        <select id="epochLen">
+          <option value="86400">daily</option>
+          <option value="604800">weekly</option>
+        </select>
+      </label>
+      <button class="press" id="printBtn" type="submit">print it — burns ~0.5–1ꜩ; the press keeps nothing</button>
+      <p class="cost">Printing burns roughly 0.5–1ꜩ of storage fees from your wallet. The contract receives no balance and the press keeps nothing.</p>
+    </form>
+
+    <p class="status" id="status"></p>
+    <section class="result" id="result" hidden aria-live="polite"></section>
+
+    <footer><span>same code · your keys · CC0</span><span><a href="/">susu</a> · <a href="/fountain">the fountain</a></span></footer>
+  </main>
+
+<script type="module">
+import { buildFountainStorage, buildMadeWholeStorage, buildSusuStorage, KT1_PATTERN } from './print-storage.js';
+
+const NETWORKS = {
+  shadownet:{kind:'custom',label:'Shadownet',rpc:'https://rpc.tzkt.io/shadownet',indexer:'https://api.shadownet.tzkt.io',explorer:'https://shadownet.tzkt.io'},
+  mainnet:{kind:'mainnet',label:'Mainnet',rpc:'https://mainnet.smartpy.io',indexer:'https://api.tzkt.io',explorer:'https://tzkt.io'},
+};
+const ACTIVE = 'mainnet';
+const NET = NETWORKS[ACTIVE];
+const $ = (id) => document.getElementById(id);
+const shorten = (value) => value ? value.slice(0,5)+'…'+value.slice(-4) : '';
+let client;
+let address = null;
+let printedHouse = null;
+let printedName = '';
+
+function beaconNetwork(){
+  return NET.kind==='mainnet'
+    ? {type:beacon.NetworkType.MAINNET}
+    : {type:beacon.NetworkType.CUSTOM,name:NET.label,rpcUrl:NET.rpc};
+}
+function getClient(){
+  if(!client) client = new beacon.DAppClient({name:'the tez-susu print shop',network:beaconNetwork()});
+  return client;
+}
+function connected(){
+  $('whoLabel').textContent = `connected · ${NET.label}`;
+  $('who').textContent = shorten(address);
+  $('connect').textContent = 'disconnect';
+  $('connect').onclick = disconnect;
+}
+async function connect(){
+  setStatus('opening wallet…');
+  try{
+    const c = getClient();
+    const account = await c.getActiveAccount();
+    const permission = account || await c.requestPermissions();
+    address = permission.address;
+    connected(); setStatus('');
+    return true;
+  }catch{ setStatus('connect cancelled'); return false; }
+}
+async function disconnect(){
+  try{ await getClient().clearActiveAccount(); }catch{}
+  address = null;
+  $('whoLabel').textContent = `not connected · ${NET.label}`;
+  $('who').textContent = 'connect a wallet to run the press';
+  $('connect').textContent = 'connect';
+  $('connect').onclick = connect;
+}
+function setStatus(message){ $('status').textContent = message; }
+function operationHash(result){ return result.transactionHash || result.opHash || ''; }
+
+async function codeFor(kind){
+  const file = kind==='susu' ? 'susu.json' : kind==='fountain' ? 'fountain.json' : 'made-whole.json';
+  const response = await fetch(`/contracts/${file}`);
+  if(!response.ok) throw new Error(`contract code could not be read (${response.status})`);
+  return response.json();
+}
+async function waitForOrigination(hash){
+  for(let attempt=0;attempt<40;attempt++){
+    const response = await fetch(`${NET.indexer}/v1/operations/${encodeURIComponent(hash)}`);
+    if(response.ok){
+      const payload = await response.json();
+      const operations = Array.isArray(payload) ? payload : [payload];
+      // /v1/operations/{hash} may contain several operation types. The
+      // originations endpoint's ?hash= filter is silently ignored by TzKT.
+      const origination = operations.find(op=>op.type==='origination');
+      if(origination?.status && origination.status!=='applied') throw new Error(`origination ${origination.status}`);
+      const kt1 = origination?.originatedContract?.address;
+      if(origination?.status==='applied' && KT1_PATTERN.test(kt1||'')) return kt1;
+    }else if(response.status!==404){
+      throw new Error(`TzKT returned ${response.status}`);
+    }
+    await new Promise(resolve=>setTimeout(resolve,2000));
+  }
+  throw new Error('TzKT did not index the printed contract in time');
+}
+async function originate(code, storage, doing){
+  setStatus(doing);
+  const result = await getClient().requestOperation({
+    operationDetails:[{
+      kind:beacon.TezosOperationType.ORIGINATION,
+      balance:'0',
+      script:{code,storage},
+    }],
+  });
+  const hash = operationHash(result);
+  if(!hash) throw new Error('wallet returned no operation hash');
+  setStatus('operation accepted — waiting for TzKT to name the KT1…');
+  return {hash,kt1:await waitForOrigination(hash)};
+}
+function link(label,href){
+  const anchor = document.createElement('a');
+  anchor.textContent = label; anchor.href = href;
+  if(/^https?:/.test(href)){ anchor.target='_blank'; anchor.rel='noopener'; }
+  return anchor;
+}
+function showPrint(kind,{hash,kt1}){
+  const result = $('result');
+  result.replaceChildren(); result.hidden = false;
+  const heading = document.createElement('h2');
+  heading.textContent = kind==='susu' ? 'your house is on the books ✓' : 'your fountain is flowing ✓';
+  const code = document.createElement('code'); code.textContent = kt1;
+  const links = document.createElement('p');
+  if(kind==='susu'){
+    links.append(link('open your house',`/?house=${encodeURIComponent(kt1)}`),' · ',link('operation ↗',`${NET.explorer}/${hash}`));
+    const poster = document.createElement('p');
+    poster.textContent = `circle posters live at /c/{id}?house=${kt1}`;
+    const button = document.createElement('button');
+    button.className='ghost'; button.type='button'; button.textContent='hang its stamp ledger';
+    button.onclick = ()=>hangLedger(button);
+    result.append(heading,code,links,poster,button);
+  }else{
+    links.append(link('visit your fountain',`/fountain?fountain=${encodeURIComponent(kt1)}`),' · ',link('operation ↗',`${NET.explorer}/${hash}`));
+    result.append(heading,code,links);
+  }
+}
+async function hangLedger(button){
+  if(!printedHouse) return;
+  button.disabled = true;
+  try{
+    const code = await codeFor('made-whole');
+    const storage = buildMadeWholeStorage(printedHouse,printedName);
+    const printed = await originate(code,storage,'printing the made-whole ledger…');
+    const note = document.createElement('p');
+    note.append('made-whole ledger: ',link(printed.kt1,`${NET.explorer}/${printed.kt1}`),document.createElement('br'),link('open the house with its ledger',`/?house=${encodeURIComponent(printedHouse)}&stamps=${encodeURIComponent(printed.kt1)}`));
+    button.replaceWith(note);
+    setStatus('stamp ledger hung ✓');
+  }catch(error){
+    button.disabled = false;
+    setStatus(error instanceof Error ? error.message : 'ledger print failed');
+  }
+}
+
+$('printForm').addEventListener('submit',async(event)=>{
+  event.preventDefault();
+  const button = $('printBtn');
+  const kind = new FormData(event.currentTarget).get('kind');
+  const name = $('printName').value.trim();
+  const bytes = new TextEncoder().encode(name).length;
+  if(!name || bytes>60){ setStatus('name must be 1–60 UTF-8 bytes'); return; }
+  if(!address && !(await connect())) return;
+  button.disabled = true; $('result').hidden = true;
+  try{
+    const code = await codeFor(kind);
+    const storage = kind==='susu'
+      ? buildSusuStorage(name)
+      : buildFountainStorage(name,Number($('epochLen').value));
+    const printed = await originate(code,storage,`printing your ${kind==='susu'?'house':'fountain'}…`);
+    printedHouse = kind==='susu' ? printed.kt1 : null;
+    printedName = name;
+    showPrint(kind,printed);
+    setStatus('print complete ✓');
+  }catch(error){
+    setStatus(error instanceof Error ? error.message : 'print cancelled or failed');
+  }finally{ button.disabled = false; }
+});
+document.querySelectorAll('input[name="kind"]').forEach(input=>input.addEventListener('change',()=>{
+  $('epochField').hidden = input.value!=='fountain' || !input.checked;
+}));
+$('connect').onclick = connect;
+$('whoLabel').textContent = `not connected · ${NET.label}`;
+(async()=>{ try{ const account=await getClient().getActiveAccount(); if(account){address=account.address;connected();} }catch{} })();
+</script>
+</body>
+</html>

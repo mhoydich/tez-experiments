@@ -1,5 +1,6 @@
 const mainnetIndexer = "https://api.tzkt.io";
 const mainnetHouse = "KT19HJaK1hNmc337yv6DM4ZfYyPPQnzj277G";
+export const kt1Pattern = /^KT1[1-9A-HJ-NP-Za-km-z]{33}$/;
 
 export const siteOrigin = "https://tez-susu.pages.dev";
 
@@ -71,10 +72,10 @@ export const circleDescription = (circle: Circle): string => {
   return `${circle.status} · ${circle.joined}/${circle.seats} seats · ${amount}`;
 };
 
-export async function readCircle(id: string, env: Env): Promise<Circle | null> {
+export async function readCircle(id: string, env: Env, houseOverride = ""): Promise<Circle | null> {
   if (!/^\d+$/.test(id)) return null;
   const indexer = (env.INDEXER || mainnetIndexer).replace(/\/+$/, "");
-  const house = env.HOUSE || mainnetHouse;
+  const house = kt1Pattern.test(houseOverride) ? houseOverride : env.HOUSE || mainnetHouse;
   const url = `${indexer}/v1/contracts/${encodeURIComponent(house)}/bigmaps/circles/keys/${id}`;
   const response = await fetch(url, { headers: { Accept: "application/json" } });
   if (response.status === 204 || response.status === 404) return null;

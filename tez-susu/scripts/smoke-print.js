@@ -3,6 +3,7 @@
 import { TezosToolkit } from "@taquito/taquito";
 import { InMemorySigner } from "@taquito/signer";
 import { readFileSync } from "node:fs";
+import { buildFountainStorage, buildSusuStorage } from "../public/print-storage.js";
 import "dotenv/config";
 
 const RPC = process.env.RPC || "https://rpc.tzkt.io/shadownet";
@@ -37,43 +38,9 @@ const susuCode = readJson("../public/contracts/susu.json");
 const fountainCode = readJson("../public/contracts/fountain.json");
 const family = readJson("../public/contracts/family.json");
 
-const hex = (value) => Array.from(new TextEncoder().encode(value))
-  .map((byte) => byte.toString(16).padStart(2, "0")).join("");
-const int = (value) => ({ int: String(value) });
-const metadata = (content) => [
-  { prim: "Elt", args: [{ string: "" }, { bytes: hex("tezos-storage:content") }] },
-  { prim: "Elt", args: [{ string: "content" }, { bytes: hex(JSON.stringify(content)) }] },
-];
-
-const susuDescription =
-  "The savings circle (ROSCA/susu/tanda) on Tezos. N neighbors pay a fixed contribution each round; every round one member takes the whole pot, in join order, until everyone has had a turn. No house, no chance — just turns. tez-susu — rung 08 of the tez-experiments ladder. Printed at tez-susu.pages.dev.";
-const fountainDescription =
-  "Toss one-tez coins with a wish; every epoch the fountain overflows and the pot splits evenly among that epoch's tossers. Toss once, your coin comes back. Toss five times, you watered the square. No house, no chance — a mirror with a delay. tez-susu — rung 08 of the tez-experiments ladder. Printed at tez-susu.pages.dev.";
-const common = {
-  version: "0.1.0",
-  license: { name: "CC0-1.0" },
-  homepage: "https://tez-susu.pages.dev",
-};
-
-// Compiled order: circles, next_id, circles_opened, rounds_settled, volume, metadata.
-const susuStorage = {
-  prim: "Pair",
-  args: [
-    [], int(0), int(0), int(0), int(0),
-    metadata({ name: "smoke print house — a susu house", description: susuDescription, ...common }),
-  ],
-};
-
-// Compiled order: epoch, epoch_len, epoch_end, pot, tossers, tosser_count,
-// coins, overflows, volume, metadata.
-const fountainStorage = {
-  prim: "Pair",
-  args: [
-    int(0), int(EPOCH_LEN), int(Math.floor(Date.now() / 1000) + EPOCH_LEN),
-    int(0), [], int(0), int(0), int(0), int(0),
-    metadata({ name: "smoke print fountain", description: fountainDescription, ...common }),
-  ],
-};
+const now = Math.floor(Date.now() / 1000);
+const susuStorage = buildSusuStorage("smoke print house");
+const fountainStorage = buildFountainStorage("smoke print fountain", EPOCH_LEN, now);
 
 const originate = async (label, code, init) => {
   console.log(`\noriginating ${label} from exported JSON…`);

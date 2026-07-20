@@ -2,6 +2,7 @@ import {
   circleDescription,
   escapeHtml,
   formatTez,
+  kt1Pattern,
   readCircle,
   siteOrigin,
 } from "../../src/share-circle";
@@ -39,23 +40,27 @@ ${head}
 <body>${body}</body>
 </html>`;
 
-const missingPage = (id: string): string => shell(
+const missingPage = (id: string, back = siteOrigin): string => shell(
   `<title>no such circle — susu</title><meta name="robots" content="noindex" />`,
-  `<main><p class="eyebrow"><span>tezos · el segundo</span><span>susu</span></p><h1>no such <em>circle</em></h1><p class="description">Circle #${escapeHtml(id)} is not on the books.</p><a class="button" href="${siteOrigin}">back to the town square →</a></main>`,
+  `<main><p class="eyebrow"><span>tezos · el segundo</span><span>susu</span></p><h1>no such <em>circle</em></h1><p class="description">Circle #${escapeHtml(id)} is not on the books.</p><a class="button" href="${back}">back to the town square →</a></main>`,
 );
 
 export const onRequestGet: PagesFunction<Env, "id"> = async (context) => {
   const param = context.params.id;
   const id = Array.isArray(param) ? param[0] || "" : param;
+  const requestedHouse = new URL(context.request.url).searchParams.get("house") || "";
+  const house = kt1Pattern.test(requestedHouse) ? requestedHouse : "";
+  const houseQuery = house ? `?house=${encodeURIComponent(house)}` : "";
+  const houseHome = house ? `${siteOrigin}/?house=${encodeURIComponent(house)}` : siteOrigin;
   try {
-    const circle = await readCircle(id, context.env);
-    if (!circle) return new Response(missingPage(id), { status: 404, headers });
+    const circle = await readCircle(id, context.env, house);
+    if (!circle) return new Response(missingPage(id, houseHome), { status: 404, headers });
 
     const name = escapeHtml(circle.name);
     const title = `${name} — a susu circle`;
     const description = escapeHtml(circleDescription(circle));
-    const canonical = `${siteOrigin}/c/${id}`;
-    const image = `${siteOrigin}/og/c/${id}.png`;
+    const canonical = `${siteOrigin}/c/${id}${houseQuery}`;
+    const image = `${siteOrigin}/og/c/${id}.png${houseQuery}`;
     const head = `<title>${title}</title>
 <meta name="description" content="${description}" />
 <meta property="og:title" content="${title}" />
@@ -74,7 +79,7 @@ export const onRequestGet: PagesFunction<Env, "id"> = async (context) => {
     <div class="fact"><b>${circle.joined}/${circle.seats}</b><span>seats filled</span></div>
     <div class="fact"><b>${formatTez(circle.contribution)}ꜩ</b><span>each round</span></div>
   </div>
-  <a class="button" href="${siteOrigin}/#c=${id}">take a seat →</a>
+  <a class="button" href="${houseHome}#c=${id}">take a seat →</a>
 </main>`;
     return new Response(shell(head, body), { headers });
   } catch (error) {

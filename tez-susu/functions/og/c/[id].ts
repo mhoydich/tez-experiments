@@ -1,13 +1,15 @@
 import { ImageResponse } from "workers-og";
-import { escapeHtml, formatTez, readCircle } from "../../../src/share-circle";
+import { escapeHtml, formatTez, kt1Pattern, readCircle } from "../../../src/share-circle";
 
 const errorHeaders = { "Cache-Control": "public, max-age=60" };
 
 export const onRequestGet: PagesFunction<Env, "id"> = async (context) => {
   const param = context.params.id;
   const id = (Array.isArray(param) ? param[0] || "" : param).replace(/\.png$/, "");
+  const requestedHouse = new URL(context.request.url).searchParams.get("house") || "";
+  const house = kt1Pattern.test(requestedHouse) ? requestedHouse : "";
   try {
-    const circle = await readCircle(id, context.env);
+    const circle = await readCircle(id, context.env, house);
     if (!circle) return new Response("no such circle", { status: 404, headers: errorHeaders });
 
     const dots = Array.from({ length: circle.seats }, (_, seat) =>
