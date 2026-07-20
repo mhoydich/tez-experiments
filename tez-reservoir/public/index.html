@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>the reservoir — the compute susu</title>
+<meta name="description" content="A club that pools small dues into secured compute — frontier API credits, decentralized GPU-hours, club nodes. Membership is a soulbound seat; every buy is memo-tagged on-chain. The fountain splits water; the reservoir stores it against a dry season." />
+<script src="https://cdn.jsdelivr.net/npm/@airgap/beacon-sdk@4.5.1/dist/walletbeacon.min.js"></script>
+<style>
+  :root{
+    --paper:#f2efe9; --ink:#241f1c; --stamp:#b3402a; --tezos-blue:#0f61ff;
+    --line:#d8d2c6; --dim:#6b6259; --go:#2e6b3a; --water:rgba(15,97,255,.14);
+  }
+  @media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important} }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100dvh; display:grid; justify-items:center; align-content:start;
+    background:var(--paper); color:var(--ink);
+    font-family:Georgia,"Times New Roman",serif;
+    background-image:radial-gradient(var(--line) 1px, transparent 1px);
+    background-size:28px 28px;
+    padding:32px 12px 48px;
+  }
+  .office{
+    width:min(640px,94vw); background:#fff; border:1.5px solid var(--ink);
+    padding:2.2rem 2rem 1.6rem; box-shadow:8px 8px 0 var(--tezos-blue);
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:.68rem;
+    letter-spacing:.2em; text-transform:uppercase; color:var(--tezos-blue); margin:0 0 .5rem;
+    display:flex; justify-content:space-between; gap:1rem;
+  }
+  .eyebrow a{color:var(--tezos-blue); text-decoration:none}
+  h1{font-size:clamp(2.1rem,8.5vw,2.9rem); line-height:1; margin:0 0 .4rem; font-weight:500; letter-spacing:-.01em}
+  h1 em{font-style:italic; color:var(--tezos-blue)}
+  .lede{font-size:.95rem; line-height:1.55; margin:0 0 1.4rem; color:#3a332e}
+  h2{
+    font-family:ui-monospace,Menlo,monospace; font-weight:400; font-size:.72rem;
+    letter-spacing:.22em; text-transform:uppercase; color:var(--dim);
+    border-bottom:1px solid var(--line); padding-bottom:.4rem; margin:1.8rem 0 .9rem;
+    display:flex; justify-content:space-between; align-items:baseline;
+  }
+  h2 button{font-size:.66rem}
+
+  /* ---------- the tank ---------- */
+  .square{
+    border:1.5px solid var(--ink); background:var(--paper);
+    box-shadow:4px 4px 0 var(--line); padding:1.1rem; position:relative;
+  }
+  .tank{
+    position:relative; width:min(440px,100%); height:240px; margin:0 auto;
+    border:1.5px solid var(--ink); border-top:none; background:#fff; overflow:hidden;
+  }
+  .tank .rim{position:absolute; top:0; left:-8px; right:-8px; height:0; border-top:1.5px solid var(--ink)}
+  .water{
+    position:absolute; left:0; right:0; bottom:0; height:0%;
+    background:var(--water); border-top:2px solid var(--tezos-blue);
+    transition:height 1.2s cubic-bezier(.4,0,.2,1);
+  }
+  .water::before{
+    content:""; position:absolute; top:-7px; left:0; right:0; height:6px;
+    background:repeating-linear-gradient(90deg, transparent 0 10px, rgba(15,97,255,.35) 10px 20px);
+    animation:lap 3.2s linear infinite;
+  }
+  @keyframes lap{ from{background-position-x:0} to{background-position-x:20px} }
+  .gauge{
+    position:absolute; top:0; bottom:0; left:8px; width:26px;
+    font-family:ui-monospace,Menlo,monospace; font-size:.5rem; color:var(--dim);
+  }
+  .gauge i{position:absolute; left:0; width:10px; border-top:1px solid var(--dim); font-style:normal; padding-top:1px}
+  .gauge i span{position:absolute; left:13px; top:-4px; letter-spacing:.05em}
+  .pipe{
+    position:absolute; right:-1.5px; bottom:26px; width:56px; height:14px;
+    border:1.5px solid var(--ink); border-right:none; background:#fff;
+  }
+  .pipe .flow{position:absolute; inset:2px; background:repeating-linear-gradient(90deg, var(--water) 0 8px, transparent 8px 16px); opacity:0}
+  .pipe.drawing .flow{opacity:1; animation:lap 1s linear infinite}
+  .valve{
+    position:absolute; right:8px; bottom:44px; z-index:2; font-family:ui-monospace,Menlo,monospace;
+    font-size:.56rem; letter-spacing:.14em; text-transform:uppercase; color:var(--dim);
+    text-align:right;
+  }
+  .tcoin{
+    position:absolute; width:22px; height:22px; border-radius:50%;
+    border:1.5px solid var(--ink); background:#fff; color:var(--stamp);
+    font-family:ui-monospace,Menlo,monospace; font-weight:700; font-size:.7rem;
+    display:grid; place-items:center; animation:bob 2.8s ease-in-out infinite;
+    box-shadow:1px 1px 0 var(--ink);
+  }
+  @keyframes bob{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+  .fmeter{
+    text-align:center; font-family:ui-monospace,Menlo,monospace; font-size:.72rem;
+    letter-spacing:.08em; margin:.7rem 0 .2rem; min-height:1.2em;
+  }
+  .fmeter b{color:var(--tezos-blue)}
+  .fcount{
+    text-align:center; font-family:ui-monospace,Menlo,monospace; font-size:.64rem;
+    letter-spacing:.12em; text-transform:uppercase; color:var(--dim); min-height:1.1em;
+  }
+
+  .joinrow{display:grid; grid-template-columns:1fr auto; gap:.7rem; margin-top:1rem}
+  @media (max-width:520px){ .joinrow{grid-template-columns:1fr} }
+  .joinrow input{
+    width:100%; font:inherit; font-size:.92rem; padding:.6rem .65rem;
+    border:1.5px solid var(--ink); background:#fff; border-radius:0;
+  }
+  .joinrow input:focus-visible{outline:2px solid var(--tezos-blue); outline-offset:1px}
+  .cta{
+    font:inherit; font-size:1rem; padding:.6rem 1.4rem;
+    background:var(--tezos-blue); color:#fff; border:1.5px solid var(--ink); cursor:pointer;
+    box-shadow:4px 4px 0 var(--ink); transition:transform .08s, box-shadow .08s; white-space:nowrap;
+  }
+  .cta:hover:not(:disabled){transform:translate(-1px,-1px); box-shadow:5px 5px 0 var(--ink)}
+  .cta:active:not(:disabled){transform:translate(3px,3px); box-shadow:1px 1px 0 var(--ink)}
+  .cta:disabled{background:var(--line); color:var(--dim); cursor:not-allowed; box-shadow:none}
+  .cta.red{background:var(--stamp)}
+  .amt{width:6.5rem !important}
+  .pourrow{display:grid; grid-template-columns:auto 1fr auto; gap:.7rem; margin-top:.7rem}
+  @media (max-width:520px){ .pourrow{grid-template-columns:1fr} .amt{width:100% !important} }
+
+  .tiles{display:grid; grid-template-columns:repeat(4,1fr); gap:.7rem}
+  @media (max-width:560px){ .tiles{grid-template-columns:repeat(2,1fr)} }
+  .tile{border:1.5px solid var(--ink); background:#fff; padding:.6rem .7rem; box-shadow:3px 3px 0 var(--line)}
+  .tile b{display:block; font-size:1.4rem; font-family:ui-monospace,Menlo,monospace; color:var(--tezos-blue)}
+  .tile span{font-size:.56rem; font-family:ui-monospace,Menlo,monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--dim)}
+  .tile.red b{color:var(--stamp)}
+
+  .bar{
+    display:flex; align-items:center; justify-content:space-between; gap:.75rem;
+    border:1.5px solid var(--ink); padding:.55rem .75rem; margin:1.4rem 0;
+    background:var(--paper); box-shadow:4px 4px 0 var(--line);
+  }
+  .bar .who{font-family:ui-monospace,Menlo,monospace; font-size:.74rem; overflow:hidden}
+  .bar .who b{display:block; color:var(--dim); font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; font-weight:400}
+  .bar .who span{overflow-wrap:anywhere}
+  .ghost{
+    font:inherit; font-size:.82rem; background:none; padding:.45rem .8rem;
+    border:1.5px solid var(--ink); cursor:pointer; white-space:nowrap;
+  }
+  .ghost:hover{background:#fff; box-shadow:2px 2px 0 var(--ink)}
+  .ghost:active{transform:translate(2px,2px); box-shadow:none}
+
+  .seatcard{
+    border:1.5px solid var(--ink); background:#fff; box-shadow:4px 4px 0 var(--stamp);
+    padding:.8rem .9rem; margin:1rem 0 0; display:none;
+    font-family:ui-monospace,Menlo,monospace; font-size:.78rem; letter-spacing:.04em;
+  }
+  .seatcard b{color:var(--stamp); font-size:1.05rem}
+  .seatcard .sub{color:var(--dim); font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; margin-top:.25rem}
+
+  .entry{
+    border:1.5px solid var(--ink); background:#fff; box-shadow:3px 3px 0 var(--line);
+    padding:.55rem .75rem; margin-bottom:.7rem;
+  }
+  .entry.draw{box-shadow:3px 3px 0 rgba(179,64,42,.45)}
+  .entry .k{
+    font-family:ui-monospace,Menlo,monospace; font-size:.6rem; letter-spacing:.16em;
+    text-transform:uppercase; display:flex; justify-content:space-between; gap:.5rem;
+  }
+  .entry .k .kind{color:var(--tezos-blue)} .entry.draw .k .kind{color:var(--stamp)}
+  .entry .k .amt2{color:var(--ink)}
+  .entry .w{font-size:.92rem; font-style:italic; overflow-wrap:anywhere; margin-top:.15rem}
+  .entry .m{font-family:ui-monospace,Menlo,monospace; font-size:.6rem; letter-spacing:.1em; color:var(--dim); margin-top:.2rem}
+  .empty{font-size:.9rem; color:var(--dim); font-style:italic; margin:.4rem 0 1rem}
+  .fine{font-size:.8rem; color:var(--dim); font-style:italic; margin:.8rem 0 0; line-height:1.5}
+
+  .council{display:none; border:1.5px dashed var(--stamp); padding:.8rem .9rem; margin-top:1rem}
+  .council h3{font-family:ui-monospace,Menlo,monospace; font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--stamp); margin:0 0 .6rem}
+  .council .grid{display:grid; grid-template-columns:1fr; gap:.5rem}
+  .council input{font:inherit; font-size:.85rem; padding:.5rem .6rem; border:1.5px solid var(--ink); border-radius:0}
+
+  .status{min-height:1.4em; font-size:.85rem; color:var(--stamp); text-align:center; margin:.7rem 0 0}
+  .status a{color:var(--tezos-blue)}
+  footer{
+    font-family:ui-monospace,Menlo,monospace; font-size:.64rem; letter-spacing:.08em; color:var(--dim);
+    border-top:1px solid var(--line); padding-top:.9rem; margin-top:1.6rem;
+    display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap;
+  }
+  footer a{color:var(--dim)}
+</style>
+</head>
+<body>
+  <main class="office">
+    <p class="eyebrow"><span>tezos · el segundo</span><a href="https://tez-susu.pages.dev">← the money games house</a></p>
+    <h1><em>the reservoir</em> — the compute susu</h1>
+    <p class="lede">The fountain splits water; the reservoir <strong>stores it against a dry season</strong>. A club that pools small dues into secured compute — frontier API credits, decentralized GPU-hours, someday club nodes. Your seat is soulbound. Every buy the council makes is memo-tagged on-chain. The books are open forever.</p>
+
+    <div class="square">
+      <div class="tank" id="tank">
+        <div class="rim"></div>
+        <div class="gauge" id="gauge"></div>
+        <div class="valve">draw valve →<br>compute</div>
+        <div class="pipe" id="pipe"><div class="flow"></div></div>
+        <div class="water" id="water"></div>
+      </div>
+      <p class="fmeter" id="fmeter">reading the water level…</p>
+      <p class="fcount" id="fcount"></p>
+      <div class="joinrow" id="joinrow">
+        <input id="memoIn" maxlength="80" placeholder="why you're joining (optional — it rides with the op, forever)" />
+        <button class="cta" id="joinBtn">connect to join</button>
+      </div>
+      <div class="pourrow" id="pourrow" style="display:none">
+        <input class="amt" id="amtIn" type="number" min="0.1" step="0.1" value="1" aria-label="pour amount in tez" />
+        <input id="pourMemoIn" maxlength="80" placeholder="memo for this pour (optional)" />
+        <button class="cta" id="pourBtn">pour ꜩ</button>
+      </div>
+    </div>
+    <p class="fine">the water level is honest accounting: of everything ever pooled, the blue is still in the tank — the rest went through the valve and became compute. drawn ꜩ shows up below with the council's memo saying exactly what it bought.</p>
+
+    <div id="seatcard" class="seatcard"></div>
+
+    <h2><span>the books</span><button class="ghost" id="refresh">refresh</button></h2>
+    <div class="tiles">
+      <div class="tile"><b id="tSeats">—</b><span>seats on the roll</span></div>
+      <div class="tile"><b id="tPooled">—</b><span>ꜩ ever pooled</span></div>
+      <div class="tile red"><b id="tDrawn">—</b><span>ꜩ became compute</span></div>
+      <div class="tile"><b id="tHeld">—</b><span>ꜩ in the tank</span></div>
+    </div>
+
+    <div class="bar">
+      <div class="who">
+        <b id="whoLabel">not connected</b>
+        <span id="who">connect a wallet to take a seat</span>
+      </div>
+      <button class="ghost" id="connect">connect</button>
+    </div>
+
+    <div class="council" id="council">
+      <h3>council desk — draw the valve</h3>
+      <div class="grid">
+        <input id="drawTo" placeholder="to (tz1… / KT1…)" />
+        <input id="drawAmt" type="number" min="0.000001" step="0.1" placeholder="amount ꜩ" />
+        <input id="drawMemo" maxlength="120" placeholder="what this buys (memo, on the books forever)" />
+        <button class="cta red" id="drawBtn">draw</button>
+      </div>
+    </div>
+
+    <h2><span>the ledger — every join, pour, and buy</span></h2>
+    <div id="ledger"><p class="empty">opening the books…</p></div>
+
+    <p class="status" id="status"></p>
+
+    <footer>
+      <span>the founding note: <a href="https://hoydich.wordpress.com/2026/07/20/an-update-for-understanding-compute/" target="_blank" rel="noopener">an update for understanding: compute ↗</a></span>
+      <span><a id="explorer" href="#" target="_blank" rel="noopener">contract ↗</a> · CC0</span>
+    </footer>
+  </main>
+
+<script>
+/* ---- config: flip ACTIVE to 'mainnet' after mainnet origination ---- */
+const NETWORKS = {
+  shadownet: {
+    kind:'custom', label:'Shadownet',
+    rpc:'https://rpc.tzkt.io/shadownet',
+    indexer:'https://api.shadownet.tzkt.io',
+    explorer:'https://shadownet.tzkt.io',
+    kt1:'KT1KF2w3HzQhbs4QWaRFtfWMZxeGqSBVoF5Y',
+  },
+  mainnet: {
+    kind:'mainnet', label:'Mainnet',
+    rpc:'https://mainnet.smartpy.io',
+    indexer:'https://api.tzkt.io',
+    explorer:'https://tzkt.io',
+    kt1:'KT1CRqDyvGLWmzSGiokGE58USLf3R1nLMxTT',
+  },
+};
+const ACTIVE = 'mainnet';
+const NET = NETWORKS[ACTIVE];
+
+const $ = (id) => document.getElementById(id);
+const shorten = (a) => a ? a.slice(0,5)+'…'+a.slice(-4) : '';
+const toHex = (s) => Array.from(new TextEncoder().encode(s)).map(b=>b.toString(16).padStart(2,'0')).join('');
+const fromHex = (h) => { try{ return new TextDecoder().decode(new Uint8Array((h.match(/../g)||[]).map(x=>parseInt(x,16)))); }catch{ return ''; } };
+const fmtTez = (mutez) => { const t = Number(mutez)/1e6; return (Number.isInteger(t)?String(t):t.toFixed(2).replace(/\.?0+$/,'')); };
+const esc = (s) => s.replace(/</g,'&lt;');
+
+let address = null;
+let S = null;          // contract storage snapshot
+let held = 0;          // contract balance, mutez
+let me = null;         // my member record, if any
+
+/* ---------- tank rendering ---------- */
+function gaugeTicks(){
+  const g = $('gauge'); g.innerHTML='';
+  for(let i=1;i<=4;i++){
+    const t = document.createElement('i');
+    t.style.bottom = (i*20)+'%';
+    t.innerHTML = `<span>${i*25}</span>`;
+    g.appendChild(t);
+  }
+}
+function renderTank(){
+  if(!S) return;
+  const pooled = Number(S.total_pooled), drawn = Number(S.total_drawn);
+  const pct = pooled > 0 ? Math.max(0, Math.min(1, held / pooled)) : 0;
+  $('water').style.height = (pct*80).toFixed(1) + '%';
+  $('pipe').classList.toggle('drawing', drawn > 0);
+  const seats = Number(S.seats);
+  $('fmeter').innerHTML = pooled > 0
+    ? `the tank holds <b>${fmtTez(held)}ꜩ</b> of <b>${fmtTez(pooled)}ꜩ</b> ever pooled — ${fmtTez(drawn)}ꜩ became compute`
+    : `the tank is dry — the first seat names the season`;
+  $('fcount').textContent = seats ? `${seats} seat${seats===1?'':'s'} on the roll · dues ${fmtTez(S.dues)}ꜩ` : '';
+  $('tSeats').textContent = seats;
+  $('tPooled').textContent = fmtTez(pooled);
+  $('tDrawn').textContent = fmtTez(drawn);
+  $('tHeld').textContent = fmtTez(held);
+  // controls
+  const isMember = !!me;
+  $('joinrow').style.display = isMember ? 'none' : '';
+  $('pourrow').style.display = isMember ? '' : 'none';
+  $('joinBtn').disabled = !address;
+  $('joinBtn').textContent = address ? `take a seat — ${fmtTez(S.dues)}ꜩ` : 'connect to join';
+  $('council').style.display = (address && S.council === address) ? 'block' : 'none';
+  if(me){
+    $('seatcard').style.display = 'block';
+    $('seatcard').innerHTML =
+      `seat <b>№ ${Number(me.seat)}</b> · yours, soulbound` +
+      `<div class="sub">poured ${fmtTez(me.filled)}ꜩ over ${Number(me.fills)} fill${Number(me.fills)===1?'':'s'} · seated ${new Date(me.joined).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</div>`;
+  } else {
+    $('seatcard').style.display = 'none';
+  }
+}
+
+/* ---------- reads (TzKT) ---------- */
+async function readStorage(){
+  try{
+    const [sRes, bRes] = await Promise.all([
+      fetch(`${NET.indexer}/v1/contracts/${NET.kt1}/storage`),
+      fetch(`${NET.indexer}/v1/accounts/${NET.kt1}/balance`),
+    ]);
+    if(sRes.ok) S = await sRes.json();
+    if(bRes.ok) held = Number(await bRes.text());
+    await readMe();
+    renderTank();
+  }catch{}
+}
+async function readMe(){
+  me = null;
+  if(!address) return;
+  try{
+    const res = await fetch(`${NET.indexer}/v1/contracts/${NET.kt1}/bigmaps/members/keys/${address}`);
+    if(res.ok){ const k = await res.json(); if(k && k.active !== false) me = k.value; }
+  }catch{}
+}
+async function readLedger(){
+  try{
+    const res = await fetch(`${NET.indexer}/v1/operations/transactions?target=${NET.kt1}&entrypoint.in=join,fill,draw&status=applied&limit=60&sort.desc=level`);
+    if(!res.ok) return;
+    const ops = await res.json();
+    const cards = ops.map(o=>{
+      const ep = o.parameter?.entrypoint;
+      const when = new Date(o.timestamp).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+      if(ep === 'draw'){
+        const v = o.parameter.value || {};
+        const memo = fromHex(v.memo||'');
+        return `<div class="entry draw">
+          <div class="k"><span class="kind">draw — compute bought</span><span class="amt2">−${fmtTez(v.amount||0)}ꜩ</span></div>
+          <div class="w">${memo ? '“'+esc(memo)+'”' : '<span style="color:var(--dim)">(no memo)</span>'}</div>
+          <div class="m">council → ${shorten(v.to_||'')} · ${when}</div>
+        </div>`;
+      }
+      const memo = fromHex(o.parameter?.value||'');
+      const label = ep === 'join' ? 'join — new seat' : 'fill — pour';
+      return `<div class="entry">
+        <div class="k"><span class="kind">${label}</span><span class="amt2">+${fmtTez(o.amount||0)}ꜩ</span></div>
+        <div class="w">${memo ? '“'+esc(memo)+'”' : '<span style="color:var(--dim)">(a quiet pour)</span>'}</div>
+        <div class="m">${shorten(o.sender.address)} · ${when}</div>
+      </div>`;
+    }).join('');
+    $('ledger').innerHTML = cards || `<p class="empty">no entries yet — the books open with the first seat.</p>`;
+  }catch{}
+}
+const refresh = () => { readStorage(); readLedger(); };
+
+/* ---------- wallet (Beacon) ---------- */
+let client;
+function beaconNetwork(){
+  return NET.kind==='mainnet'
+    ? { type: beacon.NetworkType.MAINNET }
+    : { type: beacon.NetworkType.CUSTOM, name: NET.label, rpcUrl: NET.rpc };
+}
+function getClient(){
+  if(!client) client = new beacon.DAppClient({ name:'the reservoir', network: beaconNetwork() });
+  return client;
+}
+async function connect(){
+  setStatus('opening wallet…');
+  try{
+    const c = getClient();
+    const acc = await c.getActiveAccount();
+    const perm = acc || await c.requestPermissions();
+    address = perm.address;
+    onConnected(); setStatus('');
+  }catch(e){ setStatus('connect cancelled'); }
+}
+async function disconnect(){
+  try{ await getClient().clearActiveAccount(); }catch{}
+  address=null; me=null;
+  $('whoLabel').textContent='not connected';
+  $('who').textContent='connect a wallet to take a seat';
+  $('connect').textContent='connect'; $('connect').onclick=connect;
+  renderTank();
+}
+function onConnected(){
+  $('whoLabel').textContent='connected';
+  $('who').textContent=shorten(address);
+  $('connect').textContent='disconnect'; $('connect').onclick=disconnect;
+  refresh();
+}
+
+/* ---------- ops ---------- */
+async function sendOps(details, doing){
+  setStatus(doing);
+  try{
+    const r = await getClient().requestOperation({ operationDetails: details });
+    const hash = r.transactionHash || r.opHash || '';
+    setStatus(hash ? `done ✓ <a href="${NET.explorer}/${hash}" target="_blank" rel="noopener">op ↗</a>` : 'done ✓');
+    setTimeout(refresh, 4000); setTimeout(refresh, 12000);
+    return true;
+  }catch(e){ setStatus('cancelled or failed'); return false; }
+}
+const bytesCall = (entrypoint, memoHex, amountMutez) => ({
+  kind: beacon.TezosOperationType.TRANSACTION,
+  amount: String(amountMutez),
+  destination: NET.kt1,
+  parameters: { entrypoint, value: { bytes: memoHex } },
+});
+$('joinBtn').onclick = async () => {
+  if(!address || !S) return;
+  const ok = await sendOps([bytesCall('join', toHex($('memoIn').value.trim()), S.dues)], 'taking your seat…');
+  if(ok) $('memoIn').value='';
+};
+$('pourBtn').onclick = async () => {
+  if(!address) return;
+  const amt = Math.round(parseFloat($('amtIn').value || '0') * 1e6);
+  if(!(amt > 0)) { setStatus('pour a positive amount'); return; }
+  const ok = await sendOps([bytesCall('fill', toHex($('pourMemoIn').value.trim()), amt)], 'pouring…');
+  if(ok) $('pourMemoIn').value='';
+};
+$('drawBtn').onclick = async () => {
+  if(!address) return;
+  const to_ = $('drawTo').value.trim();
+  const amt = Math.round(parseFloat($('drawAmt').value || '0') * 1e6);
+  const memo = $('drawMemo').value.trim();
+  if(!to_ || !(amt > 0)) { setStatus('draw needs a target and a positive amount'); return; }
+  await sendOps([{
+    kind: beacon.TezosOperationType.TRANSACTION,
+    amount: '0',
+    destination: NET.kt1,
+    parameters: { entrypoint: 'draw', value: {
+      prim: 'Pair', args: [ { string: to_ }, { prim: 'Pair', args: [ { int: String(amt) }, { bytes: toHex(memo) } ] } ]
+    }},
+  }], 'drawing the valve…');
+};
+
+/* ---------- init ---------- */
+function setStatus(html){ $('status').innerHTML = html; }
+$('connect').onclick = connect;
+$('refresh').onclick = refresh;
+$('explorer').href = NET.kt1 ? `${NET.explorer}/${NET.kt1}` : '#';
+gaugeTicks();
+refresh();
+setInterval(refresh, 30000);
+(async()=>{ try{ const acc = await getClient().getActiveAccount(); if(acc){ address=acc.address; onConnected(); } }catch{} })();
+</script>
+</body>
+</html>

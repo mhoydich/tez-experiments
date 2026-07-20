@@ -52,6 +52,20 @@ tez-susu/             # 08 — the money games house: net-zero money games.
                       #      evenly among tossers, dust tips the overflow
                       #      caller. Addresses in README. Single-file pages
                       #      like drum (index.html + fountain.html).
+tez-reservoir/        # 09 — the reservoir: the compute susu. A club pools
+                      #      small dues into secured compute (API credits,
+                      #      DePIN GPU-hours, club nodes). Soulbound seats
+                      #      (join order forever), member fills, council
+                      #      draws with memo-tagged buys (memos in call
+                      #      params, indexer-read, zero storage — open books).
+                      #      set_delegate stakes the pool while it stores.
+                      #      MAINNET KT1CRqDyvGLWmzSGiokGE58USLf3R1nLMxTT
+                      #      (council = Mike's Kukai tz2P3kj…), Shadownet dev
+                      #      copy KT1KF2w3HzQhbs4QWaRFtfWMZxeGqSBVoF5Y,
+                      #      smoke-tested. LIVE at tez-reservoir.pages.dev.
+                      #      Single-file public/index.html, CDN Beacon,
+                      #      TzKT reads. Founding note: hoydich.wordpress.com
+                      #      /2026/07/20/an-update-for-understanding-compute/
 ```
 
 Read each repo's README.md before touching it. tez-stamps/TRAITS.md is the

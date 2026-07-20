@@ -1,0 +1,148 @@
+// The Reservoir — the compute susu (tez-experiments rung 09)
+// The fountain splits water; the reservoir stores it against a dry season.
+//
+// A club that pools small dues into secured compute. Membership is a
+// soulbound seat — your address in the roll, non-transferable by
+// construction. Dues pool in the contract; the council draws the pool
+// down to buy compute (frontier API credits, decentralized GPU-hours,
+// eventually club nodes). Every join, fill, and draw carries a memo that
+// rides in the call params and is read back off the indexer — zero
+// storage, open books forever.
+//
+// Honest weaknesses (template-grade, documented not hidden):
+// - The council CAN drain the pool. That is the mechanic: a susu is trust
+//   in the organizer, with open books. The council seat starts as the
+//   deploy key and migrates to a k-of-n TzSafe via set_council — sender
+//   checks accept contract callers by design.
+// - No refund valve in rung one. The council can always rain the pool
+//   back with draws; the ledger shows whether it did.
+// jsLIGO (LIGO 1.15.6). CC0.
+
+type member = {
+  seat: nat,          // join order, forever
+  joined: timestamp,
+  filled: tez,        // lifetime dues poured in
+  fills: nat,
+};
+
+type storage = {
+  council: address,
+  dues: tez,          // minimum first pour to take a seat
+  members: big_map<address, member>,
+  seats: nat,
+  total_pooled: tez,
+  total_drawn: tez,
+  draws: nat,
+  metadata: big_map<string, bytes>,
+};
+
+type ret = [list<operation>, storage];
+
+const only_council = (s: storage): unit => {
+  if (Tezos.get_sender() != s.council) failwith("NOT_COUNCIL");
+};
+
+const payable = (a: address): contract<unit> =>
+  match(Tezos.get_contract_opt(a)) {
+    when (Some(c)): c;
+    when (None()): failwith("BAD_DEST")
+  };
+
+const member_of = (s: storage, a: address): member =>
+  match(Big_map.find_opt(a, s.members)) {
+    when (Some(m)): m;
+    when (None()): failwith("NOT_A_MEMBER")
+  };
+
+// ---------- join: take a seat with your first pour ----------
+// The memo (utf-8 bytes: michelson string rejects non-ascii) is why you
+// joined — indexer-read, never stored.
+@entry
+const join = (_memo: bytes, s: storage): ret => {
+  const amt = Tezos.get_amount();
+  if (amt < s.dues) failwith("BELOW_DUES");
+  const who = Tezos.get_sender();
+  if (Big_map.mem(who, s.members)) failwith("ALREADY_A_MEMBER");
+  const m: member = { seat: s.seats, joined: Tezos.get_now(), filled: amt, fills: 1n };
+  return [
+    list([]),
+    { ...s,
+      members: Big_map.add(who, m, s.members),
+      seats: s.seats + 1n,
+      total_pooled: s.total_pooled + amt,
+    },
+  ];
+};
+
+// ---------- fill: pour into the pool ----------
+@entry
+const fill = (_memo: bytes, s: storage): ret => {
+  const amt = Tezos.get_amount();
+  if (amt == 0mutez) failwith("EMPTY_POUR");
+  const who = Tezos.get_sender();
+  const m = member_of(s, who);
+  const m2 = { ...m, filled: m.filled + amt, fills: m.fills + 1n };
+  return [
+    list([]),
+    { ...s,
+      members: Big_map.update(who, Some(m2), s.members),
+      total_pooled: s.total_pooled + amt,
+    },
+  ];
+};
+
+// ---------- draw: the council buys compute ----------
+// Outflows are council-signed and memo-tagged — "openrouter credits",
+// "akash h100 block", "club node psu". Traceable forever.
+@entry
+const draw = (p: { to_: address, amount: tez, memo: bytes }, s: storage): ret => {
+  only_council(s);
+  if (Tezos.get_amount() != 0mutez) failwith("SEND_NO_TEZ");
+  if (p.amount == 0mutez) failwith("EMPTY_DRAW");
+  const op = Tezos.transaction(unit, p.amount, payable(p.to_));
+  return [
+    list([op]),
+    { ...s, total_drawn: s.total_drawn + p.amount, draws: s.draws + 1n },
+  ];
+};
+
+// ---------- council plumbing ----------
+@entry
+const set_dues = (d: tez, s: storage): ret => {
+  only_council(s);
+  return [list([]), { ...s, dues: d }];
+};
+
+// Migration path: hand the council seat to the TzSafe multisig.
+@entry
+const set_council = (a: address, s: storage): ret => {
+  only_council(s);
+  return [list([]), { ...s, council: a }];
+};
+
+// Native staking: the reservoir earns while it stores (council-rotated).
+@entry
+const set_delegate = (d: option<key_hash>, s: storage): ret => {
+  only_council(s);
+  return [list([Tezos.set_delegate(d)]), s];
+};
+
+// ---------- views (how the rest of the ladder reads the water level) ----------
+
+@view
+const read_member = (a: address, s: storage): option<member> =>
+  Big_map.find_opt(a, s.members);
+
+type level_stats = {
+  seats: nat,
+  dues: tez,
+  pooled: tez,
+  drawn: tez,
+  draws: nat,
+  held: tez,
+};
+
+@view
+const reservoir = (_u: unit, s: storage): level_stats =>
+  ({ seats: s.seats, dues: s.dues, pooled: s.total_pooled,
+     drawn: s.total_drawn, draws: s.draws, held: Tezos.get_balance() });
