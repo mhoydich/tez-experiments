@@ -49,6 +49,8 @@ The contract holds tez only mid-round; a settled or disbanded house holds 0.
 | Mainnet | circle | `KT19HJaK1hNmc337yv6DM4ZfYyPPQnzj277G` | live at tez-susu.pages.dev |
 | Shadownet | fountain | `KT1X4uVpAndFZ3hU75SubFMHvvZaxjfDU34G` | dev copy (180s epochs), smoke-tested |
 | Mainnet | fountain | `KT1UTu9vS3aJH3ktyVCF9DimjLKpqXGQkeGW` | daily epochs, live at tez-susu.pages.dev/fountain |
+| Shadownet | made-whole | `KT1SiQbgGfLiXLfs4ZTa9RvPG6JRVdJSLF2F` | dev copy against dev house; smoke = 6 claim assertions |
+| Mainnet | made-whole | `KT1A8Jq9d9aRo2Je9TtQRYUGRsKC8BdhWCWa` | trustless completion stamps against the mainnet house (verifies via `read_circle` on-chain view — no oracle, no admin). Share posters at `/c/{id}` (Pages Functions + workers-og OG cards). See GROWTH.md |
 
 Compiler: LIGO 1.15.6 (jsLIGO), `ligo compile contract contracts/susu.jsligo > contracts/susu.tz`
 (`.tz` gitignored by design — recompile).
