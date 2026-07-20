@@ -1,10 +1,19 @@
-# tez-susu — the savings circle
+# tez-susu — the money games house
 
-Rung 08 of the tez-experiments ladder. An old-world ROSCA (susu / tanda /
-chit fund), on-chain: N neighbors each pay a fixed contribution per round;
-each round ONE member takes the whole pot, in **join order**, until everyone
-has had a turn. Everyone ends net-zero; each member gets one lump sum. A
-savings club, not gambling — no house, no chance, no yield. CC0.
+Rung 08 of the tez-experiments ladder: net-zero money games. Two rooms so
+far, both CC0, both "no house, no chance, no yield":
+
+1. **the savings circle** (`contracts/susu.jsligo`, `public/index.html`) —
+   an old-world ROSCA (susu / tanda / chit fund): N neighbors each pay a
+   fixed contribution per round; each round ONE member takes the whole pot,
+   in **join order**, until everyone has had a turn. Everyone ends net-zero;
+   each member gets one lump sum. The homepage is a playable pretend circle.
+2. **the fountain** (`contracts/fountain.jsligo`, `public/fountain.html`) —
+   toss 1ꜩ coins with a wish all epoch; at epoch end anyone may `overflow`
+   the fountain and the pot splits **evenly among that epoch's tossers**
+   (division dust tips the caller). Toss once, break even; toss five times,
+   you watered the square. Wishes cost no storage — they ride in the call
+   parameters and are read back off the indexer.
 
 ## How a circle turns
 
@@ -34,10 +43,12 @@ The contract holds tez only mid-round; a settled or disbanded house holds 0.
 
 ## Addresses
 
-| net | address | notes |
-|---|---|---|
-| Shadownet | `KT1QkXi31V5Fv91y7EEu68iNXuY1dRGp5VgM` | dev copy, smoke-tested (full cycle + valve) |
-| Mainnet | `KT19HJaK1hNmc337yv6DM4ZfYyPPQnzj277G` | live at tez-susu.pages.dev |
+| net | contract | address | notes |
+|---|---|---|---|
+| Shadownet | circle | `KT1QkXi31V5Fv91y7EEu68iNXuY1dRGp5VgM` | dev copy, smoke-tested (full cycle + valve) |
+| Mainnet | circle | `KT19HJaK1hNmc337yv6DM4ZfYyPPQnzj277G` | live at tez-susu.pages.dev |
+| Shadownet | fountain | `KT1X4uVpAndFZ3hU75SubFMHvvZaxjfDU34G` | dev copy (180s epochs), smoke-tested |
+| Mainnet | fountain | `KT1UTu9vS3aJH3ktyVCF9DimjLKpqXGQkeGW` | daily epochs, live at tez-susu.pages.dev/fountain |
 
 Compiler: LIGO 1.15.6 (jsLIGO), `ligo compile contract contracts/susu.jsligo > contracts/susu.tz`
 (`.tz` gitignored by design — recompile).
@@ -49,12 +60,14 @@ TzKT-only reads, no build step. Deploy:
 ## Dev
 
 ```
-cp .env.example .env   # add ADMIN_KEY (never commit)
+cp .env.example .env       # add ADMIN_KEY (never commit)
 npm install
-npm run deploy         # originate (RPC in .env; teztnets RPC can lag days —
-                       # use https://rpc.tzkt.io/shadownet)
-npm run smoke          # full 3-seat cycle + double-pay guard + disband valve
+npm run deploy             # originate the circle (RPC in .env; teztnets RPC
+                           # can lag days — use https://rpc.tzkt.io/shadownet)
+npm run smoke              # full 3-seat cycle + double-pay guard + disband valve
+EPOCH_LEN=180 npm run deploy:fountain   # short epochs for dev (mainnet: 86400)
+npm run smoke:fountain     # whale+2 split, dust to tipper, all three guards
 ```
 
-Views for the rest of the ladder: `read_circle(id)`, `circle_count()`,
-`town()` (circles_opened / rounds_settled / volume).
+Views for the rest of the ladder: circle `read_circle(id)` / `circle_count()`
+/ `town()`; fountain `fountain()` (epoch / pot / tossers / lifetime).

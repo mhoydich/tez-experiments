@@ -39,14 +39,19 @@ tez-drum/             # 07 — DRUM: the fungible token you earn by drumming.
                       #      live at tez-drum.pages.dev. Shadownet dev copy
                       #      KT1DrTZ69a7T81fZpFeKpsCMLb2AhEYdAAEs. Single-file
                       #      public/index.html, CDN Beacon (Kukai), TzKT reads.
-tez-susu/             # 08 — susu: the savings circle (ROSCA/tanda) on-chain.
+tez-susu/             # 08 — the money games house: net-zero money games.
+                      #      (a) susu: the savings circle (ROSCA/tanda) —
                       #      N seats pay a fixed contribution per round; each
                       #      round one seat takes the whole pot, join order,
-                      #      until everyone has had a turn. Net-zero by
-                      #      design — a savings club, not gambling. Disband
-                      #      valve (organizer anytime; any member past grace)
-                      #      refunds only the current round. Addresses in
-                      #      README. Single-file public/index.html like drum.
+                      #      until everyone has had a turn. Disband valve
+                      #      (organizer anytime; member past grace) refunds
+                      #      only the current round. Homepage is a playable
+                      #      pretend circle. (b) the fountain: toss 1ꜩ coins
+                      #      w/ wishes (wishes live in call params, indexer-
+                      #      read, zero storage); each epoch the pot splits
+                      #      evenly among tossers, dust tips the overflow
+                      #      caller. Addresses in README. Single-file pages
+                      #      like drum (index.html + fountain.html).
 ```
 
 Read each repo's README.md before touching it. tez-stamps/TRAITS.md is the

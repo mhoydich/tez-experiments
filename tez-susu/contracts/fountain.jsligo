@@ -1,0 +1,105 @@
+// tez-susu — the fountain. The town square's second money game.
+// Toss one-tez coins in all day (each toss carries a wish, which the
+// contract deliberately ignores — wishes live in the call parameters and
+// are read back off the indexer, costing no storage). Once the epoch is
+// over, ANYONE may tip the fountain: the pot splits evenly among everyone
+// who tossed that epoch — toss once, your coin comes back; toss five
+// times, you watered the square. Division dust goes to whoever tips.
+// No house, no chance, no yield — a mirror with a delay.
+// jsLIGO (LIGO 1.15.6). CC0.
+//
+// Honest weaknesses:
+// - The split pays every tosser in one operation; a truly enormous epoch
+//   (many hundreds of tossers) could brush the per-op gas cap. Template-
+//   grade: documented, not defended.
+// - Freeloading is legal: toss your single coin, profit from the whales.
+//   That is not a bug — it is the experiment.
+
+type storage = {
+  epoch: nat,
+  epoch_len: nat,            // seconds per epoch
+  epoch_end: timestamp,
+  pot: tez,                  // this epoch's coins
+  tossers: set<address>,     // unique tossers this epoch
+  tosser_count: nat,
+  coins: nat,                // lifetime coins tossed
+  overflows: nat,            // lifetime paying overflows
+  volume: tez,               // lifetime tez through the fountain
+  metadata: big_map<string, bytes>,
+};
+
+type ret = [list<operation>, storage];
+
+const coin: tez = 1tez;
+
+// Tossers must be able to receive plain tez, checked at toss time so one
+// odd KT1 can never brick the overflow for everyone.
+const payable = (a: address): contract<unit> =>
+  match(Tezos.get_contract_opt(a)) {
+    when (Some(c)): c;
+    when (None()): failwith("NOT_PAYABLE")
+  };
+
+// ---------- toss: one coin, one wish ----------
+// The wish bytes are accepted and ignored on-chain; indexers keep them.
+@entry
+const toss = (_wish: bytes, s: storage): ret => {
+  if (Tezos.get_amount() != coin) failwith("ONE_TEZ_COINS_ONLY");
+  if (Tezos.get_now() >= s.epoch_end) failwith("TIP_THE_FOUNTAIN");
+  const who = Tezos.get_sender();
+  const _ok = payable(who);
+  const first = !Set.mem(who, s.tossers);
+  return [
+    list([]),
+    { ...s,
+      pot: s.pot + coin,
+      tossers: Set.add(who, s.tossers),
+      tosser_count: first ? s.tosser_count + 1n : s.tosser_count,
+      coins: s.coins + 1n,
+      volume: s.volume + coin,
+    },
+  ];
+};
+
+// ---------- overflow: tip the fountain ----------
+// Anyone, once the epoch is done. Splits the pot evenly among the epoch's
+// tossers; division dust tips the caller. An empty epoch just rolls over.
+@entry
+const overflow = (_u: unit, s: storage): ret => {
+  if (Tezos.get_amount() != 0mutez) failwith("SEND_NO_TEZ");
+  if (Tezos.get_now() < s.epoch_end) failwith("NOT_BRIMMING_YET");
+  const next = { ...s,
+    epoch: s.epoch + 1n,
+    epoch_end: Tezos.get_now() + int(s.epoch_len),
+    pot: 0mutez,
+    tossers: (Set.empty as set<address>),
+    tosser_count: 0n,
+    overflows: s.tosser_count > 0n ? s.overflows + 1n : s.overflows,
+  };
+  if (s.tosser_count == 0n) return [list([]), next];
+  const share = s.pot / s.tosser_count;
+  const pay = ([acc, member]: [list<operation>, address]): list<operation> =>
+    list([Tezos.transaction(unit, share, payable(member)), ...acc]);
+  const ops0 = Set.fold(pay, s.tossers, (list([]) as list<operation>));
+  const dust = match(s.pot - share * s.tosser_count) {
+    when (Some(d)): d;
+    when (None()): 0mutez
+  };
+  const ops = dust > 0mutez
+    ? list([Tezos.transaction(unit, dust, payable(Tezos.get_sender())), ...ops0])
+    : ops0;
+  return [ops, next];
+};
+
+// ---------- view ----------
+
+type fountain_stats = {
+  epoch: nat, epoch_end: timestamp, pot: tez, tosser_count: nat,
+  coins: nat, overflows: nat, volume: tez,
+};
+
+@view
+const fountain = (_u: unit, s: storage): fountain_stats =>
+  ({ epoch: s.epoch, epoch_end: s.epoch_end, pot: s.pot,
+     tosser_count: s.tosser_count, coins: s.coins,
+     overflows: s.overflows, volume: s.volume });

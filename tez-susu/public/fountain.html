@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>the fountain — toss a coin, make a wish</title>
+<meta name="description" content="Toss one-tez coins into the town fountain with a wish. Every day it overflows and the pot splits evenly among everyone who tossed. Toss once, your coin comes back. Toss five times, you watered the square. No house, no chance — a mirror with a delay." />
+<script src="https://cdn.jsdelivr.net/npm/@airgap/beacon-sdk@4.5.1/dist/walletbeacon.min.js"></script>
+<style>
+  :root{
+    --paper:#f2efe9; --ink:#241f1c; --stamp:#b3402a; --tezos-blue:#0f61ff;
+    --line:#d8d2c6; --dim:#6b6259; --go:#2e6b3a; --water:rgba(15,97,255,.08);
+  }
+  @media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important} }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100dvh; display:grid; justify-items:center; align-content:start;
+    background:var(--paper); color:var(--ink);
+    font-family:Georgia,"Times New Roman",serif;
+    background-image:radial-gradient(var(--line) 1px, transparent 1px);
+    background-size:28px 28px;
+    padding:32px 12px 48px;
+  }
+  .office{
+    width:min(620px,94vw); background:#fff; border:1.5px solid var(--ink);
+    padding:2.2rem 2rem 1.6rem; box-shadow:8px 8px 0 var(--tezos-blue);
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:.68rem;
+    letter-spacing:.2em; text-transform:uppercase; color:var(--tezos-blue); margin:0 0 .5rem;
+    display:flex; justify-content:space-between; gap:1rem;
+  }
+  .eyebrow a{color:var(--tezos-blue); text-decoration:none}
+  h1{font-size:clamp(2.1rem,8.5vw,2.9rem); line-height:1; margin:0 0 .4rem; font-weight:500; letter-spacing:-.01em}
+  h1 em{font-style:italic; color:var(--tezos-blue)}
+  .lede{font-size:.95rem; line-height:1.55; margin:0 0 1.4rem; color:#3a332e}
+  h2{
+    font-family:ui-monospace,Menlo,monospace; font-weight:400; font-size:.72rem;
+    letter-spacing:.22em; text-transform:uppercase; color:var(--dim);
+    border-bottom:1px solid var(--line); padding-bottom:.4rem; margin:1.8rem 0 .9rem;
+    display:flex; justify-content:space-between; align-items:baseline;
+  }
+  h2 button{font-size:.66rem}
+
+  /* ---------- the fountain ---------- */
+  .square{
+    border:1.5px solid var(--ink); background:var(--paper);
+    box-shadow:4px 4px 0 var(--line); padding:1.1rem; position:relative; overflow:hidden;
+  }
+  .fstage{position:relative; width:min(420px,100%); height:300px; margin:0 auto}
+  .tier{position:absolute; border:1.5px solid var(--ink); background:var(--water); border-radius:50%}
+  .tier.b{left:50%; bottom:8px; width:320px; height:92px; margin-left:-160px}
+  .tier.m{left:50%; bottom:120px; width:170px; height:52px; margin-left:-85px}
+  .tier.t{left:50%; bottom:206px; width:88px; height:30px; margin-left:-44px}
+  .column{position:absolute; left:50%; width:16px; margin-left:-8px; background:#fff; border:1.5px solid var(--ink)}
+  .column.a{bottom:52px; height:74px}
+  .column.b2{bottom:144px; height:66px}
+  .spout{
+    position:absolute; left:50%; bottom:224px; width:3px; height:26px; margin-left:-1.5px;
+    background:var(--tezos-blue); opacity:.5; animation:spurt 1.6s ease-in-out infinite;
+  }
+  @keyframes spurt{ 0%,100%{transform:scaleY(.75); opacity:.35} 50%{transform:scaleY(1.12); opacity:.6} }
+  .fcoin{
+    position:absolute; width:26px; height:26px; border-radius:50%;
+    border:1.5px solid var(--ink); background:#fff; color:var(--stamp);
+    font-family:ui-monospace,Menlo,monospace; font-weight:700; font-size:.8rem;
+    display:grid; place-items:center; animation:bob 2.6s ease-in-out infinite;
+    box-shadow:1px 1px 0 var(--ink);
+  }
+  @keyframes bob{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+  .flying{
+    position:absolute; z-index:6; pointer-events:none; width:30px; height:30px; border-radius:50%;
+    border:1.5px solid var(--ink); background:#fff; color:var(--stamp);
+    font-family:ui-monospace,Menlo,monospace; font-weight:700; font-size:.85rem;
+    display:grid; place-items:center; box-shadow:2px 2px 0 var(--ink);
+    transition:left .6s cubic-bezier(.3,-0.45,.65,1.15), top .6s cubic-bezier(.25,-0.7,.7,1), opacity .25s;
+  }
+  .fmeter{
+    text-align:center; font-family:ui-monospace,Menlo,monospace; font-size:.72rem;
+    letter-spacing:.08em; margin:.6rem 0 .2rem; min-height:1.2em;
+  }
+  .fmeter b{color:var(--tezos-blue)}
+  .fcount{
+    text-align:center; font-family:ui-monospace,Menlo,monospace; font-size:.64rem;
+    letter-spacing:.12em; text-transform:uppercase; color:var(--dim); min-height:1.1em;
+  }
+
+  .tossrow{display:grid; grid-template-columns:1fr auto; gap:.7rem; margin-top:1rem}
+  @media (max-width:520px){ .tossrow{grid-template-columns:1fr} }
+  .tossrow input{
+    width:100%; font:inherit; font-size:.92rem; padding:.6rem .65rem;
+    border:1.5px solid var(--ink); background:#fff; border-radius:0;
+  }
+  .tossrow input:focus-visible{outline:2px solid var(--tezos-blue); outline-offset:1px}
+  .toss{
+    font:inherit; font-size:1rem; padding:.6rem 1.4rem;
+    background:var(--tezos-blue); color:#fff; border:1.5px solid var(--ink); cursor:pointer;
+    box-shadow:4px 4px 0 var(--ink); transition:transform .08s, box-shadow .08s; white-space:nowrap;
+  }
+  .toss:hover:not(:disabled){transform:translate(-1px,-1px); box-shadow:5px 5px 0 var(--ink)}
+  .toss:active:not(:disabled){transform:translate(3px,3px); box-shadow:1px 1px 0 var(--ink)}
+  .toss:disabled{background:var(--line); color:var(--dim); cursor:not-allowed; box-shadow:none}
+  .tip{
+    display:block; margin:.7rem auto 0; font:inherit; font-size:.9rem; padding:.55rem 1.2rem;
+    background:var(--stamp); color:#fff; border:1.5px solid var(--ink); cursor:pointer;
+    box-shadow:3px 3px 0 var(--ink);
+  }
+  .tip[hidden]{display:none}
+
+  .tiles{display:grid; grid-template-columns:repeat(4,1fr); gap:.7rem}
+  @media (max-width:560px){ .tiles{grid-template-columns:repeat(2,1fr)} }
+  .tile{border:1.5px solid var(--ink); background:#fff; padding:.6rem .7rem; box-shadow:3px 3px 0 var(--line)}
+  .tile b{display:block; font-size:1.4rem; font-family:ui-monospace,Menlo,monospace; color:var(--tezos-blue)}
+  .tile span{font-size:.56rem; font-family:ui-monospace,Menlo,monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--dim)}
+  .tile.red b{color:var(--stamp)}
+
+  .bar{
+    display:flex; align-items:center; justify-content:space-between; gap:.75rem;
+    border:1.5px solid var(--ink); padding:.55rem .75rem; margin:1.4rem 0;
+    background:var(--paper); box-shadow:4px 4px 0 var(--line);
+  }
+  .bar .who{font-family:ui-monospace,Menlo,monospace; font-size:.74rem; overflow:hidden}
+  .bar .who b{display:block; color:var(--dim); font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; font-weight:400}
+  .bar .who span{overflow-wrap:anywhere}
+  .ghost{
+    font:inherit; font-size:.82rem; background:none; padding:.45rem .8rem;
+    border:1.5px solid var(--ink); cursor:pointer; white-space:nowrap;
+  }
+  .ghost:hover{background:#fff; box-shadow:2px 2px 0 var(--ink)}
+  .ghost:active{transform:translate(2px,2px); box-shadow:none}
+
+  .wish{
+    border:1.5px solid var(--ink); background:#fff; box-shadow:3px 3px 0 var(--line);
+    padding:.55rem .75rem; margin-bottom:.7rem;
+  }
+  .wish .w{font-size:.95rem; font-style:italic; overflow-wrap:anywhere}
+  .wish .m{font-family:ui-monospace,Menlo,monospace; font-size:.6rem; letter-spacing:.1em; color:var(--dim); margin-top:.2rem}
+  .empty{font-size:.9rem; color:var(--dim); font-style:italic; margin:.4rem 0 1rem}
+  .fine{font-size:.8rem; color:var(--dim); font-style:italic; margin:.8rem 0 0; line-height:1.5; text-align:center}
+
+  .status{min-height:1.4em; font-size:.85rem; color:var(--stamp); text-align:center; margin:.7rem 0 0}
+  .status a{color:var(--tezos-blue)}
+  footer{
+    font-family:ui-monospace,Menlo,monospace; font-size:.64rem; letter-spacing:.08em; color:var(--dim);
+    border-top:1px solid var(--line); padding-top:.9rem; margin-top:1.6rem;
+    display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap;
+  }
+  footer a{color:var(--dim)}
+  .town b{color:var(--tezos-blue)}
+</style>
+</head>
+<body>
+  <main class="office">
+    <p class="eyebrow"><span>tezos · el segundo</span><a href="/">← the circle</a></p>
+    <h1><em>the fountain</em> — toss a coin, make a wish</h1>
+    <p class="lede">Coins are 1ꜩ, wishes are free. All day the fountain fills; once a day it <strong>overflows</strong> and the whole pot splits evenly among everyone who tossed. Toss once and your coin comes back. Toss five times and you've watered the square. No house, no chance — a mirror with a delay.</p>
+
+    <div class="square">
+      <div class="fstage" id="fstage">
+        <div class="tier b"></div>
+        <div class="column a"></div>
+        <div class="tier m"></div>
+        <div class="column b2"></div>
+        <div class="tier t"></div>
+        <div class="spout"></div>
+      </div>
+      <p class="fmeter" id="fmeter">reading the water…</p>
+      <p class="fcount" id="fcount"></p>
+      <div class="tossrow">
+        <input id="wishIn" maxlength="80" placeholder="your wish (optional — it rides with the coin, forever)" />
+        <button class="toss" id="tossBtn">toss 1ꜩ</button>
+      </div>
+      <button class="tip" id="tipBtn" hidden>tip the fountain — split the pot (dust is yours)</button>
+    </div>
+    <p class="fine">tipping is how the pot pays out: once the epoch lapses, anyone may pull the plug. the split's rounding dust — a few μꜩ — goes to whoever does the honors.</p>
+
+    <h2><span>this epoch</span><button class="ghost" id="refresh">refresh</button></h2>
+    <div class="tiles">
+      <div class="tile"><b id="tPot">—</b><span>coins in the water</span></div>
+      <div class="tile"><b id="tTossers">—</b><span>tossers</span></div>
+      <div class="tile"><b id="tShare">—</b><span>ꜩ each, right now</span></div>
+      <div class="tile red"><b id="tYours">—</b><span>your coins in</span></div>
+    </div>
+
+    <div class="bar">
+      <div class="who">
+        <b id="whoLabel">not connected</b>
+        <span id="who">connect a wallet to toss a coin</span>
+      </div>
+      <button class="ghost" id="connect">connect</button>
+    </div>
+
+    <h2><span>wishes in the water</span></h2>
+    <div id="wishes"><p class="empty">listening…</p></div>
+
+    <h2><span>all time</span></h2>
+    <div class="tiles">
+      <div class="tile"><b id="aCoins">—</b><span>coins ever tossed</span></div>
+      <div class="tile"><b id="aOver">—</b><span>overflows</span></div>
+      <div class="tile"><b id="aVol">—</b><span>ꜩ recirculated</span></div>
+      <div class="tile red"><b id="aEpoch">—</b><span>epoch №</span></div>
+    </div>
+
+    <p class="status" id="status"></p>
+
+    <footer>
+      <span class="town">the other game: <a href="/">the savings circle</a></span>
+      <span><a id="explorer" href="#" target="_blank" rel="noopener">contract ↗</a> · CC0</span>
+    </footer>
+  </main>
+
+<script>
+/* ---- config: flip ACTIVE to 'mainnet' after mainnet origination ---- */
+const NETWORKS = {
+  shadownet: {
+    kind:'custom', label:'Shadownet',
+    rpc:'https://rpc.tzkt.io/shadownet',
+    indexer:'https://api.shadownet.tzkt.io',
+    explorer:'https://shadownet.tzkt.io',
+    kt1:'KT1X4uVpAndFZ3hU75SubFMHvvZaxjfDU34G',
+  },
+  mainnet: {
+    kind:'mainnet', label:'Mainnet',
+    rpc:'https://mainnet.smartpy.io',
+    indexer:'https://api.tzkt.io',
+    explorer:'https://tzkt.io',
+    kt1:'KT1UTu9vS3aJH3ktyVCF9DimjLKpqXGQkeGW',
+  },
+};
+const ACTIVE = 'mainnet';
+const NET = NETWORKS[ACTIVE];
+
+const $ = (id) => document.getElementById(id);
+const shorten = (a) => a ? a.slice(0,5)+'…'+a.slice(-4) : '';
+const toHex = (s) => Array.from(new TextEncoder().encode(s)).map(b=>b.toString(16).padStart(2,'0')).join('');
+const fromHex = (h) => { try{ return new TextDecoder().decode(new Uint8Array((h.match(/../g)||[]).map(x=>parseInt(x,16)))); }catch{ return ''; } };
+const fmtTez = (mutez) => { const t = Number(mutez)/1e6; return (Number.isInteger(t)?String(t):t.toFixed(2).replace(/\.?0+$/,'')); };
+
+let address = null;
+let S = null;          // contract storage snapshot
+let myCoins = 0;
+
+/* ---------- audio: coin & water ---------- */
+let actx;
+function boot(){ if(!actx) actx = new (window.AudioContext||window.webkitAudioContext)(); if(actx.state==='suspended') actx.resume(); }
+function plink(freq=920){
+  if(!actx) return;
+  const t=actx.currentTime, o=actx.createOscillator(), g=actx.createGain();
+  o.type='triangle'; o.frequency.setValueAtTime(freq,t);
+  o.frequency.exponentialRampToValueAtTime(freq*1.5,t+0.08);
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.2,t+0.012);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+0.22);
+  o.connect(g).connect(actx.destination); o.start(t); o.stop(t+0.24);
+}
+
+/* ---------- fountain rendering ---------- */
+const stageEl = $('fstage');
+let coinEls = [];
+function layCoins(n){
+  coinEls.forEach(c=>c.remove()); coinEls=[];
+  const shown = Math.min(n, 34);
+  const W = stageEl.clientWidth;
+  for(let i=0;i<shown;i++){
+    // scatter across the basin ellipse (bottom tier)
+    const fx = (i*0.618) % 1;                       // golden-ratio scatter
+    const spread = 0.82 - 0.5*Math.abs(fx-0.5);     // keep inside the ellipse
+    const x = W/2 + (fx-0.5)*300*spread;
+    const y = 258 - (Math.floor(i/8))*14 - ((i%3)*4);
+    const c = document.createElement('div');
+    c.className='fcoin'; c.textContent='ꜩ';
+    c.style.left=(x-13)+'px'; c.style.top=(y-13)+'px';
+    c.style.animationDelay = (i%7)*0.35+'s';
+    stageEl.appendChild(c); coinEls.push(c);
+  }
+}
+function flyCoin(){
+  const W = stageEl.clientWidth;
+  const c = document.createElement('div');
+  c.className='flying'; c.textContent='ꜩ';
+  c.style.left=(W-60)+'px'; c.style.top='290px';
+  stageEl.appendChild(c);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    c.style.left=(W/2-15)+'px'; c.style.top='240px';
+  }));
+  setTimeout(()=>{ c.style.opacity='0'; plink(700+Math.random()*300); }, 620);
+  setTimeout(()=>c.remove(), 900);
+}
+
+function fmtLeft(ms){
+  if(ms<=0) return null;
+  const s = Math.floor(ms/1000), h=Math.floor(s/3600), m=Math.floor((s%3600)/60);
+  if(h>0) return `${h}h ${m}m`;
+  if(m>0) return `${m}m ${s%60}s`;
+  return `${s}s`;
+}
+function renderFountain(){
+  if(!S){ return; }
+  const potCoins = Math.round(Number(S.pot)/1e6);
+  const n = Number(S.tosser_count);
+  const due = Date.now() >= Date.parse(S.epoch_end);
+  layCoins(potCoins);
+  const left = fmtLeft(Date.parse(S.epoch_end)-Date.now());
+  $('fmeter').innerHTML = due
+    ? (n>0 ? `the fountain is <b>brimming</b> — ${potCoins}ꜩ waits for the tip`
+           : `the fountain sits quiet — a new epoch starts with the next tip`)
+    : (n>0 ? `overflows in <b>${left}</b> — right now each tosser would get <b>${fmtTez(Math.floor(Number(S.pot)/n))}ꜩ</b>`
+           : `overflows in <b>${left}</b> — the water is empty. first coin names the day`);
+  $('fcount').textContent = potCoins ? `${potCoins} coin${potCoins===1?'':'s'} · ${n} tosser${n===1?'':'s'}` : '';
+  $('tPot').textContent = potCoins;
+  $('tTossers').textContent = n;
+  $('tShare').textContent = n>0 ? fmtTez(Math.floor(Number(S.pot)/n)) : '—';
+  $('tYours').textContent = address ? myCoins : '—';
+  $('aCoins').textContent = Number(S.coins).toLocaleString();
+  $('aOver').textContent = Number(S.overflows).toLocaleString();
+  $('aVol').textContent = fmtTez(S.volume);
+  $('aEpoch').textContent = Number(S.epoch);
+  $('tipBtn').hidden = !(due && n>0 && address);
+  $('tossBtn').disabled = !address;
+  $('tossBtn').textContent = address ? (due ? 'tip + toss 1ꜩ' : 'toss 1ꜩ') : 'connect to toss';
+}
+
+/* ---------- reads (TzKT) ---------- */
+async function readStorage(){
+  try{
+    const res = await fetch(`${NET.indexer}/v1/contracts/${NET.kt1}/storage`);
+    if(!res.ok) return;
+    S = await res.json();
+    renderFountain();
+  }catch{}
+}
+async function readWishes(){
+  try{
+    const res = await fetch(`${NET.indexer}/v1/operations/transactions?target=${NET.kt1}&entrypoint=toss&status=applied&limit=30&sort.desc=level`);
+    if(!res.ok) return;
+    const ops = await res.json();
+    if(address && S){
+      const start = Date.parse(S.epoch_end) - Number(S.epoch_len)*1000;
+      myCoins = ops.filter(o=>o.sender?.address===address && Date.parse(o.timestamp)>=start).length;
+    }
+    const cards = ops.map(o=>{
+      const wish = fromHex(o.parameter?.value||'');
+      const when = new Date(o.timestamp).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+      return `<div class="wish">
+        <div class="w">${wish ? '“'+wish.replace(/</g,'&lt;')+'”' : '<span style="color:var(--dim)">(a silent coin)</span>'}</div>
+        <div class="m">${shorten(o.sender.address)} · ${when}</div>
+      </div>`;
+    }).join('');
+    $('wishes').innerHTML = cards || `<p class="empty">no wishes yet — the water is listening.</p>`;
+    renderFountain();
+  }catch{}
+}
+const refresh = () => { readStorage(); readWishes(); };
+
+/* ---------- wallet (Beacon) ---------- */
+let client;
+function beaconNetwork(){
+  return NET.kind==='mainnet'
+    ? { type: beacon.NetworkType.MAINNET }
+    : { type: beacon.NetworkType.CUSTOM, name: NET.label, rpcUrl: NET.rpc };
+}
+function getClient(){
+  if(!client) client = new beacon.DAppClient({ name:'the fountain', network: beaconNetwork() });
+  return client;
+}
+async function connect(){
+  setStatus('opening wallet…');
+  try{
+    const c = getClient();
+    const acc = await c.getActiveAccount();
+    const perm = acc || await c.requestPermissions();
+    address = perm.address;
+    onConnected(); setStatus('');
+  }catch(e){ setStatus('connect cancelled'); }
+}
+async function disconnect(){
+  try{ await getClient().clearActiveAccount(); }catch{}
+  address=null; myCoins=0;
+  $('whoLabel').textContent='not connected';
+  $('who').textContent='connect a wallet to toss a coin';
+  $('connect').textContent='connect'; $('connect').onclick=connect;
+  renderFountain();
+}
+function onConnected(){
+  $('whoLabel').textContent='connected';
+  $('who').textContent=shorten(address);
+  $('connect').textContent='disconnect'; $('connect').onclick=disconnect;
+  refresh();
+}
+
+/* ---------- ops ---------- */
+async function sendOps(details, doing){
+  setStatus(doing);
+  try{
+    const r = await getClient().requestOperation({ operationDetails: details });
+    const hash = r.transactionHash || r.opHash || '';
+    setStatus(hash ? `done ✓ <a href="${NET.explorer}/${hash}" target="_blank" rel="noopener">op ↗</a>` : 'done ✓');
+    setTimeout(refresh, 4000); setTimeout(refresh, 12000);
+    return true;
+  }catch(e){ setStatus('cancelled or failed'); return false; }
+}
+const tossDetail = (wishHex) => ({
+  kind: beacon.TezosOperationType.TRANSACTION,
+  amount: '1000000',
+  destination: NET.kt1,
+  parameters: { entrypoint: 'toss', value: { bytes: wishHex } },
+});
+const overflowDetail = () => ({
+  kind: beacon.TezosOperationType.TRANSACTION,
+  amount: '0',
+  destination: NET.kt1,
+  parameters: { entrypoint: 'overflow', value: { prim: 'Unit' } },
+});
+$('tossBtn').onclick = async () => {
+  if(!address) return;
+  boot();
+  const wish = $('wishIn').value.trim();
+  const due = S && Date.now() >= Date.parse(S.epoch_end);
+  const details = due ? [overflowDetail(), tossDetail(toHex(wish))] : [tossDetail(toHex(wish))];
+  flyCoin();
+  const ok = await sendOps(details, due ? 'tipping, then tossing…' : 'tossing your coin…');
+  if(ok) $('wishIn').value='';
+};
+$('tipBtn').onclick = () => { boot(); return sendOps([overflowDetail()], 'pulling the plug…'); };
+
+/* ---------- init ---------- */
+function setStatus(html){ $('status').innerHTML = html; }
+$('connect').onclick = connect;
+$('refresh').onclick = refresh;
+$('explorer').href = NET.kt1 ? `${NET.explorer}/${NET.kt1}` : '#';
+refresh();
+setInterval(refresh, 30000);
+setInterval(()=>renderFountain(), 1000);   // live countdown
+(async()=>{ try{ const acc = await getClient().getActiveAccount(); if(acc){ address=acc.address; onConnected(); } }catch{} })();
+</script>
+</body>
+</html>

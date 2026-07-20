@@ -7,7 +7,9 @@
   "license": "CC0-1.0",
   "scripts": {
     "deploy": "node scripts/deploy.js",
-    "smoke": "node scripts/smoke.js"
+    "smoke": "node scripts/smoke.js",
+    "deploy:fountain": "node scripts/deploy-fountain.js",
+    "smoke:fountain": "node scripts/smoke-fountain.js"
   },
   "dependencies": {
     "@taquito/signer": "^25.0.0",
