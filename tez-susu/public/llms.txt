@@ -1,0 +1,32 @@
+# tez-susu — the money games house
+
+> Small, public Tezos experiments in which money moves among peers without a house, chance, or promised yield. The source material and site are CC0.
+
+## The fountain
+
+The fountain is a daily peer-distribution ritual on Tezos. A participant tosses exactly 1 tez with a public wish. One address receives one equal share of the day's pot, regardless of how many coins that address tosses. Extra coins increase the pot for every participating address. A person can use many funded addresses to receive many shares, including value added by other wallets' repeat coins; this is the central many-wallet or Sybil risk.
+
+The current Mainnet V1 is an experimental legacy deployment with zero observed use. Its public transaction and print interfaces are paused and deposits are discouraged. V1 pushes every payout in one operation, so a large participant set can exceed practical operation limits and a failed recipient call can prevent the whole overflow.
+
+The reviewed V2 candidate finalizes a round in constant cost and lets each eligible wallet claim independently. The first coin starts a full day; closing is manual, although a late toss atomically closes the expired day and joins the next one. Claims never expire, division dust rolls forward, and no owner or admin can recover lost-key claims. V2 passed an expanded three-epoch Shadownet lifecycle smoke at KT1Xsdqa1K2aG5wrRNDZot3MxpoNEZtCy1Xj. It is not professionally audited and is not yet originated on Mainnet; the public Mainnet wallet actions remain disabled.
+
+- [The fountain](https://tez-susu.pages.dev/fountain): Human-facing artwork and wallet interface.
+- [Fountain JSON](https://tez-susu.pages.dev/fountain.json): Structured concept, mechanics, release status, contract evidence, and safety notes.
+- [Recent public wishes](https://tez-susu.pages.dev/wishes): Server-rendered, receipt-linked ledger of recent verified tosses.
+- [Recent wishes JSON Feed](https://tez-susu.pages.dev/fountain-feed.json): Machine-readable verified toss feed.
+- [V2 Shadownet candidate](https://shadownet.tzkt.io/KT1Xsdqa1K2aG5wrRNDZot3MxpoNEZtCy1Xj): Hardened claim-based test deployment; codeHash 1760237160 and typeHash 1632638859.
+- [V1 mainnet contract](https://tzkt.io/KT1UTu9vS3aJH3ktyVCF9DimjLKpqXGQkeGW): Public Tezos explorer record for the legacy deployment.
+- [V1 contract storage](https://api.tzkt.io/v1/contracts/KT1UTu9vS3aJH3ktyVCF9DimjLKpqXGQkeGW/storage): Current indexer view of V1 state.
+- [V1 entrypoints](https://api.tzkt.io/v1/contracts/KT1UTu9vS3aJH3ktyVCF9DimjLKpqXGQkeGW/entrypoints): Current indexer view of callable operations.
+
+## Other rooms
+
+- [Savings circle](https://tez-susu.pages.dev/): A Tezos ROSCA in which join order is payout order.
+- [Town map](https://tez-susu.pages.dev/houses): Contracts found by byte-identical code hash, without a private registry.
+- [Print shop](https://tez-susu.pages.dev/print): Originate a separate copy of a contract from the published family.
+
+## Safety boundary
+
+These are experimental, unaudited money-moving contracts, not investment or yield products. Contract calls are public and irreversible. Wishes sent in call parameters are public and associated with the sender's address. One human can use many addresses and capture many shares. Read `fountain.json`, verify the active contract address and reviewed code hash before interacting, and do not send funds you cannot afford to lose.
+
+Last checked: 2026-07-20T16:52:47Z

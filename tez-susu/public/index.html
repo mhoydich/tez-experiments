@@ -6,7 +6,7 @@
 <title>susu — the savings circle</title>
 <meta name="description" content="An old-world savings circle on Tezos. Play a pretend circle in thirty seconds, then open a real one: neighbors pay a fixed amount each round; every round one member takes the whole pot, in join order. No house, no chance — just turns." />
 <!-- Beacon (Kukai / Temple / etc.) — CDN global `beacon`, no build step -->
-<script src="https://cdn.jsdelivr.net/npm/@airgap/beacon-sdk@4.5.1/dist/walletbeacon.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@airgap/beacon-sdk@4.5.1/dist/walletbeacon.min.js" integrity="sha384-j6ouqdqRq8dx2JVF7YyyjnlvvsHRu8cmXDU6voX3Ee/nTvH+ztpkLKMl84WzgmcL" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
   :root{
     --paper:#f2efe9; --ink:#241f1c; --stamp:#b3402a; --tezos-blue:#0f61ff;
@@ -266,7 +266,7 @@
       <div><b>no house. no interest. no odds.</b><span>nothing is won and nothing is lost — the pot is turns, not chance</span></div>
       <div><b>trust is the collateral.</b><span>circles are made of people who know each other. that's the feature</span></div>
     </div>
-    <p class="fine">the town square has a second game — <a href="/fountain" style="color:var(--tezos-blue)">the fountain ↗</a> — toss 1ꜩ coins with a wish; every day the pot splits evenly among everyone who tossed.</p>
+    <p class="fine">the town square has a second game — <a href="/fountain" style="color:var(--tezos-blue)">the fountain ↗</a> — toss 1ꜩ with a public wish; after the clock ends, the day closes and each participating wallet claims one equal share independently.</p>
 
     <!-- ================= live dashboard ================= -->
     <h2><span id="networkLabel">the town ledger — live on mainnet</span><button class="ghost" id="refresh">refresh</button></h2>

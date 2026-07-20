@@ -46,12 +46,16 @@ tez-susu/             # 08 — the money games house: net-zero money games.
                       #      until everyone has had a turn. Disband valve
                       #      (organizer anytime; member past grace) refunds
                       #      only the current round. Homepage is a playable
-                      #      pretend circle. (b) the fountain: toss 1ꜩ coins
-                      #      w/ wishes (wishes live in call params, indexer-
-                      #      read, zero storage); each epoch the pot splits
-                      #      evenly among tossers, dust tips the overflow
-                      #      caller. Addresses in README. Single-file pages
-                      #      like drum (index.html + fountain.html).
+                      #      pretend circle. (b) the fountain V2: toss exact
+                      #      1ꜩ coins w/ public call-param wishes; one sender
+                      #      address gets one equal share, repeat coins water
+                      #      the basin, O(1) finalize then independent pull
+                      #      claims, dust rolls forward. Many-address/Sybil
+                      #      capture is explicitly disclosed. Hardened V2 is
+                      #      smoke-passed on Shadownet; Mainnet pending. V1
+                      #      push-payout contract/printing are legacy-paused.
+                      #      Addresses in README. Single-file pages like drum
+                      #      (index.html + fountain.html).
 tez-reservoir/        # 09 — the reservoir: the compute susu. A club pools
                       #      small dues into secured compute (API credits,
                       #      DePIN GPU-hours, club nodes). Soulbound seats

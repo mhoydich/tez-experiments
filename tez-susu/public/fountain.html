@@ -4,15 +4,51 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>the fountain — toss a coin, make a wish</title>
-<meta name="description" content="Toss one-tez coins into the town fountain with a wish. Every day it overflows and the pot splits evenly among everyone who tossed. Toss once, your coin comes back. Toss five times, you watered the square. No house, no chance — a mirror with a delay." />
-<script src="https://cdn.jsdelivr.net/npm/@airgap/beacon-sdk@4.5.1/dist/walletbeacon.min.js"></script>
+<meta name="description" content="A daily Tezos peer-distribution ritual. One wallet receives one equal share; extra one-tez coins water everyone. Close the day, then claim independently. Wishes are public forever." />
+<meta name="robots" content="index,follow,max-image-preview:large" />
+<meta name="theme-color" content="#f2efe9" />
+<link rel="canonical" href="https://tez-susu.pages.dev/fountain" />
+<link rel="alternate" type="application/json" href="https://tez-susu.pages.dev/fountain.json" title="Fountain machine-readable descriptor" />
+<link rel="alternate" type="text/plain" href="https://tez-susu.pages.dev/llms.txt" title="Fountain LLM-readable project guide" />
+<link rel="alternate" type="application/feed+json" href="https://tez-susu.pages.dev/fountain-feed.json" title="Recent verified Fountain wishes" />
+<meta property="og:title" content="the fountain — toss a coin, make a wish" />
+<meta property="og:description" content="One wallet, one equal share. Extra one-tez coins water everyone. Close the day, then each wallet claims independently." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://tez-susu.pages.dev/fountain" />
+<meta property="og:site_name" content="tez-susu" />
+<meta property="og:image" content="https://tez-susu.pages.dev/og/fountain" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="An illustrated public fountain where one-tez wishes become equal wallet shares." />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="the fountain — toss a coin, make a wish" />
+<meta name="twitter:description" content="A daily peer-distribution ritual on Tezos: one wallet, one share; extra coins water everyone." />
+<meta name="twitter:image" content="https://tez-susu.pages.dev/og/fountain" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "the fountain",
+  "url": "https://tez-susu.pages.dev/fountain",
+  "description": "A daily peer-distribution ritual on Tezos. One wallet receives one equal share; extra one-tez coins water everyone.",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "isAccessibleForFree": true,
+  "license": "https://creativecommons.org/publicdomain/zero/1.0/"
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@airgap/beacon-sdk@4.5.1/dist/walletbeacon.min.js" integrity="sha384-j6ouqdqRq8dx2JVF7YyyjnlvvsHRu8cmXDU6voX3Ee/nTvH+ztpkLKMl84WzgmcL" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
   :root{
     --paper:#f2efe9; --ink:#241f1c; --stamp:#b3402a; --tezos-blue:#0f61ff;
     --line:#d8d2c6; --dim:#6b6259; --go:#2e6b3a; --water:rgba(15,97,255,.08);
   }
-  @media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important} }
+  @media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important;scroll-behavior:auto!important} }
   *{box-sizing:border-box}
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+    clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
   body{
     margin:0; min-height:100dvh; display:grid; justify-items:center; align-content:start;
     background:var(--paper); color:var(--ink);
@@ -41,22 +77,23 @@
     display:flex; justify-content:space-between; align-items:baseline;
   }
   h2 button{font-size:.66rem}
+  h2>a{font-size:.62rem;letter-spacing:.08em;text-transform:none;color:var(--tezos-blue)}
 
   /* ---------- the fountain ---------- */
   .square{
     border:1.5px solid var(--ink); background:var(--paper);
     box-shadow:4px 4px 0 var(--line); padding:1.1rem; position:relative; overflow:hidden;
   }
-  .fstage{position:relative; width:min(420px,100%); height:300px; margin:0 auto}
+  .fstage{position:relative; width:min(420px,100%); aspect-ratio:7/5; margin:0 auto}
   .tier{position:absolute; border:1.5px solid var(--ink); background:var(--water); border-radius:50%}
-  .tier.b{left:50%; bottom:8px; width:320px; height:92px; margin-left:-160px}
-  .tier.m{left:50%; bottom:120px; width:170px; height:52px; margin-left:-85px}
-  .tier.t{left:50%; bottom:206px; width:88px; height:30px; margin-left:-44px}
-  .column{position:absolute; left:50%; width:16px; margin-left:-8px; background:#fff; border:1.5px solid var(--ink)}
-  .column.a{bottom:52px; height:74px}
-  .column.b2{bottom:144px; height:66px}
+  .tier.b{left:50%; bottom:2.7%; width:76.2%; height:30.7%; transform:translateX(-50%)}
+  .tier.m{left:50%; bottom:40%; width:40.5%; height:17.3%; transform:translateX(-50%)}
+  .tier.t{left:50%; bottom:68.7%; width:21%; height:10%; transform:translateX(-50%)}
+  .column{position:absolute; left:50%; width:3.8%; transform:translateX(-50%); background:#fff; border:1.5px solid var(--ink)}
+  .column.a{bottom:17.3%; height:24.7%}
+  .column.b2{bottom:48%; height:22%}
   .spout{
-    position:absolute; left:50%; bottom:224px; width:3px; height:26px; margin-left:-1.5px;
+    position:absolute; left:50%; bottom:74.7%; width:3px; height:8.7%; transform:translateX(-50%);
     background:var(--tezos-blue); opacity:.5; animation:spurt 1.6s ease-in-out infinite;
   }
   @keyframes spurt{ 0%,100%{transform:scaleY(.75); opacity:.35} 50%{transform:scaleY(1.12); opacity:.6} }
@@ -85,13 +122,20 @@
     letter-spacing:.12em; text-transform:uppercase; color:var(--dim); min-height:1.1em;
   }
 
-  .tossrow{display:grid; grid-template-columns:1fr auto; gap:.7rem; margin-top:1rem}
-  @media (max-width:520px){ .tossrow{grid-template-columns:1fr} }
+  .wishfield{margin-top:1rem}
+  .wishfield label{
+    display:block; margin-bottom:.35rem; font-family:ui-monospace,Menlo,monospace;
+    font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim);
+  }
+  .wishfield label span{letter-spacing:0; text-transform:none}
+  .tossrow{display:grid; grid-template-columns:1fr auto; gap:.7rem}
   .tossrow input{
     width:100%; font:inherit; font-size:.92rem; padding:.6rem .65rem;
     border:1.5px solid var(--ink); background:#fff; border-radius:0;
   }
-  .tossrow input:focus-visible{outline:2px solid var(--tezos-blue); outline-offset:1px}
+  .privacy{
+    margin:.5rem 0 0; color:var(--stamp); font-size:.76rem; line-height:1.45;
+  }
   .toss{
     font:inherit; font-size:1rem; padding:.6rem 1.4rem;
     background:var(--tezos-blue); color:#fff; border:1.5px solid var(--ink); cursor:pointer;
@@ -100,12 +144,13 @@
   .toss:hover:not(:disabled){transform:translate(-1px,-1px); box-shadow:5px 5px 0 var(--ink)}
   .toss:active:not(:disabled){transform:translate(3px,3px); box-shadow:1px 1px 0 var(--ink)}
   .toss:disabled{background:var(--line); color:var(--dim); cursor:not-allowed; box-shadow:none}
-  .tip{
+  .finalize{
     display:block; margin:.7rem auto 0; font:inherit; font-size:.9rem; padding:.55rem 1.2rem;
     background:var(--stamp); color:#fff; border:1.5px solid var(--ink); cursor:pointer;
     box-shadow:3px 3px 0 var(--ink);
   }
-  .tip[hidden]{display:none}
+  .finalize[hidden]{display:none}
+  .finalize:disabled{background:var(--line); color:var(--dim); cursor:not-allowed; box-shadow:none}
 
   .tiles{display:grid; grid-template-columns:repeat(4,1fr); gap:.7rem}
   @media (max-width:560px){ .tiles{grid-template-columns:repeat(2,1fr)} }
@@ -131,6 +176,11 @@
   }
   .ghost:hover{background:#fff; box-shadow:2px 2px 0 var(--ink)}
   .ghost:active{transform:translate(2px,2px); box-shadow:none}
+  button:focus-visible,a:focus-visible,input:focus-visible{
+    outline:3px solid var(--tezos-blue); outline-offset:2px;
+  }
+  button{min-height:44px}
+  button:disabled{cursor:not-allowed}
 
   .wish{
     border:1.5px solid var(--ink); background:#fff; box-shadow:3px 3px 0 var(--line);
@@ -140,6 +190,39 @@
   .wish .m{font-family:ui-monospace,Menlo,monospace; font-size:.6rem; letter-spacing:.1em; color:var(--dim); margin-top:.2rem}
   .empty{font-size:.9rem; color:var(--dim); font-style:italic; margin:.4rem 0 1rem}
   .fine{font-size:.8rem; color:var(--dim); font-style:italic; margin:.8rem 0 0; line-height:1.5; text-align:center}
+  .fine.risk{font-style:normal;text-align:left;color:var(--ink);background:#fff5ef;border-left:3px solid var(--stamp);padding:.65rem .75rem}
+
+  .claim{
+    display:grid; grid-template-columns:1fr auto; gap:.75rem; align-items:center;
+    border:1.5px solid var(--ink); background:#fff; box-shadow:3px 3px 0 var(--line);
+    padding:.7rem .8rem; margin-bottom:.75rem;
+  }
+  .claim p{margin:0; line-height:1.45}
+  .claim .claimmeta{font-family:ui-monospace,Menlo,monospace; font-size:.63rem; color:var(--dim); letter-spacing:.08em}
+  .claim button{font:inherit; border:1.5px solid var(--ink); background:var(--go); color:#fff; padding:.55rem .8rem; box-shadow:3px 3px 0 var(--ink)}
+  .claimdetails{grid-column:1/-1; border-top:1px solid var(--line); padding-top:.55rem}
+  .claimdetails summary{cursor:pointer; font-size:.78rem; color:var(--dim)}
+  .claimdetails label{display:block; margin:.45rem 0 .25rem; font-size:.72rem; color:var(--dim)}
+  .claimdetails input{width:100%; border:1.5px solid var(--ink); border-radius:0; padding:.5rem; font-family:ui-monospace,Menlo,monospace; font-size:.72rem}
+  .claimnote{font-size:.76rem; color:var(--dim); line-height:1.45}
+
+  .receipt{
+    border:1.5px solid var(--ink); background:var(--water); box-shadow:5px 5px 0 var(--tezos-blue);
+    padding:1rem; margin:1.3rem 0;
+  }
+  .receipt[hidden]{display:none}
+  .receipt h2{margin-top:0; color:var(--tezos-blue)}
+  .receipt blockquote{margin:.7rem 0; font-size:1.08rem; font-style:italic; overflow-wrap:anywhere}
+  .receipt .receiptmeta{font-family:ui-monospace,Menlo,monospace; color:var(--dim); font-size:.66rem; overflow-wrap:anywhere}
+  .receipt .receiptactions{display:flex; gap:.6rem; flex-wrap:wrap; margin-top:.8rem}
+  .receipt a,.receipt button{font:inherit; font-size:.82rem; border:1.5px solid var(--ink); padding:.5rem .7rem; background:#fff; color:var(--ink)}
+  .receipt a{text-decoration:none; display:inline-flex; align-items:center}
+
+  .unavailable{
+    border:1.5px solid var(--stamp); color:var(--stamp); padding:.65rem .75rem;
+    font-family:ui-monospace,Menlo,monospace; font-size:.7rem; line-height:1.5; margin:0 0 1rem;
+  }
+  .unavailable[hidden]{display:none}
 
   .status{min-height:1.4em; font-size:.85rem; color:var(--stamp); text-align:center; margin:.7rem 0 0}
   .status a{color:var(--tezos-blue)}
@@ -150,16 +233,29 @@
   }
   footer a{color:var(--dim)}
   .town b{color:var(--tezos-blue)}
+  @media (max-width:560px){
+    body{padding:14px 8px 36px}
+    .office{width:min(100%,620px); padding:1.35rem 1rem 1.1rem; box-shadow:5px 5px 0 var(--tezos-blue)}
+    .square{padding:.75rem}
+    .tiles{grid-template-columns:repeat(2,1fr)}
+    .tossrow{grid-template-columns:1fr}
+    .toss,.finalize{width:100%}
+    .claim{grid-template-columns:1fr}
+    .claim button{width:100%}
+    .receipt .receiptactions{display:grid}
+  }
 </style>
 </head>
 <body>
   <main class="office">
     <p class="eyebrow"><span>tezos · el segundo</span><a href="/">← the circle</a></p>
     <h1><em>the fountain</em> — toss a coin, make a wish</h1>
-    <p class="lede">Coins are 1ꜩ, wishes are free. All day the fountain fills; once a day it <strong>overflows</strong> and the whole pot splits evenly among everyone who tossed. Toss once and your coin comes back. Toss five times and you've watered the square. No house, no chance — a mirror with a delay.</p>
+    <p class="lede">One coin joins today’s circle. <strong>One wallet receives one equal share</strong>, however many coins it tosses; every extra coin waters everyone. After the clock ends, anyone may close the day, then each wallet claims independently. No house, no chance — a mirror with a delay.</p>
+
+    <p class="unavailable" id="unavailable" hidden></p>
 
     <div class="square">
-      <div class="fstage" id="fstage">
+      <div class="fstage" id="fstage" aria-hidden="true">
         <div class="tier b"></div>
         <div class="column a"></div>
         <div class="tier m"></div>
@@ -169,290 +265,709 @@
       </div>
       <p class="fmeter" id="fmeter">reading the water…</p>
       <p class="fcount" id="fcount"></p>
-      <div class="tossrow">
-        <input id="wishIn" maxlength="80" placeholder="your wish (optional — it rides with the coin, forever)" />
-        <button class="toss" id="tossBtn">toss 1ꜩ</button>
+      <div class="wishfield">
+        <label for="wishIn">your wish <span>(optional)</span></label>
+        <div class="tossrow">
+          <input id="wishIn" name="wish" type="text" maxlength="80" autocomplete="off" aria-describedby="wishPrivacy" placeholder="leave a wish, or toss a silent coin" />
+          <button class="toss" id="tossBtn" type="button" disabled>V2 deployment pending</button>
+        </div>
+        <p class="privacy" id="wishPrivacy">Public forever: your wish, wallet address, and transaction will be readable on Tezos. Leave it blank for a silent coin.</p>
       </div>
-      <button class="tip" id="tipBtn" hidden>tip the fountain — split the pot (dust is yours)</button>
+      <button class="finalize" id="finalizeBtn" type="button" hidden disabled>close today’s fountain — fix every share</button>
     </div>
-    <p class="fine">tipping is how the pot pays out: once the epoch lapses, anyone may pull the plug. the split's rounding dust — a few μꜩ — goes to whoever does the honors.</p>
+    <p class="fine risk"><strong>Risk notice:</strong> this is experimental, unaudited money-moving code. Calls are public and irreversible, and tez can be lost or remain locked. This is not an investment or a guaranteed return; use only what you can afford to lose.</p>
+    <p class="fine">The first coin starts the first full-length day. Closing is manual: the clock alone moves no money. A late toss closes an expired day automatically and joins the next one. Closing fixes the shares but pays nobody; each wallet claims its own share later. Claims do not expire. If a wallet loses access before claiming, its share stays reserved forever; no admin can recover it. Each signed operation has a normal Tezos network fee.</p>
+    <p class="fine risk"><strong>Many-wallet risk:</strong> a “wallet” means one Tezos address, not one person. Someone can use many funded addresses to take many shares, including value added by repeat coins from other wallets. The fountain does not prevent this. Watch the live wallet count before joining.</p>
 
-    <h2><span>this epoch</span><button class="ghost" id="refresh">refresh</button></h2>
+    <h2><span id="roundLabel">today’s fountain</span><button class="ghost" id="refresh" type="button" disabled>refresh</button></h2>
     <div class="tiles">
-      <div class="tile"><b id="tPot">—</b><span>coins in the water</span></div>
-      <div class="tile"><b id="tTossers">—</b><span>tossers</span></div>
-      <div class="tile"><b id="tShare">—</b><span>ꜩ each, right now</span></div>
-      <div class="tile red"><b id="tYours">—</b><span>your coins in</span></div>
+      <div class="tile"><b id="tPot">—</b><span>tez in this basin</span></div>
+      <div class="tile"><b id="tTossers">—</b><span>wallets sharing</span></div>
+      <div class="tile"><b id="tShare">—</b><span>tez each if closed now</span></div>
+      <div class="tile red"><b id="tJoined">—</b><span>your place today</span></div>
     </div>
 
     <div class="bar">
       <div class="who">
         <b id="whoLabel">not connected</b>
-        <span id="who">connect a wallet to toss a coin</span>
+        <span id="who">V2 deployment pending</span>
         <span class="away" id="away" hidden>away game: <strong id="awayName"></strong> · <a href="/fountain">back to the first fountain</a></span>
       </div>
-      <button class="ghost" id="connect">connect</button>
+      <button class="ghost" id="connect" type="button" disabled>connect</button>
     </div>
 
-    <h2><span>wishes in the water</span></h2>
+    <h2><span>your independent claims</span></h2>
+    <div id="claims" aria-live="polite"><p class="empty">V2 claims appear after deployment.</p></div>
+
+    <h2><span>today’s public wishes</span><a href="/wishes">all wishes ↗</a></h2>
     <div id="wishes"><p class="empty">listening…</p></div>
 
     <h2><span>all time</span></h2>
     <div class="tiles">
-      <div class="tile"><b id="aCoins">—</b><span>coins ever tossed</span></div>
-      <div class="tile"><b id="aOver">—</b><span>overflows</span></div>
-      <div class="tile"><b id="aVol">—</b><span>ꜩ recirculated</span></div>
-      <div class="tile red"><b id="aEpoch">—</b><span>epoch №</span></div>
+      <div class="tile"><b id="aVol">—</b><span>tez deposited</span></div>
+      <div class="tile"><b id="aPaid">—</b><span>tez claimed</span></div>
+      <div class="tile"><b id="aReserve">—</b><span>tez awaiting claims</span></div>
+      <div class="tile red"><b id="aFinal">—</b><span>days finalized</span></div>
     </div>
 
-    <p class="status" id="status"></p>
+    <p class="status" id="status" role="status" aria-live="polite" aria-atomic="true"></p>
+
+    <section class="receipt" id="receipt" aria-labelledby="receiptTitle" tabindex="-1" hidden>
+      <h2 id="receiptTitle"><span>your coin landed</span></h2>
+      <blockquote id="receiptWish"></blockquote>
+      <p class="receiptmeta" id="receiptMeta"></p>
+      <div class="receiptactions">
+        <a id="receiptLink" href="#">open the public receipt ↗</a>
+        <button id="shareReceipt" type="button">share this wish</button>
+      </div>
+    </section>
 
     <footer>
       <span class="town">the other game: <a href="/">the savings circle</a></span>
-      <span><a href="/houses">the town map</a> · <a href="/print">the print shop</a> · <a id="explorer" href="#" target="_blank" rel="noopener">contract ↗</a> · CC0</span>
+      <span><a href="/houses">the town map</a> · <a href="/print">the print shop</a> · <a id="explorer" href="#" target="_blank" rel="noopener" hidden>V2 contract ↗</a><span id="explorerSep" hidden> · </span><a id="legacyExplorer" href="#" target="_blank" rel="noopener">legacy V1 record ↗</a> · CC0</span>
     </footer>
   </main>
 
 <script>
-/* ---- config: flip ACTIVE to 'mainnet' after mainnet origination ---- */
+/*
+ * V2-only transaction config. Root fills kt1 after each claim-based V2
+ * origination is smoke-tested. legacyKt1 is display metadata only and can
+ * never become NET.kt1, including through ?fountain=.
+ */
 const NETWORKS = {
   shadownet: {
     kind:'custom', label:'Shadownet',
     rpc:'https://rpc.tzkt.io/shadownet',
     indexer:'https://api.shadownet.tzkt.io',
     explorer:'https://shadownet.tzkt.io',
-    kt1:'KT1X4uVpAndFZ3hU75SubFMHvvZaxjfDU34G',
+    kt1:'KT1Xsdqa1K2aG5wrRNDZot3MxpoNEZtCy1Xj', // hardened V2: expanded lifecycle smoke-passed
+    legacyKt1:'KT1X4uVpAndFZ3hU75SubFMHvvZaxjfDU34G',
+    codeHash:1760237160,
+    typeHash:1632638859,
   },
   mainnet: {
     kind:'mainnet', label:'Mainnet',
     rpc:'https://mainnet.smartpy.io',
     indexer:'https://api.tzkt.io',
     explorer:'https://tzkt.io',
-    kt1:'KT1UTu9vS3aJH3ktyVCF9DimjLKpqXGQkeGW',
+    kt1:'', // V2 MAINNET ADDRESS — FILL AFTER ORIGINATION + VERIFICATION
+    legacyKt1:'KT1UTu9vS3aJH3ktyVCF9DimjLKpqXGQkeGW',
+    codeHash:1760237160,
+    typeHash:1632638859,
   },
 };
 const ACTIVE = 'mainnet';
 const FLAGSHIP = NETWORKS[ACTIVE];
 const NET = {...FLAGSHIP};
 const KT1_PATTERN = /^KT1[1-9A-HJ-NP-Za-km-z]{33}$/;
+const PAYOUT_PATTERN = /^(?:tz[1-4]|KT1)[1-9A-HJ-NP-Za-km-z]{33}$/;
 const query = new URLSearchParams(location.search);
-const fountainOverride = KT1_PATTERN.test(query.get('fountain')||'') ? query.get('fountain') : '';
-if(fountainOverride) NET.kt1=fountainOverride;
-
-const $ = (id) => document.getElementById(id);
-const shorten = (a) => a ? a.slice(0,5)+'…'+a.slice(-4) : '';
-const toHex = (s) => Array.from(new TextEncoder().encode(s)).map(b=>b.toString(16).padStart(2,'0')).join('');
-const fromHex = (h) => { try{ return new TextDecoder().decode(new Uint8Array((h.match(/../g)||[]).map(x=>parseInt(x,16)))); }catch{ return ''; } };
-const fmtTez = (mutez) => { const t = Number(mutez)/1e6; return (Number.isInteger(t)?String(t):t.toFixed(2).replace(/\.?0+$/,'')); };
-
-let address = null;
-let S = null;          // contract storage snapshot
-let myCoins = 0;
-
-async function showAwayGame(){
-  if(!fountainOverride) return;
-  $('away').hidden=false;
-  $('awayName').textContent=shorten(NET.kt1);
-  try{
-    const response=await fetch(`${NET.indexer}/v1/contracts/${NET.kt1}`);
-    if(!response.ok) return;
-    const info=await response.json();
-    if(info.metadata?.name) $('awayName').textContent=info.metadata.name;
-  }catch{}
+const requestedFountain = query.get('fountain') || '';
+const legacyAddresses = new Set(Object.values(NETWORKS).map(n=>n.legacyKt1));
+let blockedTarget = '';
+if(requestedFountain){
+  if(!KT1_PATTERN.test(requestedFountain)) blockedTarget='That fountain address is not a valid KT1.';
+  else if(legacyAddresses.has(requestedFountain)) blockedTarget='That address is a legacy V1 fountain. This V2 page will not send transactions to it.';
+  else if(!FLAGSHIP.kt1||requestedFountain!==FLAGSHIP.kt1) blockedTarget='That address is not the verified V2 flagship. Community fountain links remain disabled until their origination storage can be verified safely.';
 }
 
-/* ---------- audio: coin & water ---------- */
+const $ = (id) => document.getElementById(id);
+const mainEl = document.querySelector('main');
+const stageEl = $('fstage');
+const shorten = (value) => value ? value.slice(0,5)+'…'+value.slice(-4) : '';
+const toHex = (value) => Array.from(new TextEncoder().encode(value)).map(byte=>byte.toString(16).padStart(2,'0')).join('');
+const fromHex = (value) => {
+  if(typeof value!=='string' || value.length%2 || !/^[0-9a-f]*$/i.test(value)) return '';
+  try{
+    const bytes=new Uint8Array(value.length/2);
+    for(let i=0;i<bytes.length;i++) bytes[i]=Number.parseInt(value.slice(i*2,i*2+2),16);
+    return new TextDecoder('utf-8',{fatal:true}).decode(bytes);
+  }catch{return '';}
+};
+const mutez = (value) => { try{return BigInt(String(value));}catch{return 0n;} };
+const fmtTez = (value) => {
+  const amount=mutez(value), whole=amount/1000000n, fraction=(amount%1000000n).toString().padStart(6,'0').replace(/0+$/,'');
+  return fraction ? `${whole}.${fraction}` : String(whole);
+};
+const fmtCount = (value) => { try{return BigInt(String(value)).toLocaleString('en-US');}catch{return '0';} };
+const boolValue = (value) => value===true || value==='true';
+
+let address = null;
+let S = null;
+let contractReady = false;
+let txPending = false;
+let refreshGeneration = 0;
+let currentMembership = false;
+let activeClaims = [];
+let claimDiscoveryLimited = false;
+let receiptData = null;
+let coinEls = [];
+let client;
+
+function setStatus(message='', href='', linkLabel='operation ↗'){
+  const status=$('status');
+  status.replaceChildren();
+  if(message) status.append(document.createTextNode(message));
+  if(href){
+    status.append(document.createTextNode(' '));
+    const link=document.createElement('a');
+    link.href=href; link.target='_blank'; link.rel='noopener'; link.textContent=linkLabel;
+    status.append(link);
+  }
+}
+function setUnavailable(message=''){
+  $('unavailable').hidden=!message;
+  $('unavailable').textContent=message;
+}
+function appendEmpty(container,text){
+  const p=document.createElement('p'); p.className='empty'; p.textContent=text; container.append(p);
+}
+
+/* ---------- audio: user-initiated coin & water ---------- */
 let actx;
-function boot(){ if(!actx) actx = new (window.AudioContext||window.webkitAudioContext)(); if(actx.state==='suspended') actx.resume(); }
+function boot(){
+  const Audio=window.AudioContext||window.webkitAudioContext;
+  if(!Audio) return;
+  if(!actx) actx=new Audio();
+  if(actx.state==='suspended') actx.resume();
+}
 function plink(freq=920){
   if(!actx) return;
-  const t=actx.currentTime, o=actx.createOscillator(), g=actx.createGain();
-  o.type='triangle'; o.frequency.setValueAtTime(freq,t);
-  o.frequency.exponentialRampToValueAtTime(freq*1.5,t+0.08);
-  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.2,t+0.012);
-  g.gain.exponentialRampToValueAtTime(0.0001,t+0.22);
-  o.connect(g).connect(actx.destination); o.start(t); o.stop(t+0.24);
+  const t=actx.currentTime, oscillator=actx.createOscillator(), gain=actx.createGain();
+  oscillator.type='triangle'; oscillator.frequency.setValueAtTime(freq,t);
+  oscillator.frequency.exponentialRampToValueAtTime(freq*1.5,t+0.08);
+  gain.gain.setValueAtTime(0.0001,t); gain.gain.exponentialRampToValueAtTime(0.2,t+0.012);
+  gain.gain.exponentialRampToValueAtTime(0.0001,t+0.22);
+  oscillator.connect(gain).connect(actx.destination); oscillator.start(t); oscillator.stop(t+0.24);
 }
 
 /* ---------- fountain rendering ---------- */
-const stageEl = $('fstage');
-let coinEls = [];
+function symbolicCoinCount(){
+  if(!S) return 0;
+  const coins=mutez(S.pot)/1000000n;
+  return Number(coins>34n ? 34n : coins);
+}
 function layCoins(n){
-  coinEls.forEach(c=>c.remove()); coinEls=[];
-  const shown = Math.min(n, 34);
-  const W = stageEl.clientWidth;
+  coinEls.forEach(coin=>coin.remove()); coinEls=[];
+  const shown=Math.min(Math.max(Number(n)||0,0),34), width=stageEl.clientWidth, height=stageEl.clientHeight;
   for(let i=0;i<shown;i++){
-    // scatter across the basin ellipse (bottom tier)
-    const fx = (i*0.618) % 1;                       // golden-ratio scatter
-    const spread = 0.82 - 0.5*Math.abs(fx-0.5);     // keep inside the ellipse
-    const x = W/2 + (fx-0.5)*300*spread;
-    const y = 258 - (Math.floor(i/8))*14 - ((i%3)*4);
-    const c = document.createElement('div');
-    c.className='fcoin'; c.textContent='ꜩ';
-    c.style.left=(x-13)+'px'; c.style.top=(y-13)+'px';
-    c.style.animationDelay = (i%7)*0.35+'s';
-    stageEl.appendChild(c); coinEls.push(c);
+    const fx=(i*0.618)%1;
+    const spread=0.82-0.5*Math.abs(fx-0.5);
+    const x=width/2+(fx-0.5)*width*0.714*spread;
+    const y=height*0.86-Math.floor(i/8)*height*0.047-(i%3)*height*0.013;
+    const coin=document.createElement('div');
+    coin.className='fcoin'; coin.textContent='ꜩ';
+    coin.style.left=(x-13)+'px'; coin.style.top=(y-13)+'px';
+    coin.style.animationDelay=(i%7)*0.35+'s';
+    stageEl.append(coin); coinEls.push(coin);
   }
 }
 function flyCoin(){
-  const W = stageEl.clientWidth;
-  const c = document.createElement('div');
-  c.className='flying'; c.textContent='ꜩ';
-  c.style.left=(W-60)+'px'; c.style.top='290px';
-  stageEl.appendChild(c);
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ plink(); return; }
+  const width=stageEl.clientWidth, height=stageEl.clientHeight;
+  const coin=document.createElement('div');
+  coin.className='flying'; coin.textContent='ꜩ';
+  coin.style.left=(width-45)+'px'; coin.style.top=(height*0.92)+'px';
+  stageEl.append(coin);
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    c.style.left=(W/2-15)+'px'; c.style.top='240px';
+    coin.style.left=(width/2-15)+'px'; coin.style.top=(height*0.78)+'px';
   }));
-  setTimeout(()=>{ c.style.opacity='0'; plink(700+Math.random()*300); }, 620);
-  setTimeout(()=>c.remove(), 900);
+  setTimeout(()=>{ coin.style.opacity='0'; plink(700+Math.random()*300); },620);
+  setTimeout(()=>coin.remove(),900);
 }
-
 function fmtLeft(ms){
   if(ms<=0) return null;
-  const s = Math.floor(ms/1000), h=Math.floor(s/3600), m=Math.floor((s%3600)/60);
-  if(h>0) return `${h}h ${m}m`;
-  if(m>0) return `${m}m ${s%60}s`;
-  return `${s}s`;
+  const seconds=Math.floor(ms/1000), hours=Math.floor(seconds/3600), minutes=Math.floor((seconds%3600)/60);
+  if(hours>0) return `${hours}h ${minutes}m`;
+  if(minutes>0) return `${minutes}m ${seconds%60}s`;
+  return `${seconds}s`;
 }
 function renderFountain(){
-  if(!S){ return; }
-  const potCoins = Math.round(Number(S.pot)/1e6);
-  const n = Number(S.tosser_count);
-  const due = Date.now() >= Date.parse(S.epoch_end);
-  layCoins(potCoins);
-  const left = fmtLeft(Date.parse(S.epoch_end)-Date.now());
-  $('fmeter').innerHTML = due
-    ? (n>0 ? `the fountain is <b>brimming</b> — ${potCoins}ꜩ waits for the tip`
-           : `the fountain sits quiet — a new epoch starts with the next tip`)
-    : (n>0 ? `overflows in <b>${left}</b> — right now each tosser would get <b>${fmtTez(Math.floor(Number(S.pot)/n))}ꜩ</b>`
-           : `overflows in <b>${left}</b> — the water is empty. first coin names the day`);
-  $('fcount').textContent = potCoins ? `${potCoins} coin${potCoins===1?'':'s'} · ${n} tosser${n===1?'':'s'}` : '';
-  $('tPot').textContent = potCoins;
-  $('tTossers').textContent = n;
-  $('tShare').textContent = n>0 ? fmtTez(Math.floor(Number(S.pot)/n)) : '—';
-  $('tYours').textContent = address ? myCoins : '—';
-  $('aCoins').textContent = Number(S.coins).toLocaleString();
-  $('aOver').textContent = Number(S.overflows).toLocaleString();
-  $('aVol').textContent = fmtTez(S.volume);
-  $('aEpoch').textContent = Number(S.epoch);
-  $('tipBtn').hidden = !(due && n>0 && address);
-  $('tossBtn').disabled = !address;
-  $('tossBtn').textContent = address ? (due ? 'tip + toss 1ꜩ' : 'toss 1ꜩ') : 'connect to toss';
+  const ready=contractReady&&S;
+  $('connect').disabled=!contractReady||txPending;
+  $('refresh').disabled=!contractReady||txPending;
+  $('wishIn').disabled=!contractReady||txPending;
+  if(!ready){
+    $('fmeter').textContent='V2 Mainnet is not yet flowing';
+    $('fcount').textContent='wallet actions safely paused';
+    $('tossBtn').disabled=true;
+    $('tossBtn').textContent='V2 deployment pending';
+    $('finalizeBtn').hidden=true;
+    return;
+  }
+  const started=boolValue(S.started);
+  const participants=Number(S.tosser_count)||0;
+  const due=started&&Date.now()>=Date.parse(S.epoch_end);
+  const left=started ? fmtLeft(Date.parse(S.epoch_end)-Date.now()) : null;
+  const share=participants>0 ? mutez(S.pot)/BigInt(participants) : 0n;
+  layCoins(symbolicCoinCount());
+  $('roundLabel').textContent=started ? `today’s fountain · day #${fmtCount(S.epoch)}` : 'the first fountain · waiting for one coin';
+  $('fmeter').textContent=!started
+    ? 'the first coin starts a full-length day — no clock is running yet'
+    : due
+    ? (participants>0
+      ? `the day is ready to close — ${fmtTez(S.pot)} tez will become ${participants} independent claims`
+      : 'the quiet day is ready to close — the next toss can open a fresh one')
+    : (participants>0
+      ? `closes in ${left} — each wallet could claim ${fmtTez(share)} tez if closed now`
+      : `closes in ${left} — the water is empty; the first wallet names the day`);
+  $('fcount').textContent=started ? `${fmtTez(S.pot)} tez in the basin, including carried dust · ${participants} wallet${participants===1?'':'s'}` : 'empty · unstarted · ready for the first public wish';
+  $('tPot').textContent=fmtTez(S.pot);
+  $('tTossers').textContent=participants.toLocaleString();
+  $('tShare').textContent=participants>0 ? fmtTez(share) : '—';
+  $('tJoined').textContent=address ? (currentMembership?'joined':'not yet') : '—';
+  $('aVol').textContent=fmtTez(S.volume);
+  $('aPaid').textContent=fmtTez(S.paid);
+  $('aReserve').textContent=fmtTez(S.claim_reserve);
+  $('aFinal').textContent=fmtCount(S.finalized_epochs);
+  $('finalizeBtn').hidden=!(started&&due&&address);
+  $('finalizeBtn').disabled=txPending||!address;
+  $('tossBtn').disabled=txPending||!address;
+  $('tossBtn').textContent=!address ? 'connect to toss' : (!started ? 'start the first day + toss 1ꜩ' : (due ? 'start the next day + toss 1ꜩ' : 'toss 1ꜩ'));
+}
+
+function renderWishes(operations){
+  const container=$('wishes'); container.replaceChildren();
+  if(!operations.length){ appendEmpty(container,'no wishes in today’s water yet.'); return; }
+  for(const operation of operations){
+    const card=document.createElement('div'); card.className='wish';
+    const wish=document.createElement('div'); wish.className='w';
+    const text=wishFromOperation(operation);
+    wish.textContent=text ? `“${text}”` : '(a silent coin)';
+    const meta=document.createElement('div'); meta.className='m';
+    const sender=operation.sender?.address||'';
+    const date=new Date(operation.timestamp);
+    const when=Number.isNaN(date.valueOf()) ? 'time unknown' : date.toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+    meta.append(document.createTextNode(`${shorten(sender)} · ${when}`));
+    if(/^o[1-9A-HJ-NP-Za-km-z]{50}$/.test(operation.hash||'')){
+      const receipt=document.createElement('a');
+      receipt.href=`/wish/${encodeURIComponent(operation.hash)}`;
+      receipt.textContent='receipt ↗';
+      meta.append(document.createTextNode(' · '),receipt);
+    }
+    card.append(wish,meta); container.append(card);
+  }
+}
+function renderWishesError(){
+  const container=$('wishes'); container.replaceChildren();
+  appendEmpty(container,'today’s wishes could not be read; the on-chain state above is still current.');
+}
+
+function renderClaims(){
+  const container=$('claims'); container.replaceChildren();
+  if(!contractReady){ appendEmpty(container,'V2 claims appear after deployment.'); return; }
+  if(!address){ appendEmpty(container,'connect your wallet to find its independent claims.'); return; }
+  if(!activeClaims.length) appendEmpty(container,'no unclaimed finalized shares were found for this wallet.');
+  for(const item of activeClaims){
+    const card=document.createElement('article'); card.className='claim';
+    const copy=document.createElement('div');
+    const amount=document.createElement('p'); amount.textContent=`${fmtTez(item.settlement.share)} tez is ready`;
+    const meta=document.createElement('p'); meta.className='claimmeta';
+    meta.textContent=`day #${item.epoch} · one independent claim · no expiry`;
+    copy.append(amount,meta);
+    const button=document.createElement('button'); button.type='button'; button.textContent='claim share'; button.disabled=txPending;
+    const details=document.createElement('details'); details.className='claimdetails';
+    const summary=document.createElement('summary'); summary.textContent='send this claim to another payable address';
+    const label=document.createElement('label');
+    const inputId=`recipient-${item.epoch}`; label.htmlFor=inputId; label.textContent='recipient address';
+    const input=document.createElement('input'); input.id=inputId; input.value=address; input.autocomplete='off'; input.spellcheck=false;
+    details.append(summary,label,input);
+    button.addEventListener('click',()=>claimEpoch(item.epoch,input.value.trim()));
+    card.append(copy,button,details); container.append(card);
+  }
+  if(claimDiscoveryLimited){
+    const note=document.createElement('p'); note.className='claimnote';
+    note.textContent='Claim discovery reached the indexer fallback limit. Recent claims are shown; use the contract explorer to inspect older membership keys.';
+    container.append(note);
+  }
 }
 
 /* ---------- reads (TzKT) ---------- */
-async function readStorage(){
-  try{
-    const res = await fetch(`${NET.indexer}/v1/contracts/${NET.kt1}/storage`);
-    if(!res.ok) return;
-    S = await res.json();
-    renderFountain();
-  }catch{}
+async function json(url){
+  const response=await fetch(url,{headers:{Accept:'application/json'}});
+  if(!response.ok) throw new Error(`TzKT returned ${response.status}`);
+  return response.json();
 }
-async function readWishes(){
-  try{
-    const res = await fetch(`${NET.indexer}/v1/operations/transactions?target=${NET.kt1}&entrypoint=toss&status=applied&limit=30&sort.desc=level`);
-    if(!res.ok) return;
-    const ops = await res.json();
-    if(address && S){
-      const start = Date.parse(S.epoch_end) - Number(S.epoch_len)*1000;
-      myCoins = ops.filter(o=>o.sender?.address===address && Date.parse(o.timestamp)>=start).length;
-    }
-    const cards = ops.map(o=>{
-      const wish = fromHex(o.parameter?.value||'');
-      const when = new Date(o.timestamp).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
-      return `<div class="wish">
-        <div class="w">${wish ? '“'+wish.replace(/</g,'&lt;')+'”' : '<span style="color:var(--dim)">(a silent coin)</span>'}</div>
-        <div class="m">${shorten(o.sender.address)} · ${when}</div>
-      </div>`;
-    }).join('');
-    $('wishes').innerHTML = cards || `<p class="empty">no wishes yet — the water is listening.</p>`;
-    renderFountain();
-  }catch{}
+async function fetchStorage(){
+  return json(`${NET.indexer}/v1/contracts/${NET.kt1}/storage`);
 }
-const refresh = () => { readStorage(); readWishes(); };
+function wishFromOperation(operation){
+  const value=operation?.parameter?.value;
+  const bytes=typeof value==='string' ? value : (typeof value?.bytes==='string' ? value.bytes : '');
+  return fromHex(bytes);
+}
+async function readCurrentWishes(snapshot){
+  if(!boolValue(snapshot.started)) return [];
+  const endMs=Date.parse(snapshot.epoch_end);
+  const startMs=endMs-Number(snapshot.epoch_len)*1000;
+  if(!Number.isFinite(startMs)||!Number.isFinite(endMs)) throw new Error('invalid epoch window');
+  const params=new URLSearchParams({
+    target:NET.kt1,
+    entrypoint:'toss',
+    status:'applied',
+    limit:'30',
+    'sort.desc':'id',
+    'timestamp.ge':new Date(startMs).toISOString(),
+    'timestamp.lt':new Date(endMs).toISOString(),
+  });
+  const operations=await json(`${NET.indexer}/v1/operations/transactions?${params}`);
+  // The time bounds define the current epoch. limit=30 affects this public
+  // display only; no balance, membership, or wallet counter derives from it.
+  return operations.filter(operation=>{
+    const at=Date.parse(operation.timestamp);
+    return at>=startMs&&at<endMs;
+  });
+}
 
+function membershipParts(key){
+  if(Array.isArray(key)) return {epoch:String(key[0]),address:String(key[1]||'')};
+  if(!key||typeof key!=='object') return {epoch:'',address:''};
+  if(key.prim==='Pair'&&Array.isArray(key.args)){
+    return {epoch:String(key.args[0]?.int||''),address:String(key.args[1]?.string||'')};
+  }
+  return {
+    epoch:String(key.epoch??key.nat??key[0]??''),
+    address:String(key.address??key[1]??''),
+  };
+}
+function normalizeMembership(row){
+  const parts=membershipParts(row?.key);
+  const epoch=Number(parts.epoch);
+  if(!Number.isSafeInteger(epoch)||!PAYOUT_PATTERN.test(parts.address)) return null;
+  return {epoch,address:parts.address,claimed:boolValue(row.value)};
+}
+async function readMembershipDirect(epoch,who){
+  // TzKT currently represents an unannotated [nat,address] key as
+  // {nat:"N",address:"tz..."}; keep this probe contained so the deployed
+  // V2 shape can be verified and changed in one place.
+  const key=encodeURIComponent(JSON.stringify({nat:String(epoch),address:who}));
+  const response=await fetch(`${NET.indexer}/v1/contracts/${NET.kt1}/bigmaps/memberships/keys/${key}`);
+  if(response.status===204||response.status===404) return null;
+  if(!response.ok) throw new Error(`membership probe returned ${response.status}`);
+  const row=await response.json();
+  return {epoch:Number(epoch),address:who,claimed:boolValue(row.value)};
+}
+async function readMembershipsForAddress(who){
+  /*
+   * Verified on hardened Shadownet V2 KT1Xsdqa1K2aG5wrRNDZot3MxpoNEZtCy1Xj:
+   * membership keys decode as {nat:"N",address:"tz..."}, and key.address
+   * plus value=false filters correctly. If another indexer rejects or ignores
+   * the filter, fetch a bounded recent key page and filter locally. The limit
+   * is surfaced in the UI; this never silently claims completeness.
+   */
+  const base=`${NET.indexer}/v1/contracts/${NET.kt1}/bigmaps/memberships/keys`;
+  const filtered=`${base}?key.address=${encodeURIComponent(who)}&value=false&active=true&limit=1000&sort.desc=id`;
+  try{
+    const rows=await json(filtered);
+    const normalized=rows.map(normalizeMembership).filter(Boolean);
+    const matches=normalized.filter(row=>row.address===who);
+    const filterIgnored=normalized.some(row=>row.address!==who);
+    return {rows:matches,limited:rows.length>=1000||filterIgnored};
+  }catch{
+    const rows=await json(`${base}?active=true&limit=1000&sort.desc=id`);
+    return {
+      rows:rows.map(normalizeMembership).filter(row=>row&&row.address===who),
+      limited:rows.length>=1000,
+    };
+  }
+}
+async function readSettlement(epoch){
+  const response=await fetch(`${NET.indexer}/v1/contracts/${NET.kt1}/bigmaps/settlements/keys/${encodeURIComponent(String(epoch))}`);
+  if(response.status===204||response.status===404) return null;
+  if(!response.ok) throw new Error(`settlement read returned ${response.status}`);
+  const row=await response.json();
+  return row.value||null;
+}
+async function readWalletState(snapshot,who){
+  const membershipResult=await readMembershipsForAddress(who);
+  const byEpoch=new Map(membershipResult.rows.map(row=>[row.epoch,row]));
+  if(!byEpoch.has(Number(snapshot.epoch))){
+    try{
+      const current=await readMembershipDirect(snapshot.epoch,who);
+      if(current) byEpoch.set(current.epoch,current);
+    }catch{ membershipResult.limited=true; }
+  }
+  const claimable=[...byEpoch.values()].filter(row=>row.epoch<Number(snapshot.epoch)&&!row.claimed);
+  const claims=(await Promise.all(claimable.map(async row=>{
+    try{
+      const settlement=await readSettlement(row.epoch);
+      return settlement ? {epoch:row.epoch,settlement} : null;
+    }catch{return null;}
+  }))).filter(Boolean).sort((a,b)=>b.epoch-a.epoch);
+  return {
+    currentJoined:byEpoch.has(Number(snapshot.epoch)),
+    claims,
+    limited:membershipResult.limited||claims.length<claimable.length,
+  };
+}
+
+async function refresh(options={}){
+  if(!contractReady) return;
+  const generation=++refreshGeneration;
+  $('refresh').disabled=true; mainEl.setAttribute('aria-busy','true');
+  if(!options.quiet) setStatus('reading the V2 fountain…');
+  try{
+    const snapshot=await fetchStorage();
+    const [wishesResult,walletResult]=await Promise.allSettled([
+      readCurrentWishes(snapshot),
+      address ? readWalletState(snapshot,address) : Promise.resolve(null),
+    ]);
+    if(generation!==refreshGeneration) return;
+    S=snapshot;
+    if(walletResult.status==='fulfilled'&&walletResult.value){
+      currentMembership=walletResult.value.currentJoined;
+      activeClaims=walletResult.value.claims;
+      claimDiscoveryLimited=walletResult.value.limited;
+    }else{
+      currentMembership=false; activeClaims=[]; claimDiscoveryLimited=Boolean(address);
+    }
+    if(wishesResult.status==='fulfilled') renderWishes(wishesResult.value); else renderWishesError();
+    renderClaims(); renderFountain();
+    if(!options.quiet) setStatus('the ledger is current');
+  }catch(error){
+    if(generation!==refreshGeneration) return;
+    setStatus(`the V2 ledger could not be read — ${error instanceof Error ? error.message : 'try again'}`);
+  }finally{
+    if(generation===refreshGeneration){ mainEl.setAttribute('aria-busy','false'); renderFountain(); }
+  }
+}
+
+/* ---------- target verification ---------- */
+function entrypointNames(value){
+  if(Array.isArray(value)) return new Set(value.map(item=>item?.name).filter(Boolean));
+  if(value&&typeof value==='object'){
+    if(Array.isArray(value.entrypoints)) return new Set(value.entrypoints.map(item=>item?.name||item).filter(Boolean));
+    return new Set(Object.keys(value));
+  }
+  return new Set();
+}
+function isV2Storage(storage){
+  const required=['started','epoch','epoch_len','epoch_end','pot','tosser_count','memberships','settlements','claim_reserve','coins','finalized_epochs','paying_epochs','claims','volume','paid'];
+  const epochLen=Number(storage?.epoch_len);
+  return storage
+    && required.every(field=>Object.prototype.hasOwnProperty.call(storage,field))
+    && Number.isSafeInteger(epochLen)
+    && epochLen>0;
+}
+async function verifyTarget(){
+  $('legacyExplorer').href=`${FLAGSHIP.explorer}/${FLAGSHIP.legacyKt1}`;
+  if(blockedTarget){ setUnavailable(blockedTarget); setStatus(blockedTarget); renderFountain(); return false; }
+  if(!NET.kt1){
+    const message=`The claim-based V2 contract is awaiting ${NET.label} origination. Wallet actions are disabled; the legacy link below is historical only.`;
+    setUnavailable(message); setStatus('V2 deployment pending'); renderFountain(); return false;
+  }
+  if(legacyAddresses.has(NET.kt1)){
+    setUnavailable('Safety stop: a legacy V1 address was configured as V2. Wallet actions are disabled.');
+    setStatus('legacy target rejected'); renderFountain(); return false;
+  }
+  setStatus('verifying the V2 contract…');
+  try{
+    const [info,entrypoints,storage]=await Promise.all([
+      json(`${NET.indexer}/v1/contracts/${NET.kt1}`),
+      json(`${NET.indexer}/v1/contracts/${NET.kt1}/entrypoints`),
+      fetchStorage(),
+    ]);
+    const names=entrypointNames(entrypoints);
+    if(Number(info?.codeHash)!==NET.codeHash||Number(info?.typeHash)!==NET.typeHash){
+      throw new Error('target bytecode does not match the reviewed V2 contract');
+    }
+    if(!['toss','finalize','claim'].every(name=>names.has(name))||!isV2Storage(storage)){
+      throw new Error('target does not expose the claim-based V2 interface');
+    }
+    if(mutez(info?.balance)!==mutez(storage.pot)+mutez(storage.claim_reserve)){
+      throw new Error('target balance does not match its V2 accounting');
+    }
+    contractReady=true; S=storage; setUnavailable('');
+    $('explorer').href=`${NET.explorer}/${NET.kt1}`; $('explorer').hidden=false; $('explorerSep').hidden=false;
+    renderFountain(); return true;
+  }catch(error){
+    const message=`V2 target unavailable — ${error instanceof Error ? error.message : 'verification failed'}. Wallet actions are disabled.`;
+    setUnavailable(message); setStatus(message); renderFountain(); return false;
+  }
+}
 /* ---------- wallet (Beacon) ---------- */
-let client;
 function beaconNetwork(){
   return NET.kind==='mainnet'
-    ? { type: beacon.NetworkType.MAINNET }
-    : { type: beacon.NetworkType.CUSTOM, name: NET.label, rpcUrl: NET.rpc };
+    ? {type:beacon.NetworkType.MAINNET}
+    : {type:beacon.NetworkType.CUSTOM,name:NET.label,rpcUrl:NET.rpc};
 }
 function getClient(){
-  if(!client) client = new beacon.DAppClient({ name:'the fountain', network: beaconNetwork() });
+  if(!client) client=new beacon.DAppClient({name:'the fountain V2',network:beaconNetwork()});
   return client;
 }
 async function connect(){
+  if(!contractReady) return;
   setStatus('opening wallet…');
   try{
-    const c = getClient();
-    const acc = await c.getActiveAccount();
-    const perm = acc || await c.requestPermissions();
-    address = perm.address;
-    onConnected(); setStatus('');
-  }catch(e){ setStatus('connect cancelled'); }
+    const wallet=getClient();
+    const active=await wallet.getActiveAccount();
+    const permission=active||await wallet.requestPermissions();
+    address=permission.address; onConnected(); await refresh({quiet:true}); setStatus('wallet connected');
+  }catch{setStatus('wallet connection cancelled');}
 }
 async function disconnect(){
-  try{ await getClient().clearActiveAccount(); }catch{}
-  address=null; myCoins=0;
-  $('whoLabel').textContent='not connected';
-  $('who').textContent='connect a wallet to toss a coin';
+  try{await getClient().clearActiveAccount();}catch{}
+  address=null; currentMembership=false; activeClaims=[]; claimDiscoveryLimited=false;
+  $('whoLabel').textContent='not connected'; $('who').textContent='connect a wallet to toss a coin';
   $('connect').textContent='connect'; $('connect').onclick=connect;
-  renderFountain();
+  renderClaims(); renderFountain(); setStatus('wallet disconnected');
 }
 function onConnected(){
-  $('whoLabel').textContent='connected';
-  $('who').textContent=shorten(address);
+  $('whoLabel').textContent='connected'; $('who').textContent=shorten(address);
   $('connect').textContent='disconnect'; $('connect').onclick=disconnect;
-  refresh();
+  renderFountain();
 }
 
-/* ---------- ops ---------- */
-async function sendOps(details, doing){
-  setStatus(doing);
+/* ---------- operations ---------- */
+function friendlyError(error){
+  const message=String(error?.message||error||'');
+  const errors={
+    ONE_TEZ_COINS_ONLY:'the fountain accepts exact one-tez coins',
+    SEND_NO_TEZ:'do not attach tez to close or claim',
+    BAD_EPOCH_LEN:'this fountain has an invalid day length',
+    WISH_TOO_LONG:'keep the public wish under 320 UTF-8 bytes',
+    FOUNTAIN_NOT_STARTED:'the first coin must start the fountain before it can close',
+    NOT_BRIMMING_YET:'this day is still open',
+    EPOCH_NOT_FINALIZED:'that day has not been closed yet',
+    NOT_A_TOSSER:'this wallet did not join that day',
+    ALREADY_CLAIMED:'this wallet already claimed that share',
+    RECIPIENT_NOT_PAYABLE:'that recipient cannot receive a plain tez transfer',
+    ACCOUNTING_ERROR:'the contract rejected an accounting inconsistency',
+  };
+  for(const [code,text] of Object.entries(errors)) if(message.includes(code)) return text;
+  return /cancel/i.test(message) ? 'wallet action cancelled' : 'wallet action cancelled or failed';
+}
+function setTxPending(value){ txPending=value; mainEl.setAttribute('aria-busy',String(value)); renderFountain(); renderClaims(); }
+async function waitForIndexer(hash){
+  if(!hash) return {state:'pending',status:''};
+  for(let attempt=0;attempt<20;attempt++){
+    try{
+      const response=await fetch(`${NET.indexer}/v1/operations/transactions/${encodeURIComponent(hash)}`);
+      if(response.ok){
+        const payload=await response.json();
+        const operations=Array.isArray(payload)?payload:[payload];
+        const external=operations.find(operation=>
+          operation?.type==='transaction'
+          && operation?.hash===hash
+          && operation?.nonce==null
+          && operation?.target?.address===NET.kt1
+        );
+        if(external){
+          const status=String(external.status||'');
+          if(status==='applied') return {state:'applied',status};
+          if(['failed','backtracked','skipped'].includes(status)) return {state:'failed',status};
+        }
+      }
+    }catch{}
+    await new Promise(resolve=>setTimeout(resolve,2000));
+  }
+  return {state:'pending',status:''};
+}
+async function sendOps(details,doing){
+  if(!contractReady||!address||txPending) return {ok:false,hash:''};
+  setTxPending(true); setStatus(doing);
   try{
-    const r = await getClient().requestOperation({ operationDetails: details });
-    const hash = r.transactionHash || r.opHash || '';
-    setStatus(hash ? `done ✓ <a href="${NET.explorer}/${hash}" target="_blank" rel="noopener">op ↗</a>` : 'done ✓');
-    setTimeout(refresh, 4000); setTimeout(refresh, 12000);
-    return true;
-  }catch(e){ setStatus('cancelled or failed'); return false; }
+    const result=await getClient().requestOperation({operationDetails:details});
+    const hash=result.transactionHash||result.opHash||'';
+    setStatus('submitted — waiting for the public ledger…',hash?`${NET.explorer}/${hash}`:'','operation ↗');
+    const indexed=await waitForIndexer(hash);
+    await refresh({quiet:true});
+    if(indexed.state==='applied'){
+      setStatus('recorded on Tezos ✓',hash?`${NET.explorer}/${hash}`:'','operation ↗');
+      return {ok:true,hash};
+    }
+    if(indexed.state==='failed'){
+      setStatus(`not applied on Tezos (${indexed.status}) — no receipt was created`,hash?`${NET.explorer}/${hash}`:'','inspect operation ↗');
+      return {ok:false,hash};
+    }
+    setStatus('submitted — confirmation is still pending; check the explorer before trying again',hash?`${NET.explorer}/${hash}`:'','operation ↗');
+    return {ok:false,hash};
+  }catch(error){
+    setStatus(friendlyError(error)); return {ok:false,hash:''};
+  }finally{setTxPending(false);}
 }
 const tossDetail = (wishHex) => ({
-  kind: beacon.TezosOperationType.TRANSACTION,
-  amount: '1000000',
-  destination: NET.kt1,
-  parameters: { entrypoint: 'toss', value: { bytes: wishHex } },
+  kind:beacon.TezosOperationType.TRANSACTION,
+  amount:'1000000',
+  destination:NET.kt1,
+  parameters:{entrypoint:'toss',value:{bytes:wishHex}},
 });
-const overflowDetail = () => ({
-  kind: beacon.TezosOperationType.TRANSACTION,
-  amount: '0',
-  destination: NET.kt1,
-  parameters: { entrypoint: 'overflow', value: { prim: 'Unit' } },
+const finalizeDetail = () => ({
+  kind:beacon.TezosOperationType.TRANSACTION,
+  amount:'0',
+  destination:NET.kt1,
+  parameters:{entrypoint:'finalize',value:{prim:'Unit'}},
 });
-$('tossBtn').onclick = async () => {
-  if(!address) return;
+const claimDetail = (epoch,recipient) => ({
+  kind:beacon.TezosOperationType.TRANSACTION,
+  amount:'0',
+  destination:NET.kt1,
+  parameters:{entrypoint:'claim',value:{prim:'Pair',args:[{int:String(epoch)},{string:recipient}]}},
+});
+
+function showReceipt(hash,wish){
+  if(!hash) return;
+  const url=new URL(`/wish/${encodeURIComponent(hash)}`,location.origin).href;
+  receiptData={hash,wish,url};
+  $('receiptWish').textContent=wish ? `“${wish}”` : '(a silent coin)';
+  $('receiptMeta').textContent=`one wallet · one share · ${shorten(hash)}`;
+  $('receiptLink').href=url; $('receipt').hidden=false; $('receipt').focus();
+}
+async function shareReceipt(){
+  if(!receiptData) return;
+  const data={
+    title:'a wish in the Tezos fountain',
+    text:receiptData.wish ? `“${receiptData.wish}” — one coin in the fountain` : 'a silent coin in the Tezos fountain',
+    url:receiptData.url,
+  };
+  try{
+    if(navigator.share) await navigator.share(data);
+    else {await navigator.clipboard.writeText(data.url); setStatus('receipt link copied — hand it to a neighbor');}
+  }catch(error){if(!/cancel|abort/i.test(String(error?.message||error))) setStatus('the receipt link could not be shared');}
+}
+async function claimEpoch(epoch,recipient){
+  if(!PAYOUT_PATTERN.test(recipient)){setStatus('enter a valid tz or KT1 recipient address'); return;}
   boot();
-  const wish = $('wishIn').value.trim();
-  const due = S && Date.now() >= Date.parse(S.epoch_end);
-  const details = due ? [overflowDetail(), tossDetail(toHex(wish))] : [tossDetail(toHex(wish))];
+  await sendOps([claimDetail(epoch,recipient)],`claiming the share from day #${epoch}…`);
+}
+
+$('tossBtn').onclick=async()=>{
+  if(!contractReady||!address||txPending) return;
+  boot();
+  const wish=$('wishIn').value.trim();
+  if(new TextEncoder().encode(wish).length>320){setStatus('keep the public wish under 320 UTF-8 bytes'); return;}
+  const started=S&&boolValue(S.started);
+  const due=started&&Date.now()>=Date.parse(S.epoch_end);
   flyCoin();
-  const ok = await sendOps(details, due ? 'tipping, then tossing…' : 'tossing your coin…');
-  if(ok) $('wishIn').value='';
+  // V2 toss auto-finalizes an expired day internally. Never prepend finalize:
+  // doing so would create a race and is unnecessary for contract liveness.
+  const result=await sendOps([tossDetail(toHex(wish))],!started?'starting the first day with your coin…':(due?'closing the expired day and tossing into the next…':'tossing your coin…'));
+  if(result.ok){$('wishIn').value=''; showReceipt(result.hash,wish);}
 };
-$('tipBtn').onclick = () => { boot(); return sendOps([overflowDetail()], 'pulling the plug…'); };
+$('finalizeBtn').onclick=async()=>{
+  if(!contractReady||!address||txPending) return;
+  boot(); await sendOps([finalizeDetail()],'closing the day and fixing every independent share…');
+};
 
 /* ---------- init ---------- */
-function setStatus(html){ $('status').innerHTML = html; }
-$('connect').onclick = connect;
-$('refresh').onclick = refresh;
-$('explorer').href = NET.kt1 ? `${NET.explorer}/${NET.kt1}` : '#';
-refresh();
-showAwayGame();
-setInterval(refresh, 30000);
-setInterval(()=>renderFountain(), 1000);   // live countdown
-(async()=>{ try{ const acc = await getClient().getActiveAccount(); if(acc){ address=acc.address; onConnected(); } }catch{} })();
+$('connect').onclick=connect;
+$('refresh').onclick=()=>refresh();
+$('shareReceipt').onclick=shareReceipt;
+$('legacyExplorer').href=`${FLAGSHIP.explorer}/${FLAGSHIP.legacyKt1}`;
+renderClaims(); renderFountain();
+setInterval(()=>renderFountain(),1000);
+setInterval(()=>{if(contractReady&&!txPending) refresh({quiet:true});},30000);
+window.addEventListener('resize',()=>layCoins(symbolicCoinCount()),{passive:true});
+
+(async()=>{
+  if(!await verifyTarget()) return;
+  await refresh({quiet:true});
+  try{
+    const active=await getClient().getActiveAccount();
+    if(active){address=active.address; onConnected(); await refresh({quiet:true});}
+    else setStatus('V2 fountain ready');
+  }catch{setStatus('V2 fountain ready');}
+})();
 </script>
 </body>
 </html>

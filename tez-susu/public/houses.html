@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>the town map — tez-susu</title>
-<meta name="description" content="Every byte-identical susu house and fountain, found by codeHash with no registry." />
+<meta name="description" content="Byte-identical susu houses and the historical Fountain V1 family, found by codeHash with no private registry." />
 <style>
   :root{--paper:#f2efe9;--ink:#241f1c;--stamp:#b3402a;--tezos-blue:#0f61ff;--line:#d8d2c6;--dim:#6b6259;--go:#2e6b3a}
   *{box-sizing:border-box}
@@ -49,18 +49,18 @@
   <main class="office">
     <p class="eyebrow"><span>tezos · el segundo</span><span><a href="/">the town square</a> · <a href="/print">the print shop</a></span></p>
     <h1><em>the town map</em></h1>
-    <p class="lede">Every house here runs the same law; nobody can change it, including us. <a href="/print">Print yours at the shop.</a> There is no registry — the map finds byte-identical contracts by their on-chain codeHash.</p>
+    <p class="lede">Every house here runs the same law; nobody can change it, including us. <a href="/print">Print yours at the shop.</a> The fountain rows are the legacy V1 family, retained as a public record while the claim-based V2 family is established. There is no private registry — the map finds byte-identical contracts by their on-chain codeHash.</p>
 
     <div class="tiles">
       <div class="tile"><b id="houseTotal">—</b><span>susu houses</span></div>
-      <div class="tile"><b id="fountainTotal">—</b><span>fountains</span></div>
+      <div class="tile"><b id="fountainTotal">—</b><span>legacy V1 fountains</span></div>
       <div class="tile"><b id="stampTotal">—</b><span>made-whole stamps</span></div>
     </div>
 
     <h2><span>susu houses</span><button class="ghost" id="refresh">refresh</button></h2>
     <div id="houses"><p class="empty">walking the streets…</p></div>
 
-    <h2><span>fountains</span><b id="networkLabel">mainnet</b></h2>
+    <h2><span>legacy fountains · V1</span><b id="networkLabel">mainnet</b></h2>
     <div id="fountains"><p class="empty">listening for water…</p></div>
 
     <p class="status" id="status"></p>
@@ -141,7 +141,7 @@ function fountainHtml(fountain){
   const href=first ? '/fountain' : `/fountain?fountain=${encodeURIComponent(fountain.address)}`;
   return `<article class="place fountain">
     <div class="mark">foun<br>tain</div>
-    <div><h3><a href="${href}">${escapeHtml(fountain.name)}</a>${first?' <span class="chip">the first print</span>':''}</h3>
+    <div><h3><a href="${href}">${escapeHtml(fountain.name)}</a> <span class="chip">legacy V1 · deposits discouraged</span>${first?' <span class="chip">the first print</span>':''}</h3>
     <p class="address"><a href="${NET.explorer}/${fountain.address}" target="_blank" rel="noopener">${escapeHtml(fountain.address)} ↗</a> · ${escapeHtml(date(fountain.firstActivityTime))}</p>
     <div class="stats">${stat(count(fountain.storage.coins),'coins')}${stat(count(fountain.storage.overflows),'overflows')}${stat(tez(fountain.storage.volume)+'ꜩ','volume')}</div></div>
   </article>`;

@@ -8,12 +8,34 @@ far, both CC0, both "no house, no chance, no yield":
    fixed contribution per round; each round ONE member takes the whole pot,
    in **join order**, until everyone has had a turn. Everyone ends net-zero;
    each member gets one lump sum. The homepage is a playable pretend circle.
-2. **the fountain** (`contracts/fountain.jsligo`, `public/fountain.html`) —
-   toss 1ꜩ coins with a wish all epoch; at epoch end anyone may `overflow`
-   the fountain and the pot splits **evenly among that epoch's tossers**
-   (division dust tips the caller). Toss once, break even; toss five times,
-   you watered the square. Wishes cost no storage — they ride in the call
-   parameters and are read back off the indexer.
+2. **the fountain V2** (`contracts/fountain-v2.jsligo`,
+   `public/fountain.html`) — toss exact 1ꜩ coins with public wishes. One
+   unique sender address receives one equal share per epoch; repeat coins
+   grow the basin without adding weight. Anyone can finalize after the
+   deadline in constant cost, then each eligible address claims
+   independently. Division dust rolls forward. Wishes cost no contract
+   storage — they remain public in transaction parameters and are read from
+   the indexer.
+
+Fountain V1 (`contracts/fountain.jsligo`) is retained only as public history.
+Its push-all-payouts design and print surface are paused; do not deposit into
+the V1 contract.
+
+## Fountain V2 — honest boundary
+
+- No owner, admin, fee, skim, randomness, or promised yield.
+- The first accepted coin starts the first full-length epoch. A late coin
+  atomically finalizes an expired epoch and enters the next one.
+- Claims never expire. Lost-key claims stay reserved forever; nobody can
+  recover them. A rejecting recipient rolls back only that claim.
+- **One address is not one human.** A person can fund many addresses and take
+  many shares, including value donated through another wallet's repeat
+  coins. This many-wallet/Sybil attack is core economic risk, not an identity
+  promise. Watch the participant count and use only tez you can lose.
+- The code passed a separate correctness review and an expanded Shadownet
+  lifecycle smoke. It has **not** received a professional audit.
+- Reviewed LIGO 1.15.6 compiler-output SHA-256:
+  `267f245df855058347965a887594e4d1a9c55a3d5be0f1b15a0da8027a4ea427`.
 
 ## How a circle turns
 
@@ -47,8 +69,9 @@ The contract holds tez only mid-round; a settled or disbanded house holds 0.
 |---|---|---|---|
 | Shadownet | circle | `KT1QkXi31V5Fv91y7EEu68iNXuY1dRGp5VgM` | dev copy, smoke-tested (full cycle + valve) |
 | Mainnet | circle | `KT19HJaK1hNmc337yv6DM4ZfYyPPQnzj277G` | live at tez-susu.pages.dev |
-| Shadownet | fountain | `KT1X4uVpAndFZ3hU75SubFMHvvZaxjfDU34G` | dev copy (180s epochs), smoke-tested |
-| Mainnet | fountain | `KT1UTu9vS3aJH3ktyVCF9DimjLKpqXGQkeGW` | daily epochs, live at tez-susu.pages.dev/fountain |
+| Shadownet | fountain V2 | `KT1Xsdqa1K2aG5wrRNDZot3MxpoNEZtCy1Xj` | hardened 120s candidate; expanded lifecycle smoke passed; codeHash `1760237160` |
+| Mainnet | fountain V2 | pending | daily reviewed release; public wallet actions remain disabled until originated and verified |
+| Mainnet | fountain V1 legacy | `KT1UTu9vS3aJH3ktyVCF9DimjLKpqXGQkeGW` | empty historical deployment; deposits and printing discouraged |
 | Shadownet | made-whole | `KT1SiQbgGfLiXLfs4ZTa9RvPG6JRVdJSLF2F` | dev copy against dev house; smoke = 6 claim assertions |
 | Mainnet | made-whole | `KT1A8Jq9d9aRo2Je9TtQRYUGRsKC8BdhWCWa` | trustless completion stamps against the mainnet house (verifies via `read_circle` on-chain view — no oracle, no admin). Share posters at `/c/{id}` (Pages Functions + workers-og OG cards). See GROWTH.md |
 
@@ -67,9 +90,13 @@ npm install
 npm run deploy             # originate the circle (RPC in .env; teztnets RPC
                            # can lag days — use https://rpc.tzkt.io/shadownet)
 npm run smoke              # full 3-seat cycle + double-pay guard + disband valve
-EPOCH_LEN=180 npm run deploy:fountain   # short epochs for dev (mainnet: 86400)
-npm run smoke:fountain     # whale+2 split, dust to tipper, all three guards
+EPOCH_LEN=120 npm run deploy:fountain:v2:testnet
+npm run smoke:fountain:v2 -- KT1...  # three epochs, six claims, failure isolation, accounting
+npm run estimate:fountain:v2:mainnet # read-only; requires ADMIN_KEY for source simulation
+# Mainnet is hard-pinned to a daily epoch + reviewed Michelson hash:
+CONFIRM_MAINNET_FOUNTAIN_V2=YES npm run deploy:fountain:v2:mainnet
 ```
 
 Views for the rest of the ladder: circle `read_circle(id)` / `circle_count()`
-/ `town()`; fountain `fountain()` (epoch / pot / tossers / lifetime).
+/ `town()`; Fountain V2 `fountain()`, `read_settlement(epoch)`, and
+`can_claim([epoch,address])`.

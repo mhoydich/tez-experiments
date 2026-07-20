@@ -1,0 +1,141 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-07-20T16:52:47Z",
+  "name": "the fountain",
+  "tagline": "toss a coin, make a wish",
+  "description": "A daily peer-distribution ritual on Tezos: toss an exact one-tez coin with a public wish, then share the pot equally among the unique wallets that joined that round.",
+  "category": [
+    "Tezos peer-to-peer money experiment",
+    "on-chain public ritual",
+    "equal peer distribution"
+  ],
+  "canonical_url": "https://tez-susu.pages.dev/fountain",
+  "machine_url": "https://tez-susu.pages.dev/fountain.json",
+  "language": "en",
+  "license": "CC0-1.0",
+  "network": {
+    "blockchain": "Tezos",
+    "chain": "mainnet"
+  },
+  "release": {
+    "active_generation": "v1",
+    "status": "v1_live_deposits_discouraged",
+    "status_label": "Legacy V1 public interface is paused; reviewed V2 awaits Mainnet funding",
+    "recommended_mode": "observe_only",
+    "deposits_discouraged": true,
+    "checked_at": "2026-07-20T16:52:47Z",
+    "active": {
+      "generation": "v1",
+      "contract_address": "KT1UTu9vS3aJH3ktyVCF9DimjLKpqXGQkeGW",
+      "state": "legacy_experimental"
+    },
+    "next": {
+      "generation": "v2",
+      "contract_address": null,
+      "state": "mainnet_funding_pending",
+      "intended_settlement": "Finalize the round in constant cost, then let each eligible wallet claim independently.",
+      "audit_status": "separate correctness review and lifecycle smoke passed; not professionally audited",
+      "reviewed_michelson_sha256": "267f245df855058347965a887594e4d1a9c55a3d5be0f1b15a0da8027a4ea427",
+      "shadownet_candidate": {
+        "contract_address": "KT1Xsdqa1K2aG5wrRNDZot3MxpoNEZtCy1Xj",
+        "code_hash": 1760237160,
+        "type_hash": 1632638859,
+        "epoch_length_seconds": 120,
+        "smoke_result": "passed three epoch boundaries, two simultaneous reserves, all six claims, failed-recipient isolation, zero residual balance, and accounting invariants"
+      }
+    }
+  },
+  "mechanics": {
+    "coin_amount_mutez": 1000000,
+    "coin_amount_tez": "1",
+    "round_length_seconds": 86400,
+    "participation_unit": "unique sender address",
+    "share_rule": "Each unique wallet that tosses at least once receives one equal share of the round's pot.",
+    "extra_toss_rule": "Additional tosses from the same wallet increase the shared pot but do not create additional shares.",
+    "wish_rule": "The wish is passed as bytes in the toss transaction. Neither generation adds it to contract storage, but transaction parameters are public and indexable.",
+    "v1_settlement_trigger": "After the round deadline, any address may call overflow with zero tez. Settlement is not automatic.",
+    "v2_settlement_trigger": "After the round deadline, any address may call finalize with zero tez; a late toss also finalizes the expired round atomically. The clock alone moves no money.",
+    "v1_settlement": "V1 emits one equal tez transfer to every unique tosser in a single overflow operation.",
+    "v2_settlement": "V2 finalizes one settlement record without a participant loop. Every eligible sender then claims one fixed share independently; one failed recipient cannot block other claims.",
+    "v2_first_epoch": "The first accepted coin starts the first full-length day.",
+    "v2_claim_expiry": "none; an unclaimed share stays reserved forever",
+    "v1_rounding": "Any integer-division remainder is sent to the address that calls overflow.",
+    "v2_rounding": "Any integer-division remainder stays in the contract and rolls into the next basin.",
+    "house_fee": "none in the V1 contract logic",
+    "promised_yield": false,
+    "randomness": false
+  },
+  "v1_contract": {
+    "address": "KT1UTu9vS3aJH3ktyVCF9DimjLKpqXGQkeGW",
+    "network": "mainnet",
+    "originated_at": "2026-07-20T01:47:07Z",
+    "entrypoints": [
+      {
+        "name": "toss",
+        "parameter": "bytes",
+        "amount": "exactly 1000000 mutez"
+      },
+      {
+        "name": "overflow",
+        "parameter": "unit",
+        "amount": "0 mutez"
+      }
+    ],
+    "evidence_snapshot": {
+      "checked_at": "2026-07-20T16:08:29Z",
+      "tzkt_level": 14144589,
+      "balance_mutez": 0,
+      "transaction_count": 0,
+      "storage": {
+        "epoch": "0",
+        "epoch_length_seconds": "86400",
+        "epoch_end": "2026-07-21T01:47:01Z",
+        "pot_mutez": "0",
+        "unique_tossers": "0",
+        "lifetime_coins": "0",
+        "lifetime_overflows": "0",
+        "lifetime_volume_mutez": "0"
+      }
+    }
+  },
+  "endpoints": {
+    "human": "https://tez-susu.pages.dev/fountain",
+    "descriptor": "https://tez-susu.pages.dev/fountain.json",
+    "explorer": "https://tzkt.io/KT1UTu9vS3aJH3ktyVCF9DimjLKpqXGQkeGW",
+    "contract": "https://api.tzkt.io/v1/contracts/KT1UTu9vS3aJH3ktyVCF9DimjLKpqXGQkeGW",
+    "storage": "https://api.tzkt.io/v1/contracts/KT1UTu9vS3aJH3ktyVCF9DimjLKpqXGQkeGW/storage",
+    "entrypoints": "https://api.tzkt.io/v1/contracts/KT1UTu9vS3aJH3ktyVCF9DimjLKpqXGQkeGW/entrypoints",
+    "transactions": "https://api.tzkt.io/v1/operations/transactions?target=KT1UTu9vS3aJH3ktyVCF9DimjLKpqXGQkeGW&status=applied",
+    "recent_wishes": "https://tez-susu.pages.dev/wishes",
+    "recent_wishes_feed": "https://tez-susu.pages.dev/fountain-feed.json"
+  },
+  "safety": {
+    "funds_at_risk": true,
+    "calls_irreversible": true,
+    "wishes_public": true,
+    "wallet_address_public": true,
+    "professionally_audited": false,
+    "many_wallet_attack": "One address receives one share, not one human. A participant can fund many addresses to take many shares, including value donated by repeat tosses from other wallets.",
+    "v1_limits": [
+      "Overflow is a manual call after the deadline; a clock reaching zero does not move funds by itself.",
+      "V1 creates all recipient transfers in one operation, so settlement cost grows with the number of unique tossers and can exceed practical operation limits.",
+      "If a recipient contract rejects its transfer, the V1 overflow operation can fail for everyone.",
+      "One wallet address receives one share; using multiple wallet addresses can receive multiple shares.",
+      "A wish is public transaction data associated with its sender address."
+    ],
+    "v2_limits": [
+      "V2 removes the all-recipient payout loop but does not prevent one person from using many funded addresses.",
+      "Closing is permissionless but not automatic; a late toss also closes an expired round before joining the next.",
+      "Claims never expire, so shares controlled by lost keys remain locked forever.",
+      "A rejecting recipient rolls back only that wallet's claim; the wallet can retry with another payable recipient.",
+      "The contract and interface are experimental and not professionally audited."
+    ],
+    "guidance": "Do not deposit into legacy V1. Until a verified V2 Mainnet address is published, use the page in observe-only mode. After launch, verify the address and code hash before signing and use only tez you can afford to lose."
+  },
+  "plain_language": {
+    "what_it_is": "A fountain-shaped way to move tez among peers on a daily rhythm.",
+    "what_one_coin_does": "It adds your wallet to the day's equal split and adds one tez to the shared pot.",
+    "what_extra_coins_do": "They water the square: the pot grows, but your wallet still has one share.",
+    "what_it_is_not": "It is not a savings account, investment, guaranteed return, lottery, or automatic income product."
+  }
+}

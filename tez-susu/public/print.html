@@ -4,8 +4,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>the print shop — tez-susu</title>
-<meta name="description" content="Print a sovereign susu house or fountain from the byte-identical tez-susu contract family." />
-<script src="https://cdn.jsdelivr.net/npm/@airgap/beacon-sdk@4.5.1/dist/walletbeacon.min.js"></script>
+<meta name="description" content="Print a sovereign susu house from the byte-identical tez-susu contract family. The safer Fountain V2 press is being prepared." />
+<script src="https://cdn.jsdelivr.net/npm/@airgap/beacon-sdk@4.5.1/dist/walletbeacon.min.js" integrity="sha384-j6ouqdqRq8dx2JVF7YyyjnlvvsHRu8cmXDU6voX3Ee/nTvH+ztpkLKMl84WzgmcL" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
   :root{--paper:#f2efe9;--ink:#241f1c;--stamp:#b3402a;--tezos-blue:#0f61ff;--line:#d8d2c6;--dim:#6b6259;--go:#2e6b3a}
   *{box-sizing:border-box}
@@ -25,6 +25,7 @@
   fieldset{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:0;border:0;padding:0}
   .kind{position:relative;display:block;border:1.5px solid var(--ink);padding:.8rem;background:#fff;cursor:pointer}
   .kind:has(input:checked){outline:3px solid var(--stamp);outline-offset:-3px}
+  .kind:has(input:disabled){border-style:dashed;background:var(--paper);cursor:not-allowed;opacity:.72}
   .kind input{position:absolute;opacity:0}
   .kind b{display:block;color:var(--stamp);font-size:1rem}.kind span{display:block;margin-top:.15rem;color:var(--dim);font-family:ui-monospace,Menlo,monospace;font-size:.62rem;line-height:1.45}
   label.field{display:block;color:var(--dim);font-family:ui-monospace,Menlo,monospace;font-size:.62rem;letter-spacing:.13em;text-transform:uppercase}
@@ -51,7 +52,7 @@
   <main class="office">
     <p class="eyebrow"><span>tezos · el segundo</span><a href="/">← the town square</a></p>
     <h1><em>the print shop</em></h1>
-    <p class="lede">Every print runs the same law as the first one. Your wallet originates byte-identical contract code; its name and clock live only in initial storage. No registry and no proprietor.</p>
+    <p class="lede">Every print runs the same law as the first one. Your wallet originates byte-identical contract code; its name lives only in initial storage. No registry and no proprietor. Fountain printing is paused while the safer claim-based V2 family is established.</p>
 
     <div class="bar">
       <div class="who"><b id="whoLabel">not connected · mainnet</b><span id="who">connect a wallet to run the press</span></div>
@@ -61,7 +62,7 @@
     <form id="printForm">
       <fieldset aria-label="what to print">
         <label class="kind"><input type="radio" name="kind" value="susu" checked /><b>a susu house</b><span>open circles, keep turns, move the pot</span></label>
-        <label class="kind"><input type="radio" name="kind" value="fountain" /><b>a fountain</b><span>one-tez coins, wishes, equal overflows</span></label>
+        <label class="kind"><input type="radio" name="kind" value="fountain" disabled /><b>a fountain · V2 pending</b><span>the legacy push-payout press is closed; claim-based printing reopens after verified Mainnet deployment</span></label>
       </fieldset>
       <label class="field" for="printName">name your place
         <input id="printName" type="text" maxlength="60" placeholder="mariposa ave" required />
@@ -83,7 +84,7 @@
   </main>
 
 <script type="module">
-import { buildFountainStorage, buildMadeWholeStorage, buildSusuStorage, KT1_PATTERN } from './print-storage.js';
+import { buildMadeWholeStorage, buildSusuStorage, KT1_PATTERN } from './print-storage.js';
 
 const NETWORKS = {
   shadownet:{kind:'custom',label:'Shadownet',rpc:'https://rpc.tzkt.io/shadownet',indexer:'https://api.shadownet.tzkt.io',explorer:'https://shadownet.tzkt.io'},
@@ -136,7 +137,8 @@ function setStatus(message){ $('status').textContent = message; }
 function operationHash(result){ return result.transactionHash || result.opHash || ''; }
 
 async function codeFor(kind){
-  const file = kind==='susu' ? 'susu.json' : kind==='fountain' ? 'fountain.json' : 'made-whole.json';
+  if(kind==='fountain') throw new Error('Fountain V2 printing is not open yet');
+  const file = kind==='susu' ? 'susu.json' : 'made-whole.json';
   const response = await fetch(`/contracts/${file}`);
   if(!response.ok) throw new Error(`contract code could not be read (${response.status})`);
   return response.json();
@@ -221,6 +223,7 @@ $('printForm').addEventListener('submit',async(event)=>{
   event.preventDefault();
   const button = $('printBtn');
   const kind = new FormData(event.currentTarget).get('kind');
+  if(kind!=='susu'){ setStatus('Fountain V2 printing is not open yet'); return; }
   const name = $('printName').value.trim();
   const bytes = new TextEncoder().encode(name).length;
   if(!name || bytes>60){ setStatus('name must be 1–60 UTF-8 bytes'); return; }
@@ -228,9 +231,7 @@ $('printForm').addEventListener('submit',async(event)=>{
   button.disabled = true; $('result').hidden = true;
   try{
     const code = await codeFor(kind);
-    const storage = kind==='susu'
-      ? buildSusuStorage(name)
-      : buildFountainStorage(name,Number($('epochLen').value));
+    const storage = buildSusuStorage(name);
     const printed = await originate(code,storage,`printing your ${kind==='susu'?'house':'fountain'}…`);
     printedHouse = kind==='susu' ? printed.kt1 : null;
     printedName = name;

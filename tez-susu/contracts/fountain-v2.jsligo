@@ -1,0 +1,212 @@
+// tez-susu — the fountain v2. Claim-based settlement for a crowded square.
+//
+// Toss one-tez coins with a wish during an epoch. Membership is one share
+// per unique wallet; repeat tosses water the square without adding weight.
+// At epoch end anyone may finalize in O(1), fixing one equal share. Each
+// member then claims independently, so one recipient can never block the
+// rest of the square. Wishes are deliberately ignored here: they remain in
+// call parameters for indexers to read and never consume contract storage.
+//
+// No owner, no admin, no fee, no skim. Division dust rolls into the next
+// epoch's basin. Unclaimed shares remain reserved without an expiry.
+// jsLIGO (LIGO 1.15.6). CC0.
+
+type settlement = {
+  total: tez,               // basin at finalization, before dust is carried
+  share: tez,               // fixed payout for each unique member
+  dust: tez,                // total - share * member_count; carried forward
+  member_count: nat,
+  unclaimed: nat,
+  finalized_at: timestamp,
+};
+
+type storage = {
+  started: bool,             // first toss starts the first full-length epoch
+  epoch: nat,
+  epoch_len: nat,           // seconds; immutable because there is no admin
+  epoch_end: timestamp,
+  pot: tez,                 // current epoch coins + carried division dust
+  tosser_count: nat,
+  memberships: big_map<[nat, address], bool>, // false=open, true=claimed
+  settlements: big_map<nat, settlement>,
+  claim_reserve: tez,       // sum of all finalized, unclaimed shares
+  coins: nat,               // lifetime one-tez tosses
+  finalized_epochs: nat,
+  paying_epochs: nat,       // finalized epochs that had at least one member
+  claims: nat,
+  volume: tez,              // lifetime tez tossed
+  paid: tez,                // lifetime tez claimed
+  metadata: big_map<string, bytes>,
+};
+
+type ret = [list<operation>, storage];
+
+const coin: tez = 1tez;
+const max_wish_bytes: nat = 320n;
+
+const subtract_tez = (whole: tez, part: tez): tez =>
+  match(whole - part) {
+    when (Some(rest)): rest;
+    when (None()): failwith("ACCOUNTING_ERROR")
+  };
+
+const payable = (recipient: address): contract<unit> =>
+  match(Tezos.get_contract_opt(recipient)) {
+    when (Some(c)): c;
+    when (None()): failwith("RECIPIENT_NOT_PAYABLE")
+  };
+
+// Freeze the current epoch and open a full-length fresh one. This touches
+// only constant-size storage: no participant loop and no payout operations.
+const finalize_storage = (s: storage): storage => {
+  if (s.epoch_len == 0n) failwith("BAD_EPOCH_LEN");
+  const share = s.tosser_count == 0n ? 0mutez : s.pot / s.tosser_count;
+  const committed = share * s.tosser_count;
+  const dust = subtract_tez(s.pot, committed);
+  const closed: settlement = {
+    total: s.pot,
+    share,
+    dust,
+    member_count: s.tosser_count,
+    unclaimed: s.tosser_count,
+    finalized_at: Tezos.get_now(),
+  };
+  return {
+    ...s,
+    epoch: s.epoch + 1n,
+    epoch_end: Tezos.get_now() + int(s.epoch_len),
+    pot: dust,
+    tosser_count: 0n,
+    settlements: Big_map.add(s.epoch, closed, s.settlements),
+    claim_reserve: s.claim_reserve + committed,
+    finalized_epochs: s.finalized_epochs + 1n,
+    paying_epochs:
+      s.tosser_count > 0n ? s.paying_epochs + 1n : s.paying_epochs,
+  };
+};
+
+// ---------- toss: one coin, one public wish ----------
+// A late toss atomically finalizes the expired epoch first, then becomes the
+// first toss of a new full-length epoch. The front door never gets stuck
+// waiting for a separate keeper transaction.
+@entry
+const toss = (_wish: bytes, s: storage): ret => {
+  if (Tezos.get_amount() != coin) failwith("ONE_TEZ_COINS_ONLY");
+  if (s.epoch_len == 0n) failwith("BAD_EPOCH_LEN");
+  if (Bytes.length(_wish) > max_wish_bytes) failwith("WISH_TOO_LONG");
+  const open = !s.started
+    ? { ...s, started: true, epoch_end: Tezos.get_now() + int(s.epoch_len) }
+    : Tezos.get_now() >= s.epoch_end ? finalize_storage(s) : s;
+  const who = Tezos.get_sender();
+  const membership = [open.epoch, who];
+  const first = !Big_map.mem(membership, open.memberships);
+  return [
+    list([]),
+    {
+      ...open,
+      pot: open.pot + coin,
+      tosser_count: first ? open.tosser_count + 1n : open.tosser_count,
+      memberships: first
+        ? Big_map.add(membership, false, open.memberships)
+        : open.memberships,
+      coins: open.coins + 1n,
+      volume: open.volume + coin,
+    },
+  ];
+};
+
+// ---------- finalize: freeze shares, pay nobody yet ----------
+// Permissionless after the deadline. A late toss performs the same action
+// automatically, so this entrypoint is helpful but never required for liveness.
+@entry
+const finalize = (_u: unit, s: storage): ret => {
+  if (Tezos.get_amount() != 0mutez) failwith("SEND_NO_TEZ");
+  if (s.epoch_len == 0n) failwith("BAD_EPOCH_LEN");
+  if (!s.started) failwith("FOUNTAIN_NOT_STARTED");
+  if (Tezos.get_now() < s.epoch_end) failwith("NOT_BRIMMING_YET");
+  return [list([]), finalize_storage(s)];
+};
+
+// ---------- claim: one member, one independent payout ----------
+// The member may route their share to any address with a unit entrypoint.
+// This lets a contract wallet choose a plain tz recipient. A bad recipient
+// reverts only this claim; every other member remains independently live.
+@entry
+const claim = (
+  p: { epoch: nat, recipient: address },
+  s: storage
+): ret => {
+  if (Tezos.get_amount() != 0mutez) failwith("SEND_NO_TEZ");
+  const closed = match(Big_map.find_opt(p.epoch, s.settlements)) {
+    when (Some(value)): value;
+    when (None()): failwith("EPOCH_NOT_FINALIZED")
+  };
+  const membership = [p.epoch, Tezos.get_sender()];
+  const already_claimed = match(Big_map.find_opt(membership, s.memberships)) {
+    when (Some(value)): value;
+    when (None()): failwith("NOT_A_TOSSER")
+  };
+  if (already_claimed) failwith("ALREADY_CLAIMED");
+  if (closed.unclaimed == 0n) failwith("ACCOUNTING_ERROR");
+  const recipient = payable(p.recipient);
+  const unclaimed = abs(int(closed.unclaimed) - 1);
+  const updated = { ...closed, unclaimed };
+  const payout = Tezos.transaction(unit, closed.share, recipient);
+  return [
+    list([payout]),
+    {
+      ...s,
+      memberships: Big_map.add(membership, true, s.memberships),
+      settlements: Big_map.add(p.epoch, updated, s.settlements),
+      claim_reserve: subtract_tez(s.claim_reserve, closed.share),
+      claims: s.claims + 1n,
+      paid: s.paid + closed.share,
+    },
+  ];
+};
+
+// ---------- views ----------
+
+type fountain_stats = {
+  started: bool,
+  epoch: nat,
+  epoch_len: nat,
+  epoch_end: timestamp,
+  pot: tez,
+  tosser_count: nat,
+  claim_reserve: tez,
+  coins: nat,
+  finalized_epochs: nat,
+  paying_epochs: nat,
+  claims: nat,
+  volume: tez,
+  paid: tez,
+};
+
+@view
+const fountain = (_u: unit, s: storage): fountain_stats => ({
+  started: s.started,
+  epoch: s.epoch,
+  epoch_len: s.epoch_len,
+  epoch_end: s.epoch_end,
+  pot: s.pot,
+  tosser_count: s.tosser_count,
+  claim_reserve: s.claim_reserve,
+  coins: s.coins,
+  finalized_epochs: s.finalized_epochs,
+  paying_epochs: s.paying_epochs,
+  claims: s.claims,
+  volume: s.volume,
+  paid: s.paid,
+});
+
+@view
+const read_settlement = (epoch: nat, s: storage): option<settlement> =>
+  Big_map.find_opt(epoch, s.settlements);
+
+@view
+const can_claim = (p: [nat, address], s: storage): bool =>
+  match(Big_map.find_opt(p, s.memberships)) {
+    when (Some(claimed)): !claimed && Big_map.mem(p[0], s.settlements);
+    when (None()): false
+  };

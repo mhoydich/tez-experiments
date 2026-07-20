@@ -7,6 +7,7 @@
   "pages_build_output_dir": "public",
   "vars": {
     "INDEXER": "https://api.tzkt.io",
-    "HOUSE": "KT19HJaK1hNmc337yv6DM4ZfYyPPQnzj277G"
+    "HOUSE": "KT19HJaK1hNmc337yv6DM4ZfYyPPQnzj277G",
+    "FOUNTAIN": "KT1UTu9vS3aJH3ktyVCF9DimjLKpqXGQkeGW"
   }
 }

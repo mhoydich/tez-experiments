@@ -12,6 +12,10 @@
     "smoke:stamps": "node scripts/smoke-stamps.js",
     "deploy:fountain": "node scripts/deploy-fountain.js",
     "smoke:fountain": "node scripts/smoke-fountain.js",
+    "deploy:fountain:v2:testnet": "node scripts/deploy-fountain-v2.js",
+    "smoke:fountain:v2": "node scripts/smoke-fountain-v2.js",
+    "estimate:fountain:v2:mainnet": "node scripts/estimate-fountain-v2-mainnet.js",
+    "deploy:fountain:v2:mainnet": "node scripts/deploy-fountain-v2-mainnet.js",
     "export:code": "node scripts/export-code.js",
     "smoke:print": "node scripts/smoke-print.js"
   },
