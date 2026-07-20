@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>the town map — tez-susu</title>
+<meta name="description" content="Every byte-identical susu house and fountain, found by codeHash with no registry." />
+<style>
+  :root{--paper:#f2efe9;--ink:#241f1c;--stamp:#b3402a;--tezos-blue:#0f61ff;--line:#d8d2c6;--dim:#6b6259;--go:#2e6b3a}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100dvh;display:grid;justify-items:center;align-content:start;padding:32px 12px 48px;background:var(--paper);color:var(--ink);font-family:Georgia,"Times New Roman",serif;background-image:radial-gradient(var(--line) 1px,transparent 1px);background-size:28px 28px}
+  .office{width:min(720px,94vw);background:#fff;border:1.5px solid var(--ink);padding:2.2rem 2rem 1.6rem;box-shadow:8px 8px 0 var(--stamp)}
+  .eyebrow{display:flex;justify-content:space-between;gap:1rem;margin:0 0 .5rem;color:var(--stamp);font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase}
+  .eyebrow a{color:var(--stamp);text-decoration:none}
+  h1{margin:0 0 .5rem;font-size:clamp(2.2rem,9vw,3rem);line-height:1;font-weight:500}
+  h1 em{color:var(--stamp);font-style:italic}
+  .lede{margin:0 0 1.4rem;color:#3a332e;font-size:.95rem;line-height:1.55}
+  .lede a{color:var(--tezos-blue)}
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin:1rem 0 1.5rem}
+  .tile{border:1.5px solid var(--ink);padding:.6rem .7rem;background:var(--paper);box-shadow:3px 3px 0 var(--line)}
+  .tile b{display:block;color:var(--stamp);font-family:ui-monospace,Menlo,monospace;font-size:1.35rem}
+  .tile span{color:var(--dim);font-family:ui-monospace,Menlo,monospace;font-size:.56rem;letter-spacing:.14em;text-transform:uppercase}
+  h2{display:flex;align-items:baseline;justify-content:space-between;margin:1.7rem 0 .8rem;border-bottom:1px solid var(--line);padding-bottom:.4rem;color:var(--dim);font-family:ui-monospace,Menlo,monospace;font-size:.72rem;font-weight:400;letter-spacing:.2em;text-transform:uppercase}
+  h2 b{color:var(--stamp);font-size:.65rem;font-weight:400}
+  .place{display:grid;grid-template-columns:52px 1fr;gap:.9rem;margin-bottom:.9rem;border:1.5px solid var(--ink);padding:.85rem;background:#fff;box-shadow:4px 4px 0 var(--line)}
+  .mark{display:grid;place-items:center;width:52px;height:52px;border:1.5px solid var(--ink);border-radius:50%;background:var(--paper);color:var(--stamp);font-family:ui-monospace,Menlo,monospace;font-size:.55rem;letter-spacing:.08em;text-align:center;text-transform:uppercase}
+  .place.fountain .mark{border-color:var(--tezos-blue);color:var(--tezos-blue)}
+  .place h3{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;margin:0 0 .2rem;font-size:1.08rem;font-weight:500;overflow-wrap:anywhere}
+  .place h3 a{color:var(--ink);text-decoration:none}.place h3 a:hover{text-decoration:underline}
+  .chip{display:inline-block;border:1px solid currentColor;padding:.12rem .35rem;color:var(--stamp);font-family:ui-monospace,Menlo,monospace;font-size:.52rem;font-weight:400;letter-spacing:.1em;text-transform:uppercase}
+  .address{margin:0 0 .55rem;font-family:ui-monospace,Menlo,monospace;font-size:.61rem;letter-spacing:.04em;overflow-wrap:anywhere}
+  .address a{color:var(--dim)}
+  .stats{display:flex;gap:.45rem;flex-wrap:wrap}
+  .stat{border-left:2px solid var(--line);padding-left:.45rem;font-family:ui-monospace,Menlo,monospace}
+  .stat b{display:block;color:var(--stamp);font-size:.78rem}.place.fountain .stat b{color:var(--tezos-blue)}
+  .stat span{display:block;color:var(--dim);font-size:.49rem;letter-spacing:.09em;text-transform:uppercase}
+  .ledger{margin:.6rem 0 0;border-top:1px dashed var(--line);padding-top:.45rem;color:var(--dim);font-family:ui-monospace,Menlo,monospace;font-size:.57rem;line-height:1.6}
+  .ledger a{color:var(--dim)}
+  .empty,.status{color:var(--dim);font-size:.85rem;font-style:italic}
+  .status{min-height:1.3em;margin:.8rem 0;text-align:center}
+  .ghost{border:1.5px solid var(--ink);padding:.4rem .7rem;background:none;font:inherit;font-size:.74rem;cursor:pointer}
+  .ghost:hover{background:var(--paper);box-shadow:2px 2px 0 var(--ink)}
+  footer{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:1.6rem;border-top:1px solid var(--line);padding-top:.9rem;color:var(--dim);font-family:ui-monospace,Menlo,monospace;font-size:.64rem;letter-spacing:.08em}
+  footer a{color:var(--dim)}
+  @media(max-width:560px){.tiles{grid-template-columns:1fr}.place{grid-template-columns:1fr}.mark{width:44px;height:44px}}
+</style>
+</head>
+<body>
+  <main class="office">
+    <p class="eyebrow"><span>tezos · el segundo</span><span><a href="/">the town square</a> · <a href="/print">the print shop</a></span></p>
+    <h1><em>the town map</em></h1>
+    <p class="lede">Every house here runs the same law; nobody can change it, including us. <a href="/print">Print yours at the shop.</a> There is no registry — the map finds byte-identical contracts by their on-chain codeHash.</p>
+
+    <div class="tiles">
+      <div class="tile"><b id="houseTotal">—</b><span>susu houses</span></div>
+      <div class="tile"><b id="fountainTotal">—</b><span>fountains</span></div>
+      <div class="tile"><b id="stampTotal">—</b><span>made-whole stamps</span></div>
+    </div>
+
+    <h2><span>susu houses</span><button class="ghost" id="refresh">refresh</button></h2>
+    <div id="houses"><p class="empty">walking the streets…</p></div>
+
+    <h2><span>fountains</span><b id="networkLabel">mainnet</b></h2>
+    <div id="fountains"><p class="empty">listening for water…</p></div>
+
+    <p class="status" id="status"></p>
+    <footer><span>same law · many front doors · CC0</span><span><a href="/">susu</a> · <a href="/fountain">the fountain</a> · <a href="/print">print</a></span></footer>
+  </main>
+
+<script>
+const NETWORKS = {
+  shadownet:{label:'Shadownet',indexer:'https://api.shadownet.tzkt.io',explorer:'https://shadownet.tzkt.io',flagships:{susu:'KT1QkXi31V5Fv91y7EEu68iNXuY1dRGp5VgM',fountain:'KT1X4uVpAndFZ3hU75SubFMHvvZaxjfDU34G',made_whole:'KT1SiQbgGfLiXLfs4ZTa9RvPG6JRVdJSLF2F'}},
+  mainnet:{label:'Mainnet',indexer:'https://api.tzkt.io',explorer:'https://tzkt.io',flagships:{susu:'KT19HJaK1hNmc337yv6DM4ZfYyPPQnzj277G',fountain:'KT1UTu9vS3aJH3ktyVCF9DimjLKpqXGQkeGW',made_whole:'KT1A8Jq9d9aRo2Je9TtQRYUGRsKC8BdhWCWa'}},
+};
+const ACTIVE = 'mainnet';
+const NET = NETWORKS[ACTIVE];
+const $ = id=>document.getElementById(id);
+const escapeHtml = value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+const shorten = value=>value ? value.slice(0,5)+'…'+value.slice(-4) : '';
+const count = value=>Number.isFinite(Number(value)) ? Number(value).toLocaleString() : '0';
+const tez = value=>{
+  const amount=Number(value)/1e6;
+  return Number.isFinite(amount) ? amount.toLocaleString('en-US',{maximumFractionDigits:6}) : '0';
+};
+const date = value=>{
+  const parsed=new Date(value);
+  return Number.isNaN(parsed.valueOf()) ? 'date unknown' : parsed.toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric',timeZone:'UTC'});
+};
+const fromHex = hex=>{
+  if(typeof hex!=='string'||hex.length%2||!/^[0-9a-f]*$/i.test(hex)) throw new Error('invalid metadata bytes');
+  const bytes=new Uint8Array(hex.length/2);
+  for(let i=0;i<bytes.length;i++) bytes[i]=Number.parseInt(hex.slice(i*2,i*2+2),16);
+  return new TextDecoder('utf-8',{fatal:true}).decode(bytes);
+};
+
+async function json(url){
+  const response=await fetch(url,{headers:{Accept:'application/json'}});
+  if(!response.ok) throw new Error(`TzKT returned ${response.status}`);
+  return response.json();
+}
+async function storedName(address){
+  try{
+    const row=await json(`${NET.indexer}/v1/contracts/${address}/bigmaps/metadata/keys/content`);
+    const content=JSON.parse(fromHex(row.value));
+    return typeof content.name==='string' ? content.name.trim() : '';
+  }catch{return '';}
+}
+async function hydrate(kind,row){
+  const [detail,storage]=await Promise.all([
+    json(`${NET.indexer}/v1/contracts/${row.address}`),
+    json(`${NET.indexer}/v1/contracts/${row.address}/storage`),
+  ]);
+  const indexedName=typeof detail.metadata?.name==='string' ? detail.metadata.name.trim() : '';
+  const name=indexedName||await storedName(row.address)||shorten(row.address);
+  return {kind,address:row.address,name,firstActivityTime:detail.firstActivityTime||row.firstActivityTime,storage};
+}
+async function familyMembers(kind,identity){
+  // Verified on Shadownet 2026-07-20:
+  // https://api.shadownet.tzkt.io/v1/contracts?codeHash=270878129&limit=200&sort.desc=firstActivity
+  const url=`${NET.indexer}/v1/contracts?codeHash=${identity.codeHash}&limit=200&sort.desc=firstActivity`;
+  const rows=await json(url);
+  return Promise.all(rows.filter(row=>row.codeHash===identity.codeHash).map(row=>hydrate(kind,row)));
+}
+const stat=(value,label)=>`<span class="stat"><b>${escapeHtml(value)}</b><span>${escapeHtml(label)}</span></span>`;
+function houseHtml(house){
+  const first=house.address===NET.flagships.susu;
+  const name=house.name.replace(/ — a susu house$/,'');
+  const ledgers=house.ledgers||[];
+  const stamps=ledgers.reduce((sum,ledger)=>sum+(Number(ledger.storage.stamps)||0),0);
+  const href=first ? '/' : `/?house=${encodeURIComponent(house.address)}`;
+  const ledgerHtml=ledgers.map(ledger=>`<p class="ledger">stamp ledger · <a href="${NET.explorer}/${ledger.address}" target="_blank" rel="noopener">${escapeHtml(shorten(ledger.address))} ↗</a>${ledger.address===NET.flagships.made_whole?' · <span class="chip">the first print</span>':''}</p>`).join('');
+  return `<article class="place house">
+    <div class="mark">susu<br>house</div>
+    <div><h3><a href="${href}">${escapeHtml(name)}</a>${first?' <span class="chip">the first print</span>':''}</h3>
+    <p class="address"><a href="${NET.explorer}/${house.address}" target="_blank" rel="noopener">${escapeHtml(house.address)} ↗</a> · ${escapeHtml(date(house.firstActivityTime))}</p>
+    <div class="stats">${stat(count(house.storage.circles_opened),'circles')}${stat(count(house.storage.rounds_settled),'rounds')}${stat(tez(house.storage.volume)+'ꜩ','volume')}${ledgers.length?stat(count(stamps),'stamps'):''}</div>${ledgerHtml}</div>
+  </article>`;
+}
+function fountainHtml(fountain){
+  const first=fountain.address===NET.flagships.fountain;
+  const href=first ? '/fountain' : `/fountain?fountain=${encodeURIComponent(fountain.address)}`;
+  return `<article class="place fountain">
+    <div class="mark">foun<br>tain</div>
+    <div><h3><a href="${href}">${escapeHtml(fountain.name)}</a>${first?' <span class="chip">the first print</span>':''}</h3>
+    <p class="address"><a href="${NET.explorer}/${fountain.address}" target="_blank" rel="noopener">${escapeHtml(fountain.address)} ↗</a> · ${escapeHtml(date(fountain.firstActivityTime))}</p>
+    <div class="stats">${stat(count(fountain.storage.coins),'coins')}${stat(count(fountain.storage.overflows),'overflows')}${stat(tez(fountain.storage.volume)+'ꜩ','volume')}</div></div>
+  </article>`;
+}
+async function loadTown(){
+  $('refresh').disabled=true;
+  $('status').textContent=`reading the ${NET.label.toLowerCase()} family…`;
+  try{
+    const family=await json('/contracts/family.json');
+    const [houses,fountains,ledgers]=await Promise.all([
+      familyMembers('susu',family.susu),
+      familyMembers('fountain',family.fountain),
+      familyMembers('made_whole',family.made_whole),
+    ]);
+    const byHouse=new Map(houses.map(house=>[house.address,house]));
+    for(const ledger of ledgers){
+      const house=byHouse.get(ledger.storage.house);
+      if(house) (house.ledgers||(house.ledgers=[])).push(ledger);
+    }
+    $('houses').innerHTML=houses.map(houseHtml).join('')||'<p class="empty">no houses found.</p>';
+    $('fountains').innerHTML=fountains.map(fountainHtml).join('')||'<p class="empty">no fountains found.</p>';
+    $('houseTotal').textContent=count(houses.length);
+    $('fountainTotal').textContent=count(fountains.length);
+    $('stampTotal').textContent=count(ledgers.reduce((sum,ledger)=>sum+(Number(ledger.storage.stamps)||0),0));
+    $('status').textContent=`${houses.length} houses · ${fountains.length} fountains · found by codeHash on ${NET.label}`;
+  }catch(error){
+    $('status').textContent=error instanceof Error ? `the map could not be read — ${error.message}` : 'the map could not be read';
+  }finally{$('refresh').disabled=false;}
+}
+$('networkLabel').textContent=NET.label.toLowerCase();
+$('refresh').onclick=loadTown;
+loadTown();
+</script>
+</body>
+</html>
