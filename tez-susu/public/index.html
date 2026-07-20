@@ -140,6 +140,9 @@
   .bar .who{font-family:ui-monospace,Menlo,monospace; font-size:.74rem; overflow:hidden}
   .bar .who b{display:block; color:var(--dim); font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; font-weight:400}
   .bar .who span{overflow-wrap:anywhere}
+  .bar .whole{display:block; color:var(--dim); font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; margin-top:.18rem}
+  .bar .whole[hidden]{display:none}
+  .bar .whole strong{color:var(--stamp)}
   .ghost{
     font:inherit; font-size:.82rem; background:none; padding:.45rem .8rem;
     border:1.5px solid var(--ink); cursor:pointer; white-space:nowrap;
@@ -275,6 +278,7 @@
       <div class="who">
         <b id="whoLabel">not connected</b>
         <span id="who">connect a wallet to open or join a real circle</span>
+        <span class="whole" id="madeWhole" hidden>made whole <strong id="madeWholeCount">×0</strong></span>
       </div>
       <button class="ghost" id="connect">connect</button>
     </div>
@@ -320,6 +324,7 @@ const NETWORKS = {
     indexer:'https://api.shadownet.tzkt.io',
     explorer:'https://shadownet.tzkt.io',
     kt1:'KT1QkXi31V5Fv91y7EEu68iNXuY1dRGp5VgM',
+    stamps:'KT1SiQbgGfLiXLfs4ZTa9RvPG6JRVdJSLF2F',
   },
   mainnet: {
     kind:'mainnet', label:'Mainnet',
@@ -327,6 +332,7 @@ const NETWORKS = {
     indexer:'https://api.tzkt.io',
     explorer:'https://tzkt.io',
     kt1:'KT19HJaK1hNmc337yv6DM4ZfYyPPQnzj277G',
+    stamps:'',
   },
 };
 const ACTIVE = 'mainnet';
@@ -464,6 +470,9 @@ buildDemo();
 /* ================= live reads (TzKT) ================= */
 let address = null;
 let circles = [];
+let madeWholeCount = 0;
+let claimedCircles = new Set();
+let stampsReady = false;
 
 async function readCircles(){
   try{
@@ -474,7 +483,41 @@ async function readCircles(){
                   .sort((a,b)=>b.id-a.id);
     $('tLive').textContent = circles.filter(c=>['recruiting','active'].includes(statusOf(c.v))).length;
     renderList();
+    if(address && NET.stamps) await readStamps();
   }catch{}
+}
+async function readStamps(){
+  const who = address;
+  if(!who || !NET.stamps){
+    stampsReady=false; madeWholeCount=0; claimedCircles=new Set();
+    updateStampBar(); return;
+  }
+  const done = circles.filter(c=>statusOf(c.v)==='done' && (c.v.seat_of||{})[who]!==undefined);
+  try{
+    const countUrl = `${NET.indexer}/v1/contracts/${NET.stamps}/bigmaps/counts/keys/${encodeURIComponent(who)}`;
+    // Verified against Shadownet: the pair key is {nat:"2",address:"tz1…"}.
+    // URL shape: /v1/contracts/{stamps}/bigmaps/claimed/keys/{encodeURIComponent(JSON.stringify({nat:String(circleId),address}))}
+    const claimUrls = done.map(c => {
+      const key = encodeURIComponent(JSON.stringify({nat:String(c.id), address:who}));
+      return `${NET.indexer}/v1/contracts/${NET.stamps}/bigmaps/claimed/keys/${key}`;
+    });
+    const [countRes, ...claimRes] = await Promise.all([fetch(countUrl), ...claimUrls.map(url=>fetch(url))]);
+    let count = 0;
+    if(countRes.ok && countRes.status!==204) count = Number((await countRes.json()).value)||0;
+    else if(countRes.status!==204 && countRes.status!==404) throw new Error('count read failed');
+    const claimed = new Set();
+    for(let i=0;i<claimRes.length;i++){
+      if(claimRes[i].ok && claimRes[i].status!==204) claimed.add(done[i].id);
+      else if(claimRes[i].status!==204 && claimRes[i].status!==404) throw new Error('claim read failed');
+    }
+    if(address!==who) return;
+    madeWholeCount=count; claimedCircles=claimed; stampsReady=true;
+    updateStampBar(); renderList();
+  }catch{
+    if(address!==who) return;
+    stampsReady=false; madeWholeCount=0; claimedCircles=new Set();
+    updateStampBar(); renderList();
+  }
 }
 async function readTown(){
   try{
@@ -542,6 +585,10 @@ function cardHTML(c){
       acts.push(`<span class="note">paid this round ✓</span>`);
     if((st==='recruiting'||st==='active') && (isOrg || (mySeat!==null && graceOver)))
       acts.push(`<button class="ghost" onclick="disband(${c.id})">disband</button>`);
+    if(NET.stamps && stampsReady && st==='done' && mySeat!==null){
+      if(claimedCircles.has(c.id)) acts.push(`<span class="note">made whole ✓</span>`);
+      else acts.push(`<button class="ghost" onclick="claimStamp(${c.id})">claim your made-whole stamp</button>`);
+    }
   }
   acts.push(`<button class="ghost" onclick="shareCircle(${c.id})">share</button>`);
   return `<div class="circle" data-circle-id="${c.id}">
@@ -612,24 +659,32 @@ async function disconnect(){
   $('whoLabel').textContent='not connected';
   $('who').textContent='connect a wallet to open or join a real circle';
   $('connect').textContent='connect'; $('connect').onclick=connect;
+  stampsReady=false; madeWholeCount=0; claimedCircles=new Set(); updateStampBar();
   renderList();
 }
 function onConnected(){
   $('whoLabel').textContent='connected';
   $('who').textContent=shorten(address);
   $('connect').textContent='disconnect'; $('connect').onclick=disconnect;
+  stampsReady=false; updateStampBar();
   renderList();
+  if(NET.stamps) readStamps();
+}
+function updateStampBar(){
+  const show = Boolean(address && NET.stamps && stampsReady);
+  $('madeWhole').hidden = !show;
+  if(show) $('madeWholeCount').textContent = `×${madeWholeCount}`;
 }
 
 /* ================= ops ================= */
-async function sendOp(entrypoint, value, amountMutez='0', doing='sending…'){
+async function sendOp(entrypoint, value, amountMutez='0', doing='sending…', destination=NET.kt1){
   setStatus(doing);
   try{
     const r = await getClient().requestOperation({
       operationDetails: [{
         kind: beacon.TezosOperationType.TRANSACTION,
         amount: String(amountMutez),
-        destination: NET.kt1,
+        destination,
         parameters: { entrypoint, value },
       }],
     });
@@ -644,6 +699,15 @@ window.payIn = (id, mutez) => sendOp('contribute', {int:String(id)}, mutez, 'pay
 window.disband = (id) => {
   if(!confirm('Disband this circle? Current-round payments are refunded; past pots stay where they went.')) return;
   return sendOp('disband', {int:String(id)}, '0', 'disbanding…');
+};
+window.claimStamp = async (id) => {
+  if(!NET.stamps || !address) return false;
+  const ok = await sendOp('default', {int:String(id)}, '0', 'claiming your made-whole stamp…', NET.stamps);
+  if(ok){
+    claimedCircles.add(Number(id)); madeWholeCount++; stampsReady=true;
+    updateStampBar(); renderList();
+  }
+  return ok;
 };
 window.shareCircle = async (id) => {
   const url = `https://tez-susu.pages.dev/c/${id}`;
