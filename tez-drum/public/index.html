@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>drum — the token you earn by drumming</title>
+<meta name="description" content="Hit the drum. Every hit is a DRUM token on Tezos. Batch your beat, mint it in one tap." />
+<!-- Beacon (Kukai / Temple / etc.) — CDN global `beacon`, no build step -->
+<script src="https://cdn.jsdelivr.net/npm/@airgap/beacon-sdk@4.5.1/dist/walletbeacon.min.js"></script>
+<style>
+  :root{
+    --paper:#f2efe9; --ink:#241f1c; --stamp:#b3402a; --tezos-blue:#0f61ff;
+    --line:#d8d2c6; --dim:#6b6259;
+  }
+  @media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important} }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; min-height:100dvh; display:grid; place-items:center;
+    background:var(--paper); color:var(--ink);
+    font-family:Georgia,"Times New Roman",serif;
+    background-image:radial-gradient(var(--line) 1px, transparent 1px);
+    background-size:28px 28px;
+    -webkit-tap-highlight-color:transparent;
+    padding:24px 0;
+  }
+  .office{
+    width:min(460px,92vw); background:#fff; border:1.5px solid var(--ink);
+    padding:2.2rem 2rem 1.6rem; box-shadow:8px 8px 0 var(--stamp);
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:.68rem;
+    letter-spacing:.2em; text-transform:uppercase; color:var(--stamp); margin:0 0 .5rem;
+    display:flex; justify-content:space-between; gap:1rem;
+  }
+  h1{font-size:clamp(2.2rem,9vw,3rem); line-height:1; margin:0 0 .4rem; font-weight:500; letter-spacing:-.01em}
+  h1 em{font-style:italic; color:var(--stamp)}
+  .lede{font-size:.98rem; line-height:1.5; margin:0 0 1.4rem; color:#3a332e}
+
+  /* wallet bar */
+  .bar{
+    display:flex; align-items:center; justify-content:space-between; gap:.75rem;
+    border:1.5px solid var(--ink); padding:.55rem .75rem; margin-bottom:1.4rem;
+    background:var(--paper); box-shadow:4px 4px 0 var(--line);
+  }
+  .bar .who{font-family:ui-monospace,Menlo,monospace; font-size:.74rem; overflow:hidden}
+  .bar .who b{display:block; color:var(--dim); font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; font-weight:400}
+  .bar .who span{word-break:normal; overflow-wrap:anywhere}
+  .bal{font-family:ui-monospace,Menlo,monospace; font-size:.9rem; white-space:nowrap; text-align:right}
+  .bal b{display:block; color:var(--dim); font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; font-weight:400}
+  .bal em{font-style:normal; color:var(--stamp); font-size:1.1rem}
+  .ghost{
+    font:inherit; font-size:.82rem; background:none; padding:.45rem .8rem;
+    border:1.5px solid var(--ink); cursor:pointer; white-space:nowrap;
+  }
+  .ghost:hover{background:#fff; box-shadow:2px 2px 0 var(--ink)}
+  .ghost:active{transform:translate(2px,2px); box-shadow:none}
+
+  /* the drum */
+  .stage{position:relative; display:grid; place-items:center; margin:.4rem 0 1.2rem; height:280px; user-select:none}
+  .pending{
+    position:absolute; top:-2px; left:0; right:0; text-align:center; pointer-events:none;
+    font-family:ui-monospace,Menlo,monospace; letter-spacing:.14em; font-size:.66rem;
+    color:var(--dim); text-transform:uppercase;
+  }
+  .drum{
+    -webkit-appearance:none; appearance:none; border:none; padding:0; cursor:pointer;
+    width:220px; height:220px; border-radius:50%; position:relative; touch-action:manipulation;
+    background:radial-gradient(circle at 50% 38%, #e6684f 0%, var(--stamp) 48%, #7f2b1b 100%);
+    border:2px solid var(--ink);
+    box-shadow:0 10px 0 #5a1f13, 6px 6px 0 var(--ink);
+    transition:transform .05s ease, box-shadow .05s ease;
+    display:grid; place-items:center;
+  }
+  .drum::before{ /* rim ring */
+    content:""; position:absolute; inset:14px; border-radius:50%;
+    border:2px dashed rgba(255,255,255,.35);
+  }
+  .drum::after{ /* center dot */
+    content:""; position:absolute; width:16px; height:16px; border-radius:50%;
+    background:rgba(0,0,0,.28); top:calc(50% - 8px); left:calc(50% - 8px);
+  }
+  .drum .count{
+    position:relative; z-index:2; color:#fff; font-family:ui-monospace,Menlo,monospace;
+    font-size:2.6rem; font-weight:600; text-shadow:0 2px 0 rgba(0,0,0,.35);
+    line-height:1;
+  }
+  .drum:active,.drum.hit{ transform:translateY(6px); box-shadow:0 4px 0 #5a1f13, 6px 6px 0 var(--ink) }
+  .drum:focus-visible{outline:3px solid var(--tezos-blue); outline-offset:6px}
+
+  .ripple{
+    position:absolute; border:2px solid var(--stamp); border-radius:50%;
+    width:220px; height:220px; pointer-events:none; opacity:.6;
+    animation:ring .5s ease-out forwards;
+  }
+  @keyframes ring{ to{ transform:scale(1.7); opacity:0 } }
+  .coin{
+    position:absolute; pointer-events:none; font-family:ui-monospace,Menlo,monospace;
+    font-size:.82rem; font-weight:700; color:var(--stamp); animation:rise .7s ease-out forwards;
+  }
+  @keyframes rise{ from{transform:translateY(0);opacity:1} to{transform:translateY(-60px);opacity:0} }
+
+  .hint{text-align:center; font-family:ui-monospace,Menlo,monospace; font-size:.66rem; letter-spacing:.1em; color:var(--dim); margin:-.4rem 0 1.2rem}
+  kbd{border:1px solid var(--line); border-bottom-width:2px; border-radius:3px; padding:0 .3rem; font-family:inherit; font-size:.62rem; background:var(--paper)}
+
+  .claim{
+    font:inherit; font-size:1.05rem; width:100%; padding:.85rem 1rem;
+    background:var(--stamp); color:#fff; border:1.5px solid var(--ink); cursor:pointer;
+    box-shadow:4px 4px 0 var(--ink); transition:transform .08s ease, box-shadow .08s ease;
+  }
+  .claim:hover:not(:disabled){transform:translate(-1px,-1px); box-shadow:5px 5px 0 var(--ink)}
+  .claim:active:not(:disabled){transform:translate(3px,3px); box-shadow:1px 1px 0 var(--ink)}
+  .claim:disabled{background:var(--line); color:var(--dim); cursor:not-allowed; box-shadow:4px 4px 0 var(--line); border-color:var(--dim)}
+  .claim:focus-visible{outline:3px solid var(--tezos-blue); outline-offset:2px}
+
+  .status{min-height:1.4em; font-size:.85rem; color:var(--stamp); text-align:center; margin:.7rem 0 0}
+  .status a{color:var(--tezos-blue)}
+  footer{
+    font-family:ui-monospace,Menlo,monospace; font-size:.64rem; letter-spacing:.08em; color:var(--dim);
+    border-top:1px solid var(--line); padding-top:.9rem; margin-top:1.4rem;
+    display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap;
+  }
+  footer a{color:var(--dim)}
+  .town b{color:var(--stamp)}
+</style>
+</head>
+<body>
+  <main class="office">
+    <p class="eyebrow"><span>tezos · el segundo</span><span>rung 07</span></p>
+    <h1><em>drum</em></h1>
+    <p class="lede">Hit the drum. Keep the beat. Every hit is a token — batch your beat, then mint the whole run in a single tap.</p>
+
+    <div class="bar">
+      <div class="who">
+        <b id="whoLabel">not connected</b>
+        <span id="who">taps save locally — connect to mint them</span>
+      </div>
+      <div class="bal" id="balBox" hidden>
+        <b>balance</b><em id="bal">0</em>
+      </div>
+      <button class="ghost" id="connect">connect</button>
+    </div>
+
+    <div class="stage">
+      <div class="pending" id="pendingLabel">unclaimed</div>
+      <button class="drum" id="drum" aria-label="Hit the drum">
+        <span class="count" id="pending">0</span>
+      </button>
+    </div>
+    <p class="hint">click the drum · or press <kbd>space</kbd></p>
+
+    <button class="claim" id="claim" disabled>connect to claim</button>
+    <p class="status" id="status"></p>
+
+    <footer>
+      <span class="town" id="town">the town has drummed <b>—</b></span>
+      <span><a id="explorer" href="#" target="_blank" rel="noopener">contract ↗</a> · CC0</span>
+    </footer>
+  </main>
+
+<script>
+/* ---- config: flip ACTIVE to 'mainnet' after mainnet origination ---- */
+const NETWORKS = {
+  shadownet: {
+    kind:'custom', label:'Shadownet',
+    rpc:'https://rpc.shadownet.teztnets.com',
+    indexer:'https://api.shadownet.tzkt.io',
+    explorer:'https://shadownet.tzkt.io',
+    kt1:'KT1DrTZ69a7T81fZpFeKpsCMLb2AhEYdAAEs',
+  },
+  mainnet: {
+    kind:'mainnet', label:'Mainnet',
+    rpc:'https://mainnet.smartpy.io',
+    indexer:'https://api.tzkt.io',
+    explorer:'https://tzkt.io',
+    kt1:'KT1P2F1MoWPLZBSgTG6bVtQgLaHu1vDShhME',
+  },
+};
+const ACTIVE = 'mainnet';
+const NET = NETWORKS[ACTIVE];
+
+const $ = (id) => document.getElementById(id);
+const shorten = (a) => a ? a.slice(0,6)+'…'+a.slice(-4) : '';
+
+/* ---------------- audio: a synthesized hand-drum ---------------- */
+let actx;
+function boot(){ if(!actx) actx = new (window.AudioContext||window.webkitAudioContext)(); if(actx.state==='suspended') actx.resume(); }
+function hit(){
+  if(!actx) return;
+  const t = actx.currentTime;
+  // body: a tom — fast downward pitch sweep
+  const o = actx.createOscillator();
+  const g = actx.createGain();
+  o.type = 'sine';
+  const base = 150 + (Math.random()*30-15);
+  o.frequency.setValueAtTime(base*1.9, t);
+  o.frequency.exponentialRampToValueAtTime(base*0.6, t+0.16);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(0.9, t+0.005);
+  g.gain.exponentialRampToValueAtTime(0.0001, t+0.32);
+  o.connect(g).connect(actx.destination);
+  o.start(t); o.stop(t+0.34);
+  // attack: a short noise slap
+  const n = actx.createBuffer(1, actx.sampleRate*0.05, actx.sampleRate);
+  const d = n.getChannelData(0);
+  for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*(1-i/d.length);
+  const ns = actx.createBufferSource(); ns.buffer=n;
+  const nf = actx.createBiquadFilter(); nf.type='highpass'; nf.frequency.value=1400;
+  const ng = actx.createGain(); ng.gain.setValueAtTime(0.25, t); ng.gain.exponentialRampToValueAtTime(0.0001, t+0.06);
+  ns.connect(nf).connect(ng).connect(actx.destination); ns.start(t); ns.stop(t+0.06);
+}
+
+/* ---------------- game state ---------------- */
+let address = null;
+const PKEY = () => 'drum:pending:' + (address || 'anon') + ':' + ACTIVE;
+let pending = 0;
+function loadPending(){ pending = parseInt(localStorage.getItem(PKEY())||'0',10)||0; renderPending(); }
+function savePending(){ localStorage.setItem(PKEY(), String(pending)); }
+function renderPending(){
+  $('pending').textContent = pending;
+  const c = $('claim');
+  if(!address){ c.textContent = 'connect to claim'; c.disabled = true; }
+  else if(pending<=0){ c.textContent = 'hit the drum'; c.disabled = true; }
+  else { c.textContent = 'claim ' + pending + ' DRUM'; c.disabled = false; }
+}
+
+/* ---------------- the drum ---------------- */
+const stage = document.querySelector('.stage');
+const drumEl = $('drum');
+function pop(){
+  boot(); hit();
+  pending++; savePending(); renderPending();
+  drumEl.classList.remove('hit'); void drumEl.offsetWidth; drumEl.classList.add('hit');
+  setTimeout(()=>drumEl.classList.remove('hit'),70);
+  // ripple
+  const r = document.createElement('div'); r.className='ripple'; stage.appendChild(r);
+  setTimeout(()=>r.remove(),520);
+  // +1 coin
+  const coin = document.createElement('div'); coin.className='coin'; coin.textContent='+1';
+  coin.style.left = (50 + (Math.random()*40-20)) + '%';
+  coin.style.top = '60px';
+  stage.appendChild(coin); setTimeout(()=>coin.remove(),720);
+}
+drumEl.addEventListener('pointerdown', (e)=>{ e.preventDefault(); pop(); });
+window.addEventListener('keydown', (e)=>{
+  if(e.code==='Space' && !e.repeat){ e.preventDefault(); pop(); drumEl.focus(); }
+});
+
+/* ---------------- indexer reads (TzKT) ---------------- */
+async function readBalance(a){
+  if(!NET.kt1 || !a) return 0;
+  try{
+    const res = await fetch(`${NET.indexer}/v1/contracts/${NET.kt1}/bigmaps/ledger/keys/${a}`);
+    if(res.status===204) return 0;                 // missing key = no content
+    if(!res.ok) return 0;
+    const j = await res.json();
+    return parseInt(j.value||'0',10)||0;
+  }catch{ return 0; }
+}
+async function readTown(){
+  if(!NET.kt1) return;
+  try{
+    const res = await fetch(`${NET.indexer}/v1/contracts/${NET.kt1}/storage`);
+    if(!res.ok) return;
+    const s = await res.json();
+    $('town').innerHTML = `the town has drummed <b>${Number(s.taps).toLocaleString()}</b> time${Number(s.taps)===1?'':'s'}`;
+  }catch{}
+}
+async function refresh(){
+  if(address){ $('bal').textContent = (await readBalance(address)).toLocaleString(); }
+  readTown();
+}
+
+/* ---------------- wallet (Beacon) ---------------- */
+let client;
+function beaconNetwork(){
+  return NET.kind==='mainnet'
+    ? { type: beacon.NetworkType.MAINNET }
+    : { type: beacon.NetworkType.CUSTOM, name: NET.label, rpcUrl: NET.rpc };
+}
+function getClient(){
+  if(!client) client = new beacon.DAppClient({ name:'DRUM', network: beaconNetwork() });
+  return client;
+}
+async function connect(){
+  setStatus('opening wallet…');
+  try{
+    const c = getClient();
+    const acc = await c.getActiveAccount();
+    const perm = acc || await c.requestPermissions();
+    address = perm.address;
+    onConnected();
+    setStatus('');
+  }catch(e){ setStatus('connect cancelled'); }
+}
+async function disconnect(){
+  try{ await getClient().clearActiveAccount(); }catch{}
+  address=null;
+  $('whoLabel').textContent='not connected';
+  $('who').textContent='taps save locally — connect to mint them';
+  $('balBox').hidden=true; $('connect').textContent='connect';
+  $('connect').onclick=connect;
+  loadPending(); renderPending();
+}
+function onConnected(){
+  $('whoLabel').textContent='connected';
+  $('who').textContent=shorten(address);
+  $('balBox').hidden=false;
+  $('connect').textContent='disconnect'; $('connect').onclick=disconnect;
+  loadPending(); renderPending(); refresh();
+}
+
+/* ---------------- claim: batch mint ---------------- */
+async function claim(){
+  if(!address || pending<=0) return;
+  const n = pending;
+  setStatus(`minting ${n} DRUM…`);
+  $('claim').disabled=true;
+  try{
+    const c = getClient();
+    const r = await c.requestOperation({
+      operationDetails: [{
+        kind: beacon.TezosOperationType.TRANSACTION,
+        amount: '0',
+        destination: NET.kt1,
+        parameters: { entrypoint: 'mint', value: { int: String(n) } },
+      }],
+    });
+    const hash = r.transactionHash || r.opHash || '';
+    pending=0; savePending(); renderPending();
+    setStatus(hash ? `minted ✓ <a href="${NET.explorer}/${hash}" target="_blank" rel="noopener">op ↗</a>` : 'minted ✓');
+    // give the indexer a beat, then refresh the balance
+    setTimeout(refresh, 3500); setTimeout(refresh, 9000);
+  }catch(e){
+    setStatus('mint cancelled or failed');
+    renderPending();
+  }
+}
+function setStatus(html){ $('status').innerHTML = html; }
+
+/* ---------------- init ---------------- */
+$('connect').onclick = connect;
+$('claim').onclick = claim;
+$('explorer').href = NET.kt1 ? `${NET.explorer}/${NET.kt1}` : '#';
+loadPending();
+readTown();
+// reconnect silently if a wallet is already active
+(async()=>{ try{ const acc = await getClient().getActiveAccount(); if(acc){ address=acc.address; onConnected(); } }catch{} })();
+</script>
+</body>
+</html>

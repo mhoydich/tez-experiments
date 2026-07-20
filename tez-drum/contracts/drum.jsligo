@@ -1,0 +1,129 @@
+// tez-drum — DRUM, the fungible token you earn by drumming.
+// TZIP-12 (FA2) single fungible token (token_id 0), fully transferable.
+// The drum IS the faucet: you batch taps in the browser, then settle them
+// as ONE on-chain mint. Permissionless self-mint — the sender mints `count`
+// DRUM to itself. No admin, no gate. jsLIGO (LIGO 1.15.6). CC0.
+
+type token_id = nat;
+
+const drum_id: token_id = 0n;
+
+type token_info = { token_id: token_id, token_info: map<string, bytes> };
+
+type storage = {
+  ledger: big_map<address, nat>,                          // token 0 balance per holder
+  operators: big_map<[address, address, token_id], unit>, // [owner, operator, token_id] -> unit
+  total_supply: nat,                                      // total DRUM ever minted
+  taps: nat,                                              // lifetime taps settled (== total_supply, kept legibly)
+  drummers: nat,                                          // distinct wallets that have ever minted
+  metadata: big_map<string, bytes>,                       // contract metadata (TZIP-16)
+  token_metadata: big_map<token_id, token_info>,          // token metadata (TZIP-12)
+};
+
+type ret = [list<operation>, storage];
+
+const bal = (s: storage, who: address): nat =>
+  match(Big_map.find_opt(who, s.ledger)) {
+    when (Some(n)): n;
+    when (None()): 0n
+  };
+
+// ---------- mint: the drum head ----------
+// Sender mints `count` DRUM to itself. This is the batch-claim from the game:
+// N taps in the browser settle here as a single operation.
+@entry
+const mint = (count: nat, s: storage): ret => {
+  if (count == 0n) failwith("NOTHING_TO_CLAIM");
+  const who = Tezos.get_sender();
+  const first = !Big_map.mem(who, s.ledger);
+  const ledger = Big_map.update(who, Some(bal(s, who) + count), s.ledger);
+  const drummers = first ? s.drummers + 1n : s.drummers;
+  return [
+    list([]),
+    { ...s,
+      ledger,
+      total_supply: s.total_supply + count,
+      taps: s.taps + count,
+      drummers,
+    },
+  ];
+};
+
+// ---------- FA2 transfer (fully fungible, operator-aware) ----------
+
+type transfer_dest = { to_: address, token_id: token_id, amount: nat };
+type transfer_item = { from_: address, txs: list<transfer_dest> };
+
+const is_operator = (s: storage, owner: address, operator: address, id: token_id): bool =>
+  Big_map.mem([owner, operator, id], s.operators);
+
+@entry
+const transfer = (items: list<transfer_item>, s: storage): ret => {
+  const sender = Tezos.get_sender();
+  const do_item = ([st, item]: [storage, transfer_item]): storage => {
+    const from_ = item.from_;
+    if (sender != from_ && !is_operator(st, from_, sender, drum_id))
+      failwith("FA2_NOT_OPERATOR");
+    const do_tx = ([s2, tx]: [storage, transfer_dest]): storage => {
+      if (tx.token_id != drum_id) failwith("FA2_TOKEN_UNDEFINED");
+      const fb = bal(s2, from_);
+      if (fb < tx.amount) failwith("FA2_INSUFFICIENT_BALANCE");
+      const ledger1 = Big_map.update(from_, Some(abs(fb - tx.amount)), s2.ledger);
+      const s3 = { ...s2, ledger: ledger1 };
+      const ledger2 = Big_map.update(tx.to_, Some(bal(s3, tx.to_) + tx.amount), s3.ledger);
+      return { ...s3, ledger: ledger2 };
+    };
+    return List.fold_left(do_tx, st, item.txs);
+  };
+  return [list([]), List.fold_left(do_item, s, items)];
+};
+
+// ---------- FA2 balance_of ----------
+
+type balance_request = { owner: address, token_id: token_id };
+type balance_response = { request: balance_request, balance: nat };
+
+@entry
+const balance_of = (
+  p: { requests: list<balance_request>, callback: contract<list<balance_response>> },
+  s: storage
+): ret => {
+  const respond = (r: balance_request): balance_response => {
+    if (r.token_id != drum_id) failwith("FA2_TOKEN_UNDEFINED");
+    return { request: r, balance: bal(s, r.owner) };
+  };
+  const responses = List.map(respond, p.requests);
+  return [list([Tezos.transaction(responses, 0mutez, p.callback)]), s];
+};
+
+// ---------- FA2 update_operators ----------
+
+type operator_param = { owner: address, operator: address, token_id: token_id };
+type update_operator =
+  | ["Add_operator", operator_param]
+  | ["Remove_operator", operator_param];
+
+@entry
+const update_operators = (updates: list<update_operator>, s: storage): ret => {
+  const sender = Tezos.get_sender();
+  const apply = ([st, u]: [storage, update_operator]): storage =>
+    match(u) {
+      when (Add_operator(op)): do {
+        if (op.owner != sender) failwith("FA2_NOT_OWNER");
+        return { ...st, operators: Big_map.add([op.owner, op.operator, op.token_id], unit, st.operators) };
+      };
+      when (Remove_operator(op)): do {
+        if (op.owner != sender) failwith("FA2_NOT_OWNER");
+        return { ...st, operators: Big_map.remove([op.owner, op.operator, op.token_id], st.operators) };
+      }
+    };
+  return [list([]), List.fold_left(apply, s, updates)];
+};
+
+// ---------- views (composition: how the rest of the ladder reads DRUM) ----------
+
+@view
+const balance = (who: address, s: storage): nat => bal(s, who);
+
+@view
+const total_taps = (_u: unit, s: storage): nat => s.taps;

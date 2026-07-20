@@ -1,0 +1,20 @@
+{
+  "name": "tez-drum",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "DRUM — the fungible token you earn by drumming. Rung 07 of the tez-experiments ladder.",
+  "license": "CC0-1.0",
+  "scripts": {
+    "deploy": "node scripts/deploy.js",
+    "smoke": "node scripts/smoke.js"
+  },
+  "dependencies": {
+    "@taquito/signer": "^25.0.0",
+    "@taquito/taquito": "^25.0.0",
+    "@taquito/utils": "^25.0.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
