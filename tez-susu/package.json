@@ -8,6 +8,8 @@
   "scripts": {
     "deploy": "node scripts/deploy.js",
     "smoke": "node scripts/smoke.js",
+    "deploy:stamps": "node scripts/deploy-stamps.js",
+    "smoke:stamps": "node scripts/smoke-stamps.js",
     "deploy:fountain": "node scripts/deploy-fountain.js",
     "smoke:fountain": "node scripts/smoke-fountain.js"
   },

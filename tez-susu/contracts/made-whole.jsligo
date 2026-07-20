@@ -1,0 +1,93 @@
+// tez-susu — made whole.
+// A soulbound ledger of completed savings circles. Claims are verified
+// trustlessly against the susu house's read_circle on-chain view.
+// jsLIGO (LIGO 1.15.6). CC0.
+
+type status =
+  | ["Recruiting"]
+  | ["Active"]
+  | ["Done"]
+  | ["Disbanded"];
+
+type circle = {
+  name: bytes,               // user text is UTF-8 bytes (michelson string rejects non-ascii)
+  organizer: address,
+  contribution: tez,         // fixed payment per member per round
+  seats: nat,                // circle is full at this many members
+  grace: nat,                // seconds after round start before anyone may disband
+  members: map<nat, address>,   // seat -> address; payout order = join order
+  seat_of: map<address, nat>,   // reverse lookup / membership test
+  joined: nat,
+  round: nat,                // 0-based; recipient of this round = members[round]
+  paid: set<address>,        // who has paid the current round
+  paid_count: nat,
+  pot: tez,                  // accumulated this round
+  round_opened_at: timestamp,
+  status: status,
+};
+
+type storage = {
+  house: address,
+  claimed: big_map<[nat, address], unit>,
+  counts: big_map<address, nat>,
+  finishers: nat,
+  stamps: nat,
+  metadata: big_map<string, bytes>,
+};
+
+type ret = [list<operation>, storage];
+
+@entry
+const claim = (circle_id: nat, s: storage): ret => {
+  if (Tezos.get_amount() != 0mutez) failwith("SEND_NO_TEZ");
+  const viewed = Tezos.call_view("read_circle", circle_id, s.house)
+    as option<option<circle>>;
+  const maybe_circle = match(viewed) {
+    when (Some(c)): c;
+    when (None()): failwith("NO_SUCH_CIRCLE")
+  };
+  const circle = match(maybe_circle) {
+    when (Some(c)): c;
+    when (None()): failwith("NO_SUCH_CIRCLE")
+  };
+  match(circle.status) {
+    when (Done()): unit;
+    when (Recruiting()): failwith("CIRCLE_NOT_DONE");
+    when (Active()): failwith("CIRCLE_NOT_DONE");
+    when (Disbanded()): failwith("CIRCLE_NOT_DONE")
+  };
+  const who = Tezos.get_sender();
+  if (!Map.mem(who, circle.seat_of)) failwith("NOT_A_MEMBER");
+  const stamp = [circle_id, who];
+  if (Big_map.mem(stamp, s.claimed)) failwith("ALREADY_STAMPED");
+  const count = match(Big_map.find_opt(who, s.counts)) {
+    when (Some(n)): n;
+    when (None()): 0n
+  };
+  return [
+    list([]),
+    { ...s,
+      claimed: Big_map.add(stamp, unit, s.claimed),
+      counts: Big_map.add(who, count + 1n, s.counts),
+      finishers: count == 0n ? s.finishers + 1n : s.finishers,
+      stamps: s.stamps + 1n,
+    },
+  ];
+};
+
+@view
+const made_whole = (who: address, s: storage): nat =>
+  match(Big_map.find_opt(who, s.counts)) {
+    when (Some(n)): n;
+    when (None()): 0n
+  };
+
+@view
+const has_stamp = (p: [nat, address], s: storage): bool =>
+  Big_map.mem(p, s.claimed);
+
+type town_stats = { finishers: nat, stamps: nat };
+
+@view
+const town = (_u: unit, s: storage): town_stats =>
+  ({ finishers: s.finishers, stamps: s.stamps });
