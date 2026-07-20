@@ -1,0 +1,217 @@
+// tez-susu — the savings circle (ROSCA / susu / tanda), on-chain.
+// N neighbors each pay a fixed contribution per round; each round ONE member
+// takes the whole pot, in join order, until everyone has had a turn.
+// Everyone ends net-zero but each member gets one lump sum. A savings club,
+// not gambling: no house, no chance, no yield — just turns.
+// jsLIGO (LIGO 1.15.6). CC0.
+//
+// Honest weaknesses (template-grade, documented not hidden):
+// - A member who stops paying stalls the round. The valve: the organizer can
+//   disband anytime; after the per-circle grace period ANY member can. Disband
+//   refunds only the CURRENT round's payments — pots already handed out stay
+//   handed out, exactly like a real susu that breaks mid-cycle. Join people
+//   you trust; that is the mechanic.
+// - Payout order is join order (first in, first paid). Traditional, and an
+//   incentive to show up early.
+
+type status =
+  | ["Recruiting"]
+  | ["Active"]
+  | ["Done"]
+  | ["Disbanded"];
+
+type circle = {
+  name: bytes,               // user text is UTF-8 bytes (michelson string rejects non-ascii)
+  organizer: address,
+  contribution: tez,         // fixed payment per member per round
+  seats: nat,                // circle is full at this many members
+  grace: nat,                // seconds after round start before anyone may disband
+  members: map<nat, address>,   // seat -> address; payout order = join order
+  seat_of: map<address, nat>,   // reverse lookup / membership test
+  joined: nat,
+  round: nat,                // 0-based; recipient of this round = members[round]
+  paid: set<address>,        // who has paid the current round
+  paid_count: nat,
+  pot: tez,                  // accumulated this round
+  round_opened_at: timestamp,
+  status: status,
+};
+
+type storage = {
+  circles: big_map<nat, circle>,
+  next_id: nat,
+  // town counters, kept legible like the drum
+  circles_opened: nat,
+  rounds_settled: nat,
+  volume: tez,               // lifetime tez handed out in pots
+  metadata: big_map<string, bytes>,
+};
+
+type ret = [list<operation>, storage];
+
+const max_seats: nat = 36n;
+
+const get_circle = (s: storage, id: nat): circle =>
+  match(Big_map.find_opt(id, s.circles)) {
+    when (Some(c)): c;
+    when (None()): failwith("NO_SUCH_CIRCLE")
+  };
+
+// Members must be able to receive plain tez, checked at join time so a
+// weird KT1 can never brick settlement for everyone else.
+const payable = (a: address): contract<unit> =>
+  match(Tezos.get_contract_opt(a)) {
+    when (Some(c)): c;
+    when (None()): failwith("NOT_PAYABLE")
+  };
+
+const seat_addr = (c: circle, seat: nat): address =>
+  match(Map.find_opt(seat, c.members)) {
+    when (Some(a)): a;
+    when (None()): failwith("NO_SUCH_SEAT")
+  };
+
+// ---------- open_circle: put a pot on the table ----------
+// Creator takes seat 0. No payment yet — contributions start once every
+// seat is filled.
+@entry
+const open_circle = (
+  p: { name: bytes, contribution: tez, seats: nat, grace: nat },
+  s: storage
+): ret => {
+  if (Tezos.get_amount() != 0mutez) failwith("SEND_NO_TEZ");
+  if (p.seats < 2n) failwith("NEED_TWO_SEATS");
+  if (p.seats > max_seats) failwith("TOO_MANY_SEATS");
+  if (p.contribution == 0mutez) failwith("FREE_CIRCLE");
+  const who = Tezos.get_sender();
+  const _ = payable(who);
+  const c: circle = {
+    name: p.name,
+    organizer: who,
+    contribution: p.contribution,
+    seats: p.seats,
+    grace: p.grace,
+    members: Map.literal(list([[0n, who]])),
+    seat_of: Map.literal(list([[who, 0n]])),
+    joined: 1n,
+    round: 0n,
+    paid: Set.empty,
+    paid_count: 0n,
+    pot: 0mutez,
+    round_opened_at: Tezos.get_now(),
+    status: Recruiting(),
+  };
+  return [
+    list([]),
+    { ...s,
+      circles: Big_map.add(s.next_id, c, s.circles),
+      next_id: s.next_id + 1n,
+      circles_opened: s.circles_opened + 1n,
+    },
+  ];
+};
+
+// ---------- join: take a seat ----------
+// Seat order is join order. Filling the last seat activates the circle and
+// opens round 0.
+@entry
+const join = (id: nat, s: storage): ret => {
+  if (Tezos.get_amount() != 0mutez) failwith("SEND_NO_TEZ");
+  const c = get_circle(s, id);
+  match(c.status) { when (Recruiting()): unit; when (Active()): failwith("CIRCLE_FULL");
+                    when (Done()): failwith("CIRCLE_OVER"); when (Disbanded()): failwith("CIRCLE_OVER") };
+  const who = Tezos.get_sender();
+  if (Map.mem(who, c.seat_of)) failwith("ALREADY_SEATED");
+  const _ = payable(who);
+  const seat = c.joined;
+  const joined = c.joined + 1n;
+  const full = joined == c.seats;
+  const c2 = { ...c,
+    members: Map.add(seat, who, c.members),
+    seat_of: Map.add(who, seat, c.seat_of),
+    joined,
+    status: full ? Active() : Recruiting(),
+    round_opened_at: full ? Tezos.get_now() : c.round_opened_at,
+  };
+  return [list([]), { ...s, circles: Big_map.update(id, Some(c2), s.circles) }];
+};
+
+// ---------- contribute: pay the round ----------
+// Send exactly `contribution`. When the last member pays, the whole pot is
+// handed to this round's seat in the same operation and the next round opens.
+@entry
+const contribute = (id: nat, s: storage): ret => {
+  const c = get_circle(s, id);
+  match(c.status) { when (Active()): unit; when (Recruiting()): failwith("NOT_FULL_YET");
+                    when (Done()): failwith("CIRCLE_OVER"); when (Disbanded()): failwith("CIRCLE_OVER") };
+  const who = Tezos.get_sender();
+  if (!Map.mem(who, c.seat_of)) failwith("NOT_A_MEMBER");
+  if (Set.mem(who, c.paid)) failwith("ALREADY_PAID");
+  if (Tezos.get_amount() != c.contribution) failwith("WRONG_AMOUNT");
+  const paid = Set.add(who, c.paid);
+  const paid_count = c.paid_count + 1n;
+  const pot = c.pot + Tezos.get_amount();
+  if (paid_count < c.seats) {
+    // round still filling
+    const c2 = { ...c, paid, paid_count, pot };
+    return [list([]), { ...s, circles: Big_map.update(id, Some(c2), s.circles) }];
+  } else {
+    // last payment settles the round: pot -> this round's seat
+    const recipient = seat_addr(c, c.round);
+    const payout = Tezos.transaction(unit, pot, payable(recipient));
+    const next_round = c.round + 1n;
+    const done = next_round == c.seats;
+    const c2 = { ...c,
+      paid: Set.empty,
+      paid_count: 0n,
+      pot: 0mutez,
+      round: next_round,
+      round_opened_at: Tezos.get_now(),
+      status: done ? Done() : Active(),
+    };
+    return [
+      list([payout]),
+      { ...s,
+        circles: Big_map.update(id, Some(c2), s.circles),
+        rounds_settled: s.rounds_settled + 1n,
+        volume: s.volume + pot,
+      },
+    ];
+  }
+};
+
+// ---------- disband: break the circle ----------
+// Organizer anytime; any member once the current round has sat unfinished
+// past the grace period. Refunds the CURRENT round's payments only.
+@entry
+const disband = (id: nat, s: storage): ret => {
+  if (Tezos.get_amount() != 0mutez) failwith("SEND_NO_TEZ");
+  const c = get_circle(s, id);
+  match(c.status) { when (Recruiting()): unit; when (Active()): unit;
+                    when (Done()): failwith("CIRCLE_OVER"); when (Disbanded()): failwith("CIRCLE_OVER") };
+  const who = Tezos.get_sender();
+  if (who != c.organizer) {
+    if (!Map.mem(who, c.seat_of)) failwith("NOT_A_MEMBER");
+    if (Tezos.get_now() < c.round_opened_at + int(c.grace)) failwith("GRACE_NOT_OVER");
+  };
+  const refund = ([acc, member]: [list<operation>, address]): list<operation> =>
+    list([Tezos.transaction(unit, c.contribution, payable(member)), ...acc]);
+  const ops = Set.fold(refund, c.paid, (list([]) as list<operation>));
+  const c2 = { ...c, paid: Set.empty, paid_count: 0n, pot: 0mutez, status: Disbanded() };
+  return [ops, { ...s, circles: Big_map.update(id, Some(c2), s.circles) }];
+};
+
+// ---------- views (how the rest of the ladder reads the susu) ----------
+
+@view
+const read_circle = (id: nat, s: storage): option<circle> =>
+  Big_map.find_opt(id, s.circles);
+
+@view
+const circle_count = (_u: unit, s: storage): nat => s.next_id;
+
+type town_stats = { circles_opened: nat, rounds_settled: nat, volume: tez };
+
+@view
+const town = (_u: unit, s: storage): town_stats =>
+  ({ circles_opened: s.circles_opened, rounds_settled: s.rounds_settled, volume: s.volume });

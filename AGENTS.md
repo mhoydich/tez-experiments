@@ -31,6 +31,22 @@ tez-rally/            # 06 — pickleball rating desk: self-declared soulbound
                       #      Passport book (geoconfirmed court stamps):
                       #      MAINNET KT1Q1g8Sv3uL2beaA7h89hTViJyZmXxfUS9D.
                       #      Live at tez-rally.pages.dev
+tez-drum/             # 07 — DRUM: the fungible token you earn by drumming.
+                      #      Ladder's first fungible FA2 (permissionless
+                      #      self-mint = the drum is the faucet). Screen drum
+                      #      + synth sound; a run of taps settles as ONE
+                      #      mint. MAINNET KT1P2F1MoWPLZBSgTG6bVtQgLaHu1vDShhME,
+                      #      live at tez-drum.pages.dev. Shadownet dev copy
+                      #      KT1DrTZ69a7T81fZpFeKpsCMLb2AhEYdAAEs. Single-file
+                      #      public/index.html, CDN Beacon (Kukai), TzKT reads.
+tez-susu/             # 08 — susu: the savings circle (ROSCA/tanda) on-chain.
+                      #      N seats pay a fixed contribution per round; each
+                      #      round one seat takes the whole pot, join order,
+                      #      until everyone has had a turn. Net-zero by
+                      #      design — a savings club, not gambling. Disband
+                      #      valve (organizer anytime; any member past grace)
+                      #      refunds only the current round. Addresses in
+                      #      README. Single-file public/index.html like drum.
 ```
 
 Read each repo's README.md before touching it. tez-stamps/TRAITS.md is the

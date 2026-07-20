@@ -1,0 +1,7 @@
+{
+  // Static single-file site — deploy the public/ dir to Cloudflare Pages:
+  //   npx wrangler pages deploy public --project-name=tez-susu
+  "name": "tez-susu",
+  "compatibility_date": "2026-07-12",
+  "pages_build_output_dir": "public"
+}
