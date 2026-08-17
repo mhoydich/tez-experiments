@@ -166,3 +166,13 @@ Contract tasks: compiles clean; entrypoint names/error strings unchanged
 unless the task says otherwise; NOTES.md updated if a gap closed or opened.
 Frontend tasks: `npm run dev` works from a fresh clone + `.env.example`.
 Deploy tasks: address recorded in README with the compiler version used.
+
+## Registry law (added 2026-08-17)
+
+Every origination on ANY network — by Claude, Codex, or a human — appends an
+entry to `~/.claude/skills/tezos/references/registry.json` (id, name, chain,
+network, address, type, status, deployed, admin, repo, url) BEFORE the README
+is updated. `status` vocabulary: live | experiment | retired | testnet |
+planned. Zero-call rungs are `experiment`, not failures — label them. Then
+update `references/contracts.md` prose. Codex: this file is outside the repo;
+write to it anyway (absolute path).
