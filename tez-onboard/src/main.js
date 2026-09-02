@@ -10,7 +10,7 @@ const NETWORK = import.meta.env.VITE_NETWORK || "shadownet";
 const RPC =
   import.meta.env.VITE_RPC ||
   (NETWORK === "mainnet"
-    ? "https://mainnet.tezos.ecadinfra.com"
+    ? "https://rpc.tzkt.io/mainnet"
     : "https://rpc.shadownet.teztnets.com");
 
 export const Tezos = new TezosToolkit(RPC);
