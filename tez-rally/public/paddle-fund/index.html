@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Paddle Fund — a new paddle every week · Rally</title>
+  <meta name="description" content="Ten seats, $20 a week, ten weeks: a $200 paddle lands every week and the ladder sets the order. Take it, punt it to a bigger kit, or pass it on. A playable concept from Rally." />
+  <meta property="og:title" content="The Paddle Fund — a new paddle every week" />
+  <meta property="og:description" content="Ten seats × $20 = one $200 paddle a week. Play sets the order. Take it, punt it, or pass it on. Play the pretend sprint." />
+  <meta name="twitter:card" content="summary" />
+  <link rel="canonical" href="https://tez-rally.pages.dev/paddle-fund/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
+  <style>
+    /* Same passport-office family as the Rally front desk: paper, ink,
+       court green leading. One extra ink — paddle yellow — for the pot. */
+    :root {
+      --paper: #f2efe9; --ink: #241f1c; --court: #1e7a52; --tezos-blue: #0f61ff;
+      --line: #d8d2c6; --muted: #6b6259; --ball: #e9d94a; --clay: #b8482e;
+      --mono: ui-monospace, "SF Mono", Menlo, monospace;
+      --display: "Cormorant Garamond", Georgia, serif;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body {
+      margin: 0; min-height: 100dvh; background: var(--paper); color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif; line-height: 1.5;
+      background-image: radial-gradient(var(--line) 1px, transparent 1px);
+      background-size: 28px 28px; padding: 2rem 0;
+    }
+    .office {
+      width: min(1120px, 94vw); margin: 0 auto; background: #fff;
+      border: 1.5px solid var(--ink); padding: 1.2rem 1.2rem 2.5rem;
+      box-shadow: 10px 10px 0 var(--court);
+    }
+    .site-nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      border-bottom: 1.5px solid var(--ink); padding-bottom: 0.8rem; }
+    .nav-mark { font-family: var(--display); font-weight: 700; font-size: 1.9rem; line-height: 1;
+      color: var(--ink); text-decoration: none; text-transform: lowercase; }
+    .site-nav nav { display: flex; gap: 1.1rem; flex-wrap: wrap; }
+    .site-nav nav a, .mono-link { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--ink); text-decoration: none; }
+    .site-nav nav a:hover, .mono-link:hover { color: var(--court); text-decoration: underline; }
+    .eyebrow { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--court); margin: 0 0 0.8rem; }
+    h1 { font-family: var(--display); font-weight: 600; font-size: clamp(2.8rem, 8vw, 5.4rem);
+      line-height: 0.92; letter-spacing: -0.015em; margin: 0 0 1rem; }
+    h1 em, h2 em { font-style: italic; color: var(--court); }
+    h2 { font-family: var(--display); font-weight: 600; font-size: clamp(1.7rem, 4vw, 2.4rem);
+      line-height: 1; margin: 0 0 0.6rem; }
+    .hero { padding: 2.6rem 0 1.6rem; max-width: 820px; }
+    .deck { font-size: 1.12rem; margin: 0; max-width: 62ch; }
+
+    .math { display: grid; grid-template-columns: repeat(3, 1fr); border: 1.5px solid var(--ink); margin: 1.4rem 0 2.2rem; }
+    .math div { padding: 1rem 1.1rem; border-right: 1.5px solid var(--ink); }
+    .math div:last-child { border-right: 0; background: var(--ball); }
+    .math b { display: block; font-family: var(--display); font-size: clamp(1.6rem, 4vw, 2.3rem); line-height: 1; font-weight: 700; }
+    .math span { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); }
+
+    /* ── the table ─────────────────────────────────────────────── */
+    .game { border: 1.5px solid var(--ink); }
+    .game-head { display: flex; justify-content: space-between; align-items: center; gap: 0.8rem; flex-wrap: wrap;
+      padding: 0.7rem 1rem; background: var(--ink); color: #fff; font-family: var(--mono);
+      font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; }
+    .game-head .pretend { color: var(--ball); }
+    .game-head button { font: inherit; letter-spacing: inherit; text-transform: inherit; background: none;
+      color: #fff; border: 1px solid #fff; padding: 0.25rem 0.6rem; cursor: pointer; }
+    .game-body { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
+    .seats { border-right: 1.5px solid var(--ink); }
+    .seat { display: grid; grid-template-columns: 2.2rem 1fr auto; align-items: center; gap: 0.6rem;
+      padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--line); min-height: 3rem;
+      transition: background 0.2s ease; }
+    .seat:last-child { border-bottom: 0; }
+    .seat .wk { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); letter-spacing: 0.08em; }
+    .seat .who { font-family: var(--display); font-size: 1.25rem; font-weight: 600; line-height: 1.05; }
+    .seat .who small { display: block; font-family: var(--mono); font-size: 0.66rem; font-weight: 400;
+      letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase; }
+    .seat.you .who { color: var(--court); }
+    .seat.up { background: var(--ball); }
+    .seat.paid .wk::after { content: " ✓"; color: var(--court); }
+    .chip { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase;
+      border: 1.5px solid var(--ink); padding: 0.15rem 0.45rem; white-space: nowrap; background: #fff; }
+    .chip.take { background: var(--court); color: #fff; }
+    .chip.punt { background: var(--ball); }
+    .chip.pass { background: var(--clay); color: #fff; }
+    .chip.wait { border-color: var(--line); color: var(--muted); }
+
+    .desk { display: flex; flex-direction: column; min-width: 0; }
+    .pot { padding: 1.1rem 1.1rem 0.9rem; border-bottom: 1.5px solid var(--ink); text-align: center; }
+    .pot-label { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+    .pot-num { font-family: var(--display); font-weight: 700; font-size: clamp(3.4rem, 9vw, 5rem); line-height: 1; }
+    .pot-bar { height: 12px; border: 1.5px solid var(--ink); margin-top: 0.5rem; background: #fff; }
+    .pot-bar i { display: block; height: 100%; width: 0%; background: var(--court); transition: width 0.12s linear; }
+    .meters { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1.5px solid var(--ink); }
+    .meters div { padding: 0.6rem 0.5rem; text-align: center; border-right: 1px solid var(--line); }
+    .meters div:last-child { border-right: 0; }
+    .meters b { display: block; font-family: var(--display); font-size: 1.5rem; line-height: 1; }
+    .meters span { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+    .action { padding: 1rem 1.1rem; border-bottom: 1.5px solid var(--ink); }
+    .status { margin: 0 0 0.8rem; min-height: 3em; }
+    .status b { color: var(--court); }
+    .enter { font: inherit; font-size: 1.05rem; width: 100%; padding: 0.85rem 1.1rem; background: var(--court);
+      color: #fff; border: 1.5px solid var(--ink); cursor: pointer; box-shadow: 4px 4px 0 var(--ink);
+      transition: transform 0.08s ease, box-shadow 0.08s ease; }
+    .enter:hover:not(:disabled) { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--ink); }
+    .enter:active:not(:disabled) { transform: translate(3px,3px); box-shadow: 1px 1px 0 var(--ink); }
+    .enter:disabled { opacity: 0.45; cursor: default; }
+    .ghost { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+      background: none; border: 0; padding: 0.7rem 0 0; cursor: pointer; color: var(--muted); text-decoration: underline; }
+    button:focus-visible, a:focus-visible { outline: 3px solid var(--tezos-blue); outline-offset: 2px; }
+    .calls { display: grid; gap: 0.6rem; }
+    .call { font: inherit; text-align: left; padding: 0.7rem 0.9rem; border: 1.5px solid var(--ink); background: #fff;
+      cursor: pointer; box-shadow: 3px 3px 0 var(--ink); }
+    .call:hover:not(:disabled) { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); }
+    .call:disabled { opacity: 0.4; cursor: default; }
+    .call b { font-family: var(--mono); letter-spacing: 0.14em; font-size: 0.8rem; display: block; }
+    .call.take b { color: var(--court); } .call.pass b { color: var(--clay); }
+    .call span { font-size: 0.92rem; }
+    .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+
+    .tape { flex: 1; padding: 0.8rem 1.1rem 1rem; background: #fbfaf6; min-height: 9rem; max-height: 19rem; overflow: auto; }
+    .tape-title { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin: 0 0 0.4rem; }
+    .tape ol { list-style: none; margin: 0; padding: 0; font-family: var(--mono); font-size: 0.74rem; line-height: 1.65; }
+    .tape li { border-bottom: 1px dashed var(--line); padding: 0.1rem 0; }
+    .tape li.rule { color: var(--court); border-bottom: 0; padding-top: 0.5rem; }
+
+    .verdict { border-top: 1.5px solid var(--ink); padding: 1.3rem 1.1rem 1.4rem; background: #fbfaf6; }
+    .verdict table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 0.76rem; margin: 0.6rem 0 1rem; }
+    .verdict th, .verdict td { text-align: left; padding: 0.3rem 0.4rem; border-bottom: 1px solid var(--line); }
+    .verdict th { font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-size: 0.64rem; }
+    .verdict td.n, .verdict th.n { text-align: right; }
+    .verdict tr.you td { color: var(--court); font-weight: 700; }
+    .stamp { display: inline-block; font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--court); border: 3px double var(--court); padding: 0.45rem 0.9rem; transform: rotate(-2deg); margin: 0.2rem 0 1rem; }
+
+    .coin { position: fixed; z-index: 50; width: 14px; height: 14px; border-radius: 50%; background: var(--ball);
+      border: 1.5px solid var(--ink); pointer-events: none; transition: transform 0.34s cubic-bezier(.3,.7,.4,1), opacity 0.34s ease; }
+
+    /* ── the rules ─────────────────────────────────────────────── */
+    .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; margin-top: 2.6rem; }
+    .cols article { border-top: 1.5px solid var(--ink); padding-top: 0.8rem; }
+    .cols .num { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.14em; color: var(--court); }
+    .cols h3 { font-family: var(--display); font-size: 1.5rem; font-weight: 600; margin: 0.2rem 0 0.4rem; line-height: 1.05; }
+    .cols p { margin: 0; font-size: 0.97rem; }
+    .rails { margin-top: 2.6rem; border: 1.5px solid var(--ink); padding: 1.2rem 1.2rem 1rem; }
+    .rails ul { margin: 0.4rem 0 0; padding-left: 1.1rem; }
+    .rails li { margin-bottom: 0.45rem; }
+    .wire { margin-top: 2.2rem; display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.6rem; align-items: start; }
+    .wire dl { margin: 0; font-family: var(--mono); font-size: 0.76rem; }
+    .wire dt { letter-spacing: 0.12em; text-transform: uppercase; color: var(--court); margin-top: 0.7rem; }
+    .wire dd { margin: 0.1rem 0 0; }
+    .wire a { color: var(--ink); }
+    .ladder-live { font-family: var(--mono); font-size: 0.74rem; color: var(--muted); margin-top: 0.9rem; }
+    footer { margin-top: 2.4rem; padding-top: 0.9rem; border-top: 1.5px solid var(--ink); font-family: var(--mono);
+      font-size: 0.68rem; letter-spacing: 0.08em; color: var(--muted); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    footer a { color: var(--muted); }
+
+    @media (max-width: 800px) {
+      body { padding: 0.8rem 0; }
+      .office { box-shadow: 6px 6px 0 var(--court); padding: 1rem 0.9rem 2rem; }
+      .game-body, .cols, .wire { grid-template-columns: 1fr; }
+      .seats { border-right: 0; border-bottom: 1.5px solid var(--ink); }
+      .math { grid-template-columns: 1fr; }
+      .math div { border-right: 0; border-bottom: 1.5px solid var(--ink); }
+      .math div:last-child { border-bottom: 0; }
+      .seat { min-height: 2.6rem; padding: 0.35rem 0.7rem; }
+      .hero { padding-top: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="office">
+    <header class="site-nav">
+      <a class="nav-mark" href="/" aria-label="Rally home">rally</a>
+      <nav aria-label="Primary navigation">
+        <a href="#table">Play the sprint</a>
+        <a href="#rules">The rules</a>
+        <a href="/">Player card</a>
+      </nav>
+    </header>
+
+    <section class="hero" aria-labelledby="title">
+      <p class="eyebrow">the paddle fund · a playable concept · no money moves here</p>
+      <h1 id="title">A new paddle <em>every week.</em></h1>
+      <p class="deck">Ten players put in twenty dollars a week. That is exactly one $200 paddle,
+        so one lands every week for ten weeks, and the ladder decides who unboxes first. When your
+        week comes up you take it, punt it to a bigger kit, or pass it on.</p>
+    </section>
+
+    <section class="math" aria-label="The arithmetic">
+      <div><b>$7.69</b><span>a $200 paddle every six months, per week, saved alone</span></div>
+      <div><b>10 × $20</b><span>ten seats, one week of dues</span></div>
+      <div><b>= $200</b><span>one paddle. every week. two sprints a year.</span></div>
+    </section>
+
+    <section id="table" class="game" aria-label="The pretend sprint">
+      <div class="game-head">
+        <span id="clock">Sprint one · kickoff</span>
+        <span class="pretend">pretend money</span>
+        <button id="mute" type="button" aria-pressed="false">sound on</button>
+      </div>
+      <div class="game-body">
+        <div class="seats" id="seats" aria-label="Seats in unboxing order"></div>
+        <div class="desk">
+          <div class="pot">
+            <div class="pot-label">this week's pot</div>
+            <div class="pot-num" id="pot">$0</div>
+            <div class="pot-bar" aria-hidden="true"><i id="potbar"></i></div>
+          </div>
+          <div class="meters">
+            <div><b id="m-held">$0</b><span>held for punters</span></div>
+            <div><b id="m-side">$0</b><span>side pot</span></div>
+            <div><b id="m-bag">0</b><span>loaner bag</span></div>
+          </div>
+          <div class="action">
+            <p class="status" id="status" aria-live="polite"></p>
+            <div id="controls"></div>
+          </div>
+          <div class="tape">
+            <p class="tape-title">the ledger · public, in order</p>
+            <ol id="tape"></ol>
+          </div>
+        </div>
+      </div>
+      <div class="verdict" id="verdict" hidden></div>
+    </section>
+
+    <section id="rules" class="cols" aria-label="How it works">
+      <article>
+        <span class="num">01 · THE SPRINT</span>
+        <h3>Ten weeks on, sixteen off</h3>
+        <p>Twenty dollars a week for ten weeks, twice a year. Four hundred dollars a year and you
+          never play a dead paddle again. Between sprints there are no dues at all.</p>
+      </article>
+      <article>
+        <span class="num">02 · THE ORDER</span>
+        <h3>Play sets it. Never a draw.</h3>
+        <p>Your standing on the countersigned ladder at kickoff is your slot. The club picks the
+          direction: champions first, or bottom of the ladder first as a handicap.</p>
+      </article>
+      <article>
+        <span class="num">03 · THE CALL</span>
+        <h3>Take. Punt. Pass.</h3>
+        <p><b>Take</b> the paddle you pick, up to $200. <b>Punt</b> and your $200 waits for you —
+          next sprint you are holding $400, two punts max. <b>Pass</b> it to a new player or the
+          loaner bag.</p>
+      </article>
+    </section>
+
+    <section class="rails" aria-labelledby="rails-title">
+      <h2 id="rails-title">The guardrails</h2>
+      <ul>
+        <li><b>Rotation, choice, or skill — never chance.</b> Paid entry plus a random winner is a
+          raffle, and raffles are regulated. Nobody wins this. Everybody gets their turn.</li>
+        <li><b>Dollars in equal dollars out.</b> Miss weeks and your take is pro-rata. Leave and
+          your balance leaves with you.</li>
+        <li><b>New seats go late.</b> The circle's one real risk is someone unboxing in week one and
+          ghosting. First sprint, you unbox in the back half.</li>
+        <li><b>The side pot is the only prize, and it is earned.</b> Order as a team, bank the
+          discount, and pay it out for the ladder, for improvement, for showing up — or punt it
+          toward a ball machine.</li>
+        <li><b>The ledger is public.</b> Every week is one line anyone can read.</li>
+      </ul>
+    </section>
+
+    <section class="wire">
+      <div>
+        <h2>Mostly <em>already built.</em></h2>
+        <p>This page is a rehearsal. The pieces a real sprint needs are standing around the yard:
+          a circle contract that already pays a pot in rotation, a ladder that only moves when
+          every player signs the score, and receipts that say what the money bought.</p>
+        <p class="ladder-live" id="ladder-live" hidden></p>
+        <p><a class="mono-link" href="/">Get on the ladder — your card sets your slot →</a></p>
+      </div>
+      <dl>
+        <dt>The rotation</dt>
+        <dd><a href="https://tez-susu.pages.dev" rel="noopener">tez-susu</a> — the savings circle, live on mainnet</dd>
+        <dt>The order</dt>
+        <dd><a href="/">Rally</a> — countersigned matches, open integer Elo</dd>
+        <dt>The receipts</dt>
+        <dd>One memo per week: <em>wk 04 · take · Kitchen Knife 16mm</em></dd>
+        <dt>Not built yet</dt>
+        <dd>The paddle circle itself, the team order, the side-pot vote. Nothing here touches a wallet.</dd>
+      </dl>
+    </section>
+
+    <footer>
+      <span>The Paddle Fund · a Rally concept · CC0</span>
+      <span><a href="/">tez-rally.pages.dev</a> · <a href="https://pointcast.xyz/paddle-fund" rel="noopener">pointcast.xyz/paddle-fund</a></span>
+    </footer>
+  </main>
+
+  <script>
+  (() => {
+    "use strict";
+    const DUES = 20, PADDLE = 200, DISCOUNT = 0.15, CAP = 600, WEEKS = 10;
+    const RALLY = "KT1X4iLYF11LvZhU6PFRamLioKjrcgDJEUoT";
+
+    // plan[sprint-1] is what a house player calls when their week comes up.
+    // drift[sprint-1] is how their rating moves over that sprint; sessions
+    // is how many of the sprint's 20 open-play days they showed up for.
+    const ROSTER = [
+      { id: "mayor", name: "Kitchen Mayor",   rating: 4.52, paddle: "Golden Pickle 16mm",  kit: "Golden Pickle Pro + bag",        plan: ["pass", "take"], drift: [0.02, -0.04], sessions: [14, 12] },
+      { id: "lob",   name: "Lob Lord",        rating: 4.21, paddle: "Lob City 14mm",       kit: "Lob City Pro + shoes",           plan: ["take", "take"], drift: [-0.06, 0.03], sessions: [11, 15] },
+      { id: "sci",   name: "Dink Scientist",  rating: 4.03, paddle: "Reset Button 16mm",   kit: "Reset Button Pro + shoes",       plan: ["take", "punt"], drift: [0.05, 0.08],  sessions: [17, 16] },
+      { id: "erne",  name: "Erne Ernie",      rating: 3.84, paddle: "The Erne 14mm",       kit: "The Erne Pro + overgrips",       plan: ["take", "take"], drift: [0.11, -0.02], sessions: [16, 13] },
+      { id: "you",   name: "You",             rating: 3.55, paddle: "Kitchen Knife 16mm",  kit: "Kitchen Knife Pro + court shoes", you: true,              drift: [0.07, 0.16],  sessions: [19, 17] },
+      { id: "rita",  name: "Reset Rita",      rating: 3.52, paddle: "Soft Hands 16mm",     kit: "Soft Hands Pro + court shoes",   plan: ["punt", "take"], drift: [0.19, 0.05],  sessions: [18, 18] },
+      { id: "theo",  name: "Third-Shot Theo", rating: 3.31, paddle: "Third Shot 16mm",     kit: "Third Shot Pro + a second paddle", plan: ["punt", "take"], drift: [0.04, 0.12], sessions: [12, 19] },
+      { id: "bob",   name: "Banger Bob",      rating: 3.14, paddle: "Banger's Regret 13mm", kit: "Banger's Regret Pro + shoes",   plan: ["take", "take"], drift: [-0.03, 0.06], sessions: [15, 10] },
+      { id: "nell",  name: "Nasty Nelson",    rating: 2.96, paddle: "ATP Special 14mm",    kit: "ATP Special Pro + bag",          plan: ["take", "pass"], drift: [0.09, 0.10],  sessions: [13, 14] },
+      { id: "dot",   name: "Dot from Tuesday", rating: 2.71, paddle: "Dink Responsibly 16mm", kit: "Dink Responsibly Pro + shoes", plan: ["take", "take"], drift: [0.14, 0.21],  sessions: [16, 18] },
+    ];
+
+    const $ = (id) => document.getElementById(id);
+    const money = (n) => "$" + Math.round(n).toLocaleString("en-US");
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const wait = (ms) => new Promise((r) => setTimeout(r, reduced ? Math.min(ms, 30) : ms));
+
+    const S = {
+      sprint: 1, week: 0, dir: "top", order: [], phase: "setup", busy: false, auto: false,
+      pot: 0, side: 0, bag: 0, rolled: false,
+      held: {}, paidIn: {}, out: {}, calls: {}, log: [],
+    };
+    ROSTER.forEach((p) => { S.held[p.id] = 0; S.paidIn[p.id] = 0; S.out[p.id] = 0; p.now = p.rating; });
+
+    // ── sound: a coin plink and a paddle pop, synthesized ───────────
+    let ctx = null, muted = false;
+    const audio = () => { if (muted) return null; try { ctx = ctx || new (window.AudioContext || window.webkitAudioContext)(); } catch { return null; } return ctx; };
+    function plink(i) {
+      const a = audio(); if (!a) return;
+      const o = a.createOscillator(), g = a.createGain(), t = a.currentTime;
+      o.type = "sine"; o.frequency.value = [523, 587, 659, 784, 880][i % 5] * (i > 4 ? 2 : 1);
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.12, t + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
+      o.connect(g).connect(a.destination); o.start(t); o.stop(t + 0.25);
+    }
+    function pop(freq = 1150) {
+      const a = audio(); if (!a) return;
+      const len = Math.floor(a.sampleRate * 0.06), buf = a.createBuffer(1, len, a.sampleRate), d = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
+      const src = a.createBufferSource(), bp = a.createBiquadFilter(), g = a.createGain();
+      src.buffer = buf; bp.type = "bandpass"; bp.frequency.value = freq; bp.Q.value = 4; g.gain.value = 0.9;
+      src.connect(bp).connect(g).connect(a.destination); src.start();
+    }
+    $("mute").addEventListener("click", (e) => {
+      muted = !muted; e.currentTarget.textContent = muted ? "sound off" : "sound on";
+      e.currentTarget.setAttribute("aria-pressed", String(muted));
+    });
+
+    // ── render ──────────────────────────────────────────────────────
+    const seatOf = (id) => ROSTER.find((p) => p.id === id);
+    const caller = () => seatOf(S.order[S.week - 1]);
+    const drawOf = (p) => PADDLE + S.held[p.id];
+    const sprintName = () => (S.sprint === 1 ? "Sprint one" : "Sprint two");
+
+    function sortOrder() {
+      const ranked = [...ROSTER].sort((a, b) => b.now - a.now);
+      if (S.dir === "bottom") ranked.reverse();
+      S.order = ranked.map((p) => p.id);
+    }
+
+    function renderSeats() {
+      const box = $("seats"); box.textContent = "";
+      S.order.forEach((id, i) => {
+        const p = seatOf(id), row = document.createElement("div"), call = S.calls[id];
+        row.className = "seat" + (p.you ? " you" : "") + (S.phase !== "setup" && i === S.week - 1 && !call ? " up" : "");
+        row.dataset.id = id;
+        const wk = document.createElement("span"); wk.className = "wk"; wk.textContent = "WK " + String(i + 1).padStart(2, "0");
+        const who = document.createElement("span"); who.className = "who"; who.textContent = p.name;
+        const sm = document.createElement("small");
+        sm.textContent = p.now.toFixed(2) + (S.held[id] && !call ? " · holding " + money(S.held[id]) : "");
+        who.appendChild(sm);
+        const chip = document.createElement("span");
+        chip.className = "chip " + (call ? call.kind : "wait");
+        chip.textContent = call ? call.chip : (i === S.week - 1 && S.phase !== "setup" ? "up now" : "waiting");
+        row.append(wk, who, chip); box.appendChild(row);
+      });
+    }
+
+    function renderMeters() {
+      $("pot").textContent = money(S.pot);
+      $("potbar").style.width = Math.min(100, (S.pot / PADDLE) * 100) + "%";
+      $("m-held").textContent = money(Object.values(S.held).reduce((a, b) => a + b, 0));
+      $("m-side").textContent = money(S.side);
+      $("m-bag").textContent = String(S.bag);
+      $("clock").textContent = S.phase === "setup" ? sprintName() + " · kickoff"
+        : S.week > WEEKS ? sprintName() + " · closed" : sprintName() + " · week " + S.week + " of " + WEEKS;
+    }
+
+    function tape(text, rule) {
+      S.log.push(text);
+      const li = document.createElement("li"); li.textContent = text; if (rule) li.className = "rule";
+      $("tape").appendChild(li); li.parentElement.parentElement.scrollTop = 1e6;
+    }
+
+    function status(html) { $("status").innerHTML = html; }
+    function controls(...nodes) { const c = $("controls"); c.textContent = ""; nodes.forEach((n) => n && c.appendChild(n)); }
+    function btn(cls, label, fn) { const b = document.createElement("button"); b.type = "button"; b.className = cls; b.innerHTML = label; b.addEventListener("click", fn); return b; }
+
+    // ── kickoff ─────────────────────────────────────────────────────
+    function setup() {
+      S.phase = "setup"; S.week = 0; S.calls = {}; S.pot = 0; sortOrder(); renderSeats(); renderMeters();
+      const pair = document.createElement("div"); pair.className = "pair";
+      const pick = (dir, label) => btn("call", label, () => { S.dir = dir; sortOrder(); renderSeats(); paint(); });
+      const top = pick("top", "<b>CHAMPIONS FIRST</b><span>Top of the ladder unboxes week one.</span>");
+      const bot = pick("bottom", "<b>HANDICAP</b><span>Bottom of the ladder gets the fresh paddle first.</span>");
+      const paint = () => { top.style.background = S.dir === "top" ? "var(--ball)" : "#fff"; bot.style.background = S.dir === "bottom" ? "var(--ball)" : "#fff"; };
+      paint(); pair.append(top, bot);
+      const slot = () => S.order.indexOf("you") + 1;
+      status(S.sprint === 1
+        ? "Ten seats, ranked by the ladder. You are rated <b>3.55</b>. The club votes on direction at kickoff — tonight the vote is yours."
+        : "Six months later. The ladder moved, so the order moved with it. Punters walk in holding their $200.");
+      const go = btn("enter", "Start " + sprintName().toLowerCase(), () => {
+        S.phase = "pay"; S.week = 1;
+        tape("— " + sprintName().toUpperCase() + " · " + (S.dir === "top" ? "champions first" : "handicap order") + " · you unbox week " + slot() + " —", true);
+        turn();
+      });
+      go.style.marginTop = "0.8rem";
+      controls(pair, go);
+    }
+
+    // ── one week ────────────────────────────────────────────────────
+    function turn() {
+      renderSeats(); renderMeters();
+      const p = caller(), mine = p.you;
+      status("Week " + S.week + ". " + (mine ? "<b>Your week.</b> " : "<b>" + p.name + "</b> is up. ")
+        + "Ten seats owe " + money(DUES) + " each.");
+      const pay = btn("enter", "Pay your " + money(DUES) + " — week " + S.week, () => collect());
+      const mySlot = S.order.indexOf("you") + 1;
+      const skip = btn("ghost", mySlot >= S.week && !S.calls.you ? "run the weeks to my turn" : "run out the sprint", () => { S.auto = true; collect(); });
+      controls(pay, skip);
+      if (S.auto) collect();
+    }
+
+    async function collect() {
+      if (S.busy) return; S.busy = true;
+      $("controls").querySelectorAll("button").forEach((b) => (b.disabled = true));
+      const gap = S.auto ? 28 : 95;
+      for (let i = 0; i < S.order.length; i++) {
+        const id = S.order[i];
+        flyCoin(id); plink(i);
+        S.paidIn[id] += DUES; S.pot += DUES;
+        const row = document.querySelector('.seat[data-id="' + id + '"]'); if (row) row.classList.add("paid");
+        renderMeters(); await wait(gap);
+      }
+      await wait(S.auto ? 120 : 380);
+      S.busy = false;
+      const p = caller();
+      if (p.you) { S.auto = false; askYou(p); }
+      else { await wait(S.auto ? 100 : 500); resolve(p, p.plan[S.sprint - 1]); }
+    }
+
+    function flyCoin(id) {
+      if (reduced || S.auto) return;
+      const from = document.querySelector('.seat[data-id="' + id + '"] .wk'), to = $("pot"); if (!from || !to) return;
+      const a = from.getBoundingClientRect(), b = to.getBoundingClientRect(), c = document.createElement("i");
+      c.className = "coin"; c.style.left = a.left + a.width / 2 + "px"; c.style.top = a.top + a.height / 2 - 7 + "px";
+      document.body.appendChild(c);
+      setTimeout(() => { c.style.transform = "translate(" + (b.left + b.width / 2 - a.left - a.width / 2) + "px," + (b.top + b.height / 2 - a.top - a.height / 2) + "px) scale(0.6)"; c.style.opacity = "0.2"; }, 16);
+      setTimeout(() => c.remove(), 420);
+    }
+
+    function askYou(p) {
+      const draw = drawOf(p), big = draw > PADDLE;
+      status("The pot is full and <b>it is your week.</b> " + (big
+        ? "You punted last sprint, so you are holding " + money(draw) + "."
+        : "You are holding " + money(draw) + "."));
+      const box = document.createElement("div"); box.className = "calls";
+      box.append(
+        btn("call take", "<b>TAKE</b><span>" + (big ? "The big kit: " + p.kit + "." : "The fund buys your " + p.paddle + " today.") + "</span>", () => resolve(p, "take")),
+        (() => { const b = btn("call punt", "<b>PUNT</b><span>" + (draw >= CAP ? "Two punts is the cap — this one you have to call." : "Your " + money(draw) + " waits. Next sprint you are holding " + money(draw + PADDLE) + ".") + "</span>", () => resolve(p, "punt")); b.disabled = draw >= CAP; return b; })(),
+        btn("call pass", "<b>PASS</b><span>Your paddle is fine. Send " + (big ? "two" : "one") + " to the loaner bag for whoever shows up next.</span>", () => resolve(p, "pass"))
+      );
+      controls(box);
+    }
+
+    function resolve(p, kind) {
+      const draw = drawOf(p), n = draw / PADDLE, wk = "wk " + String(S.week).padStart(2, "0") + " · " + p.name.toLowerCase();
+      if (kind === "punt" && draw >= CAP) kind = "take";
+      if (kind === "punt") {
+        S.held[p.id] = draw; S.calls[p.id] = { kind: "punt", chip: "punt → " + money(draw + PADDLE) };
+        tape(wk + " · PUNT · " + money(draw) + " held"); pop(520);
+      } else {
+        const saved = Math.round(draw * DISCOUNT);
+        S.held[p.id] = 0; S.out[p.id] += draw; S.side += saved;
+        if (kind === "pass") {
+          S.bag += n; S.calls[p.id] = { kind: "pass", chip: "pass → bag" };
+          tape(wk + " · PASS · " + (n > 1 ? n + " paddles" : "1 paddle") + " to the loaner bag · +" + money(saved) + " side pot");
+        } else {
+          S.calls[p.id] = { kind: "take", chip: n > 1 ? "take " + money(draw) : "take" };
+          tape(wk + " · TAKE · " + (n > 1 ? p.kit : p.paddle) + " · +" + money(saved) + " side pot");
+        }
+        pop();
+      }
+      S.pot = 0; S.week += 1;
+      if (S.week > WEEKS) { S.auto = false; renderSeats(); renderMeters(); closeSprint(); } else turn();
+    }
+
+    // ── sprint close: the books, then the side-pot vote ─────────────
+    function closeSprint() {
+      const k = S.sprint - 1;
+      ROSTER.forEach((p) => { p.delta = p.drift[k]; p.now = +(p.now + p.delta).toFixed(2); });
+      const champ = [...ROSTER].sort((a, b) => b.now - a.now)[0];
+      const riser = [...ROSTER].sort((a, b) => b.delta - a.delta)[0];
+      const iron = [...ROSTER].sort((a, b) => b.sessions[k] - a.sessions[k])[0];
+      status(sprintName() + " is closed. Ten paddles' worth of dues went in; here is where every dollar is.");
+      controls();
+      const v = $("verdict"); v.hidden = false; v.textContent = "";
+      const h = document.createElement("h2"); h.innerHTML = sprintName() + ", <em>on the books.</em>"; v.appendChild(h);
+      v.appendChild(books());
+      const tin = ROSTER.reduce((a, p) => a + S.paidIn[p.id], 0), tout = ROSTER.reduce((a, p) => a + S.out[p.id], 0), th = ROSTER.reduce((a, p) => a + S.held[p.id], 0);
+      const st = document.createElement("div"); st.className = "stamp";
+      st.textContent = money(tin) + " in · " + money(tout) + " out · " + money(th) + " held · " + (tin === tout + th ? "balanced" : "CHECK THE BOOKS");
+      v.appendChild(st);
+
+      const p2 = document.createElement("p");
+      p2.innerHTML = "The team order saved 15% on every paddle. That is <b>" + money(S.side) + "</b> in the side pot, and the vote split five–four. You break the tie.";
+      v.appendChild(p2);
+      const pair = document.createElement("div"); pair.className = "pair";
+      pair.append(
+        btn("call take", "<b>SPEND IT</b><span>Pro-shop credit: half to the ladder champion, 30% most improved, 20% most sessions.</span>", () => vote("spend", { champ, riser, iron })),
+        btn("call punt", "<b>PUNT THE POT</b><span>Roll it. Two sprints rolled is most of a ball machine.</span>", () => vote("roll"))
+      );
+      v.appendChild(pair);
+      v.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "nearest" });
+    }
+
+    function books() {
+      const t = document.createElement("table");
+      t.innerHTML = "<thead><tr><th>seat</th><th class='n'>paid in</th><th class='n'>gear out</th><th class='n'>held</th><th>this sprint</th></tr></thead>";
+      const tb = document.createElement("tbody");
+      S.order.forEach((id) => {
+        const p = seatOf(id), tr = document.createElement("tr"); if (p.you) tr.className = "you";
+        [p.name, money(S.paidIn[id]), money(S.out[id]), money(S.held[id]), S.calls[id] ? S.calls[id].kind : "—"].forEach((x, i) => {
+          const td = document.createElement("td"); td.textContent = x; if (i > 0 && i < 4) td.className = "n"; tr.appendChild(td);
+        });
+        tb.appendChild(tr);
+      });
+      t.appendChild(tb); return t;
+    }
+
+    function vote(kind, w) {
+      const v = $("verdict");
+      v.querySelectorAll("button").forEach((b) => (b.disabled = true));
+      const out = document.createElement("p");
+      if (kind === "spend") {
+        const a = Math.round(S.side * 0.5), b = Math.round(S.side * 0.3), c = S.side - a - b;
+        out.innerHTML = "<b>Spent.</b> " + w.champ.name + " takes " + money(a) + " as ladder champion, " + w.riser.name + " " + money(b)
+          + " for the biggest climb (+" + w.riser.delta.toFixed(2) + "), " + w.iron.name + " " + money(c) + " for showing up " + w.iron.sessions[S.sprint - 1] + " times. Earned, not drawn.";
+        tape("— side pot SPENT · " + money(S.side) + " · champion / climber / iron player —", true); S.side = 0; S.rolled = false;
+      } else {
+        out.innerHTML = "<b>Punted.</b> " + money(S.side) + " rolls into the next sprint" + (S.rolled ? " — two in a row. That is a ball-machine down payment." : ".");
+        tape("— side pot PUNTED · " + money(S.side) + " rolls —", true); S.rolled = true;
+      }
+      v.appendChild(out); renderMeters(); pop(800);
+      if (S.sprint === 1) {
+        const next = btn("enter", "Six months later — run sprint two", () => { S.sprint = 2; v.hidden = true; setup(); $("table").scrollIntoView({ behavior: reduced ? "auto" : "smooth" }); });
+        next.style.marginTop = "0.6rem"; v.appendChild(next);
+      } else yearEnd(v);
+    }
+
+    function yearEnd(v) {
+      const tin = ROSTER.reduce((a, p) => a + S.paidIn[p.id], 0), th = ROSTER.reduce((a, p) => a + S.held[p.id], 0);
+      const me = seatOf("you");
+      const p = document.createElement("p");
+      p.innerHTML = "<b>One year.</b> Ten seats put in " + money(tin) + " at twenty dollars a week for twenty weeks. Every dollar came back as gear or is still held under a name"
+        + (th ? " (" + money(th) + " waiting on punters)" : "") + ". The loaner bag has " + S.bag + " paddle" + (S.bag === 1 ? "" : "s") + " in it for new players. You paid "
+        + money(S.paidIn.you) + " and got " + money(S.out.you) + " of gear" + (S.held.you ? ", with " + money(S.held.you) + " still held for you" : "") + ". Your rating went from 3.55 to " + me.now.toFixed(2) + ".";
+      v.appendChild(p);
+      const st = document.createElement("div"); st.className = "stamp"; st.textContent = "nobody won · everybody got their turn";
+      v.appendChild(st);
+      const again = btn("ghost", "play the year again", () => location.reload());
+      v.appendChild(document.createElement("br")); v.appendChild(again);
+      status("The year is closed. Scroll down for the rules a real sprint would run on.");
+    }
+
+    // ── the real ladder, read-only, if the indexer answers ──────────
+    fetch("https://api.tzkt.io/v1/contracts/" + RALLY + "/bigmaps/players/keys?active=true&limit=100&select=key")
+      .then((r) => (r.ok ? r.json() : [])).then((rows) => {
+        if (!Array.isArray(rows) || !rows.length) return;
+        const el = $("ladder-live"); el.hidden = false;
+        el.textContent = rows.length + " player" + (rows.length === 1 ? "" : "s") + " on the mainnet Rally ladder right now. A real sprint seats ten of them in rating order.";
+      }).catch(() => {});
+
+    setup();
+  })();
+  </script>
+</body>
+</html>
