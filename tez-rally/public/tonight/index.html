@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tonight — the open play desk · Rally</title>
+  <meta name="description" content="Run tonight's pickleball open play from one phone: type the names, get fair rotating-partner rounds, tap in scores, and send the standings to the group chat. No accounts, no wallet." />
+  <meta property="og:title" content="Tonight — the open play desk" />
+  <meta property="og:description" content="Names in, fair rounds out. Scores, standings, and a recap card for the group chat. No sign-up." />
+  <meta name="twitter:card" content="summary" />
+  <link rel="canonical" href="https://tez-rally.pages.dev/tonight/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
+  <style>
+    /* Passport-office family, same as the front desk and the paddle fund. */
+    :root {
+      --paper: #f2efe9; --ink: #241f1c; --court: #1e7a52; --tezos-blue: #0f61ff;
+      --line: #d8d2c6; --muted: #6b6259; --ball: #e9d94a; --clay: #b8482e;
+      --mono: ui-monospace, "SF Mono", Menlo, monospace;
+      --display: "Cormorant Garamond", Georgia, serif;
+    }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body { margin: 0; min-height: 100dvh; background: var(--paper); color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif; line-height: 1.5;
+      background-image: radial-gradient(var(--line) 1px, transparent 1px); background-size: 28px 28px; padding: 2rem 0; }
+    .office { width: min(860px, 94vw); margin: 0 auto; background: #fff; border: 1.5px solid var(--ink);
+      padding: 1.2rem 1.2rem 2.5rem; box-shadow: 10px 10px 0 var(--court); }
+    .site-nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      border-bottom: 1.5px solid var(--ink); padding-bottom: 0.8rem; }
+    .nav-mark { font-family: var(--display); font-weight: 700; font-size: 1.9rem; line-height: 1; color: var(--ink); text-decoration: none; }
+    .site-nav nav { display: flex; gap: 1.1rem; flex-wrap: wrap; }
+    .site-nav nav a { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); text-decoration: none; }
+    .site-nav nav a:hover { color: var(--court); text-decoration: underline; }
+    .eyebrow { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--court); margin: 0 0 0.8rem; }
+    h1 { font-family: var(--display); font-weight: 600; font-size: clamp(2.6rem, 8vw, 4.6rem); line-height: 0.92; letter-spacing: -0.015em; margin: 0 0 0.9rem; }
+    h1 em, h2 em { font-style: italic; color: var(--court); }
+    h2 { font-family: var(--display); font-weight: 600; font-size: clamp(1.6rem, 4vw, 2.1rem); line-height: 1; margin: 0 0 0.5rem; }
+    .hero { padding: 2.2rem 0 1.4rem; }
+    .deck { font-size: 1.08rem; margin: 0; max-width: 58ch; }
+    .label { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); display: block; margin: 0 0 0.3rem; }
+    input[type=text], input[type=number], select, textarea { font: inherit; font-size: 1rem; width: 100%; padding: 0.6rem 0.7rem;
+      border: 1.5px solid var(--ink); background: #fff; color: var(--ink); border-radius: 0; }
+    textarea { min-height: 9.5rem; resize: vertical; }
+    button { font: inherit; color: var(--ink); }
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--tezos-blue); outline-offset: 2px; }
+    .enter { font-size: 1.05rem; width: 100%; padding: 0.85rem 1.1rem; background: var(--court); color: #fff; border: 1.5px solid var(--ink);
+      cursor: pointer; box-shadow: 4px 4px 0 var(--ink); transition: transform 0.08s ease, box-shadow 0.08s ease; }
+    .enter:hover:not(:disabled) { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--ink); }
+    .enter:active:not(:disabled) { transform: translate(3px,3px); box-shadow: 1px 1px 0 var(--ink); }
+    .enter:disabled { opacity: 0.45; cursor: default; }
+    .ghost { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; background: #fff;
+      border: 1.5px solid var(--ink); padding: 0.5rem 0.8rem; cursor: pointer; }
+    .ghost:hover { box-shadow: 2px 2px 0 var(--ink); }
+    .linkish { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; background: none; border: 0;
+      padding: 0; cursor: pointer; color: var(--muted); text-decoration: underline; }
+
+    .setup { border: 1.5px solid var(--ink); padding: 1.1rem; display: grid; gap: 0.9rem; }
+    .setup .row2 { display: grid; grid-template-columns: 1fr 1fr 7rem; gap: 0.7rem; }
+    .hint { font-size: 0.9rem; color: var(--muted); margin: 0; }
+
+    .banner { border: 1.5px solid var(--ink); background: var(--ball); padding: 0.8rem 1rem; margin: 0 0 1rem; display: flex; gap: 0.8rem;
+      align-items: center; justify-content: space-between; flex-wrap: wrap; }
+    .banner p { margin: 0; font-size: 0.95rem; }
+
+    .bar { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; margin: 0 0 0.9rem; }
+    .bar h2 { margin: 0; }
+    .bar small { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .tabs { display: grid; grid-template-columns: repeat(3, 1fr); border: 1.5px solid var(--ink); margin: 0 0 1.1rem; position: sticky; top: 0; z-index: 5; background: #fff; }
+    .tabs button { font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.7rem 0.4rem;
+      background: #fff; border: 0; border-right: 1.5px solid var(--ink); cursor: pointer; }
+    .tabs button:last-child { border-right: 0; }
+    .tabs button[aria-selected=true] { background: var(--ink); color: #fff; }
+
+    .round { border: 1.5px solid var(--ink); margin: 0 0 1rem; }
+    .round-head { display: flex; justify-content: space-between; gap: 0.8rem; align-items: center; padding: 0.55rem 0.9rem; background: var(--ink); color: #fff;
+      font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; }
+    .round-head button { color: #fff; background: none; border: 1px solid #fff; font: inherit; letter-spacing: inherit; text-transform: inherit; padding: 0.15rem 0.5rem; cursor: pointer; }
+    .game { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0.6rem; align-items: center; padding: 0.7rem 0.9rem; border-bottom: 1px solid var(--line); }
+    .game:last-of-type { border-bottom: 0; }
+    .game .court { grid-column: 1 / -1; font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+    .team { font-family: var(--display); font-size: 1.3rem; font-weight: 600; line-height: 1.1; min-width: 0; overflow-wrap: anywhere; }
+    .team.b { text-align: right; }
+    .team.won { color: var(--court); }
+    .score { display: flex; align-items: center; gap: 0.3rem; }
+    .score input { width: 3.4rem; text-align: center; font-family: var(--display); font-weight: 700; font-size: 1.5rem; padding: 0.25rem 0.2rem; -moz-appearance: textfield; }
+    .score input::-webkit-outer-spin-button, .score input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .sit { padding: 0.5rem 0.9rem; background: #fbfaf6; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+
+    table { width: 100%; border-collapse: collapse; }
+    th { font-family: var(--mono); font-weight: 400; font-size: 0.64rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 0.35rem 0.4rem; border-bottom: 1.5px solid var(--ink); }
+    td { padding: 0.5rem 0.4rem; border-bottom: 1px solid var(--line); vertical-align: baseline; }
+    td.n, th.n { text-align: right; font-family: var(--mono); font-size: 0.82rem; }
+    td.rk { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); width: 2rem; }
+    td.nm { font-family: var(--display); font-size: 1.25rem; font-weight: 600; line-height: 1.1; overflow-wrap: anywhere; }
+    td.nm a { display: block; font-family: var(--mono); font-size: 0.6rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .up { color: var(--court); } .down { color: var(--clay); }
+    tr.lead td { background: #fbf8dc; }
+
+    .roster li { display: grid; grid-template-columns: 1fr 5.4rem auto; gap: 0.6rem; align-items: center; padding: 0.45rem 0; border-bottom: 1px solid var(--line); }
+    .roster { list-style: none; margin: 0 0 1rem; padding: 0; }
+    .roster .nm { font-family: var(--display); font-size: 1.25rem; font-weight: 600; overflow-wrap: anywhere; }
+    .roster .out .nm { color: var(--muted); text-decoration: line-through; }
+    .roster select { padding: 0.3rem 0.4rem; font-size: 0.85rem; }
+    .add { display: grid; grid-template-columns: 1fr auto; gap: 0.6rem; margin: 0 0 1.4rem; }
+
+    .recap { display: grid; grid-template-columns: minmax(0, 300px) 1fr; gap: 1.2rem; align-items: start; margin-top: 1.6rem; border-top: 1.5px solid var(--ink); padding-top: 1.2rem; }
+    .recap canvas { width: 100%; height: auto; border: 1.5px solid var(--ink); display: block; }
+    .recap .acts { display: grid; gap: 0.6rem; }
+    .fine { font-size: 0.88rem; color: var(--muted); margin: 0.6rem 0 0; }
+    .status { font-family: var(--mono); font-size: 0.74rem; color: var(--court); min-height: 1.2em; margin: 0.5rem 0 0; }
+    footer { margin-top: 2.2rem; padding-top: 0.9rem; border-top: 1.5px solid var(--ink); font-family: var(--mono); font-size: 0.68rem;
+      letter-spacing: 0.08em; color: var(--muted); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    footer a { color: var(--muted); }
+
+    @media (max-width: 640px) {
+      body { padding: 0.6rem 0; }
+      .office { box-shadow: 6px 6px 0 var(--court); padding: 0.9rem 0.8rem 2rem; }
+      .setup .row2 { grid-template-columns: 1fr 1fr; }
+      .setup .row2 > :last-child { grid-column: 1 / -1; }
+      .recap { grid-template-columns: 1fr; }
+      .team { font-size: 1.12rem; }
+      .site-nav nav { gap: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="office">
+    <header class="site-nav">
+      <a class="nav-mark" href="/" aria-label="Rally home">rally</a>
+      <nav aria-label="Primary navigation">
+        <a href="/#your-number">Your number</a>
+        <a href="/#board">The ladder</a>
+        <a href="/paddle-fund/">Paddle fund</a>
+      </nav>
+    </header>
+
+    <div id="shared-banner" class="banner" hidden>
+      <p><b>You're looking at someone's session.</b> Read-only until you keep a copy.</p>
+      <button id="shared-keep" class="ghost" type="button">Keep it on this phone</button>
+    </div>
+
+    <!-- ── setup ─────────────────────────────────────────── -->
+    <section id="view-setup">
+      <div class="hero">
+        <p class="eyebrow">the open play desk · no sign-up · no wallet</p>
+        <h1>Who's playing <em>tonight?</em></h1>
+        <p class="deck">Type the names. Rally deals fair rounds — partners rotate, sit-outs take turns, the
+          teams come out even. Tap in the scores and send the standings to the group chat.</p>
+      </div>
+      <form id="setup" class="setup">
+        <div class="row2">
+          <label><span class="label">Session</span><input id="s-name" type="text" maxlength="40" autocomplete="off" /></label>
+          <label><span class="label">Where</span><input id="s-venue" type="text" maxlength="40" list="venues" autocomplete="off" />
+            <datalist id="venues"><option>California Smash</option><option>Hollyglen Park</option><option>El Segundo Rec Park</option></datalist></label>
+          <label><span class="label">Courts</span><select id="s-courts"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></label>
+        </div>
+        <label><span class="label">Players — one per line, four or more</span>
+          <textarea id="s-players" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="Dana&#10;Theo&#10;Rita 4.0&#10;Bob&#10;…"></textarea></label>
+        <p class="hint">Add a level after a name if you know it (<em>Rita 4.0</em>). Everyone else starts at 3.50.
+          People can arrive late or leave early — you deal one round at a time.</p>
+        <button class="enter" type="submit">Deal round one</button>
+        <p id="setup-status" class="status" role="status"></p>
+      </form>
+    </section>
+
+    <!-- ── the session ───────────────────────────────────── -->
+    <section id="view-session" hidden>
+      <div class="hero" style="padding-bottom:1rem">
+        <p class="eyebrow" id="ses-eyebrow"></p>
+        <h1 id="ses-title" style="font-size:clamp(2.1rem,6vw,3.4rem)"></h1>
+      </div>
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" data-tab="rounds" aria-selected="true">Rounds</button>
+        <button type="button" role="tab" data-tab="standings" aria-selected="false">Standings</button>
+        <button type="button" role="tab" data-tab="players" aria-selected="false">Players</button>
+      </div>
+
+      <div id="tab-rounds">
+        <div id="rounds"></div>
+        <button id="deal" class="enter" type="button">Deal the next round</button>
+        <p id="deal-status" class="status" role="status"></p>
+      </div>
+
+      <div id="tab-standings" hidden>
+        <table>
+          <thead><tr><th></th><th>player</th><th class="n">W–L</th><th class="n">+/−</th><th class="n">tonight</th></tr></thead>
+          <tbody id="standings"></tbody>
+        </table>
+        <p class="fine">"Tonight" is a session rating: everyone starts from their stated level and every game moves it with
+          the same open integer formula the Rally contract runs. It is a <b>tally</b> — the organizer's word. It never
+          touches the public ladder; only matches that every player countersigns do that.</p>
+        <div class="recap">
+          <canvas id="card" width="1080" height="1350" role="img" aria-label="Recap card for the group chat"></canvas>
+          <div class="acts">
+            <h2>For the <em>group chat.</em></h2>
+            <button id="share-card" class="enter" type="button">Share the recap card</button>
+            <button id="copy-link" class="ghost" type="button">Copy a link to these standings</button>
+            <p id="share-status" class="status" role="status"></p>
+            <p class="fine">The link carries the whole session inside it. Nothing is uploaded; there is no server to upload it to.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-players" hidden>
+        <ul id="roster" class="roster"></ul>
+        <form id="add" class="add"><input id="add-name" type="text" maxlength="28" placeholder="Late arrival" autocomplete="off" autocapitalize="words" />
+          <button class="ghost" type="submit">Add</button></form>
+        <label style="display:block;max-width:9rem;margin-bottom:1.4rem"><span class="label">Courts</span>
+          <select id="courts-live"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></label>
+        <button id="reset" class="linkish" type="button">end this session and start a new one</button>
+      </div>
+    </section>
+
+    <footer>
+      <span>Rally · the open play desk · CC0</span>
+      <span><a href="/">tez-rally.pages.dev</a> · your session lives in this browser</span>
+    </footer>
+  </main>
+
+  <script>
+  (() => {
+    "use strict";
+    const KEY = "rally:tonight:v1";
+    const K_BASE = 50, K_MIN = 10, K_MAX = 150, SLOPE = 10, FLOOR = 1000, DEFAULT_SEED = 3500;
+    const $ = (id) => document.getElementById(id);
+    const fmt = (milli) => (milli / 1000).toFixed(2);
+
+    // DOM helper — names arrive from shared links, so text only, never innerHTML.
+    function h(tag, attrs, ...kids) {
+      const el = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs || {})) {
+        if (k === "class") el.className = v; else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+        else if (v !== false && v != null) el.setAttribute(k, v === true ? "" : v);
+      }
+      for (const kid of kids.flat()) if (kid != null) el.append(kid);
+      return el;
+    }
+
+    let S = null;        // the session
+    let shared = false;  // viewing someone's link, not yet kept
+
+    // ── state ────────────────────────────────────────────────────
+    const save = () => { if (!shared) try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
+    const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch { return null; } };
+
+    function parseLine(line) {
+      const m = line.trim().match(/^(.*?)(?:\s+([2-7](?:\.\d{1,2})?))?$/);
+      const name = (m?.[1] || "").trim().slice(0, 28);
+      if (!name) return null;
+      let seed = m?.[2] ? Math.round(parseFloat(m[2]) * 1000) : DEFAULT_SEED;
+      seed = Math.min(8000, Math.max(2000, seed));
+      return { name, seed, stated: Boolean(m?.[2]) };
+    }
+
+    // share link: the whole session, compact, in the hash
+    function encode(s) {
+      const idx = new Map(s.players.map((p, i) => [p.id, i]));
+      const c = { v: 1, n: s.name, w: s.venue, c: s.courts, d: s.date,
+        p: s.players.map((p) => [p.name, p.seed, p.in ? 1 : 0, p.stated ? 1 : 0, p.offset || 0]),
+        r: s.rounds.map((r) => [r.games.map((g) => [...g.a, ...g.b].map((id) => idx.get(id)).concat([g.sa, g.sb])), r.sit.map((id) => idx.get(id))]) };
+      const bytes = new TextEncoder().encode(JSON.stringify(c));
+      let bin = ""; bytes.forEach((b) => (bin += String.fromCharCode(b)));
+      return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    }
+    function decode(str) {
+      const bin = atob(str.replace(/-/g, "+").replace(/_/g, "/"));
+      const c = JSON.parse(new TextDecoder().decode(Uint8Array.from(bin, (ch) => ch.charCodeAt(0))));
+      if (c.v !== 1 || !Array.isArray(c.p) || !Array.isArray(c.r) || c.p.length > 64 || c.r.length > 60) throw new Error("bad session");
+      const players = c.p.map((row, i) => ({ id: "p" + i, name: String(row[0]).slice(0, 28), seed: Math.min(8000, Math.max(2000, Number(row[1]) || DEFAULT_SEED)), in: row[2] === 1, stated: row[3] === 1, offset: Math.min(99, Math.max(0, Number(row[4]) | 0)) }));
+      const pid = (i) => { if (!players[i]) throw new Error("bad player"); return players[i].id; };
+      const num = (x) => (x === null || x === undefined ? null : Math.min(99, Math.max(0, Number(x) | 0)));
+      const rounds = c.r.map(([games, sit]) => ({ games: games.map((g) => ({ a: [pid(g[0]), pid(g[1])], b: [pid(g[2]), pid(g[3])], sa: num(g[4]), sb: num(g[5]) })), sit: (sit || []).map(pid) }));
+      return { v: 1, name: String(c.n || "Open play").slice(0, 40), venue: String(c.w || "").slice(0, 40), courts: Math.min(6, Math.max(1, Number(c.c) || 1)), date: String(c.d || "").slice(0, 10), players, rounds, next: players.length };
+    }
+
+    // ── the books: replay every finished game in order ───────────
+    const done = (g) => g.sa !== null && g.sb !== null && g.sa !== g.sb;
+    function eloDelta(winnerAvg, loserAvg) {
+      // the contract's formula: euclidean division, clamped [10,150] milli
+      const raw = K_BASE - Math.floor((winnerAvg - loserAvg) / SLOPE);
+      return Math.min(K_MAX, Math.max(K_MIN, raw));
+    }
+    function books() {
+      const t = new Map(S.players.map((p) => [p.id, { p, games: 0, wins: 0, pf: 0, pa: 0, rating: p.seed, sat: 0, lastSat: -1 }]));
+      S.rounds.forEach((r, ri) => {
+        r.sit.forEach((id) => { const x = t.get(id); if (x) { x.sat++; x.lastSat = ri; } });
+        for (const g of r.games) {
+          if (!done(g)) continue;
+          const avg = (ids) => Math.floor(ids.reduce((s, id) => s + t.get(id).rating, 0) / ids.length);
+          const aWon = g.sa > g.sb, [w, l] = aWon ? [g.a, g.b] : [g.b, g.a];
+          const d = eloDelta(avg(w), avg(l));
+          for (const id of w) { const x = t.get(id); x.rating += d; x.wins++; }
+          for (const id of l) { const x = t.get(id); x.rating = Math.max(FLOOR, x.rating - d); }
+          for (const id of g.a) { const x = t.get(id); x.games++; x.pf += g.sa; x.pa += g.sb; }
+          for (const id of g.b) { const x = t.get(id); x.games++; x.pf += g.sb; x.pa += g.sa; }
+        }
+      });
+      return t;
+    }
+
+    // ── the deal: fair sit-outs, fresh partners, even teams ──────
+    // Games dealt per player. A late arrival carries an offset equal to the
+    // field's fewest games when they walked in, so they join the sit-out
+    // rotation as an equal instead of playing every round until caught up.
+    function dealtCounts() {
+      const dealt = new Map(S.players.map((p) => [p.id, p.offset || 0]));
+      S.rounds.forEach((r) => r.games.forEach((g) => [...g.a, ...g.b].forEach((id) => dealt.set(id, dealt.get(id) + 1))));
+      return dealt;
+    }
+    function deal() {
+      const t = books(), active = S.players.filter((p) => p.in);
+      const nCourts = Math.min(S.courts, Math.floor(active.length / 4));
+      if (nCourts < 1) return null;
+      // dealt-but-unscored games still count toward whose turn it is to sit
+      const dealt = dealtCounts();
+      const order = [...active].sort((x, y) => dealt.get(x.id) - dealt.get(y.id) || t.get(y.id).lastSat - t.get(x.id).lastSat || Math.random() - 0.5);
+      const playing = order.slice(0, nCourts * 4), sit = order.slice(nCourts * 4).map((p) => p.id);
+
+      const partners = new Map(), foes = new Map(), key = (a, b) => (a < b ? a + "|" + b : b + "|" + a);
+      const bump = (m, a, b) => m.set(key(a, b), (m.get(key(a, b)) || 0) + 1);
+      S.rounds.forEach((r) => r.games.forEach((g) => { bump(partners, g.a[0], g.a[1]); bump(partners, g.b[0], g.b[1]); g.a.forEach((x) => g.b.forEach((y) => bump(foes, x, y))); }));
+      const P = (a, b) => partners.get(key(a, b)) || 0, F = (a, b) => foes.get(key(a, b)) || 0, R = (id) => t.get(id).rating;
+      const cost = ([a1, a2], [b1, b2]) => (P(a1, a2) + P(b1, b2)) * 1000 + (F(a1, b1) + F(a1, b2) + F(a2, b1) + F(a2, b2)) * 120
+        + Math.abs(R(a1) + R(a2) - R(b1) - R(b2));
+      let best = null;
+      for (let i = 0; i < 400; i++) {
+        const ids = playing.map((p) => p.id).sort(() => Math.random() - 0.5), games = []; let total = 0;
+        for (let c = 0; c < nCourts; c++) {
+          const [w, x, y, z] = ids.slice(c * 4, c * 4 + 4);
+          const splits = [[[w, x], [y, z]], [[w, y], [x, z]], [[w, z], [x, y]]].map(([a, b]) => ({ a, b, k: cost(a, b) })).sort((m, n) => m.k - n.k);
+          games.push({ a: splits[0].a, b: splits[0].b, sa: null, sb: null }); total += splits[0].k;
+        }
+        if (!best || total < best.total) best = { games, total };
+      }
+      return { games: best.games, sit };
+    }
+
+    // ── render ───────────────────────────────────────────────────
+    const nameOf = (id) => S.players.find((p) => p.id === id)?.name || "?";
+
+    function render() {
+      $("view-setup").hidden = Boolean(S); $("view-session").hidden = !S; $("shared-banner").hidden = !shared;
+      if (!S) return;
+      const games = S.rounds.reduce((n, r) => n + r.games.filter(done).length, 0);
+      $("ses-eyebrow").textContent = [S.venue, S.date, S.players.length + " players", games + " game" + (games === 1 ? "" : "s")].filter(Boolean).join(" · ");
+      $("ses-title").textContent = S.name;
+      $("courts-live").value = String(S.courts);
+      renderRounds(); renderStandings(); renderRoster();
+    }
+
+    function renderRounds() {
+      const box = $("rounds"); box.textContent = "";
+      S.rounds.forEach((r, ri) => {
+        const last = ri === S.rounds.length - 1, untouched = r.games.every((g) => g.sa === null && g.sb === null);
+        const head = h("div", { class: "round-head" }, h("span", {}, "Round " + (ri + 1)),
+          last && untouched && !shared ? h("button", { type: "button", onclick: () => { S.rounds.pop(); const d = deal(); if (d) S.rounds.push(d); save(); render(); } }, "reshuffle") : null);
+        const el = h("div", { class: "round" }, head);
+        r.games.forEach((g, gi) => {
+          const input = (side) => h("input", { type: "number", inputmode: "numeric", min: 0, max: 99, "aria-label": "Court " + (gi + 1) + " score, " + (side === "sa" ? g.a : g.b).map(nameOf).join(" and "),
+            value: g[side] ?? "", disabled: shared, oninput: (e) => {
+              const v = e.target.value === "" ? null : Math.min(99, Math.max(0, parseInt(e.target.value, 10) || 0));
+              g[side] = v; save(); paintWin(); renderStandings(); headline();
+            } });
+          const ta = h("div", { class: "team a" }, g.a.map(nameOf).join(" & ")), tb = h("div", { class: "team b" }, g.b.map(nameOf).join(" & "));
+          const paintWin = () => { ta.classList.toggle("won", done(g) && g.sa > g.sb); tb.classList.toggle("won", done(g) && g.sb > g.sa); };
+          paintWin();
+          el.append(h("div", { class: "game" }, h("div", { class: "court" }, "court " + (gi + 1)), ta,
+            h("div", { class: "score" }, input("sa"), h("span", {}, "–"), input("sb")), tb));
+        });
+        if (r.sit.length) el.append(h("div", { class: "sit" }, "sitting this one: " + r.sit.map(nameOf).join(", ")));
+        box.append(el);
+      });
+      $("deal").hidden = shared;
+    }
+    function headline() {
+      const games = S.rounds.reduce((n, r) => n + r.games.filter(done).length, 0);
+      $("ses-eyebrow").textContent = [S.venue, S.date, S.players.length + " players", games + " game" + (games === 1 ? "" : "s")].filter(Boolean).join(" · ");
+    }
+
+    function ranked() {
+      return [...books().values()].sort((x, y) => y.wins - x.wins || (y.pf - y.pa) - (x.pf - x.pa) || y.rating - x.rating || x.p.name.localeCompare(y.p.name));
+    }
+    function renderStandings() {
+      const tb = $("standings"); tb.textContent = "";
+      ranked().forEach((x, i) => {
+        const diff = x.pf - x.pa, move = x.rating - x.p.seed;
+        // "that's me" carries the session's ending number to the front desk, rounded to the contract's 0.25 steps
+        const level = Math.min(8000, Math.max(2000, Math.round(x.rating / 250) * 250));
+        tb.append(h("tr", { class: i === 0 && x.games ? "lead" : "" },
+          h("td", { class: "rk" }, String(i + 1)),
+          h("td", { class: "nm" }, x.p.name, h("a", { href: "/?level=" + level + "#your-number" }, "that's me — make it official →")),
+          h("td", { class: "n" }, x.wins + "–" + (x.games - x.wins)),
+          h("td", { class: "n " + (diff > 0 ? "up" : diff < 0 ? "down" : "") }, (diff > 0 ? "+" : "") + diff),
+          h("td", { class: "n" }, fmt(x.rating) + " ", h("span", { class: move > 0 ? "up" : move < 0 ? "down" : "" }, move ? (move > 0 ? "▲" : "▼") + (Math.abs(move) / 1000).toFixed(3) : ""))));
+      });
+      drawCard();
+    }
+
+    function renderRoster() {
+      const ul = $("roster"); ul.textContent = "";
+      for (const p of S.players) {
+        const sel = h("select", { "aria-label": "Level for " + p.name, disabled: shared, onchange: (e) => { p.seed = Number(e.target.value); p.stated = true; save(); renderStandings(); } });
+        for (let r = 2000; r <= 6000; r += 250) sel.append(h("option", { value: r, selected: r === Math.round(p.seed / 250) * 250 }, (r / 1000).toFixed(2)));
+        ul.append(h("li", { class: p.in ? "" : "out" }, h("span", { class: "nm" }, p.name), sel,
+          h("button", { class: "ghost", type: "button", disabled: shared, "aria-pressed": String(p.in), onclick: () => { p.in = !p.in; save(); renderRoster(); } }, p.in ? "playing" : "left")));
+      }
+    }
+
+    // ── recap card ───────────────────────────────────────────────
+    async function drawCard() {
+      const cv = $("card"), c = cv.getContext("2d"), W = 1080, H = 1350;
+      try { await Promise.all([document.fonts.load('700 96px "Cormorant Garamond"'), document.fonts.load('italic 500 60px "Cormorant Garamond"')]); } catch {}
+      const display = (w, px, it) => (it ? "italic " : "") + w + " " + px + 'px "Cormorant Garamond", Georgia, serif', mono = (px) => px + "px ui-monospace, Menlo, monospace";
+      c.fillStyle = "#1e7a52"; c.fillRect(0, 0, W, H);
+      c.fillStyle = "#fff"; c.fillRect(0, 0, W - 28, H - 28); c.strokeStyle = "#241f1c"; c.lineWidth = 4; c.strokeRect(2, 2, W - 32, H - 32);
+      const L = 80, R = W - 108; let y = 130;
+      c.fillStyle = "#1e7a52"; c.font = mono(26); c.textBaseline = "alphabetic";
+      c.fillText("RALLY  ·  OPEN PLAY  ·  THE TALLY", L, y);
+      y += 110; c.fillStyle = "#241f1c"; c.font = display(700, 104);
+      fit(c, S.name, L, y, R - L, 104, (px) => display(700, px));
+      const rows = ranked(), games = S.rounds.reduce((n, r) => n + r.games.filter(done).length, 0);
+      y += 62; c.font = mono(26); c.fillStyle = "#6b6259";
+      c.fillText([S.venue, S.date, rows.length + " players", games + " games"].filter(Boolean).join("  ·  ").toUpperCase().slice(0, 62), L, y);
+      y += 40; c.fillStyle = "#241f1c"; c.fillRect(L, y, R - L, 4); y += 30;
+      rows.slice(0, 8).forEach((x, i) => {
+        const rowH = i === 0 ? 128 : 96; if (i === 0) { c.fillStyle = "#e9d94a"; c.fillRect(L, y, R - L, rowH); }
+        const base = y + rowH * 0.66; c.fillStyle = "#6b6259"; c.font = mono(24); c.fillText(String(i + 1).padStart(2, "0"), L + 18, base);
+        c.fillStyle = "#241f1c"; fit(c, x.p.name, L + 84, base, 470, i === 0 ? 76 : 56, (px) => display(i === 0 ? 700 : 600, px));
+        c.textAlign = "right"; c.font = mono(30); c.fillText(x.wins + "–" + (x.games - x.wins), R - 210, base);
+        c.font = display(700, i === 0 ? 60 : 48); c.fillText(fmt(x.rating), R - 18, base); c.textAlign = "left";
+        y += rowH; c.fillStyle = "#d8d2c6"; c.fillRect(L, y, R - L, 2);
+      });
+      const climber = [...rows].filter((x) => x.games).sort((a, b) => (b.rating - b.p.seed) - (a.rating - a.p.seed))[0];
+      if (climber && climber.rating > climber.p.seed) {
+        y += 70; c.fillStyle = "#1e7a52"; c.font = display(500, 50, true);
+        fit(c, "Biggest climb: " + climber.p.name + "  +" + ((climber.rating - climber.p.seed) / 1000).toFixed(3), L, y, R - L, 50, (px) => display(500, px, true));
+      }
+      c.fillStyle = "#6b6259"; c.font = mono(22);
+      c.fillText("A TALLY IS THE ORGANIZER'S WORD. SIGNATURES MAKE IT A RECORD.", L, H - 118);
+      c.fillStyle = "#241f1c"; c.font = mono(26); c.fillText("tez-rally.pages.dev/tonight", L, H - 76);
+    }
+    function fit(c, text, x, y, maxW, px, font) {
+      let size = px; c.font = font(size);
+      while (c.measureText(text).width > maxW && size > 24) { size -= 4; c.font = font(size); }
+      c.fillText(text, x, y);
+    }
+
+    // ── actions ──────────────────────────────────────────────────
+    $("setup").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const seen = new Set(), players = [];
+      for (const line of $("s-players").value.split(/\n|,/)) {
+        const p = parseLine(line); if (!p || seen.has(p.name.toLowerCase())) continue;
+        seen.add(p.name.toLowerCase()); players.push({ id: "p" + players.length, in: true, ...p });
+      }
+      if (players.length < 4) { $("setup-status").textContent = "Doubles needs four. Add " + (4 - players.length) + " more."; return; }
+      if (players.length > 48) { $("setup-status").textContent = "Forty-eight is the cap for one desk."; return; }
+      const d = new Date();
+      S = { v: 1, name: $("s-name").value.trim() || d.toLocaleDateString(undefined, { weekday: "long" }) + " open play", venue: $("s-venue").value.trim(),
+        courts: Number($("s-courts").value), date: d.toISOString().slice(0, 10), players, rounds: [], next: players.length };
+      S.rounds.push(deal()); save(); render(); scrollTo(0, 0);
+    });
+
+    $("deal").addEventListener("click", () => {
+      const last = S.rounds[S.rounds.length - 1];
+      if (last && !last.games.every(done)) {
+        const open = last.games.filter((g) => !done(g)).length;
+        if (!confirm(open + " game" + (open === 1 ? "" : "s") + " in this round " + (open === 1 ? "has" : "have") + " no score yet. Deal the next round anyway?")) return;
+      }
+      const d = deal();
+      if (!d) { $("deal-status").textContent = "Need at least four people marked playing."; return; }
+      $("deal-status").textContent = ""; S.rounds.push(d); save(); render();
+      $("rounds").lastElementChild?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    $("add").addEventListener("submit", (e) => {
+      e.preventDefault(); const p = parseLine($("add-name").value);
+      if (!p || S.players.some((q) => q.name.toLowerCase() === p.name.toLowerCase())) return;
+      const dealt = dealtCounts(), field = S.players.filter((q) => q.in).map((q) => dealt.get(q.id));
+      S.players.push({ id: "p" + S.next++, in: true, offset: field.length ? Math.min(...field) : 0, ...p }); $("add-name").value = ""; save(); render();
+    });
+    $("courts-live").addEventListener("change", (e) => { S.courts = Number(e.target.value); save(); });
+    $("reset").addEventListener("click", () => { if (confirm("End this session? The standings stay in any link you already shared.")) { localStorage.removeItem(KEY); S = null; shared = false; history.replaceState(null, "", location.pathname); render(); } });
+
+    document.querySelectorAll(".tabs button").forEach((b) => b.addEventListener("click", () => {
+      document.querySelectorAll(".tabs button").forEach((x) => x.setAttribute("aria-selected", String(x === b)));
+      for (const t of ["rounds", "standings", "players"]) $("tab-" + t).hidden = t !== b.dataset.tab;
+    }));
+
+    const link = () => location.origin + location.pathname + "#s=" + encode(S);
+    $("copy-link").addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(link()); $("share-status").textContent = "Link copied."; }
+      catch { $("share-status").textContent = link(); }
+    });
+    $("share-card").addEventListener("click", async () => {
+      await drawCard();
+      $("card").toBlob(async (blob) => {
+        const file = new File([blob], "rally-" + S.date + ".png", { type: "image/png" });
+        try {
+          if (navigator.canShare?.({ files: [file] })) { await navigator.share({ files: [file], title: S.name, text: S.name + " — standings: " + link() }); return; }
+        } catch (err) { if (err?.name === "AbortError") return; }
+        const a = h("a", { href: URL.createObjectURL(blob), download: file.name }); document.body.append(a); a.click(); a.remove();
+        $("share-status").textContent = "Card downloaded.";
+      }, "image/png");
+    });
+    $("shared-keep").addEventListener("click", () => {
+      if (load() && !confirm("This replaces the session already saved on this phone.")) return;
+      shared = false; save(); history.replaceState(null, "", location.pathname); render();
+    });
+
+    // ── boot ─────────────────────────────────────────────────────
+    const m = location.hash.match(/^#s=([A-Za-z0-9_-]+)$/);
+    if (m) { try { S = decode(m[1]); shared = true; } catch { S = null; } }
+    if (!S) S = load();
+    if (S && shared) document.querySelector('[data-tab="standings"]').click();
+    render();
+  })();
+  </script>
+</body>
+</html>
