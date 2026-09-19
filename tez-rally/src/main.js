@@ -5,6 +5,7 @@
 // player card read-only. Revisits: last address is remembered in localStorage.
 import { loadLadder, loadMatches, playerOf, loadCourts, bookOf, trajectoryOf } from "./board.js";
 import { initBooth } from "./booth.js";
+import { initFinder, intendedRating } from "./finder.js";
 
 const NETWORK = import.meta.env.VITE_NETWORK || "shadownet";
 const TZKT_UI = NETWORK === "mainnet" ? "https://tzkt.io" : "https://shadownet.tzkt.io";
@@ -250,7 +251,7 @@ $("stamp-btn").addEventListener("click", () => {
     const o = document.createElement("option");
     o.value = r;
     o.textContent = fmt(r);
-    if (r === 3500) o.selected = true;
+    if (r === (intendedRating() ?? 3500)) o.selected = true;
     sel.appendChild(o);
   }
   $("declare-form").addEventListener("submit", async (e) => {
@@ -322,6 +323,16 @@ async function connectFlow() {
 }
 
 $("connect").addEventListener("click", connectFlow);
+
+// The hero's level finder: "make it official" carries the number into the
+// declare form, then walks the visitor to the desk and opens the wallet.
+initFinder({
+  onOfficial: (milli) => {
+    $("declare-rating").value = String(milli);
+    $("desk-entry").scrollIntoView({ behavior: "smooth", block: "center" });
+    if (!currentAddress) connectFlow();
+  },
+});
 
 $("disconnect").addEventListener("click", async () => {
   const w = await loadWallet();

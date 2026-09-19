@@ -426,16 +426,16 @@
       c.fillText([S.venue, S.date, rows.length + " players", games + " games"].filter(Boolean).join("  ·  ").toUpperCase().slice(0, 62), L, y);
       y += 40; c.fillStyle = "#241f1c"; c.fillRect(L, y, R - L, 4); y += 30;
       rows.slice(0, 8).forEach((x, i) => {
-        const rowH = i === 0 ? 128 : 96; if (i === 0) { c.fillStyle = "#e9d94a"; c.fillRect(L, y, R - L, rowH); }
+        const rowH = i === 0 ? 124 : 86; if (i === 0) { c.fillStyle = "#e9d94a"; c.fillRect(L, y, R - L, rowH); }
         const base = y + rowH * 0.66; c.fillStyle = "#6b6259"; c.font = mono(24); c.fillText(String(i + 1).padStart(2, "0"), L + 18, base);
-        c.fillStyle = "#241f1c"; fit(c, x.p.name, L + 84, base, 470, i === 0 ? 76 : 56, (px) => display(i === 0 ? 700 : 600, px));
+        c.fillStyle = "#241f1c"; fit(c, x.p.name, L + 84, base, 470, i === 0 ? 76 : 52, (px) => display(i === 0 ? 700 : 600, px));
         c.textAlign = "right"; c.font = mono(30); c.fillText(x.wins + "–" + (x.games - x.wins), R - 210, base);
-        c.font = display(700, i === 0 ? 60 : 48); c.fillText(fmt(x.rating), R - 18, base); c.textAlign = "left";
+        c.font = display(700, i === 0 ? 60 : 46); c.fillText(fmt(x.rating), R - 18, base); c.textAlign = "left";
         y += rowH; c.fillStyle = "#d8d2c6"; c.fillRect(L, y, R - L, 2);
       });
       const climber = [...rows].filter((x) => x.games).sort((a, b) => (b.rating - b.p.seed) - (a.rating - a.p.seed))[0];
       if (climber && climber.rating > climber.p.seed) {
-        y += 70; c.fillStyle = "#1e7a52"; c.font = display(500, 50, true);
+        y += 62; c.fillStyle = "#1e7a52"; c.font = display(500, 48, true);
         fit(c, "Biggest climb: " + climber.p.name + "  +" + ((climber.rating - climber.p.seed) / 1000).toFixed(3), L, y, R - L, 50, (px) => display(500, px, true));
       }
       c.fillStyle = "#6b6259"; c.font = mono(22);

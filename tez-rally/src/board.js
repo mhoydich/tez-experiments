@@ -4,6 +4,19 @@
 const RALLY = import.meta.env.VITE_RALLY_ADDRESS || "";
 const INDEXER = import.meta.env.VITE_INDEXER || "https://api.shadownet.tzkt.io";
 
+// TzKT rate-limits with a 429 and an HTML body. A list read that fails
+// returns [] so the page renders its honest empty state instead of throwing.
+async function rowsOf(url) {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return [];
+    const rows = await res.json();
+    return Array.isArray(rows) ? rows : [];
+  } catch {
+    return [];
+  }
+}
+
 const asPlayer = (address, v) => ({
   address,
   declared: Number(v.declared),
@@ -15,10 +28,9 @@ const asPlayer = (address, v) => ({
 
 export async function loadLadder(limit = 50) {
   if (!RALLY) return [];
-  const res = await fetch(
+  const rows = await rowsOf(
     `${INDEXER}/v1/contracts/${RALLY}/bigmaps/players/keys?active=true&limit=${limit}`
   );
-  const rows = await res.json();
   return rows
     .map((r) => asPlayer(r.key, r.value))
     .sort((a, b) => b.rating - a.rating);
@@ -87,10 +99,9 @@ const COURTS = import.meta.env.VITE_COURTS_ADDRESS || "";
 
 export async function loadCourts() {
   if (!COURTS) return [];
-  const res = await fetch(
+  const rows = await rowsOf(
     `${INDEXER}/v1/contracts/${COURTS}/bigmaps/venues/keys?active=true&limit=50`
   );
-  const rows = await res.json();
   return rows
     .map((r) => ({
       id: Number(r.key),
@@ -102,10 +113,9 @@ export async function loadCourts() {
 
 export async function bookOf(address) {
   if (!COURTS) return new Map();
-  const res = await fetch(
+  const rows = await rowsOf(
     `${INDEXER}/v1/contracts/${COURTS}/bigmaps/book/keys?key.address=${address}&active=true`
   );
-  const rows = await res.json();
   return new Map(rows.map((r) => [Number(r.key.nat), {
     count: Number(r.value.count),
     firstAt: r.value.first_at,
@@ -114,8 +124,8 @@ export async function bookOf(address) {
 
 export async function loadMatches(limit = 20) {
   if (!RALLY) return [];
-  const res = await fetch(
+  const rows = await rowsOf(
     `${INDEXER}/v1/contracts/${RALLY}/bigmaps/matches/keys?active=true&sort.desc=id&limit=${limit}`
   );
-  return (await res.json()).map(asMatch);
+  return rows.map(asMatch);
 }

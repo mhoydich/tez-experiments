@@ -12,6 +12,17 @@ Pages project `tez-rally` (deploy: `npx vite build && npx wrangler pages
 deploy dist --project-name tez-rally`). Rebuild + redeploy after changing
 `VITE_RALLY_ADDRESS`.
 
+**Read [GROWTH.md](GROWTH.md) first** — the 2026-09-19 rethink: Rally is the
+crew's scorekeeper first and a ledger second. Site map since then: `/` leads
+with the level finder ("What's your number?", `src/finder.js`, no wallet;
+the choice carries into `declare`, and `?level=<milli>` deep-links it), then
+the desk and the ladder, then crew tools, then the booth. **`/tonight/`**
+(`public/tonight/index.html`, single static file) is the open play desk:
+names → fair rotating-partner doubles rounds → scores → standings with a
+session rating that runs the contract's exact integer Elo → recap card →
+the whole session shared in a link hash. Local-only; a tally never touches
+the ladder.
+
 **The Paddle Fund** (`public/paddle-fund/index.html`, live at
 [/paddle-fund/](https://tez-rally.pages.dev/paddle-fund/)) is a playable
 concept, not a contract: ten seats x $20/week = one $200 paddle a week for a
