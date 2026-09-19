@@ -160,6 +160,13 @@
       font-size: 0.68rem; letter-spacing: 0.08em; color: var(--muted); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
     footer a { color: var(--muted); }
 
+    /* ?embed=1 — just the table, for framing inside another page
+       (pointcast.xyz/paddle-fund). The host supplies the words. */
+    .embed body { padding: 0; background: #fff; background-image: none; min-height: 0; }
+    .embed .office { width: 100%; border: 0; box-shadow: none; padding: 0; }
+    .embed .site-nav, .embed .hero, .embed .math, .embed .cols, .embed .rails,
+    .embed .wire, .embed footer { display: none; }
+
     @media (max-width: 800px) {
       body { padding: 0.8rem 0; }
       .office { box-shadow: 6px 6px 0 var(--court); padding: 1rem 0.9rem 2rem; }
@@ -298,6 +305,14 @@
   <script>
   (() => {
     "use strict";
+    // Embed mode: strip to the table and tell the host frame how tall we are.
+    if (new URLSearchParams(location.search).has("embed")) {
+      document.documentElement.classList.add("embed");
+      if (window.parent !== window && "ResizeObserver" in window) {
+        const tell = () => parent.postMessage({ type: "paddle-fund:height", height: Math.ceil(document.documentElement.getBoundingClientRect().height) }, "*");
+        new ResizeObserver(tell).observe(document.body); addEventListener("load", tell);
+      }
+    }
     const DUES = 20, PADDLE = 200, DISCOUNT = 0.15, CAP = 600, WEEKS = 10;
     const RALLY = "KT1X4iLYF11LvZhU6PFRamLioKjrcgDJEUoT";
 
