@@ -12,6 +12,15 @@ Pages project `tez-rally` (deploy: `npx vite build && npx wrangler pages
 deploy dist --project-name tez-rally`). Rebuild + redeploy after changing
 `VITE_RALLY_ADDRESS`.
 
+**The Paddle Fund** (`public/paddle-fund/index.html`, live at
+[/paddle-fund/](https://tez-rally.pages.dev/paddle-fund/)) is a playable
+concept, not a contract: ten seats x $20/week = one $200 paddle a week for a
+ten-week sprint, ladder standing sets the order, take / punt / pass on your
+week. Pretend money, no wallet, single static file. `?embed=1` strips it to
+the table and posts `{type:"paddle-fund:height"}` to the host frame
+(pointcast.xyz/paddle-fund uses it). A real version would ride tez-susu's
+circle contract; nothing is originated for it yet.
+
 The landing page is the front door for the full Rally identity system:
 pickleball portraits, wallet-owned player cards, countersigned match records,
 and geoconfirmed court passport stamps. The working booth and rating desk stay
