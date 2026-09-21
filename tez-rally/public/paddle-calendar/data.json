@@ -1,0 +1,1808 @@
+{
+  "meta": {
+    "title": "The 2026 Paddle Calendar",
+    "asOf": "2026-09-21",
+    "window": "2026-01-01 → 2026-09-21, with the road to spring 2027",
+    "license": "CC0",
+    "counts": {
+      "releases": 38,
+      "brands": 27
+    }
+  },
+  "anchors": [
+    {
+      "date": "2025-11-01",
+      "kind": "rule",
+      "title": "USAP power ceiling drops to PBCoR .43",
+      "body": "The limit was .44 from Nov 1, 2024 and tightens to .43. Every 2026 paddle is designed under this ceiling, which is why the year's story is spin and feel, not raw power.",
+      "source": "https://equipment.usapickleball.org/pbcor/"
+    },
+    {
+      "date": "2025-12-17",
+      "kind": "legal",
+      "title": "CRBN sues Vatic Pro over its full-foam core patent",
+      "body": "US Patent 12,465,827. Reported as quietly settled about a week before JOOLA's filing in April.",
+      "source": "https://www.thedinkpickleball.com/crbn-files-patent-infringement-lawsuit-against-vatic-pro/"
+    },
+    {
+      "date": "2026-01-08",
+      "kind": "deal",
+      "title": "Anna Leigh Waters leaves Paddletek for Franklin",
+      "body": "The biggest paddle signing the sport has seen. The Aurelius preorder opened eight days later.",
+      "source": "https://www.thedinkpickleball.com/tracking-all-the-new-pro-paddle-deals-in-2026/"
+    },
+    {
+      "date": "2026-01-16",
+      "kind": "rule",
+      "title": "USAP starts field-testing paddles at Golden Ticket events",
+      "body": "Friction, deflection, weight and balance checked courtside, RFID stickers on passed paddles. By Mar 19: more than 2,000 paddles tested, 6% failed, mostly paddles that had worn in and gained power.",
+      "source": "https://usapickleball.org/equipment/improved-paddle-testing-at-golden-ticket-events-levels-the-competition-and-emphasizes-skill-over-equipment/"
+    },
+    {
+      "date": "2026-01-20",
+      "kind": "deal",
+      "title": "Selkirk takes its first outside capital",
+      "body": "Bluestone Equity Partners, reported at $30M on roughly a $200M valuation. Stated plans: next-generation paddles, a quiet line, footwear, Asia, and acquisitions.",
+      "source": "https://pickleball.com/industry/bluestone-equity-partners-invests-30-million-in-selkirk-sport"
+    },
+    {
+      "date": "2026-02-20",
+      "kind": "deal",
+      "title": "Supreme Court strikes down the IEEPA tariffs, 6–3",
+      "body": "The 2025 tariff scare (CRBN's founder warned of $330 paddles) eased. Section 301 duties on Chinese-made paddles remain. MSRPs mostly held through the year.",
+      "source": "https://www.scotusblog.com/2026/08/tariff-refunds-reach-100-billion-mark/"
+    },
+    {
+      "date": "2026-03-30",
+      "kind": "rule",
+      "title": "PPA bans every Proton paddle from pro play",
+      "body": "Not a technical failure: unpaid debts, including to sponsored players. Reinstated Apr 22.",
+      "source": "https://www.thedinkpickleball.com/proton-paddles-have-been-banned-from-pro-play-ppa-memo-confirms/"
+    },
+    {
+      "date": "2026-04-07",
+      "kind": "legal",
+      "title": "JOOLA files at the ITC against eleven brands",
+      "body": "Inv. No. 337-TA-1503, over the Propulsion Core patents ('826 floating core, '891 throat foam block, both running to 2043). Named: Franklin, Proton, RPM, Engage, Friday, Diadem, Facolos, Paddletek, ProXR, adidas' licensee and Volair. JOOLA asked for an import ban.",
+      "source": "https://www.federalregister.gov/d/2026-11459"
+    },
+    {
+      "date": "2026-05-01",
+      "kind": "deal",
+      "title": "Pickleball Inc. raises $225M at a $750M valuation",
+      "body": "The PPA and MLP parent, led by Apollo Sports Capital. Pickleball Central and PickleballTournaments.com fold in. The pro tour now owns the biggest paddle retailer.",
+      "source": "https://www.ppatour.com/apollo-sports-capital-leads-landmark-investment-in-pickleball-inc/"
+    },
+    {
+      "date": "2026-05-12",
+      "kind": "deal",
+      "title": "Selkirk acquires Bread & Butter",
+      "body": "Terms undisclosed. B&B keeps its brand and leadership. The first roll-up move with Bluestone's money.",
+      "source": "https://www.selkirk.com/pages/press-releases/selkirk-deepens-player-first-mission-with-acquisition-of-bread-butter-pickleball-company"
+    },
+    {
+      "date": "2026-05-13",
+      "kind": "legal",
+      "title": "Paddletek and ProXR settle with JOOLA",
+      "body": "Royalties, JOOLA's patent number on the paddle, and a phase-out of the Reserve, Honeyfoam and Signature Jolt lines through fall. Proton followed on Jun 16 and stopped manufacturing immediately.",
+      "source": "https://www.prnewswire.com/news-releases/joola-and-paddletek-group-settle-patent-dispute-302771249.html"
+    },
+    {
+      "date": "2026-05-28",
+      "kind": "rule",
+      "title": "USAP delists the Facolos Elite X; two more under investigation",
+      "body": "Surface roughness over the limit; Facolos admitted the production paddle differed from the sample. Speedup Tide 14S and Proton's Project Peacock went under grit investigation the same week. Compliance fights have moved from the core to the face.",
+      "source": "https://www.thedinkpickleball.com/usa-pickleball-quietly-delists-several-paddle-models/"
+    },
+    {
+      "date": "2026-07-07",
+      "kind": "deal",
+      "title": "Paddletek Group buys PIKKL and signs the Johnsons",
+      "body": "JW, Jorja and Julie Johnson plus Tyra Black, six months after the family left Franklin. Backed by Thirty-5 Capital. The second roll-up vehicle in the category.",
+      "source": "https://www.prnewswire.com/news-releases/paddletek-group-announces-landmark-move-acquisition-of--pikkl-and-signing-of-jw-jorja-julie-johnson-and-hurricane-tyra-black-302819327.html"
+    },
+    {
+      "date": "2026-07-08",
+      "kind": "rule",
+      "title": "USAP announces a spin-rate test: 2,100 RPM, effective Oct 1",
+      "body": "Ball fired at 40 mph and 30 degrees, filmed at about 1,500 fps. New submissions only; everything certified before Oct 1 stays legal. The same number UPA-A has enforced on tour since 2024. Notice was under three months against USAP's usual eighteen.",
+      "source": "https://www.thedinkpickleball.com/usa-pickleball-launches-long-awaited-spin-rate-test/"
+    },
+    {
+      "date": "2026-07-13",
+      "kind": "rule",
+      "title": "The OWL approval story surfaces",
+      "body": "USAP had waived its surface-roughness test for OWL's felt-like Acoustene face, provisionally and without saying so publicly.",
+      "source": "https://pickleball.com/news/how-the-owl-paddle-got-usap-approved-the-untold-story"
+    },
+    {
+      "date": "2026-09-16",
+      "kind": "legal",
+      "title": "Eight brands have now settled with JOOLA",
+      "body": "Paddletek, ProXR, Facolos, Proton, Volair, Engage, adidas' licensee and Friday: royalties, patent marking, phase-outs. Franklin and RPM are holding out. Diadem has not responded and JOOLA is seeking default.",
+      "source": "https://www.thedinkpickleball.com/7-paddle-brands-settle-joola-patent-case-holdouts-remain/"
+    }
+  ],
+  "ahead": [
+    {
+      "date": "2026-09-28",
+      "dateLabel": "Sep 28 – Oct 4",
+      "kind": "event",
+      "title": "PPA Las Vegas Open",
+      "body": ""
+    },
+    {
+      "date": "2026-09-30",
+      "dateLabel": "Sep 30",
+      "kind": "release",
+      "title": "JOOLA POWER FX on sale",
+      "body": "$179.95. JOOLA's first foam paddle."
+    },
+    {
+      "date": "2026-10-01",
+      "dateLabel": "Oct 1",
+      "kind": "rule",
+      "title": "USAP spin test takes effect",
+      "body": "2,100 RPM cap for every new submission. Expect the last of the pre-deadline certifications to surface as launches through November."
+    },
+    {
+      "date": "2026-10-01",
+      "dateLabel": "Oct 1",
+      "kind": "release",
+      "title": "Gearbox Pressure X 8E and 8M ship",
+      "body": "$279.99 each. Already certified under the new test."
+    },
+    {
+      "date": "2026-10-05",
+      "dateLabel": "Oct 5 – 11",
+      "kind": "event",
+      "title": "PPA Chicago Cup",
+      "body": ""
+    },
+    {
+      "date": "2026-10-31",
+      "dateLabel": "Oct 31 – Nov 8",
+      "kind": "event",
+      "title": "USA Pickleball Nationals, San Diego",
+      "body": "With courtside paddle field testing."
+    },
+    {
+      "date": "2026-11-02",
+      "dateLabel": "Nov 2 – 8",
+      "kind": "event",
+      "title": "PPA World Championships, Farmers Branch TX",
+      "body": "Same week as Nationals. The biggest stage of the fall for an unreleased paddle to show up in a pro's hand."
+    },
+    {
+      "date": "2026-11-18",
+      "dateLabel": "Nov 18 – Dec 7",
+      "kind": "market",
+      "title": "Black Friday window",
+      "body": "Last year: Holbrook 50% off from Nov 18, CRBN from Nov 25, Selkirk from Nov 26, Gearbox $100 off. Outgoing lines go cheapest here."
+    },
+    {
+      "date": "2026-12-20",
+      "dateLabel": "Dec 20",
+      "kind": "rule",
+      "title": "USAP 2027 rulebook published",
+      "body": "Effective Jan 1. No equipment-specific changes announced so far."
+    },
+    {
+      "date": "2026-12-31",
+      "dateLabel": "Dec 31",
+      "kind": "market",
+      "title": "Most pro paddle contracts expire",
+      "body": "January is signing season."
+    },
+    {
+      "date": "2027-01-11",
+      "dateLabel": "Jan 11 – 17, 2027",
+      "kind": "event",
+      "title": "PPA Masters, Rancho Mirage",
+      "body": "First big stage for new sponsors and unreleased paddles."
+    },
+    {
+      "date": "2027-02-15",
+      "dateLabel": "Feb 15 – 21, 2027",
+      "kind": "event",
+      "title": "PPA Mesa Cup",
+      "body": "JOOLA debuted Pro V on tour in the second week of February this year."
+    }
+  ],
+  "signals": [
+    {
+      "brand": "Holbrook",
+      "model": "Aero Foam 16mm Hybrid",
+      "signal": "USAP approved, no launch details"
+    },
+    {
+      "brand": "Six Zero",
+      "model": "Black Opal All Court Max Power · Coral Pro RCD variants",
+      "signal": "On the approval lists"
+    },
+    {
+      "brand": "Diadem",
+      "model": "Hanabi",
+      "signal": "USAP approval, no product page. Signed Yuta Funemizu in January."
+    },
+    {
+      "brand": "Neonic",
+      "model": "Ember Ultra",
+      "signal": "USAP approved Jul 21"
+    },
+    {
+      "brand": "Wilson",
+      "model": "Seismic Spin · Seismic Control · Powerhouse · Overdrive",
+      "signal": "USAP approvals through Q2 and Jul 7"
+    },
+    {
+      "brand": "PIKKL",
+      "model": "J Pro X",
+      "signal": "On the list. The Johnsons signed in July."
+    },
+    {
+      "brand": "Babolat",
+      "model": "RNGD · MNSTR",
+      "signal": "Retailers list them as Fall/Winter 2026. No launch coverage yet."
+    },
+    {
+      "brand": "adidas",
+      "model": "CJ Klinger signature",
+      "signal": "Reported in development"
+    }
+  ],
+  "forecasts": [
+    {
+      "window": "Oct – Nov 2026",
+      "basis": "rule",
+      "call": "A certification-rush launch cluster",
+      "body": "Anything submitted before Oct 1 is certified for life under the old roughness rule. Brands with gritty faces had every reason to submit early and launch later. Expect a run of releases through Nationals week whose certification dates read August and September."
+    },
+    {
+      "window": "Oct – Dec 2026",
+      "basis": "rule",
+      "call": "The tour-only grit brands come to USAP",
+      "body": "Six Zero's Coral Pro and Honolulu's Crystal Blue were UPA-A first because their faces lived at the tour's spin limit. With USAP adopting the same 2,100 RPM output test, the reason to stay off the USAP list gets weaker. Look for USAP versions."
+    },
+    {
+      "window": "Q4 2026 – Q1 2027",
+      "basis": "pattern",
+      "call": "CRBN's fourth TruFoam line",
+      "body": "Genesis in January 2025, Waves in September 2025, Barrage in March 2026: one line every six to eight months. Nothing is announced. The pattern says late fall or January."
+    },
+    {
+      "window": "Oct – Nov 2026",
+      "basis": "pattern",
+      "call": "Another Six Zero gem",
+      "body": "Black Opal in October, Coral in November, Coral Pro in June, Boulder Opal in August. The approval list already carries a Black Opal All Court Max Power."
+    },
+    {
+      "window": "Q4 2026 – Q1 2027",
+      "basis": "pattern",
+      "call": "Selkirk Labs is overdue",
+      "body": "Labs projects have landed each August and gone mainline the following June: Boomstik in August 2025, OMNI in June 2026. August 2026 passed with a Tesla co-brand and no Labs project. Selkirk has said a Project 009 is coming, with no date. A quiet line is also in the Bluestone plan."
+    },
+    {
+      "window": "Q4 2026 – Q1 2027",
+      "basis": "inference",
+      "call": "Paddletek's post-settlement foam paddle",
+      "body": "The Reserve and Honeyfoam lines are being phased out through fall under the JOOLA settlement. Paddletek just bought PIKKL and signed the Johnsons, Newman, Navratil and Garnett. A roster like that needs a flagship that does not pay a rival royalties forever."
+    },
+    {
+      "window": "Feb – Mar 2027",
+      "basis": "pattern",
+      "call": "JOOLA Pro VI",
+      "body": "Pro IV in spring 2025, Pro V debuted on tour in the second week of February 2026 and launched Mar 3. POWER FX suggests the next pro line may finally be foam. Watch Ben Johns' hands at the Masters and Mesa."
+    },
+    {
+      "window": "Winter 2026 – 27",
+      "basis": "legal",
+      "call": "Franklin and RPM decide the patent map",
+      "body": "Eight of eleven respondents have settled. If the holdouts lose at the ITC, an exclusion order keeps infringing imports out and 'licensed by JOOLA' becomes a line on a lot of spec sheets. If they win, the floating-core design opens back up. Either way the Aurelius, the best-known paddle of the year, is in the middle of it."
+    },
+    {
+      "window": "Jan 2027",
+      "basis": "pattern",
+      "call": "Signing season, second edition",
+      "body": "Most contracts end Dec 31. Last January moved Waters, the Johnsons, Bar, Oncins, Haworth and half of ProXR's roster. The brands with new capital (Selkirk, Paddletek Group, Franklin) are the likely buyers."
+    },
+    {
+      "window": "2027",
+      "basis": "inference",
+      "call": "$99 becomes the real floor, and $300 has to explain itself",
+      "body": "Full foam with durable grit is now sold at $99 to $120 by Vatic Pro, Ronbus, Enhance and Spartus. The top tier is answering with things a $99 paddle cannot copy quickly: removable weight systems, signature shapes, co-brands. Expect more tuning hardware and fewer plain $280 paddles."
+    },
+    {
+      "window": "2027",
+      "basis": "inference",
+      "call": "Fewer brands",
+      "body": "Patent royalties, a $10,000 annual UPA-A brand fee plus $3,000 per paddle, a new spin test, and two funded acquirers. The long tail of rebadged-catalog brands gets squeezed from every side."
+    },
+    {
+      "window": "2027",
+      "basis": "open",
+      "call": "The unresolved rule: break-in",
+      "body": "UPA-A certifies for two years and tests after artificial break-in. USAP certifies for life and tests fresh. USAP's own field testing found 6% of paddles failing, mostly worn-in ones. The next big rule fight is whether USAP adds a post-wear standard."
+    }
+  ],
+  "trends": [
+    {
+      "n": "01",
+      "title": "Foam won",
+      "body": "Of the releases on this calendar, the large majority are full-foam Gen 4 builds. John Kew called roughly 90% foam share by year-end back in January and said in June that more than half the pros had switched. The last holdouts moved this year: Paddletek in January, Wilson and HEAD by summer, JOOLA on Sep 30. The exceptions are deliberate: JOOLA's Pro V and Proton's Coyote stayed Gen 3, Gearbox builds on carbon ribs, Owl damps a honeycomb for quiet.",
+      "source": "https://johnkewpickleball.beehiiv.com/p/johnkew-newsletter-2026-paddle-market-predictions"
+    },
+    {
+      "n": "02",
+      "title": "The year of durable grit",
+      "body": "With power capped at PBCoR .43, the fight moved to spin that lasts. Nearly every challenger launched a named surface: HexGrit, EverGrit, NanoBond, PermaGrit, Crystal Blue, Harmony Grit, SilverBack, Diamond Tough, SharkSkin. Pickleball Effect wore them down in the lab and measured what was left. John Kew reported that 76% of spin loss lands in the first 50 hits.",
+      "source": "https://pickleballeffect.com/resources/what-is-durable-grit-pickleball-paddle-surfaces-tested-2026/"
+    },
+    {
+      "n": "03",
+      "title": "EPP for touch, MPP for pop",
+      "body": "Foam stopped being one thing. EPP is the softer, more muted bead foam; MPP is firmer and livelier. Enhance sells the same paddle both ways, Gearbox named its two Pressure X models after the letters, and cores now stack three or four densities with EVA or TPU rings to push twistweight up. Player surveys say the foam outlasts the face: grit wear first, then face disbonding, then edge guards.",
+      "source": "https://www.thedinkpickleball.com/the-anatomy-of-a-pickleball-paddle-epp-vs-mpp-foam-explained/"
+    },
+    {
+      "n": "04",
+      "title": "Two rulebooks, one number",
+      "body": "USAP governs sanctioned amateur play and certifies for life on a fresh paddle. UPA-A governs the pro tours, certifies for two years, and tests after artificial break-in. Brands now ship to one list or the other on purpose: the Coral Pro is tour-only, the TKO-X 14mm failed USAP's power test and sells as UPA-A only, Selkirk makes a weightless OMNI just for pros. On Oct 1 USAP adopts the tour's 2,100 RPM spin cap, the first real convergence.",
+      "source": "https://www.thedinkpickleball.com/why-usaps-new-spin-test-presents-a-bigger-certification-problem/"
+    },
+    {
+      "n": "05",
+      "title": "Patents became a design constraint",
+      "body": "CRBN enforced a full-foam patent against Vatic Pro. JOOLA took eleven brands to the ITC over the floating core and the throat foam block, and eight have settled for royalties, patent marking and phase-outs. Three of the year's launches (Reserve Honeyfoam, TKO-X, and Proton's pre-Coyote line) already have end dates because of it.",
+      "source": "https://pickleball.com/blogs/joolas-patent-lawsuit-means-more-for-pickleball-than-you-think"
+    },
+    {
+      "n": "06",
+      "title": "The barbell",
+      "body": "The top of the market held: Boomstik $333, OMNI $300, Pro V $299.95, Barrage and Pressure X $280. The bottom collapsed upward in quality: full foam with durable grit at $99 to $120. The middle is where the best reviews landed (Holbrook Fuze $230, Honolulu CR $195, Power 2 $210), and it is where JOOLA chose to put its first foam paddle. Amazon's 2025 paddle revenue grew 55% on 38% more units, so buyers are still trading up.",
+      "source": "https://www.thedinkpickleball.com/amazon-pickleball-paddle-sales-up-55-in-2025-surge-to-44-million/"
+    },
+    {
+      "n": "07",
+      "title": "Tune it yourself",
+      "body": "Lead tape went factory. Selkirk's OMNI ships with removable 7.5 g perimeter weights, the SLK Geo and Dauntless carry the same MOI system at $100 and $180, Luzz has side wings, Friday built a weighting ring into the rim. Reviewers now publish swingweight and twistweight for every paddle, and brands are designing to those numbers.",
+      "source": "https://pickleballeffect.com/equipment-reviews/selkirk-omni-review/"
+    },
+    {
+      "n": "08",
+      "title": "One platform, every shape",
+      "body": "The release is a family now: three or four shapes, often two thicknesses, one core. The hybrid is the shape of the year, to the point that JOOLA added one (Kosmos) and built Staksrud's and McGuffin's paddles on it. Widebodies are getting flagship builds instead of the hand-me-down.",
+      "source": "https://www.pickletip.com/new-pickleball-paddle-approvals/"
+    },
+    {
+      "n": "09",
+      "title": "Money arrived, and it is buying",
+      "body": "Selkirk took $30M and bought Bread & Butter. Paddletek Group, backed by Thirty-5 Capital, bought PIKKL. Pickleball Inc. raised $225M and owns both pro tours and the largest paddle retailer. The sport had 24.3 million US players in 2025, up 22.8%. The equipment business is starting to look like golf's.",
+      "source": "https://thekitchenpickle.com/blogs/news/24-3-million-americans-played-pickleball-in-2025-sfia-report-says/"
+    },
+    {
+      "n": "10",
+      "title": "Quiet is a category",
+      "body": "USAP created a Quiet Category (under 80 dB, under 600 Hz) and Owl is the first brand in it with a paddle that also passes for tournament play. Selkirk's investors list a quiet line in the plan. For anyone whose courts sit near houses, this is the release that matters most.",
+      "source": "https://usapickleball.org/equipment/usa-pickleball-announces-its-first-certified-quiet-product-the-owl-by-owl-sport/"
+    }
+  ],
+  "grit": {
+    "note": "Surface roughness (Ra) retained after accelerated wear, Pickleball Effect lab, May 2026.",
+    "source": "https://pickleballeffect.com/resources/what-is-durable-grit-pickleball-paddle-surfaces-tested-2026/",
+    "rows": [
+      {
+        "surface": "11SIX24 HexGrit",
+        "retained": 98
+      },
+      {
+        "surface": "Honolulu Blue Endurance",
+        "retained": 97
+      },
+      {
+        "surface": "Six Zero Diamond Tough",
+        "retained": 95
+      },
+      {
+        "surface": "Spartus PermaGrit",
+        "retained": 93
+      },
+      {
+        "surface": "Selkirk InfiniGrit",
+        "retained": 90
+      },
+      {
+        "surface": "Raw carbon (baseline)",
+        "retained": 81
+      }
+    ]
+  },
+  "moves": [
+    {
+      "player": "Anna Leigh Waters",
+      "from": "Paddletek",
+      "to": "Franklin",
+      "note": "Jan 8. Signature Aurelius."
+    },
+    {
+      "player": "JW · Jorja · Julie Johnson",
+      "from": "Franklin",
+      "to": "Paddletek / PIKKL",
+      "note": "Left in January, signed Jul 7."
+    },
+    {
+      "player": "Dekel Bar",
+      "from": "JOOLA",
+      "to": "11SIX24",
+      "note": ""
+    },
+    {
+      "player": "Augie Ge",
+      "from": "Proton",
+      "to": "11SIX24",
+      "note": ""
+    },
+    {
+      "player": "Eric Oncins",
+      "from": "JOOLA",
+      "to": "Engage",
+      "note": ""
+    },
+    {
+      "player": "Brandon French",
+      "from": "JOOLA",
+      "to": "Combat",
+      "note": ""
+    },
+    {
+      "player": "Andrei Daescu",
+      "from": "Proton",
+      "to": "CRBN",
+      "note": "Plays the Barrage 2."
+    },
+    {
+      "player": "Riley Newman · Zane Navratil · Connor Garnett",
+      "from": "ProXR",
+      "to": "Paddletek",
+      "note": ""
+    },
+    {
+      "player": "Rachel Rohrabacher · Kyle Koszuta",
+      "from": "Selkirk",
+      "to": "Friday",
+      "note": "Friday's first pros."
+    },
+    {
+      "player": "Chris Haworth",
+      "from": "Babolat",
+      "to": "Luzz",
+      "note": "Signature Glider."
+    },
+    {
+      "player": "Jack Munro",
+      "from": "ProXR",
+      "to": "Owl",
+      "note": ""
+    },
+    {
+      "player": "Gabe Tardio",
+      "from": "PIKKL",
+      "to": "Facolos",
+      "note": ""
+    },
+    {
+      "player": "Quang Duong",
+      "from": "Sypik",
+      "to": "Wika",
+      "note": "Feb 14."
+    },
+    {
+      "player": "Blaine Hovenier · Gabe Joseph",
+      "from": "",
+      "to": "Six Zero",
+      "note": "Signed for 2026."
+    }
+  ],
+  "companies": [
+    {
+      "brand": "JOOLA",
+      "hq": "North Bethesda, Maryland",
+      "founded": "1952 (table tennis, Germany)",
+      "owner": "Sport Squad, Inc. · CEO Richard Lee",
+      "lines": "Pro V · Pro IV · 3S · Vision · POWER FX",
+      "pros": "Ben Johns · Anna Bright · Federico Staksrud · Tyson McGuffin · Collin Johns · Agassi · Graf",
+      "cadence": "A pro generation each spring, a summer colorway drop, a fall value launch.",
+      "story": "Spent 2026 turning its Propulsion Core patents into a licensing business: eleven brands named at the ITC, eight settled. Shipped a careful Pro V while the field went foam, then answered with POWER FX at $180. Still in court with USA Pickleball over the 2024 Gen 3 decertification."
+    },
+    {
+      "brand": "Selkirk",
+      "hq": "Hayden, Idaho",
+      "founded": "2014",
+      "owner": "Barnes family · minority investment from Bluestone Equity Partners (Jan 2026)",
+      "lines": "OMNI · Labs (Boomstik, Project 007) · SLK (Valkyrie, Geo, Dauntless) · now Bread & Butter",
+      "pros": "Jack Sock · Parris Todd · Dylan Frazier (2026 roster not fully verified)",
+      "cadence": "A Labs project each August, mainlined the next June. SLK as the value tier.",
+      "story": "The busiest corporate year in the category: first outside money, a full SLK reset, the OMNI at $300, a Tesla co-brand, and the Bread & Butter acquisition. Lost Rohrabacher and Koszuta to Friday."
+    },
+    {
+      "brand": "CRBN",
+      "hq": "Costa Mesa, California",
+      "founded": "2020",
+      "owner": "Founders Garrett Gosselin and Kyle Goguen",
+      "lines": "TruFoam Genesis · Waves · Barrage · X Series",
+      "pros": "Andrei Daescu · Alex and Angie Walker · Dani-Elle Townsend",
+      "cadence": "A TruFoam line every six to eight months.",
+      "story": "Recovered from the Waves with the Barrage. Holds a full-foam core patent and used it on Vatic Pro. Held MSRP at $280 through the tariff year; older TruFoam lines now sell at $199.99."
+    },
+    {
+      "brand": "Six Zero",
+      "hq": "Sunshine Coast, Queensland, Australia",
+      "founded": "2022",
+      "owner": "Founder Dale Young · family-owned",
+      "lines": "Next Gem: Coral · Coral Pro · Black Opal · Boulder Opal · Ruby Pro · Double Black Diamond",
+      "pros": "Blaine Hovenier · Gabe Joseph · Jaume Martinez Vich",
+      "cadence": "A new gem every two to three months since October 2025.",
+      "story": "Bet the year on grit that lasts (Diamond Tough, then SharkSkin) and on shipping one paddle per rulebook. Lost Quang Duong to Wika."
+    },
+    {
+      "brand": "Gearbox",
+      "hq": "California",
+      "founded": "2007",
+      "owner": "Founder Rafael Filippini · family-owned",
+      "lines": "Pressure X · GX2 Power · Pro Ultimate · GBX · CX",
+      "pros": "",
+      "cadence": "A flagship each late summer or fall, plus a value line.",
+      "story": "The contrarian. Carbon-rib cores from its racquetball roots instead of bead foam, close to fifty patents, not named in the JOOLA case, and first to market a paddle as certified under the new spin test."
+    },
+    {
+      "brand": "Paddletek",
+      "hq": "Niles, Michigan",
+      "founded": "2010",
+      "owner": "Paddletek Group (with ProXR, PIKKL, Padeltek, Yobow) · backed by Thirty-5 Capital",
+      "lines": "Honeyfoam · Bantam · Tempest",
+      "pros": "Christian Alshon · the Johnsons · Riley Newman · Zane Navratil · Connor Garnett · Tyra Black",
+      "cadence": "Two to three launches a year.",
+      "story": "Lost Anna Leigh Waters in the first week of January, launched its first foam paddle three weeks later, settled with JOOLA in May, bought PIKKL in July. Official paddle of the PPA, MLP, the US Open and Nationals. Needs a royalty-free flagship next."
+    },
+    {
+      "brand": "Engage",
+      "hq": "Florida",
+      "founded": "",
+      "owner": "Founder and CEO Robert Elliott",
+      "lines": "X2 · ProFoam · Alpha Pro",
+      "pros": "Eric Oncins · Jessie Irvine",
+      "cadence": "One flagship a year.",
+      "story": "Rebuilt as 'Engage 2.0': production moved overseas, an office in Ho Chi Minh City, back on the PPA as a sponsor, and the X2 as one of the better-reviewed foam paddles of the spring. Settled with JOOLA by September."
+    },
+    {
+      "brand": "ProKennex",
+      "hq": "Taichung, Taiwan",
+      "founded": "1978 (brand)",
+      "owner": "Kunnan Enterprises lineage",
+      "lines": "Black Ace · Black Ace Avenger 11 · Kinetic",
+      "pros": "Daniel De La Rosa",
+      "cadence": "About one paddle family a year.",
+      "story": "The arm-health brand. New Black Ace Avenger 11mm models ($220, USAP approved) appeared this year without a launch announcement we could date. The original 11mm Black Aces were sunset by USAP in July 2025."
+    },
+    {
+      "brand": "Franklin",
+      "hq": "Massachusetts",
+      "founded": "1946",
+      "owner": "Family-owned",
+      "lines": "C45 Aurelius · FS Tour · Signature",
+      "pros": "Anna Leigh Waters · Hayden Patriquin",
+      "cadence": "Signature-led.",
+      "story": "Bought the best player in the world and built her a paddle. Lost the Johnsons the same month. One of two brands still fighting JOOLA at the ITC."
+    },
+    {
+      "brand": "11SIX24",
+      "hq": "Charlotte, North Carolina",
+      "founded": "2023",
+      "owner": "Founder David Groechel",
+      "lines": "Power 2 · Jelly Bean 2",
+      "pros": "Dekel Bar · Augie Ge",
+      "cadence": "Two platform launches a year, shapes released in waves.",
+      "story": "HexGrit tested as the most durable face in the Pickleball Effect lab (98% retained). Signed two tour names and kept everything under $210."
+    },
+    {
+      "brand": "Vatic Pro",
+      "hq": "Orange County, California",
+      "founded": "",
+      "owner": "Founder Daryl Wang",
+      "lines": "V-Sol Tour · V-Sol Pro · V-Sol Power · Saga · Prism",
+      "pros": "",
+      "cadence": "A fall platform launch.",
+      "story": "The value benchmark. Settled CRBN's patent suit in the spring and came back in September with full foam and durable grit at $109.99."
+    },
+    {
+      "brand": "Ronbus",
+      "hq": "",
+      "founded": "2023",
+      "owner": "Founder Dong Li",
+      "lines": "Quanta Pro · Quanta · R-series",
+      "pros": "",
+      "cadence": "A fall platform launch.",
+      "story": "Engineering-first value brand. The Quanta Pro's interlocking foam core and NanoBond grit put a 9-for-power paddle at $100 with a code."
+    },
+    {
+      "brand": "Honolulu",
+      "hq": "Honolulu and Mililani, Hawaii",
+      "founded": "",
+      "owner": "",
+      "lines": "CR series · Crystal Blue Endurance Surface",
+      "pros": "",
+      "cadence": "Rolling preorders.",
+      "story": "Designed in Hawaii, made in China, by a team with aviation engineering backgrounds. The J6CR was the enthusiast favorite of the spring; Crystal Blue tested at 97% grit retention."
+    },
+    {
+      "brand": "Holbrook",
+      "hq": "Logan, Utah",
+      "founded": "2021",
+      "owner": "The Holbrook family",
+      "lines": "Fuze · Aero",
+      "pros": "",
+      "cadence": "One flagship a year, deep Black Friday discounts.",
+      "story": "The Fuze put a design-first brand into best-paddle-of-the-year conversations. An Aero Foam hybrid is already on the USAP list."
+    },
+    {
+      "brand": "Friday",
+      "hq": "San Francisco, California",
+      "founded": "2022",
+      "owner": "",
+      "lines": "Aura · Aura Pro · Original",
+      "pros": "Rachel Rohrabacher · Kyle Koszuta",
+      "cadence": "",
+      "story": "Went from budget two-packs to a reviewed performance paddle and its first two pros in a single March. Named by JOOLA in April, settled by September."
+    },
+    {
+      "brand": "Proton",
+      "hq": "Scottsdale, Arizona",
+      "founded": "2021",
+      "owner": "Founder Charles Darling",
+      "lines": "Project Coyote · Series Three (Peacock, Roadrunner)",
+      "pros": "Jackie and Jade Kawamoto",
+      "cadence": "",
+      "story": "A hard year: banned from the PPA for three weeks over debts, under USAP grit investigation, settled with JOOLA and stopped production, lost Ge and Daescu. Coyote is the restart."
+    },
+    {
+      "brand": "Volair",
+      "hq": "Austin, Texas",
+      "founded": "",
+      "owner": "Co-founders Ryan Cohen and Julian Arnold",
+      "lines": "Shift · Mach",
+      "pros": "Julian Arnold",
+      "cadence": "",
+      "story": "Opened the year with its first foam paddle. Named by JOOLA in April, settled by September."
+    },
+    {
+      "brand": "Enhance",
+      "hq": "",
+      "founded": "",
+      "owner": "Founders Connor Hance and Drew Baird",
+      "lines": "Turbo EPP · Turbo MPP",
+      "pros": "",
+      "cadence": "",
+      "story": "A two-person company that made $99 full foam the budget story of the spring, and let buyers pick their foam."
+    },
+    {
+      "brand": "Spartus",
+      "hq": "Near Denver, Colorado",
+      "founded": "",
+      "owner": "Founder Josh Kim",
+      "lines": "P1 · Spitfire",
+      "pros": "",
+      "cadence": "",
+      "story": "PermaGrit is applied in the US. The P1 proved the surface; the $99 Spitfire in July put it, mixed-density foam and internal 3-and-9 weights at the floor price."
+    },
+    {
+      "brand": "Chorus",
+      "hq": "McKinney, Texas",
+      "founded": "",
+      "owner": "Founder Matt Cox",
+      "lines": "Coda · Shapeshifter",
+      "pros": "",
+      "cadence": "",
+      "story": "Enthusiast direct seller. Offered early Coda buyers an upgrade when Harmony Grit arrived weeks after launch."
+    },
+    {
+      "brand": "Pickleball Apes",
+      "hq": "Wilmington, Delaware",
+      "founded": "2023",
+      "owner": "",
+      "lines": "Zen S+ · Joy S+ · Pulse",
+      "pros": "",
+      "cadence": "",
+      "story": "Known for aramid-blend faces. The Zen S+ is the oddest power curve of the year; the Joy is its sub-$100 foam line."
+    },
+    {
+      "brand": "Luzz",
+      "hq": "US office · made in China",
+      "founded": "2019",
+      "owner": "",
+      "lines": "Inferno2 M1 · Cannon2 M1 · Glider",
+      "pros": "Chris Haworth · Roscoe Bellamy",
+      "cadence": "",
+      "story": "Spent a year getting back on the UPA-A list one paddle at a time after a 2025 submission error, then signed Chris Haworth away from Babolat."
+    },
+    {
+      "brand": "Owl",
+      "hq": "",
+      "founded": "",
+      "owner": "",
+      "lines": "Talon X1 · OWL",
+      "pros": "Jack Munro",
+      "cadence": "",
+      "story": "The only brand in USAP's Quiet Category with a tournament-legal paddle. Its approval path drew scrutiny in July."
+    },
+    {
+      "brand": "Thrive",
+      "hq": "Las Vegas, Nevada",
+      "founded": "",
+      "owner": "",
+      "lines": "Ignite Hybrid Foam",
+      "pros": "",
+      "cadence": "",
+      "story": "A three-foam core with internal weighting at 15.5mm, an unusual thickness."
+    },
+    {
+      "brand": "Neonic",
+      "hq": "El Cajon, California",
+      "founded": "",
+      "owner": "Co-founders Vinh and Brandon",
+      "lines": "Swift FLX · Frost FLX · Ember",
+      "pros": "",
+      "cadence": "",
+      "story": "An affordable San Diego-area brand whose first MPP paddles won over Matt's Pickleball. Ember Ultra is on the USAP list."
+    },
+    {
+      "brand": "RPM",
+      "hq": "",
+      "founded": "",
+      "owner": "",
+      "lines": "Friction Pro V2 · Q2 · Jade",
+      "pros": "",
+      "cadence": "",
+      "story": "The spin specialist, and with Franklin one of the two respondents still fighting JOOLA."
+    },
+    {
+      "brand": "HEAD",
+      "hq": "Kennelbach, Austria · US pickleball unit in Phoenix",
+      "founded": "1950",
+      "owner": "",
+      "lines": "Boom Pro EX15 · Radical · Gravity",
+      "pros": "",
+      "cadence": "Annual model-year refresh.",
+      "story": "Went full foam with TriFlex cores and is building a US-based pickleball team."
+    },
+    {
+      "brand": "Wilson",
+      "hq": "Chicago, Illinois",
+      "founded": "1913",
+      "owner": "Amer Sports",
+      "lines": "Strikefoam: Blaze SF · Cadence SF · Vesper SF",
+      "pros": "",
+      "cadence": "",
+      "story": "First full-foam line in Q1, a stack of further approvals through July. Not yet at the level of the specialists, by reviewer consensus."
+    },
+    {
+      "brand": "Bread & Butter",
+      "hq": "Florida",
+      "founded": "2022",
+      "owner": "Selkirk (acquired May 12, 2026) · founder Doug Sapusek stays",
+      "lines": "Loco · Filth V2 · Invader",
+      "pros": "",
+      "cadence": "",
+      "story": "The loud brand got bought. The 2025 Loco is still one of the best-value foam paddles; the Filth V2 was reviewed in April."
+    }
+  ],
+  "undated": [
+    {
+      "brand": "Paddletek",
+      "model": "Honeyfoam ESQ",
+      "note": "$249.99, standard shape, 14 and 16mm. The 14mm is UPA-A only. Release date not confirmed.",
+      "source": "https://www.paddletek.com/products/honeyfoam-esq"
+    },
+    {
+      "brand": "ProKennex",
+      "model": "Black Ace Avenger 11 · Avenger LG 11",
+      "note": "$220, 11mm, USAP approved. Flagged new on the brand site; no launch announcement found.",
+      "source": "https://prokennex.com/products/kinetic-black-ace-avenger-lg-11"
+    },
+    {
+      "brand": "HEAD",
+      "model": "Radical Pro EX15 · Radical Tour 15 · Gravity Pro EX15 (2026)",
+      "note": "TriFlex Versatility core, 15mm. Retail listings from around the start of the year.",
+      "source": "https://www.head.com/en_GB/product/radical-pro-ex15-2026-200135"
+    },
+    {
+      "brand": "Bread & Butter",
+      "model": "Filth V2.0",
+      "note": "Reviewed April 2026. Launch date not confirmed.",
+      "source": "https://pickleballunion.com/bread-butter-filth-v2-0-hybrid-paddle-review/"
+    },
+    {
+      "brand": "Pickleball Apes",
+      "model": "Joy S+",
+      "note": "Sub-$100 foam. USAP approved in Q2; on-sale date not confirmed.",
+      "source": "https://pickleballeffect.com/equipment-reviews/pickleball-apes-in-depth-review/"
+    },
+    {
+      "brand": "Six Zero",
+      "model": "Black Opal Elongated",
+      "note": "Listed under latest releases. Could not confirm it is a 2026 launch.",
+      "source": "https://us.sixzeropickleball.com/"
+    }
+  ],
+  "method": [
+    "Every entry links to where it came from: brand press releases, the approval lists, and the reviewers who measure things (Pickleball Effect, John Kew, Pickleheads, The Kitchen, The Dink, Pickleball Studio, Pickleball Blast, PickleTip).",
+    "Dates carry a precision. 'Day' means a press release or launch article names it. 'Month' means reviews and listings bracket it. 'Quarter' means we know roughly when and say so.",
+    "Confidence is marked on each line. High: a first-party page plus a reviewer, or two independent sources. Medium: one good source. Low: a retailer listing or an approval-list entry only.",
+    "Certification is shown only where a source states it. Blank does not mean unapproved. Check the USAP and UPA-A lists before a tournament.",
+    "Forecasts are labeled by what they rest on: a rule, a pattern, an inference, or an open question. None of them is inside information.",
+    "Prices are US list prices at launch. Most direct-to-consumer brands run a standing 10% reviewer code."
+  ],
+  "releases": [
+    {
+      "id": "volair-shift",
+      "brand": "Volair",
+      "model": "Shift",
+      "date": "2026-01-07",
+      "precision": "month",
+      "dateLabel": "January",
+      "status": "released",
+      "msrp": 189.99,
+      "build": "foam",
+      "thickness": "14mm",
+      "shapes": "Widebody · Hybrid · Elongated",
+      "tech": "Volair's first Gen 4 full-foam paddle. Four-layer T700 carbon face.",
+      "specs": "Widebody SW 105.4 / TW 7.1",
+      "usap": "yes",
+      "upaa": "unknown",
+      "pro": "Julian Arnold (co-founder)",
+      "take": "Pickleheads called it the new king of spin. Light and quick in the hands, gives up power to the heavier hitters. Demand pushed first shipments to mid-February.",
+      "sources": [
+        "https://www.pickleheads.com/pickleball-gear/volair-shift-review",
+        "https://www.pickletip.com/volair-shift-review/"
+      ],
+      "confidence": "high",
+      "short": "Volair Shift"
+    },
+    {
+      "id": "franklin-c45-aurelius",
+      "brand": "Franklin",
+      "model": "C45 Aurelius",
+      "date": "2026-01-16",
+      "precision": "day",
+      "dateLabel": "Jan 16 preorder · ships Mar 1",
+      "status": "released",
+      "msrp": 229.99,
+      "build": "hybrid",
+      "thickness": "12.7 / 14 / 16mm",
+      "shapes": "Custom Aurelius shape",
+      "tech": "Double-thermoformed unibody, T700 carbon laid at 45 degrees, PowerFlex polypropylene core with an inner foam layer.",
+      "specs": "",
+      "usap": "pending",
+      "upaa": "yes",
+      "certNote": "UPA-A approved Feb 6. USAP was still pending as of Feb 7; later status not confirmed here.",
+      "pro": "Anna Leigh Waters",
+      "take": "The signing of the year gets a signature paddle. Extremely fast, spinny and controlled, short on free power. Built for 4.0+ hands players. The 12.7mm is Waters' own spec.",
+      "sources": [
+        "https://www.thedinkpickleball.com/anna-leigh-waters-signature-franklin-paddle-the-aurelius-is-approved-for-pro-play/",
+        "https://www.pickleheads.com/pickleball-gear/franklin-c45-aurelius-review"
+      ],
+      "confidence": "high",
+      "short": "Franklin C45 Aurelius"
+    },
+    {
+      "id": "paddletek-reserve-honeyfoam",
+      "brand": "Paddletek",
+      "model": "Reserve Honeyfoam No.001",
+      "date": "2026-01-27",
+      "precision": "day",
+      "dateLabel": "Jan 27",
+      "status": "limited",
+      "msrp": 249.99,
+      "build": "foam",
+      "thickness": "14 / 16mm",
+      "shapes": "Elongated",
+      "tech": "Paddletek's first foam paddle. Three-foam core: low-density EPP, EVA wrap, perimeter foam ring. T700 unidirectional raw carbon, Shock Arrestor edge guard.",
+      "specs": "",
+      "usap": "yes",
+      "upaa": "yes",
+      "certNote": "Approvals confirmed for the 16mm via retailer listing.",
+      "pro": "",
+      "take": "A limited run sold only direct and at PickleballCentral. Four months later the JOOLA settlement put a sunset on it: phased out through fall 2026.",
+      "sources": [
+        "https://thekitchenpickle.com/blogs/gear/paddletek-reserve-honeyfoam-pickleball-paddle-review/"
+      ],
+      "confidence": "high",
+      "short": "Paddletek Reserve Honeyfoam"
+    },
+    {
+      "id": "holbrook-fuze",
+      "brand": "Holbrook",
+      "model": "Fuze",
+      "date": "2026-02-12",
+      "precision": "day",
+      "dateLabel": "Feb 12",
+      "status": "released",
+      "msrp": 230,
+      "build": "foam",
+      "thickness": "14 / 16mm",
+      "shapes": "Widebody · Hybrid · Elongated",
+      "tech": "Dual-density foam core: low density through the lower and middle face, high density at the top. Carbon-aramid-carbon face.",
+      "specs": "",
+      "usap": "unknown",
+      "upaa": "unknown",
+      "pro": "",
+      "take": "Pickleheads' number one overall and the only paddle they score a 10 for both power and control. Pickleball Blast questions the value against cheaper foam. Limited editions run $250.",
+      "sources": [
+        "https://www.pickleheads.com/pickleball-gear/holbrook-fuze-review",
+        "https://thekitchenpickle.com/blogs/gear/holbrook-fuze-pickleball-paddle-review/",
+        "https://www.thepickleballblast.com/blog/holbrook-fuze-pickleball-paddle-review-smart-foam-upgrade-with-dual-density"
+      ],
+      "confidence": "high",
+      "short": "Holbrook Fuze"
+    },
+    {
+      "id": "11six24-power-2",
+      "brand": "11SIX24",
+      "model": "Power 2 family (HexGrit)",
+      "date": "2026-02-13",
+      "precision": "day",
+      "dateLabel": "Feb 13 (Vapor) · Ultré Jun 5",
+      "status": "released",
+      "msrp": 209.99,
+      "build": "foam",
+      "thickness": "16mm",
+      "shapes": "Vapor hybrid · Hurache-X elongated · Pegasus widebody · Ultré",
+      "tech": "Gen 4 full floating foam core. HexGrit durable surface; the brand claims 98% grit retention and about 2,335 RPM.",
+      "specs": "",
+      "usap": "unknown",
+      "upaa": "yes",
+      "certNote": "UPA-A approved. One source also lists USAP.",
+      "pro": "Dekel Bar · Augie Ge (signed for 2026)",
+      "take": "The Vapor went live Feb 13 at noon Pacific; the other shapes followed through Q1 and the Ultré in June. A top-five paddle of the spring. Durable grit is the headline, and it plays calmer than the Power name suggests.",
+      "sources": [
+        "https://www.pickletip.com/11six24-vapor-power-2-drop-time/",
+        "https://thekitchenpickle.com/blogs/gear/top-5-pickeball-paddles-spring-2026/",
+        "https://11six24.com/collections/power-2"
+      ],
+      "confidence": "high",
+      "short": "11SIX24 Power 2"
+    },
+    {
+      "id": "selkirk-slk-reset",
+      "brand": "Selkirk",
+      "model": "SLK reset: Valkyrie · Geo · Dauntless",
+      "date": "2026-02-17",
+      "precision": "day",
+      "dateLabel": "Feb 17",
+      "status": "released",
+      "msrp": 180,
+      "msrpLabel": "$80 · $100 · $180",
+      "build": "foam",
+      "thickness": "16mm",
+      "shapes": "Widebody · Elongated",
+      "tech": "Valkyrie: X5 polymer core, fiberglass face. Geo: T700 raw carbon, Rev-Pro polymer core, MOI tuning. Dauntless: one-piece SoloCore PureFoam with IsoFlex cutouts and the MOI Tuning System.",
+      "specs": "",
+      "usap": "unknown",
+      "upaa": "unknown",
+      "pro": "",
+      "take": "Selkirk cleared the shelf. Halo, EVO, Atlas, Latitude, Amped Control and Vanguard Control all retired, replaced by three sub-$200 paddles. The Dauntless puts full foam at $180 under a major-brand logo.",
+      "sources": [
+        "https://www.selkirk.com/pages/press-releases/selkirk-releases-all-new-slk-lineup",
+        "https://www.thedinkpickleball.com/selkirk-resets-slk-line-with-3-new-sub-200-paddles-dauntless-geo-valkyrie/"
+      ],
+      "confidence": "high",
+      "short": "Selkirk SLK reset"
+    },
+    {
+      "id": "honolulu-cr-series",
+      "brand": "Honolulu",
+      "model": "CR series: J6CR · J2CR · J3CR",
+      "date": "2026-02-23",
+      "precision": "month",
+      "dateLabel": "February · rolling preorder",
+      "status": "released",
+      "msrp": 195,
+      "build": "foam",
+      "thickness": "16mm",
+      "shapes": "J6CR elongated · J2CR hybrid · J3CR widebody",
+      "tech": "Core Reactor full floating foam with a central solid foam layer. Carbon face.",
+      "specs": "J6CR SW 112 / TW 6.22 · 8.0 oz · 2,048 RPM",
+      "usap": "unknown",
+      "upaa": "unknown",
+      "pro": "",
+      "take": "The Kitchen called the J6CR the best full-foam paddle on the market; Pickleheads called it the hardest hitter under $200. Power comes at some cost to control. A batch was scheduled to ship March 31.",
+      "sources": [
+        "https://pickleballeffect.com/equipment-reviews/honolulu-pickleball-j6cr-review/",
+        "https://thekitchenpickle.com/blogs/gear/honolulu-j6cr-pickleball-paddle-review/"
+      ],
+      "confidence": "high",
+      "short": "Honolulu CR series"
+    },
+    {
+      "id": "rpm-friction-pro-v2",
+      "brand": "RPM",
+      "model": "Friction Pro V2",
+      "date": "2026-02-27",
+      "precision": "day",
+      "dateLabel": "Feb 27",
+      "status": "released",
+      "msrp": 249.99,
+      "build": "unknown",
+      "thickness": "16mm",
+      "shapes": "Elongated",
+      "tech": "Axial carbon layup aimed at maximum spin.",
+      "specs": "",
+      "usap": "unknown",
+      "upaa": "unknown",
+      "pro": "",
+      "take": "Pickleheads: the spinniest paddle they have tested. RPM is one of the two brands still fighting JOOLA's patent case.",
+      "sources": [
+        "https://rpmpb.com/products/rpm-friction-pro-16mm-elongated-v2"
+      ],
+      "confidence": "medium",
+      "short": "RPM Friction Pro V2"
+    },
+    {
+      "id": "enhance-turbo",
+      "brand": "Enhance",
+      "model": "Turbo (EPP and MPP)",
+      "date": "2026-03-01",
+      "precision": "day",
+      "dateLabel": "Mar 1",
+      "status": "released",
+      "msrp": 119.99,
+      "build": "foam",
+      "thickness": "16mm",
+      "shapes": "Elongated · Widebody · Hybrid",
+      "tech": "Full floating foam. EPP center with an EVA ring, or an MPP version. Carbon / fiberglass / carbon face over raw T700.",
+      "specs": "",
+      "usap": "yes",
+      "upaa": "unknown",
+      "pro": "",
+      "take": "One of the most talked-about budget launches of the year: $99.99 with a code. The EPP is the approachable one; the MPP feels crisper once you adjust.",
+      "sources": [
+        "https://thekitchenpickle.com/blogs/gear/enhance-pickleball-turbo-paddles-budget-price/",
+        "https://www.pickleheads.com/pickleball-gear/enhance-mpp-turbo-review"
+      ],
+      "confidence": "high",
+      "short": "Enhance Turbo"
+    },
+    {
+      "id": "joola-pro-v",
+      "brand": "JOOLA",
+      "model": "Pro V collection (KineticFrame)",
+      "date": "2026-03-03",
+      "precision": "day",
+      "dateLabel": "Mar 3 · pro debut Feb 10 week",
+      "status": "released",
+      "msrp": 299.95,
+      "build": "hybrid",
+      "thickness": "14 / 16mm",
+      "shapes": "Perseus · Scorpeus · Hyperion · Kosmos (new hybrid) · Agassi · Graf",
+      "tech": "Patent-pending KineticFrame flexing throat on top of the Propulsion Core (polymer honeycomb plus foam). TechFlex, peel-ply carbon face.",
+      "specs": "Perseus 16 SW 117 / TW 6.26 · Kosmos 16 114 / 6.68 · Scorpeus 16 113 / 7.21",
+      "usap": "yes",
+      "upaa": "yes",
+      "certNote": "Eleven Pro V models hit the UPA-A list the week of Feb 10.",
+      "pro": "Ben Johns · Anna Bright · Federico Staksrud · Tyson McGuffin",
+      "take": "Debuted on tour at PPA Cape Coral, preorders reported from Feb 24, official launch Mar 3. A refinement: more control and consistency, less free power than Pro IV. Pickleball Effect's headline asked whether JOOLA was falling behind the foam field. The Kosmos is JOOLA's first hybrid shape.",
+      "sources": [
+        "https://joola.com/blogs/updates/joola-launches-pro-v-pickleball-paddle-collection",
+        "https://pickleballeffect.com/equipment-reviews/joola-pro-v-review-refinement-or-falling-behind/",
+        "https://www.thedinkpickleball.com/first-look-joola-is-releasing-a-hybrid-shape-pickleball-paddle-meet-kosmos/"
+      ],
+      "confidence": "high",
+      "short": "JOOLA Pro V"
+    },
+    {
+      "id": "friday-aura",
+      "brand": "Friday",
+      "model": "Aura and Aura Pro",
+      "date": "2026-03-06",
+      "precision": "day",
+      "dateLabel": "Mar 6",
+      "status": "released",
+      "msrp": 169,
+      "msrpLabel": "$129 · $169",
+      "build": "foam",
+      "thickness": "",
+      "shapes": "Elongated · Hybrid · Widebody",
+      "tech": "Aura: full foam with rubber inserts and cartilage-style foam in the throat. Aura Pro: double-thermoformed floating EPP core, EVA surround, ElasTECH perimeter weighting ring.",
+      "specs": "Elongated: Aura SW 118 / TW 5.7 · Aura Pro 116 / 6.0",
+      "usap": "yes",
+      "upaa": "unknown",
+      "pro": "Rachel Rohrabacher · Kyle Koszuta (brand signings)",
+      "take": "The paddle that moved Friday from budget two-packs to a real performance brand. Pickleheads scores the Pro 9+ across the board.",
+      "sources": [
+        "https://thekitchenpickle.com/blogs/gear/friday-aura-aura-pro-pickleball-paddle-review/",
+        "https://www.pickleheads.com/pickleball-gear/friday-aura-pro-review"
+      ],
+      "confidence": "high",
+      "short": "Friday Aura + Aura Pro"
+    },
+    {
+      "id": "crbn-barrage",
+      "brand": "CRBN",
+      "model": "TruFoam Barrage",
+      "date": "2026-03-17",
+      "precision": "day",
+      "dateLabel": "Mar 17 · presale Mar 13",
+      "status": "released",
+      "msrp": 279.99,
+      "build": "foam",
+      "thickness": "14mm",
+      "shapes": "CRBN2 square and CRBN4 hybrid at launch · CRBN1 and CRBN3 later",
+      "tech": "100% floating foam Void Core: EPP center with void cutouts, thin EVA ring, outer EPP layer running through the handle. T700 peel-ply raw carbon.",
+      "specs": "Barrage 2 SW 110.1 / TW 6.9 · Barrage 4 108.8 / 6.6",
+      "usap": "yes",
+      "upaa": "yes",
+      "certNote": "Per retailer listing.",
+      "pro": "Andrei Daescu",
+      "take": "CRBN's third TruFoam line in fourteen months and the best one. Fixes the small sweet spot that sank the Waves. Power with forgiveness, aimed at 4.0+.",
+      "sources": [
+        "https://www.thepickleballblast.com/blog/crbn-trufoam-barrage-first-look-the-trufoam-20-weve-been-waiting-for",
+        "https://www.pickleheads.com/pickleball-gear/crbn-trufoam-barrage-review"
+      ],
+      "confidence": "high",
+      "short": "CRBN TruFoam Barrage"
+    },
+    {
+      "id": "wilson-strikefoam",
+      "brand": "Wilson",
+      "model": "Strikefoam series",
+      "date": "2026-03-22",
+      "precision": "quarter",
+      "dateLabel": "Q1 · exact date unverified",
+      "status": "released",
+      "msrp": 229,
+      "msrpLabel": "$229 – $249",
+      "build": "foam",
+      "thickness": "13 / 16mm",
+      "shapes": "Blaze SF Pro 13 · Cadence SF Pro 16 · Blaze SF Tour 16",
+      "tech": "Solid full-foam Strikefoam core under raw carbon.",
+      "specs": "",
+      "usap": "unknown",
+      "upaa": "unknown",
+      "pro": "",
+      "take": "The legacy racquet house goes full foam. MyPickleList: a step in the right direction, not yet competitive with the best.",
+      "sources": [
+        "https://mypicklelist.com/blog/wilson-strikefoam-review"
+      ],
+      "confidence": "medium",
+      "short": "Wilson Strikefoam series"
+    },
+    {
+      "id": "engage-x2",
+      "brand": "Engage",
+      "model": "X2",
+      "date": "2026-03-24",
+      "precision": "day",
+      "dateLabel": "Mar 24 preorder · ships mid-April",
+      "status": "released",
+      "msrp": 259.99,
+      "build": "foam",
+      "thickness": "16mm",
+      "shapes": "Elongated · Widebody",
+      "tech": "Quad-density foam core: dual-density hitting zone, EVA transition ring, high-density full perimeter. Fiberglass perimeter weighting, micro-weave carbon face.",
+      "specs": "Elongated SW 119 / TW 6.4 · 8.0 oz",
+      "usap": "yes",
+      "upaa": "yes",
+      "certNote": "Per third-party review.",
+      "pro": "Eric Oncins",
+      "take": "Consistent, easy to use, good feel. Matt's Pickleball called it one of the best Gen 4 paddles of the year. Engage was named in JOOLA's patent case in April and had settled by September.",
+      "sources": [
+        "https://thekitchenpickle.com/blogs/gear/engage-x2-pickleball-paddle-expert-review/",
+        "https://engagepickleball.com/pages/engage-x2-pickleball-paddle"
+      ],
+      "confidence": "high",
+      "short": "Engage X2"
+    },
+    {
+      "id": "neonic-flx",
+      "brand": "Neonic",
+      "model": "FLX series: Swift FLX · Frost FLX",
+      "date": "2026-03-25",
+      "precision": "quarter",
+      "dateLabel": "Late Q1",
+      "status": "released",
+      "msrp": 165,
+      "build": "foam",
+      "thickness": "",
+      "shapes": "Swift elongated · Frost hybrid",
+      "tech": "Neonic's first full-foam paddles, on MPP foam, with very low swingweight.",
+      "specs": "",
+      "usap": "unknown",
+      "upaa": "unknown",
+      "pro": "",
+      "take": "Matt's Pickleball titled the review 'this is how MPP should feel.' Launch dates are loose; the Frost surfaced as an approval-list entry in Q2.",
+      "sources": [
+        "https://neonicpickleball.com/products/neonic-pickleball-swift-flx"
+      ],
+      "confidence": "low",
+      "short": "Neonic FLX"
+    },
+    {
+      "id": "chorus-coda",
+      "brand": "Chorus",
+      "model": "Coda · Coda Harmony Grit",
+      "date": "2026-04-02",
+      "precision": "month",
+      "dateLabel": "Early 2026 · Harmony Grit in April",
+      "status": "released",
+      "msrp": 199.99,
+      "build": "foam",
+      "thickness": "16mm",
+      "shapes": "E elongated · H hybrid · S widebody",
+      "tech": "Treblefoam triple-density all-foam core. Harmony Grit is the durable-texture face.",
+      "specs": "",
+      "usap": "yes",
+      "upaa": "unknown",
+      "certNote": "Coda H Harmony Grit approved by USAP Apr 2.",
+      "pro": "",
+      "take": "A touch-first Gen 4 paddle with a compliant feel and elite spin potential. Early buyers were offered a grit upgrade around April 20.",
+      "sources": [
+        "https://choruspickleball.com/products/coda-all-foam-power-hybrid-h-harmony-grit",
+        "https://www.pickletip.com/new-pickleball-paddle-approvals/"
+      ],
+      "confidence": "medium",
+      "short": "Chorus Coda"
+    },
+    {
+      "id": "spartus-p1",
+      "brand": "Spartus",
+      "model": "P1 (PermaGrit)",
+      "date": "2026-04-14",
+      "precision": "month",
+      "dateLabel": "April · hybrid listed from January",
+      "status": "released",
+      "msrp": 219.99,
+      "build": "foam",
+      "thickness": "16mm",
+      "shapes": "Hybrid · Standard · Elongated",
+      "tech": "Gen 4 floating EPP foam core. PermaGrit ceramic-hybrid surface, applied in the US.",
+      "specs": "SW 117 / TW 6.51",
+      "usap": "yes",
+      "upaa": "unknown",
+      "certNote": "Standard and Elongated approved by USAP Apr 14.",
+      "pro": "",
+      "take": "Pickleball Studio on the grit: the first one they have seen truly hold. Power and pop are mid-pack. Sources disagree on the hybrid's first-sale date.",
+      "sources": [
+        "https://pickleballstudio.com/reviews/spartus-p1-hybrid-review",
+        "https://www.pickleheads.com/pickleball-gear/spartus-p1-review"
+      ],
+      "confidence": "medium",
+      "short": "Spartus P1"
+    },
+    {
+      "id": "honolulu-crystal-blue",
+      "brand": "Honolulu",
+      "model": "Crystal Blue Endurance Surface (J2CR · J3CR)",
+      "date": "2026-04-22",
+      "precision": "month",
+      "dateLabel": "April reviews · shipped from June",
+      "status": "released",
+      "msrp": 195,
+      "build": "foam",
+      "thickness": "16mm",
+      "shapes": "J2CR hybrid · J3CR widebody",
+      "tech": "The CR core under a crystal-infused particulate grit built to last.",
+      "specs": "",
+      "usap": "pending",
+      "upaa": "yes",
+      "certNote": "USAP was still pending as of June.",
+      "pro": "",
+      "take": "Pickleheads ranks it best spin, with the longest-lasting grit they have tested. Ship dates slid: J3CR expected Jun 15, J2CR Jun 30, one retailer showing late August.",
+      "sources": [
+        "https://www.pickleballglobe.com/2026/04/28/honolulu-j2cr-crystal-blue-endurance-surface-review/",
+        "https://www.pickletip.com/q1-2026-pickleball-paddles-watchlist/"
+      ],
+      "confidence": "medium",
+      "short": "Honolulu Crystal Blue"
+    },
+    {
+      "id": "thrive-ignite",
+      "brand": "Thrive",
+      "model": "Ignite Hybrid Foam",
+      "date": "2026-04-27",
+      "precision": "day",
+      "dateLabel": "Apr 27 est. ship",
+      "status": "released",
+      "msrp": 219.99,
+      "build": "foam",
+      "thickness": "15.5mm",
+      "shapes": "Hybrid",
+      "tech": "Gen 4 multi-foam core using three foam types with targeted internal weighting. Durable grit.",
+      "specs": "SW 113 · 2,088 RPM",
+      "usap": "unknown",
+      "upaa": "unknown",
+      "pro": "",
+      "take": "Pickleball Effect: activated power, meaning it wakes up on full swings, with grit that holds.",
+      "sources": [
+        "https://pickleballeffect.com/equipment-reviews/thrive-ignite-paddle-review/"
+      ],
+      "confidence": "medium",
+      "short": "Thrive Ignite Hybrid Foam"
+    },
+    {
+      "id": "paddletek-tko-x",
+      "brand": "Paddletek",
+      "model": "Honeyfoam TKO-X",
+      "date": "2026-05-13",
+      "precision": "day",
+      "dateLabel": "May 13",
+      "status": "released",
+      "msrp": 249.99,
+      "build": "foam",
+      "thickness": "14 / 16mm",
+      "shapes": "Elongated",
+      "tech": "Honeyfoam three-foam core in Christian Alshon's spec.",
+      "specs": "",
+      "usap": "split",
+      "upaa": "yes",
+      "certNote": "16mm is USAP and UPA-A. The 14mm is UPA-A only: it exceeded USAP's PBCoR limit in March testing.",
+      "pro": "Christian Alshon",
+      "take": "Announced the same day Paddletek settled with JOOLA. The 14mm is the clearest example of the two-rulebook era: legal on the pro tour, not at a USAP-sanctioned event.",
+      "sources": [
+        "https://www.prnewswire.com/news-releases/paddletek-debuts-the-honeyfoam-tko-x-302771519.html"
+      ],
+      "confidence": "high",
+      "short": "Paddletek Honeyfoam TKO-X"
+    },
+    {
+      "id": "gearbox-gbx-power",
+      "brand": "Gearbox",
+      "model": "GBX Power",
+      "date": "2026-05-25",
+      "precision": "quarter",
+      "dateLabel": "First half · reviewed May 25",
+      "status": "released",
+      "msrp": 179.99,
+      "build": "poly",
+      "thickness": "16mm",
+      "shapes": "Elongated · Hybrid",
+      "tech": "Carbon face over a honeycomb core with a Gen 3 feel. Matt's Pickleball: cold-bond Gen 3 at $180.",
+      "specs": "",
+      "usap": "unknown",
+      "upaa": "unknown",
+      "pro": "",
+      "take": "Raw power for less money. Stiff, with limited touch and spin. For 4.0+ players who swing big.",
+      "sources": [
+        "https://www.pickleheads.com/pickleball-gear/gearbox-gbx-power-review"
+      ],
+      "confidence": "medium",
+      "short": "Gearbox GBX Power"
+    },
+    {
+      "id": "joola-rally-rocket",
+      "brand": "JOOLA",
+      "model": "Rally Rocket limited edition",
+      "date": "2026-05-26",
+      "precision": "day",
+      "dateLabel": "May 26",
+      "status": "limited",
+      "msrp": 329.95,
+      "build": "hybrid",
+      "thickness": "14 / 16mm",
+      "shapes": "All five Pro V shapes",
+      "tech": "Pro V construction in a summer-tour colorway. A $139.95 Double Vision version sold through authorized retailers.",
+      "specs": "",
+      "usap": "yes",
+      "upaa": "yes",
+      "pro": "",
+      "take": "A cosmetic drop, and the most expensive paddle on this calendar. It shows what the top of the market will bear for paint.",
+      "sources": [
+        "https://joola.com/blogs/updates/the-2026-joola-pops-summer-tour-is-rolling-in-and-it-s-bringing-the-rally-rocket-paddle-with-it"
+      ],
+      "confidence": "high",
+      "short": "JOOLA Rally Rocket LE"
+    },
+    {
+      "id": "selkirk-omni",
+      "brand": "Selkirk",
+      "model": "OMNI",
+      "date": "2026-06-02",
+      "precision": "day",
+      "dateLabel": "Jun 2",
+      "status": "released",
+      "msrp": 300,
+      "build": "foam",
+      "thickness": "16mm",
+      "shapes": "Elongated · Widebody",
+      "tech": "ReactCore Gen 4: floating PureFoam center, inner PureFoam ring, outer EVA Power Ring. InfiniGrit face. Tool-free removable MOI perimeter weights.",
+      "specs": "Elongated SW 122 / TW 6.87 · Widebody 116 / 7.75 (weights in)",
+      "usap": "yes",
+      "upaa": "split",
+      "certNote": "A separate UPA-A version without the MOI weights goes to pros only.",
+      "pro": "",
+      "take": "The mainline successor to the Boomstik. Aggressive, crisp, very stable, tunable, and heavy to swing. Reviewers split on whether it earns $300.",
+      "sources": [
+        "https://www.selkirk.com/pages/press-releases/selkirk-sport-unveils-the-omni-a-new-standard-for-all-court-pickleball-paddles",
+        "https://pickleballeffect.com/equipment-reviews/selkirk-omni-review/"
+      ],
+      "confidence": "high",
+      "short": "Selkirk OMNI"
+    },
+    {
+      "id": "six-zero-coral-pro",
+      "brand": "Six Zero",
+      "model": "Coral Pro",
+      "date": "2026-06-14",
+      "precision": "month",
+      "dateLabel": "June",
+      "status": "released",
+      "msrp": 220,
+      "build": "foam",
+      "thickness": "16mm",
+      "shapes": "Elongated · Hybrid · Widebody",
+      "tech": "Tectonic floating core: EPP center with a floating EVA band. Diamond Tough grit with roughly twice the diamond dust of the Coral.",
+      "specs": "",
+      "usap": "no",
+      "upaa": "yes",
+      "certNote": "UPA-A only. Not USAP approved.",
+      "pro": "",
+      "take": "More spin, and it lasts: no measurable loss in John Kew's wear test. An easy recommendation unless you need USAP approval. Six Zero now sells one Coral per rulebook.",
+      "sources": [
+        "https://www.johnkewpickleball.com/six-zero-coral-pro-review",
+        "https://us.sixzeropickleball.com/products/coral-pro"
+      ],
+      "confidence": "medium",
+      "short": "Six Zero Coral Pro"
+    },
+    {
+      "id": "luzz-m1",
+      "brand": "Luzz",
+      "model": "Inferno2 M1 · Cannon2 M1 · Glider",
+      "date": "2026-06-25",
+      "precision": "quarter",
+      "dateLabel": "May – June",
+      "status": "released",
+      "msrp": 239,
+      "build": "foam",
+      "thickness": "16mm",
+      "shapes": "Elongated · Hybrid",
+      "tech": "Inferno2 M1: MPP foam core under carbon. Cannon2 M1: MOI side-wing weighting. Glider: Chris Haworth's control build on an 8mm polypropylene core.",
+      "specs": "Inferno2 M1 SW about 120 · about 2,168 RPM",
+      "usap": "yes",
+      "upaa": "yes",
+      "certNote": "UPA-A pulled every Luzz paddle on Mar 31, 2025. Models came back one at a time; these cleared in May 2026. Inferno2 M1 USAP approved Jun 25.",
+      "pro": "Chris Haworth · Roscoe Bellamy",
+      "take": "Grit and spin are up, but so is the price, and MPP cores are everywhere now. Exact launch dates are not pinned.",
+      "sources": [
+        "https://pickleballeffect.com/paddles/luzz-inferno2-m1/",
+        "https://luzzpickleball.com/products/luzz-chris-glider-hybrid-paddle"
+      ],
+      "confidence": "medium",
+      "short": "Luzz M1 line"
+    },
+    {
+      "id": "head-boom-pro-ex15",
+      "brand": "HEAD",
+      "model": "Boom Pro EX15",
+      "date": "2026-06-25",
+      "precision": "day",
+      "dateLabel": "Week of Jun 25",
+      "status": "released",
+      "msrp": null,
+      "build": "foam",
+      "thickness": "15mm",
+      "shapes": "",
+      "tech": "TriFlex Power core in three layers: polypropylene foam center, EPP ring, EVA perimeter.",
+      "specs": "",
+      "usap": "unknown",
+      "upaa": "unknown",
+      "pro": "",
+      "take": "HEAD's full-foam answer, arriving as the company stands up a US pickleball team in Phoenix. No independent review found yet. Price not published in launch coverage.",
+      "sources": [
+        "https://thekitchenpickle.com/blogs/gear/head-boom-pro-ex15-pickleball-paddle-release/"
+      ],
+      "confidence": "medium",
+      "short": "HEAD Boom Pro EX15"
+    },
+    {
+      "id": "spartus-spitfire",
+      "brand": "Spartus",
+      "model": "Spitfire",
+      "date": "2026-07-10",
+      "precision": "month",
+      "dateLabel": "July",
+      "status": "released",
+      "msrp": 99,
+      "build": "foam",
+      "thickness": "",
+      "shapes": "",
+      "tech": "Mixed-density foam core with an EVA band and internal 3 g weights at 3 and 9 o'clock. PermaGrit durable face.",
+      "specs": "",
+      "usap": "unknown",
+      "upaa": "unknown",
+      "pro": "",
+      "take": "John Kew led a newsletter with it: the features of a $220 paddle, internal weighting included, at $99.",
+      "sources": [
+        "https://johnkewpickleball.beehiiv.com/p/johnkew-newsletter-the-99-spartus-spitfire-our-new-paddle-comparison-lab"
+      ],
+      "confidence": "medium",
+      "short": "Spartus Spitfire"
+    },
+    {
+      "id": "owl-talon-x1",
+      "brand": "Owl",
+      "model": "Talon X1",
+      "date": "2026-07-28",
+      "precision": "quarter",
+      "dateLabel": "By July · reviewed Jul 28",
+      "status": "released",
+      "msrp": 229,
+      "build": "poly",
+      "thickness": "14.5mm",
+      "shapes": "Elongated",
+      "tech": "Reactive polypropylene honeycomb core with an Acoustene carbon-and-polymer damping face.",
+      "specs": "SW about 131 · about 2,300 RPM claimed",
+      "usap": "yes",
+      "upaa": "unknown",
+      "certNote": "USAP approved and in the USAP Quiet Category.",
+      "pro": "Jack Munro",
+      "take": "Real power from a quiet-approved paddle. Small sweet spot, very heavy swing. The pick for anyone playing under a noise ordinance.",
+      "sources": [
+        "https://www.pickleheads.com/blog/owl-talon-x1-review",
+        "https://shop.owlpaddle.com/products/talon-x1-midnight"
+      ],
+      "confidence": "medium",
+      "short": "Owl Talon X1"
+    },
+    {
+      "id": "apes-zen-s-plus",
+      "brand": "Pickleball Apes",
+      "model": "Zen S+",
+      "date": "2026-08-15",
+      "precision": "month",
+      "dateLabel": "August",
+      "status": "released",
+      "msrp": 199.99,
+      "build": "foam",
+      "thickness": "16mm",
+      "shapes": "Hybrid · 5.75 in handle",
+      "tech": "Diced MPP floating foam core inside three progressively denser foam rings. SilverBack grit under a protective film.",
+      "specs": "SW 107 / TW 7.0 · 7.76 oz",
+      "usap": "yes",
+      "upaa": "unknown",
+      "certNote": "USAP approved Jun 9.",
+      "pro": "",
+      "take": "Pickleball Effect: a genuinely unique power profile. Big on full swings, low pop otherwise.",
+      "sources": [
+        "https://pickleballeffect.com/equipment-reviews/pickleball-apes-in-depth-review/",
+        "https://thekitchenpickle.com/blogs/gear/best-new-pickleball-paddles-september-2026/"
+      ],
+      "confidence": "high",
+      "short": "Pickleball Apes Zen S+"
+    },
+    {
+      "id": "six-zero-boulder-opal",
+      "brand": "Six Zero",
+      "model": "Boulder Opal",
+      "date": "2026-08-16",
+      "precision": "day",
+      "dateLabel": "Aug 16 first look",
+      "status": "released",
+      "msrp": 220,
+      "build": "foam",
+      "thickness": "14mm",
+      "shapes": "Hybrid",
+      "tech": "G4 Aerospace solid foam core, Power Gel, updated Power Band, Shock Shield silicone handle. Patent-pending SharkSkin raw carbon face using aluminum-oxide powder.",
+      "specs": "SW 114 – 115.7 / TW 6.3 – 6.4 · 8.0 – 8.3 oz",
+      "usap": "yes",
+      "upaa": "pending",
+      "pro": "",
+      "take": "Sits between the Coral and the Black Opal: powerful but approachable, with more dwell. A $300 figure in circulation is an Australian-dollar price.",
+      "sources": [
+        "https://www.thedinkpickleball.com/first-look-photos-six-zero-drops-new-boulder-opal-paddle/",
+        "https://pickleballcentral.com/six-zero-boulder-opal-pickleball-paddle/"
+      ],
+      "confidence": "high",
+      "short": "Six Zero Boulder Opal"
+    },
+    {
+      "id": "selkirk-tesla-aurum",
+      "brand": "Selkirk",
+      "model": "Selkirk × Tesla Aurum",
+      "date": "2026-08-20",
+      "precision": "day",
+      "dateLabel": "Aug 20",
+      "status": "limited",
+      "msrp": 295,
+      "build": "foam",
+      "thickness": "",
+      "shapes": "",
+      "tech": "Full foam with a throat hole, TPU Power Ring, two-ply carbon, InfiniGrit and MOI Tuning.",
+      "specs": "",
+      "usap": "yes",
+      "upaa": "unknown",
+      "pro": "",
+      "take": "Sold only on Tesla's site. A co-brand, and also the first retail sighting of a TPU ring in a Selkirk.",
+      "sources": [
+        "https://www.thedinkpickleball.com/selkirk-x-tesla-aurum-pickleball-paddle-photos-price-how-to-buy/"
+      ],
+      "confidence": "high",
+      "short": "Selkirk × Tesla Aurum"
+    },
+    {
+      "id": "11six24-jelly-bean-2",
+      "brand": "11SIX24",
+      "model": "Jelly Bean 2",
+      "date": "2026-08-21",
+      "precision": "day",
+      "dateLabel": "Aug 19 – 21",
+      "status": "released",
+      "msrp": 169.99,
+      "build": "foam",
+      "thickness": "16mm",
+      "shapes": "Hurache-X · Vapor · Ultré · Pegasus",
+      "tech": "A softer, denser foam core than Power 2, with HexGrit. Less power, more dwell.",
+      "specs": "",
+      "usap": "unknown",
+      "upaa": "yes",
+      "certNote": "UPA-A approved Jul 24.",
+      "pro": "",
+      "take": "Control-first, and $100 to $150 under the control paddles from CRBN and Selkirk.",
+      "sources": [
+        "https://www.thedinkpickleball.com/11six24-jelly-bean-2-launch-date-specs-and-photos/",
+        "https://www.pickleheads.com/pickleball-gear/11six24-jelly-bean-2-review"
+      ],
+      "confidence": "high",
+      "short": "11SIX24 Jelly Bean 2"
+    },
+    {
+      "id": "proton-project-coyote",
+      "brand": "Proton",
+      "model": "Project Coyote",
+      "date": "2026-08-26",
+      "precision": "month",
+      "dateLabel": "Summer preorder · reviewed Aug 26",
+      "status": "released",
+      "msrp": 195,
+      "build": "hybrid",
+      "thickness": "15mm",
+      "shapes": "Elongated",
+      "tech": "A Gen 3 build: polypropylene honeycomb with a reinforced foam perimeter under carbon. Not full foam.",
+      "specs": "SW 115 / TW 6.1 · 7.78 oz",
+      "usap": "unknown",
+      "upaa": "unknown",
+      "pro": "",
+      "take": "Proton's most powerful paddle, connected feel. It arrived two months after Proton settled with JOOLA and stopped making the patent-hit models.",
+      "sources": [
+        "https://thekitchenpickle.com/blogs/gear/proton-project-coyote-pickleball-paddle-review/",
+        "https://protonsports.com/pages/coyote-preorder"
+      ],
+      "confidence": "high",
+      "short": "Proton Project Coyote"
+    },
+    {
+      "id": "ronbus-quanta-pro",
+      "brand": "Ronbus",
+      "model": "Quanta Pro",
+      "date": "2026-09-02",
+      "precision": "month",
+      "dateLabel": "By Sep 2",
+      "status": "released",
+      "msrp": 120,
+      "build": "foam",
+      "thickness": "16mm",
+      "shapes": "R2 widebody · R3 elongated · R4 hybrid",
+      "tech": "Mortise-and-tenon interlocking EPP and EVA foam core. NanoBond raw-carbon durable grit.",
+      "specs": "",
+      "usap": "unknown",
+      "upaa": "unknown",
+      "pro": "",
+      "take": "Pickleheads: an absolute winner, 4.5 of 5, and the first $100 paddle they have scored a 9 for power.",
+      "sources": [
+        "https://www.pickleheads.com/pickleball-gear/ronbus-quanta-pro-review",
+        "https://ronbus.com/collections/quanta-series"
+      ],
+      "confidence": "medium",
+      "short": "Ronbus Quanta Pro"
+    },
+    {
+      "id": "vatic-v-sol-tour",
+      "brand": "Vatic Pro",
+      "model": "V-Sol Tour (EverGrit)",
+      "date": "2026-09-10",
+      "precision": "month",
+      "dateLabel": "September",
+      "status": "released",
+      "msrp": 109.99,
+      "build": "foam",
+      "thickness": "16mm",
+      "shapes": "Elongated · Flash hybrid (standard or long handle) · Bloom widebody",
+      "tech": "Gen 4 floating EPP core with an EVA perimeter ring. Carbon / fiberglass / carbon face with EverGrit durable texture.",
+      "specs": "Elongated SW 117 / TW 6.21 · Flash 112 / 6.57 · Bloom 110 / 7.23",
+      "usap": "yes",
+      "upaa": "unknown",
+      "certNote": "Flash 16mm on the USAP list from Jul 21.",
+      "pro": "",
+      "take": "Legitimate power for $100, with a durable grit that normally shows up on $150 to $200 paddles.",
+      "sources": [
+        "https://pickleballeffect.com/equipment-reviews/vatic-pro-v-sol-tour-in-depth-review/",
+        "https://www.pickleheads.com/pickleball-gear/vatic-pro-v-sol-tour-evergrit-review"
+      ],
+      "confidence": "high",
+      "short": "Vatic Pro V-Sol Tour"
+    },
+    {
+      "id": "rpm-jade",
+      "brand": "RPM",
+      "model": "Jade",
+      "date": "2026-09-12",
+      "precision": "month",
+      "dateLabel": "September",
+      "status": "released",
+      "msrp": 269.99,
+      "build": "unknown",
+      "thickness": "14mm",
+      "shapes": "Widebody",
+      "tech": "Details thin. Listed at retail this month alongside the $249.99 Q2.",
+      "specs": "",
+      "usap": "unknown",
+      "upaa": "unknown",
+      "pro": "",
+      "take": "On the calendar because it is on shelves. Not enough independent coverage yet to say more.",
+      "sources": [
+        "https://rpmpb.com/"
+      ],
+      "confidence": "low",
+      "short": "RPM Jade"
+    },
+    {
+      "id": "joola-power-fx",
+      "brand": "JOOLA",
+      "model": "POWER FX",
+      "date": "2026-09-30",
+      "precision": "day",
+      "dateLabel": "Sep 30",
+      "status": "upcoming",
+      "msrp": 179.95,
+      "build": "foam",
+      "thickness": "16mm",
+      "shapes": "Not stated",
+      "tech": "JOOLA's first foam construction, built around the patented Propulsion Core. Daydream green-teal colorway.",
+      "specs": "",
+      "usap": "unknown",
+      "upaa": "unknown",
+      "certNote": "The press release names no certification.",
+      "pro": "",
+      "take": "Teased Sep 3, announced Sep 21, on sale Sep 30. The company suing the field over core patents finally ships foam, and prices it at $180, not $300. No reviews yet.",
+      "sources": [
+        "https://www.prnewswire.com/news-releases/joola-introduces-power-fx-built-to-provide-effortless-power-for-every-player-302884822.html",
+        "https://www.thedinkpickleball.com/joola-power-fx-joola-teases-first-ever-full-foam-paddle/"
+      ],
+      "confidence": "high",
+      "short": "JOOLA POWER FX"
+    },
+    {
+      "id": "gearbox-pressure-x",
+      "brand": "Gearbox",
+      "model": "Pressure X 8E · 8M",
+      "date": "2026-10-01",
+      "precision": "day",
+      "dateLabel": "Ships Oct 1 · preorder open",
+      "status": "upcoming",
+      "msrp": 279.99,
+      "build": "rib",
+      "thickness": "",
+      "shapes": "Elongated+",
+      "tech": "Patent-pending Pressure X Core: SST carbon-rib structure plus engineered foam at a tuned internal pressure. 8E uses EPP, 8M uses MPP. SpinLock face with friction-renewing particles.",
+      "specs": "8E SW 116.65 / TW 5.95 · 2,193 RPM (third-party database)",
+      "usap": "yes",
+      "upaa": "unknown",
+      "certNote": "Marketed as certified under the new USAP spin-rate test ahead of its Oct 1 start.",
+      "pro": "",
+      "take": "Ships the same day the new spin test takes effect, and Gearbox is the first brand selling that as a feature. $539.99 for the pair.",
+      "sources": [
+        "https://gearboxsports.com/pages/pressure-x-series"
+      ],
+      "confidence": "high",
+      "short": "Gearbox Pressure X"
+    }
+  ]
+}

@@ -32,6 +32,15 @@ the table and posts `{type:"paddle-fund:height"}` to the host frame
 (pointcast.xyz/paddle-fund uses it). A real version would ride tez-susu's
 circle contract; nothing is originated for it yet.
 
+**The Paddle Calendar** (`public/paddle-calendar/`, live at
+[/paddle-calendar/](https://tez-rally.pages.dev/paddle-calendar/)) is a sourced
+reference: every 2026 paddle release with date precision, price, build,
+confidence and source links, the rules and lawsuits between them, company
+files, and a forecast labeled by what each call rests on. `data.json` is the
+dataset (the same one pointcast.xyz serves at `/paddle-calendar.json`);
+`index.html` is generated from it, pre-rendered so it reads without
+JavaScript. Edit the data, then `node scripts/build-paddle-calendar.mjs`.
+
 The landing page is the front door for the full Rally identity system:
 pickleball portraits, wallet-owned player cards, countersigned match records,
 and geoconfirmed court passport stamps. The working booth and rating desk stay
