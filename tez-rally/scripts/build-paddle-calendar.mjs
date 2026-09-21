@@ -93,11 +93,11 @@ const ledgerHtml = [...new Set(rows.map((row) => keyOf(row.date)))].map((key) =>
   </article>` : `<article class="rel${r.status === "upcoming" ? " rel-soon" : ""}" id="${r.id}" data-release data-brand="${esc(r.brand)}" data-build="${r.build}" data-tier="${tier(r.msrp)}" data-fund="${r.msrp != null && r.msrp <= FUND_CAP ? 1 : 0}" style="--b:${BUILDS[r.build].color}">
     <p class="when">${esc(r.dateLabel)}<b class="usd">${esc(price(r))}</b></p>
     <div>
-      <h3><span>${esc(r.brand)}</span> ${esc(r.model)}</h3>
+      <h3><a href="https://pointcast.xyz/paddles/${r.id}" rel="noopener"><span>${esc(r.brand)}</span> ${esc(r.model)}</a></h3>
       <p class="meta">${esc([r.thickness, r.shapes, r.pro && `Pro: ${r.pro}`].filter(Boolean).join("  ·  "))}</p>
       <p class="take">${esc(r.take)}</p>
       <p class="tech"><b>Build.</b> ${esc(r.tech)}${r.specs ? ` <b>Measured.</b> ${esc(r.specs)}.` : ""}${r.certNote ? ` <b>Cert.</b> ${esc(r.certNote)}` : ""}</p>
-      <p class="tags"><span class="tag tag-build">${BUILDS[r.build].short}</span>${r.status === "upcoming" ? '<span class="tag tag-soon">not out yet</span>' : ""}${r.status === "limited" ? '<span class="tag">limited run</span>' : ""}${certs(r).map((c) => `<span class="tag">${esc(c)}</span>`).join("")}<span class="tag tag-conf tag-${r.confidence}">${r.confidence} confidence · date to the ${r.precision}</span>${r.sources.map(src).join("")}</p>
+      <p class="tags"><span class="tag tag-build">${BUILDS[r.build].short}</span>${r.status === "upcoming" ? '<span class="tag tag-soon">not out yet</span>' : ""}${r.status === "limited" ? '<span class="tag">limited run</span>' : ""}${certs(r).map((c) => `<span class="tag">${esc(c)}</span>`).join("")}<span class="tag tag-conf tag-${r.confidence}">${r.confidence} confidence · date to the ${r.precision}</span>${r.sources.map(src).join("")}<a class="page" href="https://pointcast.xyz/paddles/${r.id}" rel="noopener">its page in the register →</a></p>
     </div>
   </article>`).join("\n  ")}
 </div>`;
@@ -215,6 +215,8 @@ const html = `<!doctype html>
       text-transform: none; color: var(--ink); font-variant-numeric: lining-nums tabular-nums; }
     .rel h3 { margin: 0; font-family: var(--display); font-weight: 600; font-size: 1.6rem; line-height: 1.05; }
     .rel h3 span { color: var(--muted); }
+    .rel h3 a { color: var(--ink); text-decoration: none; } .rel h3 a:hover { color: var(--court); }
+    .tags a.page { margin-left: auto; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em; }
     .meta { margin: 0.3rem 0 0; font-family: var(--mono); font-size: 0.72rem; color: var(--muted); white-space: pre-wrap; }
     .take { margin: 0.6rem 0 0; max-width: 68ch; font-size: 1.02rem; }
     .tech { margin: 0.45rem 0 0; max-width: 72ch; font-size: 0.9rem; color: #4a433d; }
@@ -303,6 +305,7 @@ const html = `<!doctype html>
         <a href="#ledger">The ledger</a>
         <a href="#ahead">What's next</a>
         <a href="#companies">Company files</a>
+        <a href="/bag/">The bag</a>
         <a href="/paddle-fund/">Paddle fund</a>
         <a href="/#your-number">Your number</a>
       </nav>
@@ -328,8 +331,7 @@ const html = `<!doctype html>
       <div class="year">
 ${yearHtml}
       </div>
-      <p class="note">March was the peak: seven launches in four weeks. July was the quietest month. August and September
-        filled back up ahead of the October 1 spin-test deadline, and two more dated drops land in the next ten days.</p>
+      <p class="note">${esc(meta.yearNote)}</p>
     </section>
 
     <section id="prices" aria-labelledby="prices-title">

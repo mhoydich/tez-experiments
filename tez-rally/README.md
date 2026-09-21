@@ -39,7 +39,10 @@ confidence and source links, the rules and lawsuits between them, company
 files, and a forecast labeled by what each call rests on. `data.json` is the
 dataset (the same one pointcast.xyz serves at `/paddle-calendar.json`);
 `index.html` is generated from it, pre-rendered so it reads without
-JavaScript. Edit the data, then `node scripts/build-paddle-calendar.mjs`.
+JavaScript. Edit the data, then `node scripts/build-paddle-calendar.mjs`. Each row
+links to that paddle's page in the register at pointcast.xyz/paddles/<id>.
+`register.json` is the slim list of every paddle in the register (2025 on)
+that The Bag searches.
 
 **The Bag** (`public/bag/index.html`, live at
 [/bag/](https://tez-rally.pages.dev/bag/)) is a player's paddle log, single

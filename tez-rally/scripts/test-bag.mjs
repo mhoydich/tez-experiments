@@ -135,7 +135,7 @@ test("stored bags pass the same gate", () => {
 });
 
 test("register search", () => {
-  const data = JSON.parse(readFileSync(new URL("../public/paddle-calendar/data.json", import.meta.url), "utf8"));
+  const data = JSON.parse(readFileSync(new URL("../public/paddle-calendar/register.json", import.meta.url), "utf8"));
   const reg = cleanRegister(data);
   assert.equal(reg.length, data.releases.length);
   assert.equal(searchRegister(reg, "volair")[0].id, "volair-shift");
