@@ -41,6 +41,20 @@ dataset (the same one pointcast.xyz serves at `/paddle-calendar.json`);
 `index.html` is generated from it, pre-rendered so it reads without
 JavaScript. Edit the data, then `node scripts/build-paddle-calendar.mjs`.
 
+**The Bag** (`public/bag/index.html`, live at
+[/bag/](https://tez-rally.pages.dev/bag/)) is a player's paddle log, single
+static file: the paddles you carry (picked from the paddle register or typed
+by name), one-tap sessions in half-hour steps, and a wear log (grit checks
+1-5, went dead, disbonding, edge guard, handle, cracked, retired). Each paddle
+gets a ledger line: hours, sessions, hours at the first fading grit check,
+hours when it went dead, and list price per hour after five hours. Local-only
+(`localStorage` key `rally:bag:v1`, in-memory when storage is blocked); the
+whole bag shares in a `#b=` link hash that opens read-only until kept; JSON
+export. No network writes, no account, and a bag never touches the ladder.
+Pooled opt-in lifespans for the register are not built. The pure functions sit
+between `PURE-START` / `PURE-END` markers; `node scripts/test-bag.mjs` lifts
+them out and runs the assertions.
+
 The landing page is the front door for the full Rally identity system:
 pickleball portraits, wallet-owned player cards, countersigned match records,
 and geoconfirmed court passport stamps. The working booth and rating desk stay

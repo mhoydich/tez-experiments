@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Bag — what you carry and how long it lasts · Rally</title>
+  <meta name="description" content="Keep a log of the pickleball paddles you carry: hours played, grit checks, and the day the core went dead. Stored on your device. No account, no wallet, nothing uploaded." />
+  <meta property="og:title" content="The Bag — what you carry and how long it lasts" />
+  <meta property="og:description" content="Log hours and wear on your paddles. Reviewers measure a paddle new. Nobody measures it at hour sixty." />
+  <meta name="twitter:card" content="summary" />
+  <link rel="canonical" href="https://tez-rally.pages.dev/bag/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
+  <style>
+    /* Passport-office family, same as the front desk, the open play desk and the paddle fund. */
+    :root {
+      --paper: #f2efe9; --ink: #241f1c; --court: #1e7a52; --tezos-blue: #0f61ff;
+      --line: #d8d2c6; --muted: #6b6259; --ball: #e9d94a; --clay: #b8482e; --wash: #eef5f0;
+      --mono: ui-monospace, "SF Mono", Menlo, monospace;
+      --display: "Cormorant Garamond", Georgia, serif;
+    }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body { margin: 0; min-height: 100dvh; background: var(--paper); color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif; line-height: 1.5;
+      background-image: radial-gradient(var(--line) 1px, transparent 1px); background-size: 28px 28px; padding: 2rem 0; }
+    .office { width: min(860px, 94vw); margin: 0 auto; background: #fff; border: 1.5px solid var(--ink);
+      padding: 1.2rem 1.2rem 2.5rem; box-shadow: 10px 10px 0 var(--court); }
+    .site-nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      border-bottom: 1.5px solid var(--ink); padding-bottom: 0.8rem; }
+    .nav-mark { font-family: var(--display); font-weight: 700; font-size: 1.9rem; line-height: 1; color: var(--ink); text-decoration: none; }
+    .site-nav nav { display: flex; gap: 0.5rem 1.1rem; flex-wrap: wrap; justify-content: flex-end; }
+    .site-nav nav a { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); text-decoration: none; }
+    .site-nav nav a:hover { color: var(--court); text-decoration: underline; }
+    .eyebrow { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--court); margin: 0 0 0.8rem; }
+    h1 { font-family: var(--display); font-weight: 600; font-size: clamp(2.6rem, 8vw, 4.6rem); line-height: 0.92; letter-spacing: -0.015em; margin: 0 0 0.9rem; }
+    h1 em, h2 em { font-style: italic; color: var(--court); }
+    h2:focus { outline: none; }
+    h2 { font-family: var(--display); font-weight: 600; font-size: clamp(1.6rem, 4vw, 2.1rem); line-height: 1; margin: 0 0 0.6rem; }
+    h3 { font-family: var(--display); font-weight: 700; font-size: 1.55rem; line-height: 1.05; margin: 0; overflow-wrap: anywhere; min-width: 0; }
+    a { color: var(--court); }
+    .hero { padding: 2.2rem 0 1.2rem; display: grid; grid-template-columns: 1fr auto; gap: 1rem 1.5rem; align-items: end; }
+    .hero > div { min-width: 0; }
+    .deck { font-size: 1.08rem; margin: 0; max-width: 58ch; }
+    .numchip { border: 1.5px solid var(--ink); padding: 0.55rem 0.8rem; text-align: right; text-decoration: none; color: var(--ink); display: block; background: #fff; }
+    .numchip:hover { box-shadow: 3px 3px 0 var(--ink); }
+    .numchip small { display: block; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+    .numchip b { font-family: var(--display); font-size: 2.2rem; line-height: 1; font-weight: 700; }
+    .numlink { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+    section { margin-top: 1.8rem; }
+    .label { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); display: block; margin: 0 0 0.3rem; }
+    input[type=text], input[type=search], input[type=date], select { font: inherit; font-size: 1rem; width: 100%; min-width: 0; min-height: 2.75rem; padding: 0.55rem 0.7rem;
+      border: 1.5px solid var(--ink); background: #fff; color: var(--ink); border-radius: 0; -webkit-appearance: none; appearance: none; }
+    select { background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%), linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+      background-position: calc(100% - 1.05rem) 1.2rem, calc(100% - 0.7rem) 1.2rem; background-size: 0.35rem 0.35rem; background-repeat: no-repeat; padding-right: 1.9rem; }
+    button { font: inherit; color: var(--ink); }
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible { outline: 3px solid var(--tezos-blue); outline-offset: 2px; }
+    .enter { font-size: 1.05rem; width: 100%; padding: 0.85rem 1.1rem; background: var(--court); color: #fff; border: 1.5px solid var(--ink);
+      cursor: pointer; box-shadow: 4px 4px 0 var(--ink); transition: transform 0.08s ease, box-shadow 0.08s ease; }
+    .enter:hover:not(:disabled) { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--ink); }
+    .enter:active:not(:disabled) { transform: translate(3px,3px); box-shadow: 1px 1px 0 var(--ink); }
+    .enter:disabled { opacity: 0.45; cursor: default; }
+    .ghost { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; background: #fff;
+      border: 1.5px solid var(--ink); padding: 0.55rem 0.8rem; cursor: pointer; min-height: 2.5rem; }
+    .ghost:hover { box-shadow: 2px 2px 0 var(--ink); }
+    .linkish { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; background: none; border: 0;
+      padding: 0.3rem 0; cursor: pointer; color: var(--muted); text-decoration: underline; }
+    .linkish.danger:hover { color: var(--clay); }
+    .hint, .fine { font-size: 0.9rem; color: var(--muted); margin: 0; }
+    .status { font-family: var(--mono); font-size: 0.74rem; color: var(--court); min-height: 1.2em; margin: 0.5rem 0 0; overflow-wrap: anywhere; }
+
+    .banner { border: 1.5px solid var(--ink); background: var(--ball); padding: 0.8rem 1rem; margin: 1rem 0 0; display: flex; gap: 0.8rem;
+      align-items: center; justify-content: space-between; flex-wrap: wrap; }
+    .banner p { margin: 0; font-size: 0.95rem; }
+    .banner.quiet { background: #fbfaf6; }
+    .plain { border-left: 4px solid var(--court); background: var(--wash); padding: 0.8rem 1rem; margin: 0; font-size: 0.97rem; }
+
+    .panel { border: 1.5px solid var(--ink); padding: 1.1rem; display: grid; gap: 0.9rem; }
+    .row3 { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr); gap: 0.7rem; align-items: end; }
+    .row2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0.7rem; align-items: end; }
+    .row3 > *, .row2 > * { min-width: 0; }
+    .stepper { display: grid; grid-template-columns: 2.75rem 1fr 2.75rem; border: 1.5px solid var(--ink); min-height: 2.75rem; }
+    .stepper button { background: #fff; border: 0; font-family: var(--mono); font-size: 1.2rem; cursor: pointer; }
+    .stepper button:first-child { border-right: 1.5px solid var(--ink); }
+    .stepper button:last-child { border-left: 1.5px solid var(--ink); }
+    .stepper button:disabled { opacity: 0.35; cursor: default; }
+    .stepper output { display: grid; place-items: center; font-family: var(--display); font-weight: 700; font-size: 1.35rem; }
+
+    .results { list-style: none; margin: 0.4rem 0 0; padding: 0; border: 1.5px solid var(--ink); border-bottom: 0; }
+    .results li { border-bottom: 1.5px solid var(--ink); }
+    .results button { width: 100%; text-align: left; background: #fff; border: 0; padding: 0.55rem 0.7rem; cursor: pointer; display: flex;
+      justify-content: space-between; gap: 0.8rem; align-items: baseline; flex-wrap: wrap; }
+    .results button:hover, .results button:focus-visible { background: var(--wash); }
+    .results .rn { font-family: var(--display); font-weight: 600; font-size: 1.2rem; line-height: 1.1; overflow-wrap: anywhere; min-width: 0; }
+    .results .rm, .chosen .rm { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); letter-spacing: 0.06em; }
+    .chosen { border: 1.5px dashed var(--court); background: var(--wash); padding: 0.55rem 0.7rem; display: flex; justify-content: space-between; gap: 0.8rem;
+      align-items: baseline; flex-wrap: wrap; margin-top: 0.4rem; }
+    .chosen b { font-family: var(--display); font-size: 1.2rem; overflow-wrap: anywhere; }
+
+    .paddle { border: 1.5px solid var(--ink); padding: 1rem 1.1rem; margin: 0 0 1rem; background: #fff; }
+    .paddle.is-main { box-shadow: 5px 5px 0 var(--court); }
+    .paddle.is-retired { background: #fbfaf6; }
+    .paddle.example { border-style: dashed; box-shadow: none; background: #fbfaf6; }
+    .phead { display: flex; justify-content: space-between; align-items: baseline; gap: 0.8rem; flex-wrap: wrap; }
+    .tag { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.14em; text-transform: uppercase; border: 1.5px solid var(--ink); padding: 0.12rem 0.45rem; white-space: nowrap; }
+    .tag.main { background: var(--ink); color: #fff; }
+    .tag.ex { background: var(--ball); }
+    .meta { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); margin: 0.35rem 0 0; overflow-wrap: anywhere; }
+    .meta a { color: var(--muted); }
+    .ledger { font-family: var(--display); font-style: italic; font-weight: 500; font-size: 1.3rem; line-height: 1.2; margin: 0.7rem 0 0.8rem; color: var(--ink); }
+    .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin: 0; border-top: 1.5px solid var(--ink); border-left: 1px solid var(--line); }
+    .stats div { padding: 0.5rem 0.6rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-width: 0; }
+    .stats dt { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+    .stats dd { margin: 0.1rem 0 0; font-family: var(--display); font-weight: 700; font-size: 1.35rem; line-height: 1.1; overflow-wrap: anywhere; }
+    .stats dd.dim { font-family: var(--mono); font-weight: 400; font-size: 0.74rem; color: var(--muted); line-height: 1.5; }
+    .pnote { margin: 0.7rem 0 0; font-size: 0.95rem; overflow-wrap: anywhere; }
+    .pnote::before { content: "note · "; font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+    .rows { list-style: none; margin: 0.7rem 0 0; padding: 0; }
+    .rows li { display: grid; grid-template-columns: 5.2rem minmax(0, 1fr) auto; gap: 0.6rem; align-items: baseline; padding: 0.4rem 0; border-bottom: 1px solid var(--line); font-size: 0.95rem; }
+    .rows .d { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+    .rows .w { overflow-wrap: anywhere; min-width: 0; }
+    .rows .w small { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); }
+    .rows .x { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; background: none; border: 0; color: var(--muted);
+      text-decoration: underline; cursor: pointer; padding: 0.3rem 0.1rem; }
+    .rows .x:hover { color: var(--clay); }
+    details.tool { margin-top: 0.8rem; border-top: 1px solid var(--line); padding-top: 0.6rem; }
+    details.tool summary { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; padding: 0.25rem 0; }
+    details.tool[open] summary { margin-bottom: 0.7rem; }
+    details.tool form, details.tool .edit { display: grid; gap: 0.7rem; }
+
+    .steps { margin: 0 0 1.2rem; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 0.6rem; }
+    .steps li { counter-increment: s; display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); gap: 0.6rem; align-items: baseline; }
+    .steps li::before { content: counter(s); font-family: var(--display); font-weight: 700; font-size: 1.8rem; line-height: 1; color: var(--court); }
+    .why p { max-width: 62ch; margin: 0 0 0.8rem; }
+    .acts { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; }
+
+    footer { margin-top: 2.2rem; padding-top: 0.9rem; border-top: 1.5px solid var(--ink); font-family: var(--mono); font-size: 0.68rem;
+      letter-spacing: 0.08em; color: var(--muted); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    footer a { color: var(--muted); }
+
+    @media (max-width: 640px) {
+      body { padding: 0.6rem 0; }
+      .office { box-shadow: 6px 6px 0 var(--court); padding: 0.9rem 0.8rem 2rem; }
+      .site-nav { align-items: flex-start; }
+      .site-nav nav { gap: 0.4rem 0.8rem; }
+      .hero { grid-template-columns: 1fr; padding-top: 1.6rem; }
+      .numchip { text-align: left; justify-self: start; }
+      .row3, .row2 { grid-template-columns: minmax(0, 1fr); }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .rows li { grid-template-columns: 4.4rem minmax(0, 1fr) auto; gap: 0.4rem; }
+      .paddle { padding: 0.85rem 0.8rem; }
+      .panel { padding: 0.9rem 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="office">
+    <header class="site-nav">
+      <a class="nav-mark" href="/" aria-label="Rally home">rally</a>
+      <nav aria-label="Primary navigation">
+        <a href="/#your-number">Your number</a>
+        <a href="/tonight/">Tonight</a>
+        <a href="/paddle-calendar/">Paddle calendar</a>
+        <a href="/paddle-fund/">Paddle fund</a>
+      </nav>
+    </header>
+
+    <div id="shared-banner" class="banner" hidden>
+      <p><b>You're looking at someone's bag.</b> Read-only until you keep a copy.</p>
+      <button id="shared-keep" class="ghost" type="button">Keep a copy on this device</button>
+    </div>
+    <div id="storage-note" class="banner quiet" hidden>
+      <p><b>This browser is blocking storage.</b> The bag works, but it only lasts until you close this tab. Copy the bag link to keep it.</p>
+    </div>
+    <p id="boot-status" class="status" role="status"></p>
+
+    <div class="hero">
+      <div>
+        <p class="eyebrow" id="hero-eyebrow">the bag · kept on this device · no sign-up</p>
+        <h1 id="hero-title">What's in <em>the bag?</em></h1>
+        <p class="deck">Reviews measure a paddle when it is new. This page is for what happens after you buy it:
+          what you carry, how many hours you put on it, and when the grit or the core gives out.</p>
+      </div>
+      <div id="number-slot"></div>
+    </div>
+
+    <p class="plain" id="honesty">Everything on this page is stored on this device, in this browser. Nothing is sent anywhere.
+      There is no account and no name field. A bag never touches the Rally ladder.</p>
+
+    <!-- ── played today ─────────────────────────────────── -->
+    <section id="sec-log" aria-labelledby="log-title" hidden>
+      <h2 id="log-title">Played <em>today?</em></h2>
+      <form id="log" class="panel">
+        <div class="row3">
+          <label><span class="label">Paddle</span><select id="log-paddle"></select></label>
+          <div role="group" aria-labelledby="dur-label">
+            <span class="label" id="dur-label">Hours</span>
+            <div class="stepper">
+              <button id="dur-down" type="button" aria-label="Half an hour less">−</button>
+              <output id="dur-out" aria-live="polite">1.5</output>
+              <button id="dur-up" type="button" aria-label="Half an hour more">+</button>
+            </div>
+          </div>
+          <label><span class="label">Date</span><input id="log-date" type="date" required /></label>
+        </div>
+        <button class="enter" type="submit">Log the session</button>
+        <p id="log-status" class="status" role="status"></p>
+      </form>
+    </section>
+
+    <!-- ── my bag ───────────────────────────────────────── -->
+    <section id="sec-bag" aria-labelledby="bag-title">
+      <h2 id="bag-title" tabindex="-1">My <em>bag.</em></h2>
+      <div id="bag-list"></div>
+
+      <div id="empty" hidden>
+        <ol class="steps">
+          <li><span><b>Put your paddle in the bag.</b> Search the paddle register below, or type the name if it is not there.</span></li>
+          <li><span><b>Log a session after you play.</b> One tap. Change the hours or the date if you need to.</span></li>
+          <li><span><b>Write down wear when you notice it.</b> A grit check, a soft spot, a crack. The page adds up the hours for you.</span></li>
+        </ol>
+        <div id="example-slot"></div>
+      </div>
+    </section>
+
+    <!-- ── add a paddle ─────────────────────────────────── -->
+    <section id="sec-add" aria-labelledby="add-title">
+      <h2 id="add-title">Add a <em>paddle.</em></h2>
+      <form id="add" class="panel" autocomplete="off">
+        <div>
+          <label for="add-q"><span class="label">Search the register, or type any paddle name</span></label>
+          <input id="add-q" type="search" maxlength="60" autocapitalize="words" spellcheck="false" placeholder="brand or model" aria-describedby="add-q-status" />
+          <ul id="add-results" class="results" aria-label="Register matches" hidden></ul>
+          <div id="add-chosen" class="chosen" hidden></div>
+          <p id="add-q-status" class="status" role="status"></p>
+        </div>
+        <div class="row2">
+          <label><span class="label">Went into play</span><input id="add-since" type="date" required /></label>
+          <label><span class="label">Role</span><select id="add-role"></select></label>
+        </div>
+        <label><span class="label">Note (optional): lead tape, overgrip, anything</span><input id="add-note" type="text" maxlength="120" /></label>
+        <button class="enter" type="submit">Put it in the bag</button>
+        <p id="add-status" class="status" role="status"></p>
+      </form>
+      <p id="add-full" class="hint" hidden>Twelve paddles is the cap for one bag. Remove one to add another.</p>
+    </section>
+
+    <!-- ── sessions ─────────────────────────────────────── -->
+    <section id="sec-sessions" aria-labelledby="ses-title" hidden>
+      <h2 id="ses-title">Recent <em>sessions.</em></h2>
+      <ul id="ses-list" class="rows"></ul>
+      <button id="ses-more" class="linkish" type="button" hidden></button>
+    </section>
+
+    <!-- ── keep / share ─────────────────────────────────── -->
+    <section id="sec-keep" aria-labelledby="keep-title" hidden>
+      <h2 id="keep-title">Keep it, <em>share it.</em></h2>
+      <div class="acts">
+        <button id="copy-link" class="ghost" type="button">Copy bag link</button>
+        <button id="download" class="ghost" type="button">Download JSON</button>
+      </div>
+      <p id="keep-status" class="status" role="status"></p>
+      <p class="fine">The link carries the whole bag inside it. Nothing is uploaded, and there is no server to upload it to.
+        Anyone with the link can read the bag, including your notes.</p>
+      <p style="margin:0.8rem 0 0"><button id="empty-bag" class="linkish danger" type="button">empty this bag and start over</button></p>
+    </section>
+
+    <!-- ── why ──────────────────────────────────────────── -->
+    <section class="why" aria-labelledby="why-title">
+      <h2 id="why-title">Why log <em>this?</em></h2>
+      <p>Reviewers measure a paddle new. They test it in its first few hours and then it goes back in the box.
+        Nobody measures it at hour sixty.</p>
+      <p>The only people who know how long a paddle lasts are the ones playing with it every week, and almost
+        none of them write the hours down. A bag is a place to write them down.</p>
+      <p>If enough players keep a bag, <a href="/paddle-calendar/">the paddle register</a> can publish real lifespans:
+        hours until the grit fades and hours until the core goes soft, by model.
+        <b>That pooling is not built yet.</b> When it is, it will be opt-in and anonymous. Until then your log stays here and goes nowhere.</p>
+      <p class="fine">A grit check is your own read of the face, from 1 (new) to 5 (gone). Cost per hour uses the register's list price,
+        not what you paid, and shows after five hours.</p>
+    </section>
+
+    <footer>
+      <span>Rally · the bag · CC0</span>
+      <span><a href="/">tez-rally.pages.dev</a> · your bag lives in this browser</span>
+    </footer>
+  </main>
+
+  <script>
+  (() => {
+    "use strict";
+
+    /* PURE-START — no DOM in this block; scripts/test-bag.mjs lifts it out and runs it under node. */
+    const ROLES = ["main", "backup", "loaner", "retired"];
+    const GRIT = ["new", "fine", "fading", "slick", "gone"]; // grit check 1–5
+    const WEAR = [
+      ["grit", "Grit check"],
+      ["dead", "Went dead / core feels soft"],
+      ["disbond", "Face disbonding"],
+      ["edge", "Edge guard"],
+      ["handle", "Handle / grip"],
+      ["crack", "Cracked"],
+      ["retired", "Retired"],
+    ];
+    const WEAR_KEYS = WEAR.map((w) => w[0]);
+    const CAPS = { paddles: 12, sessions: 2000, wear: 400, name: 60, note: 120, build: 16, hash: 200000 };
+    const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    function validDate(s) {
+      if (typeof s !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(s)) return false;
+      const [y, m, d] = s.split("-").map(Number);
+      if (y < 2000 || y > 2100) return false;
+      const t = new Date(Date.UTC(y, m - 1, d));
+      return t.getUTCFullYear() === y && t.getUTCMonth() === m - 1 && t.getUTCDate() === d;
+    }
+    const dayNum = (iso) => { const [y, m, d] = iso.split("-").map(Number); return Math.round(Date.UTC(y, m - 1, d) / 864e5); };
+    const isoFromDay = (n) => (Number.isInteger(n) && n > 10000 && n < 50000 ? new Date(n * 864e5).toISOString().slice(0, 10) : "");
+    const shortDate = (iso, today) => { const [y, m, d] = iso.split("-").map(Number); return MONTHS[m - 1] + " " + d + (today && today.slice(0, 4) === iso.slice(0, 4) ? "" : ", " + y); };
+    const fmtH = (h) => (Math.round(h * 2) / 2).toFixed(1).replace(/\.0$/, "");
+    const hoursWord = (h) => fmtH(h) + (h === 1 ? " hour" : " hours");
+    const fmtMoney = (n) => "$" + (Number.isInteger(n) ? String(n) : n.toFixed(2));
+    const cleanStr = (x, n) => (typeof x === "string" ? x : "").replace(/[\u0000-\u001f\u007f\u2028\u2029]/g, " ").trim().slice(0, n);
+    const cleanMsrp = (x) => (typeof x === "number" && Number.isFinite(x) && x > 0 && x <= 5000 ? Math.round(x * 100) / 100 : null);
+    const cleanRef = (x) => (typeof x === "string" && /^[a-z0-9][a-z0-9-]{0,63}$/.test(x) ? x : "");
+
+    const emptyBag = () => ({ v: 1, paddles: [], sessions: [], wear: [], next: 0 });
+
+    // The one gate everything passes through: localStorage, shared links, "keep a copy".
+    // Unknown fields are dropped, strings capped, arrays capped, shapes checked.
+    function cleanBag(raw, today) {
+      if (!raw || typeof raw !== "object" || raw.v !== 1 || !Array.isArray(raw.paddles)) throw new Error("bad bag");
+      const paddles = [], ids = new Map(); let hasMain = false;
+      for (const p of raw.paddles.slice(0, CAPS.paddles)) {
+        if (!p || typeof p !== "object") continue;
+        const name = cleanStr(p.name, CAPS.name); if (!name) continue;
+        let role = ROLES.includes(p.role) ? p.role : "backup";
+        if (role === "main") { if (hasMain) role = "backup"; hasMain = true; }
+        const id = "p" + paddles.length;
+        if (typeof p.id === "string" && !ids.has(p.id)) ids.set(p.id, id);
+        paddles.push({ id, ref: cleanRef(p.ref), name, msrp: cleanMsrp(p.msrp), build: cleanStr(p.build, CAPS.build),
+          since: validDate(p.since) ? p.since : today, role, note: cleanStr(p.note, CAPS.note) });
+      }
+      const sessions = [];
+      for (const s of (Array.isArray(raw.sessions) ? raw.sessions : []).slice(0, CAPS.sessions)) {
+        if (!s || typeof s !== "object" || !ids.has(s.p) || !validDate(s.d)) continue;
+        if (typeof s.h !== "number") continue;
+        const h = Math.round(s.h * 2) / 2; if (!(h >= 0.5 && h <= 12)) continue;
+        sessions.push({ p: ids.get(s.p), d: s.d, h });
+      }
+      const wear = [];
+      for (const w of (Array.isArray(raw.wear) ? raw.wear : []).slice(0, CAPS.wear)) {
+        if (!w || typeof w !== "object" || !ids.has(w.p) || !validDate(w.d) || !WEAR_KEYS.includes(w.t)) continue;
+        let g = null;
+        if (w.t === "grit") { g = w.g; if (!Number.isInteger(g) || g < 1 || g > 5) continue; }
+        wear.push({ p: ids.get(w.p), d: w.d, t: w.t, g });
+      }
+      return { v: 1, paddles, sessions, wear, next: paddles.length };
+    }
+
+    // share link: the whole bag, compact, in the hash
+    function encodeBag(bag) {
+      const idx = new Map(bag.paddles.map((p, i) => [p.id, i]));
+      const c = { v: 1,
+        p: bag.paddles.map((p) => [p.name, p.ref, p.msrp, p.build, dayNum(p.since), ROLES.indexOf(p.role), p.note]),
+        s: bag.sessions.filter((s) => idx.has(s.p)).map((s) => [idx.get(s.p), dayNum(s.d), Math.round(s.h * 2)]),
+        w: bag.wear.filter((w) => idx.has(w.p)).map((w) => [idx.get(w.p), dayNum(w.d), WEAR_KEYS.indexOf(w.t), w.g || 0]) };
+      const bytes = new TextEncoder().encode(JSON.stringify(c));
+      let bin = ""; for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+      return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    }
+    function decodeBag(str, today) {
+      if (typeof str !== "string" || str.length > CAPS.hash || !/^[A-Za-z0-9_-]+$/.test(str)) throw new Error("bad link");
+      const bin = atob(str.replace(/-/g, "+").replace(/_/g, "/"));
+      const c = JSON.parse(new TextDecoder().decode(Uint8Array.from(bin, (ch) => ch.charCodeAt(0))));
+      if (!c || typeof c !== "object" || c.v !== 1 || !Array.isArray(c.p)) throw new Error("bad bag");
+      const arr = (x) => (Array.isArray(x) ? x : []);
+      const raw = { v: 1,
+        paddles: c.p.slice(0, CAPS.paddles).map((r, i) => (Array.isArray(r)
+          ? { id: "p" + i, name: r[0], ref: r[1], msrp: r[2], build: r[3], since: isoFromDay(r[4]), role: ROLES[r[5]], note: r[6] } : null)),
+        sessions: arr(c.s).slice(0, CAPS.sessions).map((r) => (Array.isArray(r) ? { p: "p" + r[0], d: isoFromDay(r[1]), h: typeof r[2] === "number" ? r[2] / 2 : null } : null)),
+        wear: arr(c.w).slice(0, CAPS.wear).map((r) => (Array.isArray(r) ? { p: "p" + r[0], d: isoFromDay(r[1]), t: WEAR_KEYS[r[2]], g: r[3] } : null)) };
+      // a paddle row that fails cleaning would shift later ids, so ids are pinned above by position
+      const bag = cleanBag(raw, today);
+      if (!bag.paddles.length) throw new Error("empty bag");
+      return bag;
+    }
+
+    // The books for one paddle. msrp is passed in so the page can prefer the live register price.
+    function paddleStats(bag, pid, today, msrp) {
+      const p = bag.paddles.find((x) => x.id === pid); if (!p) return null;
+      const ss = bag.sessions.filter((s) => s.p === pid);
+      const hours = ss.reduce((n, s) => n + s.h, 0);
+      const hoursBy = (d) => ss.reduce((n, s) => n + (s.d <= d ? s.h : 0), 0);
+      const ws = bag.wear.filter((w) => w.p === pid).map((w, i) => ({ w, i })).sort((a, b) => a.w.d.localeCompare(b.w.d) || a.i - b.i).map((x) => x.w);
+      const fade = ws.find((w) => w.t === "grit" && w.g >= 3) || null;
+      const dead = ws.find((w) => w.t === "dead") || null;
+      const retired = p.role === "retired" ? ws.filter((w) => w.t === "retired").pop() || null : null;
+      const start = ss.reduce((min, s) => (s.d < min ? s.d : min), p.since);
+      const end = retired ? retired.d : today;
+      const price = cleanMsrp(msrp);
+      return { hours, sessions: ss.length, start, days: Math.max(0, dayNum(end) - dayNum(start)) + 1,
+        fade: fade ? { d: fade.d, g: fade.g, hours: hoursBy(fade.d) } : null,
+        dead: dead ? { d: dead.d, hours: hoursBy(dead.d) } : null,
+        retired: retired ? { d: retired.d } : null,
+        hoursBy, msrp: price, costPerHour: price && hours >= 5 ? price / hours : null };
+    }
+
+    // "62.5 hours over 41 sessions since Mar 17. Grit fading at 38 hours."
+    function ledgerLine(st, today) {
+      const parts = [];
+      if (!st.sessions) parts.push("No sessions logged yet. In the bag since " + shortDate(st.start, today) + ".");
+      else parts.push(hoursWord(st.hours) + " over " + st.sessions + (st.sessions === 1 ? " session" : " sessions") + " since " + shortDate(st.start, today) + ".");
+      if (st.fade) parts.push("Grit " + GRIT[st.fade.g - 1] + " at " + hoursWord(st.fade.hours) + ".");
+      if (st.dead) parts.push("Went dead at " + hoursWord(st.dead.hours) + ".");
+      if (st.retired) parts.push("Retired " + shortDate(st.retired.d, today) + ".");
+      return parts.join(" ");
+    }
+
+    // Register rows come over the network; take only what we use and only as plain values.
+    function cleanRegister(data) {
+      const out = [];
+      for (const r of (data && Array.isArray(data.releases) ? data.releases : []).slice(0, 500)) {
+        if (!r || typeof r !== "object") continue;
+        const id = cleanRef(r.id), brand = cleanStr(r.brand, 40), model = cleanStr(r.model, 80);
+        const short = cleanStr(r.short, CAPS.name) || cleanStr(brand + " " + model, CAPS.name);
+        if (!id || !short) continue;
+        out.push({ id, brand, model, short, msrp: cleanMsrp(r.msrp), build: cleanStr(r.build, CAPS.build), hay: (brand + " " + model + " " + short).toLowerCase() });
+      }
+      return out;
+    }
+    function searchRegister(reg, q, limit) {
+      const toks = cleanStr(q, 60).toLowerCase().split(/\s+/).filter(Boolean);
+      if (!toks.length) return [];
+      return reg.filter((r) => toks.every((t) => r.hay.includes(t))).slice(0, limit || 8);
+    }
+    /* PURE-END */
+
+    // ── page ─────────────────────────────────────────────────────
+    const KEY = "rally:bag:v1", NUMBER_KEY = "rally:intended-rating", REGISTER_URL = "/paddle-calendar/data.json";
+    const $ = (id) => document.getElementById(id);
+    const todayISO = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
+
+    // DOM helper — every string may have arrived in a shared link, so text nodes only. Nothing is ever parsed as markup.
+    function h(tag, attrs, ...kids) {
+      const el = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs || {})) {
+        if (k === "class") el.className = v; else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+        else if (v !== false && v != null) el.setAttribute(k, v === true ? "" : v);
+      }
+      for (const kid of kids.flat()) if (kid != null) el.append(kid);
+      return el;
+    }
+
+    let B = emptyBag();   // the bag
+    let shared = false;   // viewing someone's link, not yet kept
+    let storageOK = true;
+    let register = [];    // cleaned rows from the paddle register
+    let chosen = null;    // register row picked in the add form
+    let duration = 1.5;
+    let picked = null;    // paddle id chosen by hand in the session form
+    let showAllSessions = false;
+
+    // ── storage: every touch is wrapped; the page runs from memory when it is blocked ──
+    function save() {
+      if (shared) return;
+      try { localStorage.setItem(KEY, JSON.stringify(B)); storageOK = true; } catch { storageOK = false; }
+      $("storage-note").hidden = storageOK;
+    }
+    function load() {
+      try { const raw = localStorage.getItem(KEY); return raw ? cleanBag(JSON.parse(raw), todayISO()) : null; } catch { return null; }
+    }
+    function probeStorage() {
+      try { localStorage.setItem(KEY + ":probe", "1"); localStorage.removeItem(KEY + ":probe"); return true; } catch { return false; }
+    }
+    function readNumber() {
+      try { const n = Number(localStorage.getItem(NUMBER_KEY)); return Number.isInteger(n) && n >= 2000 && n <= 8000 ? n : null; } catch { return null; }
+    }
+
+    const priceOf = (p) => { const r = p.ref && register.find((x) => x.id === p.ref); return r && r.msrp ? r.msrp : p.msrp; };
+    const paddleById = (id) => B.paddles.find((p) => p.id === id);
+    const wearLabel = (w) => (w.t === "grit" ? "Grit check: " + w.g + ", " + GRIT[w.g - 1] : (WEAR.find((x) => x[0] === w.t) || ["", w.t])[1]);
+
+    function setRole(p, role) {
+      if (role === "main") for (const q of B.paddles) if (q !== p && q.role === "main") q.role = "backup";
+      if (role === "retired" && !B.wear.some((w) => w.p === p.id && w.t === "retired") && B.wear.length < CAPS.wear)
+        B.wear.push({ p: p.id, d: todayISO(), t: "retired", g: null });
+      p.role = role;
+    }
+    function defaultPaddle() {
+      return B.paddles.find((p) => p.role === "main") || B.paddles.find((p) => p.role !== "retired") || B.paddles[0] || null;
+    }
+
+    // ── render ───────────────────────────────────────────────────
+    function render() {
+      const activeId = document.activeElement && document.activeElement.id;
+      const open = new Set([...document.querySelectorAll("details[data-k][open]")].map((d) => d.dataset.k));
+      const has = B.paddles.length > 0, today = todayISO();
+
+      $("shared-banner").hidden = !shared;
+      $("storage-note").hidden = storageOK || shared;
+      $("hero-eyebrow").textContent = shared ? "a shared bag · read-only · nothing here is stored" : "the bag · kept on this device · no sign-up";
+      $("bag-title").textContent = ""; $("bag-title").append(shared ? "Their " : "My ", h("em", {}, "bag."));
+      $("sec-log").hidden = shared || !has;
+      $("sec-add").hidden = shared;
+      $("add").hidden = B.paddles.length >= CAPS.paddles; $("add-full").hidden = B.paddles.length < CAPS.paddles;
+      $("sec-sessions").hidden = !B.sessions.length;
+      $("sec-keep").hidden = shared || !has;
+      $("empty").hidden = has;
+
+      renderNumber(); renderBag(today); renderLogForm(today); renderSessions(today);
+      if (!has) renderExample(today);
+
+      for (const d of document.querySelectorAll("details[data-k]")) if (open.has(d.dataset.k)) d.open = true;
+      if (activeId) { const el = $(activeId); if (el && !el.closest("[hidden]")) el.focus({ preventScroll: true }); }
+    }
+
+    function renderNumber() {
+      const slot = $("number-slot"); slot.textContent = "";
+      const n = shared ? null : readNumber();
+      if (n) slot.append(h("a", { class: "numchip", href: "/#your-number", "aria-label": "Your number, " + (n / 1000).toFixed(3) + ". Change it on the front desk." },
+        h("small", {}, "your number"), h("b", {}, (n / 1000).toFixed(3))));
+      else if (!shared) slot.append(h("a", { class: "numlink", href: "/#your-number" }, "what's your number? →"));
+    }
+
+    function statCell(label, value, dim) { return h("div", {}, h("dt", {}, label), h("dd", { class: dim ? "dim" : "" }, value)); }
+
+    function paddleCard(p, today) {
+      const st = paddleStats(B, p.id, today, priceOf(p)), ro = shared;
+      const meta = h("p", { class: "meta" });
+      const bits = [p.build && p.build !== "unknown" ? p.build : null, st.msrp ? fmtMoney(st.msrp) + " list" : null].filter(Boolean);
+      meta.append(bits.join(" · "));
+      if (p.ref) meta.append(bits.length ? " · " : "", h("a", { href: "https://pointcast.xyz/paddles/" + encodeURIComponent(p.ref), rel: "noopener" }, "register entry →"));
+      else meta.append(bits.length ? " · " : "", "not in the register");
+
+      const card = h("article", { class: "paddle" + (p.role === "main" ? " is-main" : "") + (p.role === "retired" ? " is-retired" : ""), "aria-labelledby": "nm-" + p.id },
+        h("div", { class: "phead" }, h("h3", { id: "nm-" + p.id }, p.name), h("span", { class: "tag" + (p.role === "main" ? " main" : "") }, p.role)),
+        meta,
+        h("p", { class: "ledger" }, ledgerLine(st, today)),
+        h("dl", { class: "stats" },
+          statCell("hours", fmtH(st.hours)),
+          statCell("sessions", String(st.sessions)),
+          statCell(st.retired ? "days in play (retired)" : "days in play", String(st.days)),
+          st.fade ? statCell("grit " + GRIT[st.fade.g - 1] + " at", fmtH(st.fade.hours) + " h") : statCell("grit fading at", "no check yet", true),
+          st.dead ? statCell("went dead at", fmtH(st.dead.hours) + " h") : statCell("went dead at", "not logged", true),
+          st.costPerHour ? statCell("cost per hour, list", fmtMoney(Math.round(st.costPerHour * 100) / 100))
+            : statCell("cost per hour, list", st.msrp ? "after 5 hours" : "no register price", true)),
+        p.note ? h("p", { class: "pnote" }, p.note) : null);
+
+      // wear events, oldest first, with the hours on the paddle that day
+      const events = B.wear.map((w, i) => ({ w, i })).filter((x) => x.w.p === p.id).sort((a, b) => a.w.d.localeCompare(b.w.d) || a.i - b.i);
+      if (events.length) {
+        card.append(h("ul", { class: "rows", "aria-label": "Wear log for " + p.name }, events.map(({ w, i }, n) =>
+          h("li", {}, h("span", { class: "d" }, shortDate(w.d, today)),
+            h("span", { class: "w" }, wearLabel(w) + " ", h("small", {}, "at " + fmtH(st.hoursBy(w.d)) + " h")),
+            ro ? h("span", {}) : h("button", { class: "x", type: "button", id: "del-w-" + p.id + "-" + n, "aria-label": "Delete wear entry: " + shortDate(w.d, today) + ", " + wearLabel(w),
+              onclick: () => { B.wear.splice(i, 1); save(); render(); } }, "delete")))));
+      }
+      if (ro) return card;
+
+      // log wear
+      const wDate = h("input", { type: "date", id: "w-date-" + p.id, value: today, max: today, required: true });
+      const wType = h("select", { id: "w-type-" + p.id }, WEAR.map(([k, label]) => h("option", { value: k }, label)));
+      const wGrit = h("select", { id: "w-grit-" + p.id }, GRIT.map((g, i) => h("option", { value: i + 1, selected: i === 1 }, (i + 1) + ", " + g)));
+      const gritWrap = h("label", {}, h("span", { class: "label" }, "Grit, 1 to 5"), wGrit);
+      const wStatus = h("p", { class: "status", role: "status" });
+      wType.addEventListener("change", () => { gritWrap.hidden = wType.value !== "grit"; });
+      card.append(h("details", { class: "tool", "data-k": "wear-" + p.id }, h("summary", { id: "w-sum-" + p.id }, "Log wear"),
+        h("form", { onsubmit: (e) => {
+          e.preventDefault();
+          if (!validDate(wDate.value) || wDate.value > todayISO()) { wStatus.textContent = "Pick a date that is today or earlier."; return; }
+          if (B.wear.length >= CAPS.wear) { wStatus.textContent = "The wear log is full at " + CAPS.wear + " entries."; return; }
+          const t = wType.value, g = t === "grit" ? Number(wGrit.value) : null;
+          B.wear.push({ p: p.id, d: wDate.value, t, g });
+          if (t === "retired") setRole(p, "retired");
+          save(); render();
+        } },
+          h("div", { class: "row3" }, h("label", {}, h("span", { class: "label" }, "What happened"), wType), gritWrap,
+            h("label", {}, h("span", { class: "label" }, "Date"), wDate)),
+          h("button", { class: "ghost", type: "submit" }, "Add to the wear log"), wStatus)));
+
+      // edit
+      const eSince = h("input", { type: "date", id: "e-since-" + p.id, value: p.since, max: today, required: true,
+        onchange: (e) => { if (validDate(e.target.value) && e.target.value <= todayISO()) { p.since = e.target.value; save(); render(); } else e.target.value = p.since; } });
+      const eRole = h("select", { id: "e-role-" + p.id, onchange: (e) => { if (ROLES.includes(e.target.value)) { setRole(p, e.target.value); save(); render(); } } },
+        ROLES.map((r) => h("option", { value: r, selected: r === p.role }, r)));
+      const eNote = h("input", { type: "text", id: "e-note-" + p.id, maxlength: CAPS.note, value: p.note,
+        onchange: (e) => { p.note = cleanStr(e.target.value, CAPS.note); save(); render(); } });
+      card.append(h("details", { class: "tool", "data-k": "edit-" + p.id }, h("summary", { id: "e-sum-" + p.id }, "Edit"),
+        h("div", { class: "edit" },
+          h("div", { class: "row2" }, h("label", {}, h("span", { class: "label" }, "Went into play"), eSince), h("label", {}, h("span", { class: "label" }, "Role"), eRole)),
+          h("label", {}, h("span", { class: "label" }, "Note"), eNote),
+          h("div", {}, h("button", { class: "linkish danger", type: "button", onclick: () => {
+            const n = B.sessions.filter((s) => s.p === p.id).length;
+            if (!confirm("Remove " + p.name + " from the bag? Its " + n + " session" + (n === 1 ? "" : "s") + " and wear log go with it.")) return;
+            B.paddles = B.paddles.filter((q) => q !== p); B.sessions = B.sessions.filter((s) => s.p !== p.id); B.wear = B.wear.filter((w) => w.p !== p.id);
+            save(); render(); $("bag-title").focus();
+          } }, "remove this paddle and its log")))));
+      return card;
+    }
+
+    function renderBag(today) {
+      const box = $("bag-list"); box.textContent = "";
+      const order = { main: 0, backup: 1, loaner: 2, retired: 3 };
+      [...B.paddles].sort((a, b) => order[a.role] - order[b.role]).forEach((p) => box.append(paddleCard(p, today)));
+    }
+
+    function renderExample(today) {
+      // Built with the same functions as a real card so the format cannot drift. Never stored.
+      const slot = $("example-slot"); slot.textContent = "";
+      const back = (n) => isoFromDay(dayNum(today) - n);
+      const ex = { v: 1, paddles: [{ id: "p0", ref: "", name: "Your paddle", msrp: null, build: "", since: back(120), role: "main", note: "" }],
+        sessions: Array.from({ length: 30 }, (_, i) => ({ p: "p0", d: back(118 - i * 4), h: i % 3 === 0 ? 2 : 1.5 })),
+        wear: [{ p: "p0", d: back(40), t: "grit", g: 3 }] };
+      const st = paddleStats(ex, "p0", today, null);
+      slot.append(h("article", { class: "paddle example", "aria-label": "Example paddle card. Not stored." },
+        h("div", { class: "phead" }, h("h3", {}, "Your paddle"), h("span", { class: "tag ex" }, "example · not stored")),
+        h("p", { class: "ledger" }, ledgerLine(st, today)),
+        h("p", { class: "fine" }, "This is what a line looks like after a few months. The numbers are made up to show the format. They are not data about any paddle.")));
+    }
+
+    function renderLogForm(today) {
+      const sel = $("log-paddle"); sel.textContent = "";
+      for (const p of B.paddles) sel.append(h("option", { value: p.id }, p.name + (p.role === "main" ? " (main)" : p.role === "retired" ? " (retired)" : "")));
+      // a paddle the player picked by hand stays picked, unless it has since been retired or removed
+      const held = picked && paddleById(picked); const keep = held && held.role !== "retired" ? held : defaultPaddle();
+      if (keep) sel.value = keep.id;
+      const d = $("log-date"); d.max = today; if (!validDate(d.value)) d.value = today;
+      $("dur-out").textContent = fmtH(duration); $("dur-down").disabled = duration <= 0.5; $("dur-up").disabled = duration >= 8;
+    }
+
+    function renderSessions(today) {
+      const ul = $("ses-list"); ul.textContent = "";
+      const rows = B.sessions.map((s, i) => ({ s, i })).sort((a, b) => b.s.d.localeCompare(a.s.d) || b.i - a.i);
+      const shown = showAllSessions ? rows : rows.slice(0, 10);
+      shown.forEach(({ s, i }, n) => {
+        const name = (paddleById(s.p) || { name: "?" }).name;
+        ul.append(h("li", {}, h("span", { class: "d" }, shortDate(s.d, today)), h("span", { class: "w" }, name + " ", h("small", {}, fmtH(s.h) + " h")),
+          shared ? h("span", {}) : h("button", { class: "x", type: "button", id: "del-s-" + n, "aria-label": "Delete session: " + shortDate(s.d, today) + ", " + name + ", " + hoursWord(s.h),
+            onclick: () => { B.sessions.splice(i, 1); save(); render(); } }, "delete")));
+      });
+      const more = $("ses-more"); more.hidden = rows.length <= 10;
+      more.textContent = showAllSessions ? "show the last ten" : "show all " + rows.length + " sessions";
+    }
+
+    // ── add a paddle ─────────────────────────────────────────────
+    function renderChosen() {
+      const box = $("add-chosen"); box.textContent = ""; box.hidden = !chosen;
+      if (!chosen) return;
+      box.append(h("span", {}, h("b", {}, chosen.short), " ", h("span", { class: "rm" }, [chosen.msrp ? fmtMoney(chosen.msrp) : "no list price", chosen.build && chosen.build !== "unknown" ? chosen.build : null].filter(Boolean).join(" · "))),
+        h("button", { class: "linkish", type: "button", id: "add-clear", onclick: () => { chosen = null; renderChosen(); $("add-q").value = ""; $("add-q").focus(); renderResults(); } }, "clear"));
+    }
+    function renderResults() {
+      const ul = $("add-results"), q = $("add-q").value; ul.textContent = "";
+      const hits = chosen ? [] : searchRegister(register, q, 8);
+      ul.hidden = !hits.length;
+      for (const r of hits) ul.append(h("li", {}, h("button", { type: "button", onclick: () => { chosen = r; $("add-q").value = r.short; renderResults(); renderChosen(); $("add-since").focus(); } },
+        h("span", { class: "rn" }, r.short), h("span", { class: "rm" }, [r.msrp ? fmtMoney(r.msrp) : null, r.build && r.build !== "unknown" ? r.build : null].filter(Boolean).join(" · ")))));
+      const st = $("add-q-status");
+      if (chosen) st.textContent = "From the register.";
+      else if (!cleanStr(q, 60)) st.textContent = register.length ? "" : st.textContent;
+      else if (hits.length) st.textContent = hits.length + (hits.length === 1 ? " match" : " matches") + " in the register. Pick one, or keep typing to add it by name.";
+      else st.textContent = register.length ? "Not in the register. It will be added by name, without a list price." : "It will be added by name.";
+    }
+    $("add-q").addEventListener("input", () => { if (chosen && $("add-q").value !== chosen.short) { chosen = null; renderChosen(); } renderResults(); });
+
+    $("add").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = chosen ? chosen.short : cleanStr($("add-q").value, CAPS.name), since = $("add-since").value;
+      if (!name) { $("add-status").textContent = "Type a paddle name first."; $("add-q").focus(); return; }
+      if (!validDate(since) || since > todayISO()) { $("add-status").textContent = "Pick a date that is today or earlier."; return; }
+      if (B.paddles.length >= CAPS.paddles) return;
+      const p = { id: "p" + B.next++, ref: chosen ? chosen.id : "", name, msrp: chosen ? chosen.msrp : null, build: chosen ? chosen.build : "",
+        since, role: "backup", note: cleanStr($("add-note").value, CAPS.note) };
+      B.paddles.push(p); setRole(p, ROLES.includes($("add-role").value) ? $("add-role").value : "backup");
+      chosen = null; $("add-q").value = ""; $("add-note").value = ""; renderChosen(); renderResults();
+      save(); render(); resetAddDefaults();
+      $("add-status").textContent = name + " is in the bag.";
+    });
+    function resetAddDefaults() {
+      const today = todayISO(); $("add-since").max = today; $("add-since").value = today;
+      const sel = $("add-role"); sel.textContent = "";
+      const want = B.paddles.some((p) => p.role === "main") ? "backup" : "main";
+      for (const r of ROLES) sel.append(h("option", { value: r, selected: r === want }, r));
+    }
+
+    // ── sessions ─────────────────────────────────────────────────
+    $("log-paddle").addEventListener("change", (e) => { picked = e.target.value; });
+    $("dur-down").addEventListener("click", () => { duration = Math.max(0.5, duration - 0.5); renderLogForm(todayISO()); });
+    $("dur-up").addEventListener("click", () => { duration = Math.min(8, duration + 0.5); renderLogForm(todayISO()); });
+    $("log").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const p = paddleById($("log-paddle").value), d = $("log-date").value;
+      if (!p) return;
+      if (!validDate(d) || d > todayISO()) { $("log-status").textContent = "Pick a date that is today or earlier."; return; }
+      if (B.sessions.length >= CAPS.sessions) { $("log-status").textContent = "The session log is full at " + CAPS.sessions + ". Download the JSON and start a new bag."; return; }
+      B.sessions.push({ p: p.id, d, h: duration }); save(); render();
+      $("log-status").textContent = "Logged " + hoursWord(duration) + " on " + p.name + ", " + shortDate(d, todayISO()) + ".";
+    });
+    $("ses-more").addEventListener("click", () => { showAllSessions = !showAllSessions; render(); });
+
+    // ── keep / share ─────────────────────────────────────────────
+    const link = () => location.origin + location.pathname + "#b=" + encodeBag(B);
+    $("copy-link").addEventListener("click", async () => {
+      const url = link();
+      try { await navigator.clipboard.writeText(url); $("keep-status").textContent = "Link copied. It is " + url.length.toLocaleString() + " characters long."; }
+      catch { $("keep-status").textContent = url; }
+    });
+    $("download").addEventListener("click", () => {
+      const out = { format: "rally-bag/1", exported: new Date().toISOString(), source: "https://tez-rally.pages.dev/bag/",
+        paddles: B.paddles.map(({ id, ref, name, msrp, build, since, role, note }) => ({ id, ref, name, msrp, build, since, role, note })),
+        sessions: B.sessions.map(({ p, d, h: hrs }) => ({ paddle: p, date: d, hours: hrs })),
+        wear: B.wear.map(({ p, d, t, g }) => ({ paddle: p, date: d, type: t, grit: g })) };
+      const blob = new Blob([JSON.stringify(out, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob), a = h("a", { href: url, download: "rally-bag-" + todayISO() + ".json" });
+      document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+      $("keep-status").textContent = "Downloaded.";
+    });
+    $("empty-bag").addEventListener("click", () => {
+      if (!confirm("Empty this bag? Every paddle, session and wear entry on this device is removed. Links you already shared still work.")) return;
+      try { localStorage.removeItem(KEY); } catch {}
+      B = emptyBag(); render(); resetAddDefaults(); scrollTo(0, 0);
+    });
+    $("shared-keep").addEventListener("click", () => {
+      const mine = load();
+      if (mine && mine.paddles.length && !confirm("This replaces the bag already saved on this device.")) return;
+      shared = false; save(); history.replaceState(null, "", location.pathname); render(); resetAddDefaults();
+      $("boot-status").textContent = storageOK ? "Kept. This bag is now stored on this device." : "Kept for this tab only. Storage is blocked.";
+    });
+
+    // ── boot ─────────────────────────────────────────────────────
+    function boot() {
+      storageOK = probeStorage(); shared = false; $("boot-status").textContent = "";
+      const m = location.hash.match(/^#b=(.+)$/);
+      if (m) {
+        try { B = decodeBag(m[1], todayISO()); shared = true; }
+        catch { $("boot-status").textContent = "That bag link could not be read. Showing the bag on this device instead."; }
+      }
+      if (!shared) B = load() || emptyBag();
+      render(); resetAddDefaults();
+    }
+    addEventListener("hashchange", () => { if (/^#b=/.test(location.hash) || shared) boot(); });
+    boot();
+
+    // The register is a read of a static file on this site. Nothing about the bag goes with the request.
+    fetch(REGISTER_URL, { credentials: "omit" }).then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status))))).then((data) => {
+      register = cleanRegister(data);
+      if (!register.length) throw new Error("empty");
+      $("add-q").placeholder = "brand or model, " + register.length + " paddles in the register";
+      renderResults(); render();
+    }).catch(() => { $("add-q-status").textContent = "The register did not load. You can still add a paddle by name."; });
+  })();
+  </script>
+</body>
+</html>
