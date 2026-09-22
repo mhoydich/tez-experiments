@@ -12,6 +12,83 @@
   },
   "anchors": [
     {
+      "date": "2024-05-16",
+      "kind": "rule",
+      "title": "USA Pickleball removes JOOLA Gen 3 from the approved list",
+      "body": "USAP notified JOOLA on May 15 and announced May 16 that all Gen3 paddles (launched Apr 16) were removed from the approved list. JOOLA attributed it to an 'administrative error' in November 2023 similarity testing and said the retail paddles were materially the same as the September 2023 submission.",
+      "source": "https://joola.com/blogs/blog/official-joola-statement-as-of-may-16-2024"
+    },
+    {
+      "date": "2024-06-04",
+      "kind": "rule",
+      "title": "USAP upholds the Gen 3 de-certification",
+      "body": "USA Pickleball said JOOLA's resubmitted Gen3 paddles 'did not pass all requirements' and offered a Corrective Action Plan. JOOLA responded the next day with full refunds for Gen3 purchases made Apr 16–Jun 15 2024.",
+      "source": "https://www.thedinkpickleball.com/usa-pickleball-makes-announcement-regarding-update-to-joola-gen3-paddles/"
+    },
+    {
+      "date": "2024-06-05",
+      "kind": "legal",
+      "title": "Consumer class action filed over Gen 3 'USA Pickleball Approved' marketing",
+      "body": "Florida firm Edwards Henderson announced a $5M class action alleging JOOLA falsely advertised Gen3 paddles as USAP approved. JOOLA later settled two class actions, offering $300 refunds with proof of purchase or $150 gift codes without.",
+      "source": "https://pickleball.com/gear/refunds-and-legal-action-the-latest-on-the-joola-gen-3-paddles"
+    },
+    {
+      "date": "2024-06-10",
+      "kind": "rule",
+      "title": "Vatic Pro Oni scheduled for delisting under new USAP testing",
+      "body": "The Dink reported the Oni was being delisted under 'newly adopted USAP testing methods' after the core softened with play and ball speed rose. Vatic Pro cancelled preorders, refunded them, and offered free returns, making it the second Gen 3-style delisting of the spring.",
+      "source": "https://www.thedinkpickleball.com/vatic-pro-oni-the-latest-paddle-delisted-by-usa-pickleball/"
+    },
+    {
+      "date": "2024-06-12",
+      "kind": "legal",
+      "title": "JOOLA sues USA Pickleball for $200M",
+      "body": "Sport Squad, Inc. (JOOLA) filed suit in the U.S. District Court for Maryland seeking $100M compensatory and $100M punitive damages, arguing USAP ignored its own 180-day sunset process. USAP later countersued, alleging the paddles submitted for testing differed from those sold.",
+      "source": "https://thekitchenpickle.com/blogs/news/usap-joola-paddle-controversy"
+    },
+    {
+      "date": "2024-06-25",
+      "kind": "rule",
+      "title": "UPA-A launches a rival professional paddle certification",
+      "body": "The United Pickleball Association of America (PPA Tour and MLP) announced its own certification program with Pickle Pro Labs and UMass Lowell, plus an interim certification based on face deflection and RPM until the full program launched later in 2024. Certification would be mandatory for UPA pro events.",
+      "source": "https://pickleball.com/news/upa-a-launches-professional-paddle-certification-program"
+    },
+    {
+      "date": "2024-08-23",
+      "kind": "rule",
+      "title": "USAP announces the PBCoR power test",
+      "body": "USA Pickleball introduced the Paddle/Ball Coefficient of Restitution test (a 60 mph ball fired at the paddle, rebound ratio measured) for Q4 2024 implementation, with a spin-rate test and 3D face scanning in development. It was USAP's direct answer to the Gen 3 power controversy.",
+      "source": "https://www.thedinkpickleball.com/usa-pickleball-announces-new-paddle-testing-standards-as-industry-reaches-a-boiling-point/"
+    },
+    {
+      "date": "2024-09-20",
+      "kind": "deal",
+      "title": "Ronbus Ripple beta: first elastomer-core paddle reaches players",
+      "body": "Ronbus released the Ripple R1.14 beta to Connect members with a carbon-fiber-infused rebounding elastomer (EVA) core in place of honeycomb, after USAP approval in August. Production units later exceeded the PBCoR ceiling and the launch stalled into 2025. Full-foam Gen 4 paddles (CRBN TruFoam Genesis first) arrived in early 2025, not 2024.",
+      "source": "https://www.ronbus.com/Update-on-USAP-Approved-Ronbus-Ripple-Paddles_b_7.html"
+    },
+    {
+      "date": "2024-10-02",
+      "kind": "rule",
+      "title": "UPA-A publishes its 2025 certification rollout",
+      "body": "Manufacturers with USAP-approved paddles could apply for UPA-A Provisional Status Oct 1–Nov 15 2024 for $2,000 (credited toward full certification); full testing began Jan 1 2025. Provisional limits: spin below 2,200 RPM and average deflection force of at least 42 lbs.",
+      "source": "https://pickleball.com/news/united-pickleball-association-of-america-introducing-2025-paddle-certification-rollout-plan"
+    },
+    {
+      "date": "2024-11-01",
+      "kind": "rule",
+      "title": "PBCoR standard takes effect at a 0.44 ceiling",
+      "body": "USAP says the enhanced standard was introduced in Q4 2024; outlets report a Nov 1 start. Pickleball Science describes the limit as a paddle/ball CoR of 0.44 (a 26.4 mph rebound from a 60 mph ball). Paddles over the ceiling were sunset from sanctioned play July 1 2025, and a tighter 0.43 tier followed for new approvals.",
+      "source": "https://pickleballscience.org/analysis-of-pbcor-test/"
+    },
+    {
+      "date": "2024-12-27",
+      "kind": "rule",
+      "title": "USAP names seven paddles to be sunset July 1 2025",
+      "body": "USA Pickleball listed seven previously approved models from JOOLA (including the Perseus Mod TA-15), Gearbox and ProKennex for removal from sanctioned play effective July 1 2025 under the PBCoR standard, giving a six-month transition developed with manufacturers.",
+      "source": "https://usapickleball.org/usap-news/equipment-news/paddle-certification-updates/"
+    },
+    {
       "date": "2025-01-16",
       "kind": "rule",
       "title": "UPA-A publishes its 2025 equipment rules",
