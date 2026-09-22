@@ -156,6 +156,13 @@
     .wire dd { margin: 0.1rem 0 0; }
     .wire a { color: var(--ink); }
     .ladder-live { font-family: var(--mono); font-size: 0.74rem; color: var(--muted); margin-top: 0.9rem; }
+    .fund-strip { display: grid; grid-template-columns: auto auto 1fr; align-items: baseline; gap: 0.5rem 1.2rem; margin: 2rem 0 0;
+      padding: 0.9rem 1.2rem; border: 1.5px solid var(--ink); background: var(--ball); color: var(--ink); text-decoration: none; font-size: 0.92rem; }
+    .fund-strip:hover { box-shadow: 4px 4px 0 var(--ink); transform: translate(-1px,-1px); }
+    .fund-strip b { font: 700 1.7rem/1 var(--display); }
+    .fund-tag { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; }
+    .embed .court-fund-strip { display: none; }
+    @media (max-width: 800px) { .fund-strip { grid-template-columns: 1fr; } }
     footer { margin-top: 2.4rem; padding-top: 0.9rem; border-top: 1.5px solid var(--ink); font-family: var(--mono);
       font-size: 0.68rem; letter-spacing: 0.08em; color: var(--muted); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
     footer a { color: var(--muted); }
@@ -297,6 +304,11 @@
       </dl>
     </section>
 
+    <a class="fund-strip court-fund-strip" href="https://pointcast.xyz/paddles/fund" rel="noopener">
+      <span class="fund-tag">the other half</span>
+      <b>The Court Fund</b>
+      <span>Crews buy paddles together. Patrons buy courts together: a $25 pass, half to keep the register current, half into a fund for local courts with a public ledger →</span>
+    </a>
     <footer>
       <span>The Paddle Fund · a Rally concept · CC0</span>
       <span><a href="/">tez-rally.pages.dev</a> · <a href="https://pointcast.xyz/paddle-fund" rel="noopener">pointcast.xyz/paddle-fund</a></span>
