@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>The Score Caller — who serves, from where, and what to call · Rally</title>
+  <meta name="description" content="A pickleball score caller for your phone. Tap the team that won the rally; it tracks the server, the side, and the 0-0-2 start, and says the score out loud. Doubles and singles, side-out scoring." />
+  <meta property="og:title" content="The Score Caller — never argue about 4-3-2 again" />
+  <meta property="og:description" content="Tap who won the rally. It tracks server, side, and says the score out loud. Doubles and singles." />
+  <meta name="twitter:card" content="summary" />
+  <link rel="canonical" href="https://tez-rally.pages.dev/score/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
+  <style>
+    /* Passport-office family. Team inks: court green and clay. */
+    :root {
+      --paper: #f2efe9; --ink: #241f1c; --court: #1e7a52; --tezos-blue: #0f61ff;
+      --line: #d8d2c6; --muted: #6b6259; --ball: #e9d94a; --clay: #b8482e;
+      --mono: ui-monospace, "SF Mono", Menlo, monospace;
+      --display: "Cormorant Garamond", Georgia, serif;
+    }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body { margin: 0; min-height: 100dvh; background: var(--paper); color: var(--ink); font-family: Georgia, serif; line-height: 1.45;
+      background-image: radial-gradient(var(--line) 1px, transparent 1px); background-size: 28px 28px; padding: 1.4rem 0; }
+    .office { width: min(620px, 94vw); margin: 0 auto; background: #fff; border: 1.5px solid var(--ink); padding: 1rem 1rem 2rem; box-shadow: 10px 10px 0 var(--court); }
+    .site-nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-bottom: 1.5px solid var(--ink); padding-bottom: 0.7rem; }
+    .nav-mark { font-family: var(--display); font-weight: 700; font-size: 1.8rem; line-height: 1; color: var(--ink); text-decoration: none; }
+    .site-nav nav { display: flex; gap: 0.9rem; flex-wrap: wrap; }
+    .site-nav nav a { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); text-decoration: none; }
+    .eyebrow { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--court); margin: 1.2rem 0 0.4rem; }
+    h1 { font-family: var(--display); font-weight: 600; font-size: clamp(2.2rem, 8vw, 3.4rem); line-height: 0.95; margin: 0 0 0.6rem; }
+    h1 em { color: var(--court); }
+    .deck { margin: 0 0 1rem; }
+    button { font: inherit; color: var(--ink); }
+    button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--tezos-blue); outline-offset: 2px; }
+    .label { display: block; font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.25rem; }
+    input, select { font: inherit; width: 100%; padding: 0.5rem 0.6rem; border: 1.5px solid var(--ink); border-radius: 0; background: #fff; color: var(--ink); }
+
+    .setup { border: 1.5px solid var(--ink); padding: 0.9rem; display: grid; gap: 0.8rem; }
+    .setup .row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+    .team-set { border: 1.5px solid var(--ink); padding: 0.7rem; display: grid; gap: 0.5rem; }
+    .team-set legend { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0 0.3rem; }
+    .team-set.a legend { color: var(--court); } .team-set.b legend { color: var(--clay); }
+    .enter { width: 100%; padding: 0.85rem 1rem; font-size: 1.05rem; background: var(--court); color: #fff; border: 1.5px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); cursor: pointer; }
+    .enter:active { transform: translate(3px,3px); box-shadow: 1px 1px 0 var(--ink); }
+    .fine { font-size: 0.85rem; color: var(--muted); margin: 0.3rem 0 0; }
+
+    /* the call */
+    .call { text-align: center; padding: 0.8rem 0 0.4rem; }
+    .call-num { font-family: var(--display); font-weight: 700; font-size: clamp(4.4rem, 22vw, 7.5rem); line-height: 0.9; letter-spacing: -0.02em; }
+    .call-num.win { color: var(--court); }
+    .call-sub { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); min-height: 1.2em; }
+
+    /* the court, seen from above: team A on the left half, team B on the right */
+    .court { position: relative; display: grid; grid-template-columns: 1fr 0.32fr 0.32fr 1fr; grid-template-rows: 1fr 1fr;
+      border: 3px solid var(--ink); background: #d9ecdf; aspect-ratio: 2 / 1; margin: 0.6rem 0 0.4rem; }
+    .court .kitchen { grid-row: 1 / span 2; background: #c3e0cc; border-left: 2px solid #fff; border-right: 2px solid #fff; }
+    .court .k1 { grid-column: 2; } .court .k2 { grid-column: 3; }
+    /* A faces east: their right hand is south (bottom). B faces west: their right hand is north (top). */
+    #pos-a-left { grid-column: 1; grid-row: 1; } #pos-a-right { grid-column: 1; grid-row: 2; }
+    #pos-b-right { grid-column: 4; grid-row: 1; } #pos-b-left { grid-column: 4; grid-row: 2; }
+    .court .net { position: absolute; left: 50%; top: -6px; bottom: -6px; width: 4px; margin-left: -2px; background: var(--ink); }
+    .box { display: flex; align-items: center; justify-content: center; text-align: center; padding: 0.3rem; border: 1px solid #fff;
+      font-family: var(--display); font-weight: 600; font-size: clamp(0.95rem, 4vw, 1.25rem); line-height: 1.05; overflow-wrap: anywhere; position: relative; }
+    .box.a { color: var(--court); } .box.b { color: var(--clay); }
+    .box.serving::after { content: ""; position: absolute; width: 14px; height: 14px; border-radius: 50%; background: var(--ball); border: 1.5px solid var(--ink); top: 8px; }
+    .box.serving { background: rgba(233,217,74,0.35); }
+    .court-key { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+    .taps { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin: 1rem 0 0.6rem; }
+    .tap { padding: 1.3rem 0.6rem; min-height: 6.5rem; border: 1.5px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); cursor: pointer; color: #fff; text-align: center; touch-action: manipulation; }
+    .tap b { display: block; font-family: var(--display); font-size: 1.5rem; line-height: 1.05; overflow-wrap: anywhere; }
+    .tap span { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.9; }
+    .tap.a { background: var(--court); } .tap.b { background: var(--clay); }
+    .tap:active { transform: translate(3px,3px); box-shadow: 1px 1px 0 var(--ink); }
+    .tap:disabled { opacity: 0.35; cursor: default; }
+    .tools { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; }
+    .ghost { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; background: #fff; border: 1.5px solid var(--ink); padding: 0.5rem 0.75rem; cursor: pointer; }
+    .ghost[aria-pressed=true] { background: var(--ink); color: #fff; }
+    .log { margin: 1rem 0 0; padding: 0; list-style: none; font-family: var(--mono); font-size: 0.72rem; color: var(--muted); max-height: 9rem; overflow: auto; border-top: 1px solid var(--line); }
+    .log li { padding: 0.2rem 0; border-bottom: 1px dashed var(--line); }
+    .rules { margin-top: 1.4rem; border-top: 1.5px solid var(--ink); padding-top: 0.8rem; }
+    .rules summary { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; }
+    .rules ul { padding-left: 1.1rem; margin: 0.6rem 0 0; } .rules li { margin-bottom: 0.4rem; font-size: 0.95rem; }
+    footer { margin-top: 1.6rem; font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.08em; color: var(--muted); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    footer a { color: var(--muted); }
+    @media (max-width: 520px) { body { padding: 0.4rem 0; } .office { box-shadow: 5px 5px 0 var(--court); padding: 0.8rem 0.7rem 1.6rem; } .site-nav nav a:nth-child(n+3) { display: none; } }
+  </style>
+</head>
+<body>
+  <main class="office">
+    <header class="site-nav">
+      <a class="nav-mark" href="/" aria-label="Rally home">rally</a>
+      <nav aria-label="Primary navigation">
+        <a href="/tonight/">Tonight</a>
+        <a href="/guide/">Guide</a>
+        <a href="/#your-number">Your number</a>
+      </nav>
+    </header>
+
+    <section id="view-setup">
+      <p class="eyebrow">the score caller · side-out scoring</p>
+      <h1>Never argue about <em>4-3-2</em> again.</h1>
+      <p class="deck">Tap the team that won the rally. The caller keeps the server, the side, and the 0-0-2 start, and says the score out loud.</p>
+      <form id="setup" class="setup">
+        <div class="row">
+          <label><span class="label">Format</span><select id="f-format"><option value="doubles">Doubles</option><option value="singles">Singles</option></select></label>
+          <label><span class="label">Game to</span><select id="f-to"><option value="11">11, win by 2</option><option value="15">15, win by 2</option><option value="21">21, win by 2</option></select></label>
+        </div>
+        <fieldset class="team-set a"><legend>Serves first</legend>
+          <label><span class="label" id="la1">Right court</span><input id="a1" maxlength="18" placeholder="Player" autocomplete="off" autocapitalize="words" /></label>
+          <label class="dbl"><span class="label">Left court</span><input id="a2" maxlength="18" placeholder="Partner" autocomplete="off" autocapitalize="words" /></label>
+        </fieldset>
+        <fieldset class="team-set b"><legend>Receives first</legend>
+          <label><span class="label" id="lb1">Right court</span><input id="b1" maxlength="18" placeholder="Player" autocomplete="off" autocapitalize="words" /></label>
+          <label class="dbl"><span class="label">Left court</span><input id="b2" maxlength="18" placeholder="Partner" autocomplete="off" autocapitalize="words" /></label>
+        </fieldset>
+        <p class="fine">"Right court" means the right-hand service court as each player faces the net. Names are optional.</p>
+        <button class="enter" type="submit">Start the game</button>
+      </form>
+    </section>
+
+    <section id="view-game" hidden>
+      <div class="call" aria-live="polite">
+        <div class="call-num" id="call"></div>
+        <div class="call-sub" id="sub"></div>
+      </div>
+      <div class="court" aria-label="Court positions">
+        <div class="box a" id="pos-a-left"></div><div class="kitchen k1"></div><div class="kitchen k2"></div><div class="box b" id="pos-b-right"></div>
+        <div class="box a" id="pos-a-right"></div><div class="box b" id="pos-b-left"></div>
+        <div class="net"></div>
+      </div>
+      <div class="court-key"><span id="key-a"></span><span>● = serving</span><span id="key-b"></span></div>
+      <div class="taps">
+        <button class="tap a" id="tap-a" type="button"><b id="tap-a-name"></b><span>won the rally</span></button>
+        <button class="tap b" id="tap-b" type="button"><b id="tap-b-name"></b><span>won the rally</span></button>
+      </div>
+      <div class="tools">
+        <button class="ghost" id="undo" type="button">Undo</button>
+        <button class="ghost" id="voice" type="button" aria-pressed="true">Say it out loud</button>
+        <button class="ghost" id="again" type="button">New game</button>
+      </div>
+      <ol class="log" id="log" reversed></ol>
+    </section>
+
+    <details class="rules">
+      <summary>The rules this caller follows</summary>
+      <ul>
+        <li>Only the serving side scores. The call is <b>server's score – receiver's score – server number</b>.</li>
+        <li>Doubles starts at <b>0-0-2</b>: the first serving team gets one server, then it's a side out.</li>
+        <li>When the serving team wins a rally, they score and the server switches sides with their partner. Receivers never switch.</li>
+        <li>When the serving team loses a rally, the partner serves (server 2), or if server 2 already served, it's a side out. After a side out, the player in the right court serves first.</li>
+        <li>In singles the server serves from the right when their own score is even and from the left when it's odd.</li>
+        <li>Games go to the target, win by 2. Rally scoring (used by some leagues and pro events) is different and isn't handled here.</li>
+      </ul>
+    </details>
+
+    <footer><span>Rally · the score caller · CC0 · everything stays on this phone</span><span><a href="/">tez-rally.pages.dev</a></span></footer>
+  </main>
+
+  <script>
+  (() => {
+    "use strict";
+    const KEY = "rally:score:v1";
+    const $ = (id) => document.getElementById(id);
+    let G = null;            // current game state
+    let history = [];        // previous states, for undo
+    let speak = true;
+
+    // ── the rules engine (pure) ──────────────────────────────────
+    // Team state: right/left = who stands in which service court.
+    // serving: "a"|"b"; server: 1|2 (doubles only).
+    function newGame(cfg) {
+      const t = (n1, n2, fb1, fb2) => ({ right: n1 || fb1, left: n2 || fb2, score: 0 });
+      return {
+        format: cfg.format, to: cfg.to,
+        a: t(cfg.a1, cfg.a2, "A1", "A2"), b: t(cfg.b1, cfg.b2, "B1", "B2"),
+        serving: "a", server: cfg.format === "doubles" ? 2 : 1,
+        // doubles: which player of the serving team is serving (by name)
+        serverName: null, rallies: 0, winner: null,
+      };
+    }
+    const other = (s) => (s === "a" ? "b" : "a");
+
+    // Singles: the server stands right on even score, left on odd.
+    function singlesSides(g) {
+      for (const k of ["a", "b"]) {
+        const tm = g[k], player = tm.right !== "·" ? tm.right : tm.left;
+        const ref = g.serving === k ? tm.score : g[g.serving].score; // receiver lines up diagonal to the server
+        const even = ref % 2 === 0;
+        tm.right = even ? player : "·"; tm.left = even ? "·" : player;
+      }
+    }
+
+    function start(g) {
+      if (g.format === "doubles") g.serverName = g.a.right;
+      else { g.a.left = "·"; g.b.left = "·"; singlesSides(g); }
+      return g;
+    }
+
+    function rally(g, wonBy) {
+      const n = structuredClone(g);
+      n.rallies++;
+      const s = n.serving, st = n[s];
+      if (wonBy === s) {
+        st.score++;
+        if (n.format === "doubles") { [st.right, st.left] = [st.left, st.right]; }
+      } else if (n.format === "doubles" && n.server === 1) {
+        n.server = 2;
+        n.serverName = n.serverName === st.right ? st.left : st.right;
+      } else {
+        n.serving = other(s); n.server = 1;
+        if (n.format === "doubles") n.serverName = n[n.serving].right;
+      }
+      if (n.format === "singles") singlesSides(n);
+      const hi = Math.max(n.a.score, n.b.score), lo = Math.min(n.a.score, n.b.score);
+      if (hi >= n.to && hi - lo >= 2) n.winner = n.a.score > n.b.score ? "a" : "b";
+      return n;
+    }
+
+    function callOf(g) {
+      const s = g[g.serving].score, r = g[other(g.serving)].score;
+      return g.format === "doubles" ? `${s}-${r}-${g.server}` : `${s}-${r}`;
+    }
+    const teamName = (g, k) => g.format === "doubles" ? `${g[k].right} & ${g[k].left}`.replace(/ & ·|· & /, "") : (g[k].right !== "·" ? g[k].right : g[k].left);
+
+    // ── render ───────────────────────────────────────────────────
+    function render() {
+      $("view-setup").hidden = Boolean(G); $("view-game").hidden = !G;
+      if (!G) return;
+      const call = $("call"), sub = $("sub");
+      if (G.winner) {
+        const w = G.winner, l = other(w);
+        call.textContent = `${G[w].score}–${G[l].score}`; call.classList.add("win");
+        sub.textContent = `${teamName(G, w)} win`;
+      } else {
+        call.classList.remove("win"); call.textContent = callOf(G);
+        const who = G.format === "doubles" ? G.serverName : teamName(G, G.serving);
+        const side = G[G.serving].right === who ? "right" : "left";
+        sub.textContent = `${who} serves from the ${side}` + (G.format === "doubles" && G.rallies === 0 ? " · one server to start" : "");
+      }
+      // A plays the left half of the drawing: their right court is at the bottom.
+      const serverBox = G.format === "doubles" ? G.serverName : null;
+      const put = (id, k, name) => { const el = $(id); el.textContent = name === "·" ? "" : name; el.classList.toggle("serving", !G.winner && G.serving === k && (serverBox ? name === serverBox : name !== "·")); };
+      put("pos-a-right", "a", G.a.right); put("pos-a-left", "a", G.a.left);
+      put("pos-b-right", "b", G.b.right); put("pos-b-left", "b", G.b.left);
+      $("key-a").textContent = teamName(G, "a") + " · " + G.a.score;
+      $("key-b").textContent = G.b.score + " · " + teamName(G, "b");
+      $("tap-a-name").textContent = teamName(G, "a"); $("tap-b-name").textContent = teamName(G, "b");
+      $("tap-a").disabled = $("tap-b").disabled = Boolean(G.winner);
+      $("undo").disabled = history.length === 0;
+    }
+
+    function say(text) {
+      if (!speak || !("speechSynthesis" in window)) return;
+      try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.rate = 1.05; speechSynthesis.speak(u); } catch {}
+    }
+    const spoken = (g) => g.winner ? `Game. ${g[g.winner].score} to ${g[other(g.winner)].score}.` : callOf(g).split("-").join(", ");
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify({ G, history: history.slice(-200) })); } catch {} };
+
+    function logLine(prev, next, wonBy) {
+      const li = document.createElement("li");
+      const what = wonBy === prev.serving ? "point" : (next.serving !== prev.serving ? "side out" : "second server");
+      li.textContent = `${callOf(prev)} → ${next.winner ? "game" : callOf(next)} · ${what} (${teamName(prev, wonBy)} won the rally)`;
+      $("log").prepend(li);
+    }
+
+    function tap(k) {
+      if (!G || G.winner) return;
+      const next = rally(G, k);
+      history.push(G); logLine(G, next, k); G = next; save(); render(); say(spoken(G));
+    }
+
+    // ── wiring ───────────────────────────────────────────────────
+    const syncFormat = () => {
+      const dbl = $("f-format").value === "doubles";
+      document.querySelectorAll(".dbl").forEach((el) => (el.hidden = !dbl));
+      $("la1").textContent = dbl ? "Right court" : "Server"; $("lb1").textContent = dbl ? "Right court" : "Receiver";
+    };
+    $("f-format").addEventListener("change", syncFormat); syncFormat();
+    $("setup").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const v = (id) => $(id).value.trim().slice(0, 18);
+      G = start(newGame({ format: $("f-format").value, to: Number($("f-to").value), a1: v("a1"), a2: v("a2"), b1: v("b1"), b2: v("b2") }));
+      history = []; $("log").textContent = ""; save(); render(); say(spoken(G));
+    });
+    $("tap-a").addEventListener("click", () => tap("a"));
+    $("tap-b").addEventListener("click", () => tap("b"));
+    $("undo").addEventListener("click", () => { if (!history.length) return; G = history.pop(); $("log").firstElementChild?.remove(); save(); render(); say(spoken(G)); });
+    $("voice").addEventListener("click", (e) => { speak = !speak; e.currentTarget.setAttribute("aria-pressed", String(speak)); if (!speak && "speechSynthesis" in window) speechSynthesis.cancel(); });
+    $("again").addEventListener("click", () => { if (G && !G.winner && G.rallies && !confirm("End this game?")) return; G = null; history = []; save(); render(); });
+    document.addEventListener("keydown", (e) => { if (!G || e.target.matches("input,select")) return; if (e.key === "ArrowLeft" || e.key === "a") tap("a"); if (e.key === "ArrowRight" || e.key === "b") tap("b"); if (e.key === "z" || e.key === "Backspace") $("undo").click(); });
+
+    try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); if (s?.G) { G = s.G; history = s.history || []; } } catch {}
+    // exposed for the test harness only
+    window.__rallyScore = { newGame, start, rally, callOf };
+    render();
+  })();
+  </script>
+</body>
+</html>
