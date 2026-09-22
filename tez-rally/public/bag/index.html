@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Bag — what you carry and how long it lasts · Rally</title>
-  <meta name="description" content="Keep a log of the pickleball paddles you carry: hours played, grit checks, and the day the core went dead. Stored on your device. No account, no wallet, nothing uploaded." />
+  <meta name="description" content="Keep a log of the pickleball paddles you carry: hours played, grit checks, and the day the core went dead. Stored on your device. No account, no wallet. Nothing leaves unless you send a wear report to the register." />
   <meta property="og:title" content="The Bag — what you carry and how long it lasts" />
   <meta property="og:description" content="Log hours and wear on your paddles. Reviewers measure a paddle new. Nobody measures it at hour sixty." />
   <meta name="twitter:card" content="summary" />
@@ -77,6 +77,15 @@
     .banner p { margin: 0; font-size: 0.95rem; }
     .banner.quiet { background: #fbfaf6; }
     .plain { border-left: 4px solid var(--court); background: var(--wash); padding: 0.8rem 1rem; margin: 0; font-size: 0.97rem; }
+    .bag-links { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; margin: -0.2rem 0 0.8rem; overflow-wrap: anywhere; }
+    .report { margin-top: 0.8rem; border-top: 1px solid var(--line); padding-top: 0.6rem; display: grid; gap: 0.5rem; justify-items: start; }
+    .report .ghost { white-space: normal; text-align: left; max-width: 100%; }
+    .confirm { border: 1.5px dashed var(--ink); background: var(--wash); padding: 0.8rem 0.9rem; display: grid; gap: 0.6rem; width: 100%; }
+    .confirm p { margin: 0; font-size: 0.95rem; }
+    .confirm ul { margin: 0; padding-left: 1.1rem; font-family: var(--mono); font-size: 0.74rem; line-height: 1.6; overflow-wrap: anywhere; }
+    .changes { margin-top: 1.4rem; }
+    .changes .rows { margin-top: 0.3rem; }
+    .changes .rows li { grid-template-columns: 5.2rem minmax(0, 1fr); }
 
     .panel { border: 1.5px solid var(--ink); padding: 1.1rem; display: grid; gap: 0.9rem; }
     .row3 { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr); gap: 0.7rem; align-items: end; }
@@ -151,6 +160,7 @@
       .row3, .row2 { grid-template-columns: minmax(0, 1fr); }
       .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .rows li { grid-template-columns: 4.4rem minmax(0, 1fr) auto; gap: 0.4rem; }
+      .changes .rows li { grid-template-columns: 4.4rem minmax(0, 1fr); }
       .paddle { padding: 0.85rem 0.8rem; }
       .panel { padding: 0.9rem 0.8rem; }
     }
@@ -187,8 +197,9 @@
       <div id="number-slot"></div>
     </div>
 
-    <p class="plain" id="honesty">Everything on this page is stored on this device, in this browser. Nothing is sent anywhere.
-      There is no account and no name field. A bag never touches the Rally ladder.</p>
+    <p class="plain" id="honesty">Everything on this page is stored on this device, in this browser. Nothing leaves the device unless you
+      press “Send” on a wear report, and a report is aggregates-only on the other end: hours, sessions and wear for one register paddle,
+      with no name, no device id and no free text. There is no account and no name field. A bag never touches the Rally ladder.</p>
 
     <!-- ── played today ─────────────────────────────────── -->
     <section id="sec-log" aria-labelledby="log-title" hidden>
@@ -214,6 +225,7 @@
     <!-- ── my bag ───────────────────────────────────────── -->
     <section id="sec-bag" aria-labelledby="bag-title">
       <h2 id="bag-title" tabindex="-1">My <em>bag.</em></h2>
+      <p id="bag-links" class="bag-links" hidden></p>
       <div id="bag-list"></div>
 
       <div id="empty" hidden>
@@ -223,6 +235,12 @@
           <li><span><b>Write down wear when you notice it.</b> A grit check, a soft spot, a crack. The page adds up the hours for you.</span></li>
         </ol>
         <div id="example-slot"></div>
+      </div>
+
+      <div id="changes" class="changes" hidden>
+        <span class="label">What changed in the register</span>
+        <ul id="changes-list" class="rows" aria-label="Latest register changes"></ul>
+        <p class="fine" style="margin-top:0.4rem"><a id="changes-link" href="https://pointcast.xyz/paddles/changes" rel="noopener">All changes in the register →</a></p>
       </div>
     </section>
 
@@ -277,7 +295,8 @@
         none of them write the hours down. A bag is a place to write them down.</p>
       <p>If enough players keep a bag, <a href="/paddle-calendar/">the paddle register</a> can publish real lifespans:
         hours until the grit fades and hours until the core goes soft, by model.
-        <b>That pooling is not built yet.</b> When it is, it will be opt-in and anonymous. Until then your log stays here and goes nowhere.</p>
+        The pooling is opt-in, one paddle at a time: after five hours on a register paddle, its card offers to send a wear report.
+        You see exactly what goes before it goes. Nothing goes on its own.</p>
       <p class="fine">A grit check is your own read of the face, from 1 (new) to 5 (gone). Cost per hour uses the register's list price,
         not what you paid, and shows after five hours.</p>
     </section>
@@ -339,8 +358,12 @@
         if (role === "main") { if (hasMain) role = "backup"; hasMain = true; }
         const id = "p" + paddles.length;
         if (typeof p.id === "string" && !ids.has(p.id)) ids.set(p.id, id);
+        // a wear-report mark is only kept whole: a date and the hours it carried, both in range
+        const rh = typeof p.lastReportHours === "number" ? Math.round(p.lastReportHours * 2) / 2 : null;
+        const reported = validDate(p.lastReportAt) && rh !== null && rh >= 1 && rh <= 3000;
         paddles.push({ id, ref: cleanRef(p.ref), name, msrp: cleanMsrp(p.msrp), build: cleanStr(p.build, CAPS.build),
-          since: validDate(p.since) ? p.since : today, role, note: cleanStr(p.note, CAPS.note) });
+          since: validDate(p.since) ? p.since : today, role, note: cleanStr(p.note, CAPS.note),
+          lastReportAt: reported ? p.lastReportAt : "", lastReportHours: reported ? rh : null });
       }
       const sessions = [];
       for (const s of (Array.isArray(raw.sessions) ? raw.sessions : []).slice(0, CAPS.sessions)) {
@@ -435,10 +458,51 @@
       if (!toks.length) return [];
       return reg.filter((r) => toks.every((t) => r.hay.includes(t))).slice(0, limit || 8);
     }
+
+    // ── wear report: what one paddle card offers to send to the register ──
+    // The register accepts: hours 1–3000, sessions 1–2000, hours per session ≤ 12, months 0–60,
+    // fadeAt/deadAt ≤ hours, rating one of RATINGS. The builder returns null rather than a payload it knows would be refused.
+    const RATINGS = [2.5, 3, 3.5, 4, 4.5, 5];
+    const REPORT = { minHours: 5, resendAfter: 5 };
+    // rally:intended-rating is a milli-rating (4250 = 4.250); the register takes half steps.
+    function ratingFromMilli(m) {
+      if (!Number.isInteger(m) || m < 2000 || m > 8000) return null;
+      const r = Math.round(m / 500) * 500 / 1000;
+      return RATINGS.includes(r) ? r : null;
+    }
+    function wearReport(p, st, ratingMilli) {
+      if (!p || !st || !cleanRef(p.ref)) return null;
+      const hours = Math.round(st.hours * 2) / 2, sessions = st.sessions;
+      if (!(hours >= REPORT.minHours && hours <= 3000)) return null;
+      if (!Number.isInteger(sessions) || sessions < 1 || sessions > 2000 || hours / sessions > 12) return null;
+      const months = Math.round((st.days / 30.4) * 100) / 100;
+      if (!(months >= 0 && months <= 60)) return null;
+      const at = (x) => (x && typeof x.hours === "number" ? Math.min(hours, Math.round(x.hours * 2) / 2) : null);
+      return { paddleId: p.ref, hours, sessions, months, fadeAt: at(st.fade), deadAt: at(st.dead), rating: ratingFromMilli(ratingMilli) };
+    }
+    // A resend replaces the earlier report on the register, so one is offered again only once the hours have grown.
+    const wearReportDue = (p, hours) => !p.lastReportAt || p.lastReportHours === null || hours - p.lastReportHours >= REPORT.resendAfter;
+
+    // ?add=<register id> from a link: a slug or nothing.
+    const cleanAddParam = (s) => (typeof s === "string" && s.length <= 64 && /^[a-z0-9]+(-[a-z0-9]+)*$/.test(s) ? s : "");
+
+    // pointcast.xyz/paddles.json → changes: the three newest, as plain values, or nothing.
+    function cleanChanges(data, limit) {
+      const out = [];
+      for (const c of (data && Array.isArray(data.changes) ? data.changes : []).slice(0, 500)) {
+        if (!c || typeof c !== "object" || !validDate(c.date)) continue;
+        const kind = cleanStr(c.kind, 24).toUpperCase(), text = cleanStr(c.text, 200);
+        if (!kind || !text) continue;
+        out.push({ date: c.date, kind, text });
+      }
+      return out.sort((a, b) => b.date.localeCompare(a.date)).slice(0, limit || 3);
+    }
     /* PURE-END */
 
     // ── page ─────────────────────────────────────────────────────
-    const KEY = "rally:bag:v1", NUMBER_KEY = "rally:intended-rating", REGISTER_URL = "/paddle-calendar/register.json";
+    const KEY = "rally:bag:v1", SID_KEY = "rally:bag:sid", NUMBER_KEY = "rally:intended-rating", REGISTER_URL = "/paddle-calendar/register.json";
+    const WEAR_URL = "https://pointcast.xyz/api/paddles/wear", CHANGES_URL = "https://pointcast.xyz/paddles.json";
+    const PC_PADDLES = "https://pointcast.xyz/paddles/";
     const $ = (id) => document.getElementById(id);
     const todayISO = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
 
@@ -461,6 +525,9 @@
     let duration = 1.5;
     let picked = null;    // paddle id chosen by hand in the session form
     let showAllSessions = false;
+    let sid = "";         // random id that goes with a wear report, so a resend replaces the earlier one
+    let pendingAdd = "";  // ?add=<register id> waiting for the register to load
+    const reportNotes = new Map(); // paddle id → the last outcome line for its wear report
 
     // ── storage: every touch is wrapped; the page runs from memory when it is blocked ──
     function save() {
@@ -476,6 +543,17 @@
     }
     function readNumber() {
       try { const n = Number(localStorage.getItem(NUMBER_KEY)); return Number.isInteger(n) && n >= 2000 && n <= 8000 ? n : null; } catch { return null; }
+    }
+    // Made once, kept if storage allows, in memory otherwise. It carries nothing about the device or the player.
+    function sessionId() {
+      if (sid) return sid;
+      try { const s = localStorage.getItem(SID_KEY); if (typeof s === "string" && /^[a-f0-9]{32}$/.test(s)) sid = s; } catch {}
+      if (!sid) {
+        const b = new Uint8Array(16); crypto.getRandomValues(b);
+        sid = Array.from(b, (x) => x.toString(16).padStart(2, "0")).join("");
+        try { localStorage.setItem(SID_KEY, sid); } catch {}
+      }
+      return sid;
     }
 
     const priceOf = (p) => { const r = p.ref && register.find((x) => x.id === p.ref); return r && r.msrp ? r.msrp : p.msrp; };
@@ -531,7 +609,7 @@
       const meta = h("p", { class: "meta" });
       const bits = [p.build && p.build !== "unknown" ? p.build : null, st.msrp ? fmtMoney(st.msrp) + " list" : null].filter(Boolean);
       meta.append(bits.join(" · "));
-      if (p.ref) meta.append(bits.length ? " · " : "", h("a", { href: "https://pointcast.xyz/paddles/" + encodeURIComponent(p.ref), rel: "noopener" }, "register entry →"));
+      if (p.ref) meta.append(bits.length ? " · " : "", h("a", { href: PC_PADDLES + encodeURIComponent(p.ref), rel: "noopener" }, "Its page in the register ↗"));
       else meta.append(bits.length ? " · " : "", "not in the register");
 
       const card = h("article", { class: "paddle" + (p.role === "main" ? " is-main" : "") + (p.role === "retired" ? " is-retired" : ""), "aria-labelledby": "nm-" + p.id },
@@ -558,6 +636,10 @@
               onclick: () => { B.wear.splice(i, 1); save(); render(); } }, "delete")))));
       }
       if (ro) return card;
+
+      // wear report to the register: offered on register paddles after five hours, sent only on "Send"
+      const payload = wearReport(p, st, readNumber());
+      if (payload || p.lastReportAt) card.append(reportBlock(p, st, payload, today));
 
       // log wear
       const wDate = h("input", { type: "date", id: "w-date-" + p.id, value: today, max: today, required: true });
@@ -600,10 +682,82 @@
       return card;
     }
 
+    // The confirm block says exactly what goes, then Send or Cancel. Nothing is sent before Send.
+    function reportBlock(p, st, payload, today) {
+      const box = h("div", { class: "report" });
+      if (p.lastReportAt) box.append(h("p", { class: "meta" }, "Report sent " + shortDate(p.lastReportAt, today) + " at " + hoursWord(p.lastReportHours) + "."));
+      const note = h("p", { class: "status", role: "status", id: "rep-note-" + p.id }, reportNotes.get(p.id) || "");
+      if (!payload) { box.append(note); return box; }
+      if (!wearReportDue(p, payload.hours)) {
+        box.append(h("p", { class: "fine" }, "Another report can go once " + REPORT.resendAfter + " more hours are on it."), note);
+        return box;
+      }
+      const lines = [
+        "paddle: " + payload.paddleId,
+        "hours: " + fmtH(payload.hours) + " over " + payload.sessions + (payload.sessions === 1 ? " session" : " sessions"),
+        "months in play: " + payload.months,
+        "grit fading at: " + (payload.fadeAt === null ? "no fading grit check yet" : hoursWord(payload.fadeAt)),
+        "went dead at: " + (payload.deadAt === null ? "not logged" : hoursWord(payload.deadAt)),
+        "your number, to the nearest half: " + (payload.rating === null ? "not set" : payload.rating.toFixed(1)),
+        "a random id made by this page, so a later report from this bag replaces this one",
+      ];
+      const open = h("button", { class: "ghost", type: "button", id: "rep-open-" + p.id }, "Send a wear report to the register");
+      const send = h("button", { class: "ghost", type: "button", id: "rep-send-" + p.id }, "Send");
+      const cancel = h("button", { class: "linkish", type: "button", id: "rep-cancel-" + p.id }, "Cancel");
+      const confirm = h("div", { class: "confirm", hidden: true, role: "group", "aria-labelledby": "rep-what-" + p.id },
+        h("p", { id: "rep-what-" + p.id }, h("b", {}, "This is what will be sent for " + p.name + ":")),
+        h("ul", {}, lines.map((l) => h("li", {}, l))),
+        h("p", {}, "It carries no name, no device id and no free text. The register shows aggregates only once three reports are in for a paddle."
+          + (p.lastReportAt ? " This replaces the report sent " + shortDate(p.lastReportAt, today) + "." : "")),
+        h("div", { class: "acts" }, send, cancel));
+      open.addEventListener("click", () => { open.hidden = true; confirm.hidden = false; send.focus(); });
+      cancel.addEventListener("click", () => { confirm.hidden = true; open.hidden = false; open.focus(); });
+      send.addEventListener("click", () => sendReport(p, payload, send, note));
+      box.append(open, confirm, note);
+      return box;
+    }
+
+    async function sendReport(p, payload, sendBtn, note) {
+      sendBtn.disabled = true; note.textContent = "Sending.";
+      let r;
+      try {
+        r = await fetch(WEAR_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sessionId: sessionId(), ...payload }) });
+      } catch { note.textContent = "Not sent: the register could not be reached."; sendBtn.disabled = false; return; }
+      let data = null; try { data = await r.json(); } catch {}
+      data = data && typeof data === "object" ? data : {};
+      if (r.status === 429) {
+        const mins = typeof data.retryMs === "number" && data.retryMs > 60000 ? Math.ceil(data.retryMs / 60000) : 1;
+        note.textContent = mins > 1 ? "Try again in about " + mins + " minutes." : "Try again in about a minute.";
+        sendBtn.disabled = false; return;
+      }
+      if (!r.ok || data.ok !== true) {
+        const why = cleanStr(data.reason, 120);
+        note.textContent = "Not sent: " + (why || "the register answered " + r.status) + ".";
+        sendBtn.disabled = false; return;
+      }
+      const n = Number.isInteger(data.n) && data.n >= 0 ? data.n : null;
+      p.lastReportAt = todayISO(); p.lastReportHours = payload.hours;
+      reportNotes.set(p.id, n === null ? "Sent." : "Sent. The register has " + n + (n === 1 ? " report" : " reports") + " for this paddle.");
+      save(); render();
+    }
+
     function renderBag(today) {
       const box = $("bag-list"); box.textContent = "";
       const order = { main: 0, backup: 1, loaner: 2, retired: 3 };
-      [...B.paddles].sort((a, b) => order[a.role] - order[b.role]).forEach((p) => box.append(paddleCard(p, today)));
+      const sorted = [...B.paddles].sort((a, b) => order[a.role] - order[b.role]);
+      sorted.forEach((p) => box.append(paddleCard(p, today)));
+      // compare on PointCast: the first four register paddles, in bag order
+      const links = $("bag-links"); links.textContent = "";
+      const ids = sorted.filter((p) => p.ref).map((p) => p.ref).slice(0, 4);
+      links.hidden = ids.length < 2;
+      if (ids.length >= 2) links.append(h("a", { href: PC_PADDLES + "compare?ids=" + ids.map(encodeURIComponent).join(","), rel: "noopener" }, "Compare on PointCast →"),
+        " ", h("span", { class: "rm" }, ids.length + " register paddles"));
+    }
+
+    function renderChanges(rows, today) {
+      const box = $("changes"), ul = $("changes-list"); ul.textContent = "";
+      box.hidden = !rows.length;
+      for (const c of rows) ul.append(h("li", {}, h("span", { class: "d" }, shortDate(c.date, today)), h("span", { class: "w" }, h("small", {}, c.kind), " · " + c.text)));
     }
 
     function renderExample(today) {
@@ -672,7 +826,7 @@
       if (!validDate(since) || since > todayISO()) { $("add-status").textContent = "Pick a date that is today or earlier."; return; }
       if (B.paddles.length >= CAPS.paddles) return;
       const p = { id: "p" + B.next++, ref: chosen ? chosen.id : "", name, msrp: chosen ? chosen.msrp : null, build: chosen ? chosen.build : "",
-        since, role: "backup", note: cleanStr($("add-note").value, CAPS.note) };
+        since, role: "backup", note: cleanStr($("add-note").value, CAPS.note), lastReportAt: "", lastReportHours: null };
       B.paddles.push(p); setRole(p, ROLES.includes($("add-role").value) ? $("add-role").value : "backup");
       chosen = null; $("add-q").value = ""; $("add-note").value = ""; renderChosen(); renderResults();
       save(); render(); resetAddDefaults();
@@ -709,7 +863,8 @@
     });
     $("download").addEventListener("click", () => {
       const out = { format: "rally-bag/1", exported: new Date().toISOString(), source: "https://tez-rally.pages.dev/bag/",
-        paddles: B.paddles.map(({ id, ref, name, msrp, build, since, role, note }) => ({ id, ref, name, msrp, build, since, role, note })),
+        paddles: B.paddles.map(({ id, ref, name, msrp, build, since, role, note, lastReportAt, lastReportHours }) =>
+          ({ id, ref, name, msrp, build, since, role, note, lastReportAt: lastReportAt || null, lastReportHours })),
         sessions: B.sessions.map(({ p, d, h: hrs }) => ({ paddle: p, date: d, hours: hrs })),
         wear: B.wear.map(({ p, d, t, g }) => ({ paddle: p, date: d, type: t, grit: g })) };
       const blob = new Blob([JSON.stringify(out, null, 2)], { type: "application/json" });
@@ -719,8 +874,8 @@
     });
     $("empty-bag").addEventListener("click", () => {
       if (!confirm("Empty this bag? Every paddle, session and wear entry on this device is removed. Links you already shared still work.")) return;
-      try { localStorage.removeItem(KEY); } catch {}
-      B = emptyBag(); render(); resetAddDefaults(); scrollTo(0, 0);
+      try { localStorage.removeItem(KEY); localStorage.removeItem(SID_KEY); } catch {}
+      B = emptyBag(); sid = ""; reportNotes.clear(); render(); resetAddDefaults(); scrollTo(0, 0);
     });
     $("shared-keep").addEventListener("click", () => {
       const mine = load();
@@ -743,13 +898,35 @@
     addEventListener("hashchange", () => { if (/^#b=/.test(location.hash) || shared) boot(); });
     boot();
 
+    // ?add=<register id>: remembered, then stripped from the address bar. It only pre-fills the form; nothing is saved until "Put it in the bag".
+    try {
+      const params = new URLSearchParams(location.search);
+      if (params.has("add")) {
+        pendingAdd = cleanAddParam(params.get("add"));
+        history.replaceState(null, "", location.pathname + location.hash);
+      }
+    } catch { pendingAdd = ""; }
+    function applyPendingAdd() {
+      const id = pendingAdd; pendingAdd = "";
+      if (!id || shared || B.paddles.length >= CAPS.paddles) return;
+      const row = register.find((r) => r.id === id);
+      if (!row) { $("add-status").textContent = "The link asked for a paddle that is not in the register. Search for it, or type the name."; $("sec-add").scrollIntoView(); return; }
+      chosen = row; $("add-q").value = row.short; renderResults(); renderChosen();
+      $("add-status").textContent = row.short + " is picked from the link. Press “Put it in the bag” to keep it.";
+      $("sec-add").scrollIntoView(); $("add-since").focus({ preventScroll: true });
+    }
+
     // The register is a read of a static file on this site. Nothing about the bag goes with the request.
     fetch(REGISTER_URL, { credentials: "omit" }).then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status))))).then((data) => {
       register = cleanRegister(data);
       if (!register.length) throw new Error("empty");
       $("add-q").placeholder = "brand or model, " + register.length + " paddles in the register";
-      renderResults(); render();
-    }).catch(() => { $("add-q-status").textContent = "The register did not load. You can still add a paddle by name."; });
+      renderResults(); render(); applyPendingAdd();
+    }).catch(() => { $("add-q-status").textContent = "The register did not load. You can still add a paddle by name."; applyPendingAdd(); });
+
+    // What changed in the register: a read of pointcast.xyz/paddles.json. Nothing about the bag goes with it; if it fails, the line stays hidden.
+    fetch(CHANGES_URL, { credentials: "omit", mode: "cors" }).then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then((data) => renderChanges(cleanChanges(data, 3), todayISO())).catch(() => {});
   })();
   </script>
 </body>

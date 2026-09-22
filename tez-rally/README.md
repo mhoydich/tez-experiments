@@ -53,10 +53,19 @@ gets a ledger line: hours, sessions, hours at the first fading grit check,
 hours when it went dead, and list price per hour after five hours. Local-only
 (`localStorage` key `rally:bag:v1`, in-memory when storage is blocked); the
 whole bag shares in a `#b=` link hash that opens read-only until kept; JSON
-export. No network writes, no account, and a bag never touches the ladder.
-Pooled opt-in lifespans for the register are not built. The pure functions sit
-between `PURE-START` / `PURE-END` markers; `node scripts/test-bag.mjs` lifts
-them out and runs the assertions.
+export. No account, and a bag never touches the ladder. The one network write
+is opt-in per paddle: after five hours on a register paddle, its card offers
+"Send a wear report to the register", shows exactly what will go, and on
+"Send" POSTs `{ sessionId, paddleId, hours, sessions, months, fadeAt, deadAt,
+rating }` to `pointcast.xyz/api/paddles/wear` — no name, no device id, no free
+text; `sessionId` is a random id kept under `rally:bag:sid` so a later report
+(offered again after five more hours) replaces the earlier one, and the
+register shows aggregates only once three reports are in. The page also links
+"Compare on PointCast" for two or more register paddles, pre-fills the add form
+from `?add=<register id>`, and lists the three newest entries from
+`pointcast.xyz/paddles.json` `changes`. The pure functions sit between
+`PURE-START` / `PURE-END` markers; `node scripts/test-bag.mjs` lifts them out
+and runs the assertions.
 
 The landing page is the front door for the full Rally identity system:
 pickleball portraits, wallet-owned player cards, countersigned match records,
