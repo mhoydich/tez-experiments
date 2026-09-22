@@ -12,6 +12,16 @@ Pages project `tez-rally` (deploy: `npx vite build && npx wrangler pages
 deploy dist --project-name tez-rally`). Rebuild + redeploy after changing
 `VITE_RALLY_ADDRESS`.
 
+**Reference + tools added 2026-09-22:** `/guide/` (the field guide: rules,
+gear, ratings, lessons, watch/listen, pro calendar, tournaments, the money,
+South Bay courts, trips) and `/pros/` (PPA/MLP/APP, MLP format + teams,
+rankings) share `public/guide/guide.{js,css}` and render JSON built by
+`scripts/build-guide.py` — edit that script, never the JSON, and keep every
+fact sourced (both research passes re-verified URLs by page title; five city
+pages + Pickleheads 403 to curl but load in a browser). `/score/` is the
+score caller (side-out scoring, 0-0-2, spoken calls; `window.__rallyScore`
+exposes the pure rules engine for tests).
+
 **Read [GROWTH.md](GROWTH.md) first** — the 2026-09-19 rethink: Rally is the
 crew's scorekeeper first and a ledger second. Site map since then: `/` leads
 with the level finder ("What's your number?", `src/finder.js`, no wallet;

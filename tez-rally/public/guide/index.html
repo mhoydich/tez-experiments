@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Rally Field Guide — the whole sport of pickleball on one page</title>
+  <meta name="description" content="Everything around the game in one sourced page: rules in a minute, gear, ratings, where to learn, where to watch, the pro tours and MLP, tournaments, the money and sponsorships, South Bay courts, and destinations worth a trip." />
+  <meta property="og:title" content="The Rally Field Guide — the whole sport on one page" />
+  <meta property="og:description" content="Rules, gear, ratings, videos, the pro tours and MLP, tournaments, sponsorships, South Bay courts, and trips. Every fact sourced." />
+  <meta name="twitter:card" content="summary" />
+  <link rel="canonical" href="https://tez-rally.pages.dev/guide/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/guide/guide.css" />
+</head>
+<body data-guide="/guide/guide.json">
+  <main class="office">
+    <header class="site-nav">
+      <a class="nav-mark" href="/" aria-label="Rally home">rally</a>
+      <nav aria-label="Primary navigation">
+        <a href="/#your-number">Your number</a>
+        <a href="/tonight/">Tonight</a>
+        <a href="/score/">Score</a>
+        <a href="/pros/">Pro desk</a>
+        <a href="/paddle-calendar/">Paddles</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div>
+        <p class="eyebrow">the rally field guide</p>
+        <h1>The whole sport, <em>on one page.</em></h1>
+        <p class="deck" id="deck">Rules in a minute, the gear, the ratings, where to learn, where to watch, the pro tours,
+          tournaments, the money, the South Bay courts, and trips worth taking. Every fact carries its source.</p>
+      </div>
+      <div class="asof" id="asof">Loading the guide…</div>
+    </section>
+
+    <nav class="toc" id="toc" aria-label="Chapters"></nav>
+    <div class="find"><input id="find" type="search" placeholder="Find a channel, court, tour, place…" aria-label="Filter the guide" /><span id="count"></span></div>
+
+    <div id="chapters"></div>
+
+    <footer>
+      <span>Rally · the field guide · CC0 · machine-readable at <a href="/guide/guide.json">/guide/guide.json</a></span>
+      <span>Something wrong or missing? The guide is checked by hand; corrections go on the ledger, not silently.</span>
+    </footer>
+  </main>
+
+  <script src="/guide/guide.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,1241 @@
+{
+ "asOf": "2026-09-22",
+ "method": "Two research passes on 2026-09-22; every link opened and checked by page title, every number checked against its source page. Summaries have gotten pickleball facts wrong before, so anything we couldn't confirm is left out.",
+ "chapters": [
+  {
+   "id": "game",
+   "short": "The game",
+   "title": "The game in a minute",
+   "dek": "Enough to walk into open play tonight.",
+   "blocks": [
+    {
+     "type": "quick",
+     "items": [
+      {
+       "big": "20 × 44 ft",
+       "small": "the court, for singles and doubles"
+      },
+      {
+       "big": "7 ft",
+       "small": "the kitchen (non-volley zone) on each side of the net: no volleys while you're in it or on its line"
+      },
+      {
+       "big": "36 / 34 in",
+       "small": "net height at the sidelines / at the center"
+      },
+      {
+       "big": "2 bounces",
+       "small": "the return must bounce, then the serving side's third shot must bounce, before anyone volleys"
+      },
+      {
+       "big": "Underhand",
+       "small": "serve diagonally, clearing the kitchen"
+      },
+      {
+       "big": "11, by 2",
+       "small": "a normal game; only the serving side scores"
+      }
+     ]
+    },
+    {
+     "type": "note",
+     "text": "The basics above are from the USA Pickleball rulebook. Pro events (PPA, MLP) play the UPA-A rulebook, and some formats use rally scoring."
+    },
+    {
+     "heading": "Rulebooks",
+     "type": "links",
+     "items": [
+      {
+       "name": "Official USA Pickleball Rulebook",
+       "url": "https://usapickleball.org/rules/",
+       "what": "The 2026 rulebook for sanctioned amateur play, with the PDF and the change log.",
+       "kind": "official"
+      },
+      {
+       "name": "USA Pickleball rules summary",
+       "url": "https://usapickleball.org/rules/summary/",
+       "what": "Serving, two-bounce, the kitchen, faults and scoring in plain language.",
+       "kind": "summary"
+      },
+      {
+       "name": "UPA-A Official Rulebook",
+       "url": "https://upaa.unitedpickleball.com/official-rulebook/",
+       "what": "The rulebook for PPA Tour and MLP matches, in effect since May 22, 2026.",
+       "kind": "pro rules"
+      },
+      {
+       "name": "Pickleheads: 7 simple rules",
+       "url": "https://www.pickleheads.com/guides/how-to-play-pickleball",
+       "what": "Read this before your first open play.",
+       "kind": "beginner"
+      }
+     ]
+    },
+    {
+     "heading": "Keep the call straight",
+     "type": "cards",
+     "items": [
+      {
+       "title": "The score caller",
+       "sub": "one game",
+       "body": "Tap who won the rally. It keeps the server, the side, the 0-0-2 start, and says the call out loud.",
+       "links": [
+        {
+         "label": "Call a game",
+         "url": "/score/"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "gear",
+   "short": "Gear",
+   "title": "Paddles and the people who test them",
+   "dek": "There are now two paddle rulebooks, dozens of releases a year, and a handful of independent testers worth trusting.",
+   "blocks": [
+    {
+     "type": "cards",
+     "items": [
+      {
+       "title": "The Paddle Register",
+       "sub": "pointcast.xyz · 92 paddles",
+       "body": "On-sale dates, prices, USA Pickleball and UPA-A status, construction, to-scale drawings. Links out to each lab instead of copying numbers.",
+       "links": [
+        {
+         "label": "Browse",
+         "url": "https://pointcast.xyz/paddles"
+        },
+        {
+         "label": "Compare",
+         "url": "https://pointcast.xyz/paddles/compare"
+        },
+        {
+         "label": "Which paddles are legal where",
+         "url": "https://pointcast.xyz/paddles/legal"
+        },
+        {
+         "label": "What the pros use",
+         "url": "https://pointcast.xyz/paddles/pros"
+        }
+       ]
+      },
+      {
+       "title": "The paddle calendar",
+       "sub": "2026 releases",
+       "body": "Every paddle release this year, sourced.",
+       "links": [
+        {
+         "label": "See the calendar",
+         "url": "/paddle-calendar/"
+        }
+       ]
+      },
+      {
+       "title": "The bag",
+       "sub": "your paddles",
+       "body": "Log paddle hours and wear. Send a wear report to the public register.",
+       "links": [
+        {
+         "label": "Open the bag",
+         "url": "/bag/"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "heading": "Independent testers and reviewers",
+     "type": "links",
+     "items": [
+      {
+       "name": "John Kew Pickleball",
+       "url": "https://www.youtube.com/@JohnKewPickleball",
+       "what": "Lab-style paddle testing: measured power, spin and swing weight, not just feel.",
+       "kind": "youtube"
+      },
+      {
+       "name": "John Kew: test data",
+       "url": "https://www.johnkewpickleball.com/",
+       "what": "His paddle test numbers and reviews in one place.",
+       "kind": "site"
+      },
+      {
+       "name": "Pickleball Effect",
+       "url": "https://www.youtube.com/@PickleballEffect",
+       "what": "Braydon Unsicker's in-depth, play-tested reviews and comparisons.",
+       "kind": "youtube"
+      },
+      {
+       "name": "Pickleball Effect: Find Your Paddle",
+       "url": "https://pickleballeffect.com/",
+       "what": "Searchable reviews and specs, side by side.",
+       "kind": "site"
+      },
+      {
+       "name": "Pickleball Studio",
+       "url": "https://www.youtube.com/@PickleballStudio",
+       "what": "Chris Olson's reviews, first looks and gear news.",
+       "kind": "youtube"
+      },
+      {
+       "name": "Pickleball Studio: paddle finder",
+       "url": "https://pickleballstudio.com/",
+       "what": "Match a paddle to your game.",
+       "kind": "site"
+      },
+      {
+       "name": "Matt's Pickleball",
+       "url": "https://www.youtube.com/@MattsPickleball",
+       "what": "Test-and-data reviews of new paddles, posted often.",
+       "kind": "youtube"
+      },
+      {
+       "name": "Pickleball Pursuit",
+       "url": "https://www.youtube.com/@PickleballPursuit",
+       "what": "Detailed single-paddle reviews for when you're down to a few.",
+       "kind": "youtube"
+      },
+      {
+       "name": "STS Pickleball",
+       "url": "https://www.youtube.com/@stspickleball",
+       "what": "Polished paddle reviews and roundups.",
+       "kind": "youtube"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ratings",
+   "short": "Ratings",
+   "title": "What the numbers mean",
+   "dek": "Four rating systems, one ranking, and which events care about which. DUPR is the one you'll be asked for.",
+   "blocks": [
+    {
+     "type": "table",
+     "cols": [
+      "rating",
+      "scale",
+      "what it is",
+      "who uses it"
+     ],
+     "rows": [
+      {
+       "cells": [
+        "DUPR",
+        "2.000–8.000",
+        "Results-based; separate singles and doubles. New players start unrated.",
+        "PPA, MLP, and (since Dec 2025) every USA Pickleball-owned event"
+       ],
+       "url": "https://www.dupr.com/",
+       "source": "https://usapickleball.org/skill-level/ratings/"
+      },
+      {
+       "cells": [
+        "UTR-P",
+        "1.0–10.0",
+        "Age- and gender-neutral, updated daily. Provisional until seven matches.",
+        "The APP Tour's official rating; USA Pickleball's from 2024 until Dec 2025"
+       ],
+       "url": "https://www.utrsports.net/pages/how-utr-p-works",
+       "source": "https://support.universaltennis.com/en/support/solutions/articles/9000225234-faq-pickleball"
+      },
+      {
+       "cells": [
+        "UTPR",
+        "1.0–6.0",
+        "USA Pickleball's older tournament rating.",
+        "Legacy; replaced"
+       ],
+       "url": "https://usapickleball.org/skill-level/ratings/",
+       "source": "https://www.utrsports.net/pages/how-utr-p-works"
+      },
+      {
+       "cells": [
+        "WPR",
+        "points",
+        "A pro ranking, not a skill rating: PPA points over 52 weeks, weighted 50% gender doubles, 35% mixed, 15% singles.",
+        "PPA Tour worldwide"
+       ],
+       "url": "https://ppatour.com/rankings/",
+       "source": "https://ppatour.com/rankings/"
+      },
+      {
+       "cells": [
+        "Rally",
+        "2.00–8.00",
+        "Say your number, then only countersigned matches move it. Open integer Elo on a public ledger.",
+        "You and your crew"
+       ],
+       "url": "/#your-number"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "learn",
+   "short": "Learn",
+   "title": "Get better",
+   "dek": "Free lessons that are actually good, and how to check a coach's credentials.",
+   "blocks": [
+    {
+     "heading": "Videos and free courses",
+     "type": "links",
+     "items": [
+      {
+       "name": "Better Pickleball",
+       "url": "https://www.youtube.com/@BetterPickleball",
+       "what": "Long-running lesson library aimed at players over 50: strokes, footwork, strategy. New video almost daily.",
+       "kind": "youtube"
+      },
+      {
+       "name": "ThatPickleballGuy · Kyle Koszuta",
+       "url": "https://www.youtube.com/@thatpickleballguy",
+       "what": "A pro's drills, strategy breakdowns and mindset lessons. One of the biggest instruction channels.",
+       "kind": "youtube"
+      },
+      {
+       "name": "John Cincola Pickleball",
+       "url": "https://www.youtube.com/@johncincolapickleball",
+       "what": "Technique tutorials and advanced doubles strategy, weekly.",
+       "kind": "youtube"
+      },
+      {
+       "name": "Ed Ju",
+       "url": "https://www.youtube.com/@edjupickleball",
+       "what": "Clear, beginner-friendly how-tos and drill ideas.",
+       "kind": "youtube"
+      },
+      {
+       "name": "tanner.pickleball",
+       "url": "https://www.youtube.com/@tanner.pickleball",
+       "what": "Tips under a minute. One idea per session.",
+       "kind": "youtube"
+      },
+      {
+       "name": "Zane Navratil Pickleball",
+       "url": "https://www.youtube.com/@ZaneNavratilPickleball",
+       "what": "A touring pro's match analysis, tips and drills.",
+       "kind": "youtube"
+      },
+      {
+       "name": "Pickleball Kitchen",
+       "url": "https://www.youtube.com/@PickleballKitchen",
+       "what": "Fundamentals-first lessons across the whole game; updates are occasional now.",
+       "kind": "youtube"
+      },
+      {
+       "name": "PrimeTime Pickleball",
+       "url": "https://www.youtube.com/@PrimeTimePickleball",
+       "what": "Big back catalog of stroke and positioning lessons. No new uploads since March 2025.",
+       "kind": "youtube · archive"
+      },
+      {
+       "name": "Third Shot Sports",
+       "url": "https://www.youtube.com/@ThirdShotSports",
+       "what": "Nearly 900 lesson and drill videos. Archive only since January 2025.",
+       "kind": "youtube · archive"
+      },
+      {
+       "name": "USA Pickleball: Pickleball Skills",
+       "url": "https://usapickleball.org/pickleball-skills/",
+       "what": "Free skill articles tagged Level One to Three, so you can work up in order.",
+       "kind": "free course"
+      },
+      {
+       "name": "USA Pickleball: How to Play",
+       "url": "https://usapickleball.org/pickleball-skills/level-one/how-to-play-pickleball/",
+       "what": "Court, serve, scoring and the kitchen for day one.",
+       "kind": "free course"
+      },
+      {
+       "name": "Pickleheads Guides",
+       "url": "https://www.pickleheads.com/guides",
+       "what": "Free guides on rules, shots, strategy and gear.",
+       "kind": "free course"
+      }
+     ]
+    },
+    {
+     "heading": "Find a certified coach",
+     "type": "links",
+     "items": [
+      {
+       "name": "PPR: Find a Pro",
+       "url": "https://pprpickleball.org/find-a-pro/",
+       "what": "Search the Professional Pickleball Registry's certified teaching pros.",
+       "kind": "directory"
+      },
+      {
+       "name": "PCI: Member Directory",
+       "url": "https://www.pickleballcoachinginternational.com/pages/member-directory",
+       "what": "Pickleball Coaching International's certified coaches.",
+       "kind": "directory"
+      },
+      {
+       "name": "IPTPA",
+       "url": "https://iptpa.com/",
+       "what": "International Pickleball Teaching Professional Association: what the certification means.",
+       "kind": "certifier"
+      },
+      {
+       "name": "RSPA Pickleball Certification",
+       "url": "https://rspa.net/pickleball-certification/",
+       "what": "What an RSPA credential on a coach's bio means.",
+       "kind": "certifier"
+      },
+      {
+       "name": "USA Pickleball: Coach Education",
+       "url": "https://usapickleball.org/coaching/",
+       "what": "Which certifications USA Pickleball recognizes (PCI, PPR, RSPA). There is no national directory.",
+       "kind": "official"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "watch",
+   "short": "Watch",
+   "title": "Watch and listen",
+   "dek": "Where the pros stream, and the shows and newsletters that cover the sport.",
+   "blocks": [
+    {
+     "type": "cards",
+     "items": [
+      {
+       "title": "The Pro desk",
+       "sub": "PPA · MLP · APP",
+       "body": "Every pro event for the rest of 2026, MLP's format and 20 teams, current rankings, and where each event airs.",
+       "links": [
+        {
+         "label": "Open the Pro desk",
+         "url": "/pros/"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "heading": "Streams and channels",
+     "type": "links",
+     "items": [
+      {
+       "name": "PickleballTV",
+       "url": "https://pickleballtv.com/",
+       "what": "Streams every round of every PPA event and every MLP match. Subscription.",
+       "kind": "streaming"
+      },
+      {
+       "name": "Pickleball.com: Where to Watch",
+       "url": "https://pickleball.com/watch-now",
+       "what": "One page showing where upcoming pro matches air.",
+       "kind": "listings"
+      },
+      {
+       "name": "PPA Tour on YouTube",
+       "url": "https://www.youtube.com/channel/UCSP6HlrMmRqogym2aHBPHpw",
+       "what": "Official channel: replays, highlights, streamed courts.",
+       "kind": "youtube"
+      },
+      {
+       "name": "PPA Tour: Watch",
+       "url": "https://www.ppatour.com/watch/",
+       "what": "The tour's own page for where each event airs.",
+       "kind": "listings"
+      },
+      {
+       "name": "Major League Pickleball on YouTube",
+       "url": "https://www.youtube.com/@MajorLeaguePickleball",
+       "what": "Full MLP matches posted after each match day.",
+       "kind": "youtube"
+      },
+      {
+       "name": "APPTV (APP Tour on YouTube)",
+       "url": "https://www.youtube.com/@TheAPPTour",
+       "what": "The APP's official channel: tour and collegiate matches. (The @APPTour handle is a Swiss tourism board.)",
+       "kind": "youtube"
+      }
+     ]
+    },
+    {
+     "heading": "Podcasts, news, newsletters",
+     "type": "links",
+     "items": [
+      {
+       "name": "PicklePod",
+       "url": "https://podcasts.apple.com/us/podcast/picklepod/id1584931417",
+       "what": "Weekly pro-tour news, gossip and interviews from The Dink.",
+       "kind": "podcast"
+      },
+      {
+       "name": "The Dink",
+       "url": "https://www.thedinkpickleball.com/",
+       "what": "Daily news on pros, gear and events.",
+       "kind": "news"
+      },
+      {
+       "name": "The Dink Newsletter",
+       "url": "https://newsletter.thedinkpickleball.com/",
+       "what": "The week's news in one email.",
+       "kind": "newsletter"
+      },
+      {
+       "name": "The Kitchen Pickleball",
+       "url": "https://thekitchenpickle.com/",
+       "what": "News, reviews and commentary, several times a week.",
+       "kind": "news"
+      },
+      {
+       "name": "Pickleball Studio Podcast",
+       "url": "https://podcasts.apple.com/us/podcast/pickleball-studio-podcast/id1627542550",
+       "what": "Weekly gear and industry talk.",
+       "kind": "podcast"
+      },
+      {
+       "name": "Pickleball Therapy",
+       "url": "https://podcasts.apple.com/us/podcast/pickleball-therapy/id1523311733",
+       "what": "Tony Roig on the mental side and decision-making.",
+       "kind": "podcast"
+      },
+      {
+       "name": "Everything But The Kitchen Dink",
+       "url": "https://podcasts.apple.com/us/podcast/everything-but-the-kitchen-dink-pickleball-podcast/id1650123243",
+       "what": "Rec-player chat show about the whole scene.",
+       "kind": "podcast"
+      },
+      {
+       "name": "Dinks On Tap",
+       "url": "https://podcasts.apple.com/us/podcast/dinks-on-tap-the-happy-hour-pickleball-podcast/id1776366798",
+       "what": "Light social-player podcast, happy-hour format.",
+       "kind": "podcast"
+      },
+      {
+       "name": "Pickleball Magazine",
+       "url": "https://www.pickleballmagazine.com/",
+       "what": "Magazine features and instruction articles.",
+       "kind": "magazine"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "calendar",
+   "short": "Pro calendar",
+   "title": "Pro calendar, rest of 2026",
+   "dek": "Every tour on one list. The highlighted row is next up.",
+   "blocks": [
+    {
+     "type": "schedule",
+     "rows": [
+      {
+       "start": "2026-09-14",
+       "end": "2026-09-20",
+       "dates": "Sep 14–20",
+       "event": "PPA Arizona Open",
+       "city": "Mesa, AZ",
+       "venue": "Arizona Athletic Grounds",
+       "source": "https://ppatour.com/watch/tv/"
+      },
+      {
+       "start": "2026-09-17",
+       "end": "2026-09-20",
+       "dates": "Sep 17–20",
+       "event": "APP Overland Park Open",
+       "city": "Overland Park, KS",
+       "venue": "",
+       "source": "https://www.theapp.global/news/sunday-broadcast-overland-park-2026"
+      },
+      {
+       "start": "2026-09-28",
+       "end": "2026-10-04",
+       "dates": "Sep 28–Oct 4",
+       "event": "PPA Las Vegas Open",
+       "city": "Las Vegas, NV",
+       "venue": "Darling Tennis Center",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2026-10-01",
+       "end": "2026-10-04",
+       "dates": "Oct 1–4",
+       "event": "APP Columbus Open ($125K)",
+       "city": "Columbus, OH",
+       "venue": "Pickle & Chill",
+       "source": "https://www.theapp.global/tour-schedule/2026-app-columbus-open"
+      },
+      {
+       "start": "2026-10-05",
+       "end": "2026-10-11",
+       "dates": "Oct 5–11",
+       "event": "PPA Chicago Cup",
+       "city": "Chicago, IL",
+       "venue": "Life Time North Shore",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2026-10-08",
+       "end": "2026-10-11",
+       "dates": "Oct 8–11",
+       "event": "MLP Champions Series (50+)",
+       "city": "Columbus, OH",
+       "venue": "",
+       "source": "https://www.nplpickleball.com/"
+      },
+      {
+       "start": "2026-10-12",
+       "end": "2026-10-18",
+       "dates": "Oct 12–18",
+       "event": "PPA Virginia Beach Open",
+       "city": "Virginia Beach, VA",
+       "venue": "Pickleball Virginia Beach",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2026-10-13",
+       "end": "2026-10-18",
+       "dates": "Oct 13–18",
+       "event": "PPA Australia Pickleball Cup",
+       "city": "Brisbane, QLD",
+       "venue": "Queensland Tennis Centre",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2026-10-15",
+       "end": "2026-10-18",
+       "dates": "Oct 15–18",
+       "event": "APP Louisville Open ($125K)",
+       "city": "Louisville, KY",
+       "venue": "Kentucky International Convention Center",
+       "source": "https://www.theapp.global/tour-schedule/2026-app-louisville"
+      },
+      {
+       "start": "2026-10-19",
+       "end": "2026-10-25",
+       "dates": "Oct 19–25",
+       "event": "PPA Asia Hong Kong Slam",
+       "city": "Hong Kong",
+       "venue": "Kai Tak Arena",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2026-10-30",
+       "end": "2026-11-01",
+       "dates": "Oct 30–Nov 1",
+       "event": "MLP Nations Cup (first ever)",
+       "city": "Dallas, TX",
+       "venue": "Brookhaven Country Club",
+       "source": "https://majorleaguepickleball.co/events-2026/mlp-nations-cup/"
+      },
+      {
+       "start": "2026-10-31",
+       "end": "2026-11-08",
+       "dates": "Oct 31–Nov 8",
+       "event": "USA Pickleball National Championships",
+       "city": "San Diego, CA",
+       "venue": "Barnes Tennis Center",
+       "source": "https://usapickleball.org/tournaments/us-open-pickleball-championships/"
+      },
+      {
+       "start": "2026-11-02",
+       "end": "2026-11-08",
+       "dates": "Nov 2–8",
+       "event": "PPA Pickleball World Championships (Major)",
+       "city": "Farmers Branch, TX",
+       "venue": "Brookhaven Country Club",
+       "source": "https://ppatour.com/events/2026/pickleball-world-championships/"
+      },
+      {
+       "start": "2026-11-12",
+       "end": "2026-11-15",
+       "dates": "Nov 12–15",
+       "event": "APP Arizona Open ($125K)",
+       "city": "Mesa, AZ",
+       "venue": "Arizona Athletic Grounds",
+       "source": "https://www.theapp.global/tour-schedule/2026-app-arizona"
+      },
+      {
+       "start": "2026-11-16",
+       "end": "2026-11-22",
+       "dates": "Nov 16–22",
+       "event": "PPA Daytona Beach Open",
+       "city": "Holly Hill, FL",
+       "venue": "",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2026-12-03",
+       "end": "2026-12-06",
+       "dates": "Dec 3–6",
+       "event": "APP Tour Championships",
+       "city": "Fort Lauderdale, FL",
+       "venue": "The Fort",
+       "source": "https://www.theapp.global/tour-schedule/2026-app-tour-championships"
+      },
+      {
+       "start": "2026-12-14",
+       "end": "2026-12-20",
+       "dates": "Dec 14–20",
+       "event": "PPA Malibu Showcase",
+       "city": "Malibu, CA",
+       "venue": "",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2027-01-11",
+       "end": "2027-01-17",
+       "dates": "Jan 11–17, 2027",
+       "event": "PPA Pickleball Masters (Major)",
+       "city": "Rancho Mirage, CA",
+       "venue": "",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2027-04-17",
+       "end": "2027-04-24",
+       "dates": "Apr 17–24, 2027",
+       "event": "US Open Pickleball Championships",
+       "city": "Naples, FL",
+       "venue": "East Naples Community Park",
+       "source": "https://usapickleball.org/tournaments/us-open-pickleball-championships/"
+      },
+      {
+       "start": "2027-05-10",
+       "end": "2027-05-16",
+       "dates": "May 10–16, 2027",
+       "event": "PPA Finals",
+       "city": "San Clemente, CA",
+       "venue": "",
+       "source": "https://ppatour.com/schedule/"
+      }
+     ]
+    },
+    {
+     "type": "note",
+     "text": "PPA = the UPA's tour. APP = the independent tour. USA Pickleball runs the amateur Nationals and sanctions the US Open. Full detail on the Pro desk."
+    }
+   ]
+  },
+  {
+   "id": "play",
+   "short": "Play",
+   "title": "Find a game, a league, a tournament",
+   "dek": "From tonight's open play to a sanctioned bracket.",
+   "blocks": [
+    {
+     "type": "links",
+     "items": [
+      {
+       "name": "Pickleheads Court Finder",
+       "url": "https://www.pickleheads.com/courts",
+       "what": "Map of 19,000+ US courts with open-play info. USA Pickleball's official finder.",
+       "kind": "courts"
+      },
+      {
+       "name": "PickleballTournaments.com",
+       "url": "https://pickleballtournaments.com/",
+       "what": "Search and register for tournaments. PickleballBrackets now redirects here.",
+       "kind": "tournaments"
+      },
+      {
+       "name": "DUPR",
+       "url": "https://www.dupr.com/",
+       "what": "Log matches, get rated, find level-matched leagues and events.",
+       "kind": "ratings · leagues"
+      },
+      {
+       "name": "PlayTime Scheduler",
+       "url": "https://playtimescheduler.com/",
+       "what": "Free sign-up sheets many local groups use for open play.",
+       "kind": "open play"
+      },
+      {
+       "name": "USA Pickleball: Places to Play",
+       "url": "https://usapickleball.org/places-to-play/",
+       "what": "The governing body's court finder (routes to Pickleheads).",
+       "kind": "courts"
+      }
+     ]
+    },
+    {
+     "type": "facts",
+     "items": [
+      {
+       "fact": "USA Pickleball's amateur National Championships run Oct 31–Nov 8, 2026 at Barnes Tennis Center in San Diego.",
+       "source": "https://usapickleball.org/tournaments/us-open-pickleball-championships/"
+      },
+      {
+       "fact": "The next US Open in Naples runs April 17–24, 2027. It's sanctioned by USA Pickleball, not the PPA or APP.",
+       "source": "https://usapickleball.org/tournaments/us-open-pickleball-championships/"
+      }
+     ]
+    },
+    {
+     "heading": "Run your own night",
+     "type": "cards",
+     "items": [
+      {
+       "title": "The open play desk",
+       "sub": "tonight · no accounts",
+       "body": "Names in, fair rotating rounds out, scores, standings, a recap card for the group chat.",
+       "links": [
+        {
+         "label": "Keep score tonight",
+         "url": "/tonight/"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "business",
+   "short": "The business",
+   "title": "The money, the tours, the politics",
+   "dek": "Who owns what, how pros get paid, and why there are two paddle rulebooks.",
+   "blocks": [
+    {
+     "heading": "How pros get paid",
+     "type": "facts",
+     "items": [
+      {
+       "fact": "Pros earn from four places: UPA contracts (guaranteed salary), prize money, MLP team contracts, and equipment deals (paddle, ball, apparel). The UPA says 2026 shifts pay from salary toward prize money.",
+       "source": "https://pickleball.com/news/upa-works-to-extend-pro-contracts-will-pay-out-millions-in-prize-money"
+      },
+      {
+       "fact": "The UPA's plan: up to $31M in player earnings starting 2026: $11M guaranteed, $15M domestic prize money (PPA + MLP), $5M international.",
+       "source": "https://pickleball.com/news/upa-works-to-extend-pro-contracts-will-pay-out-millions-in-prize-money"
+      },
+      {
+       "fact": "In the 2026 MLP draft the St. Louis Shock paid $1.23 million for Anna Bright and the New Jersey 5s paid $800,000 for Jorja Johnson. A salary cap and floor are expected for 2027.",
+       "source": "https://www.thedinkpickleball.com/the-new-jersey-fives-take-home-the-2026-mlp-championship/"
+      },
+      {
+       "fact": "Anna Leigh Waters left Paddletek for a long-term Franklin deal in January 2026. Terms weren't disclosed; the $10M figure going around is podcast speculation.",
+       "source": "https://pickleballrookie.com/the-biggest-paddle-deal-in-pickleball-history-contract-drama-rocks-the-pro-tour-and-mlp-heads-to-disney-world"
+      },
+      {
+       "fact": "APP pro prize money: $1.5M across 2026, doubling to $3M in 2027 across 12 events.",
+       "source": "https://www.theapp.global/news/app-tour-doubles-professional-prize-money-expands-2027-tour-schedule"
+      },
+      {
+       "fact": "The 2026 US Open in Naples drew more than 500 pros for a purse of more than $160,000.",
+       "source": "https://www.marconews.com/story/sports/2026/04/10/2026-us-open-pickleball-championships-gets-underway-in-east-naples/89561007007/"
+      },
+      {
+       "fact": "UPA-A paddle certification costs a brand $10,000 a year plus $3,000 per paddle (valid 24 months), with paid rush options up to $7,500.",
+       "source": "https://upaa.unitedpickleball.com/paddle-testing/2026-upa-a-certification/"
+      }
+     ]
+    },
+    {
+     "heading": "Who runs the sport",
+     "type": "facts",
+     "items": [
+      {
+       "fact": "MLP and the PPA Tour merged in 2024 under the United Pickleball Association (UPA), which runs both.",
+       "source": "https://majorleaguepickleball.co/news/major-league-pickleball-announces-full-2026-may-august-season-schedule-event-tickets-now-on-sale-via-tixr-and-ticketmaster-2/"
+      },
+      {
+       "fact": "In May 2024 the UPA replaced USA Pickleball as its governing body with its own UPA of America (UPA-A). USA Pickleball had been the only US governing body since 1984.",
+       "source": "https://www.thedinkpickleball.com/upa-severs-ties-with-usa-pickleball/"
+      },
+      {
+       "fact": "Two paddle rulebooks now: UPA-A certification (performance-tested: power and spin, after break-in) is required for PPA and MLP pro play since Sept 1, 2025. Amateur divisions just need the paddle on USA Pickleball's approved list.",
+       "source": "https://upaa.unitedpickleball.com/paddle-testing/2026-upa-a-certification/"
+      },
+      {
+       "fact": "UPA contracts are exclusive. In Dec 2025 it terminated three pros' contracts for playing unsanctioned events in Japan; they appealed.",
+       "source": "https://www.thedinkpickleball.com/upa-terminates-contracts-of-ignatowich-fu-glozman-following-participation-in-unsanctioned-event/"
+      },
+      {
+       "fact": "USA Pickleball still sanctions the US Open in Naples and runs its own National Championships, and partners with the APP on Golden Ticket qualifiers.",
+       "source": "https://www.thedinkpickleball.com/dupr-is-now-the-official-ratings-partner-of-usa-pickleball/"
+      },
+      {
+       "fact": "The senior pro league (50+) formerly called the National Pickleball League is now Champions Series Pickleball, licensed since March 2026 as the MLP Champions Series, with 16 teams.",
+       "source": "https://majorleaguepickleball.co/news/major-league-pickleball-announces-partnership-with-pro-senior-pickleball-league-champions-series-pickleball-csp/"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "southbay",
+   "short": "South Bay",
+   "title": "South Bay courts",
+   "dek": "El Segundo to Torrance, from the official pages. Drop-in and reservation details only where the city or club says so.",
+   "blocks": [
+    {
+     "type": "cards",
+     "items": [
+      {
+       "title": "California Smash",
+       "sub": "El Segundo · 815 N. Nash St",
+       "body": "Nine padded indoor courts, no membership required, daily open play and classes, and a bar and restaurant.",
+       "links": [
+        {
+         "label": "Official page",
+         "url": "https://calismash.com/"
+        }
+       ]
+      },
+      {
+       "title": "El Segundo Recreation Park",
+       "sub": "El Segundo · 401 Sheldon St",
+       "body": "The city's team pickleball leagues: women's, mixed, men's and 4.5+, eight-week seasons. For other court use call 310-524-2700.",
+       "links": [
+        {
+         "label": "Official page",
+         "url": "https://www.elsegundorecparks.gov/programs-services/recreation-programs-activities/adult-sports/pickleball"
+        }
+       ]
+      },
+      {
+       "title": "Holly Glen Park",
+       "sub": "Hawthorne · 5255 W. 137th St",
+       "body": "Four hybrid tennis/pickleball courts. The city says bring your own net and equipment.",
+       "links": [
+        {
+         "label": "Official page",
+         "url": "https://www.cityofhawthorne.org/departments/community-services/tennis-pickleball-courts"
+        }
+       ]
+      },
+      {
+       "title": "Betty Ainsworth Sports Center",
+       "sub": "Hawthorne · 3851 W. El Segundo Blvd",
+       "body": "Four hybrid courts where the city supplies nets and equipment. Easiest if you have no gear.",
+       "links": [
+        {
+         "label": "Official page",
+         "url": "https://www.cityofhawthorne.org/departments/community-services/tennis-pickleball-courts"
+        }
+       ]
+      },
+      {
+       "title": "Manhattan Heights Park",
+       "sub": "Manhattan Beach · 1600 Manhattan Beach Blvd",
+       "body": "Weekday 8am–noon drop-in with a monthly pass. Courts here and at Live Oak Park book online, 4 days ahead for residents, 3 for everyone else.",
+       "links": [
+        {
+         "label": "Official page",
+         "url": "https://www.manhattanbeach.gov/departments/parks-and-recreation/tennis"
+        }
+       ]
+      },
+      {
+       "title": "Alta Vista Park Racquet Center",
+       "sub": "Redondo Beach · 715 Julia Ave",
+       "body": "Four lighted courts; $25 annual membership plus hourly fees, reservations up to 7 days ahead. Perry, Franklin, Anderson and Dale Page parks have shared first-come courts (bring a net).",
+       "links": [
+        {
+         "label": "Official page",
+         "url": "https://www.redondo.org/business_detail_T14_R115.php"
+        }
+       ]
+      },
+      {
+       "title": "Walteria Park",
+       "sub": "Torrance · 3855 242nd St",
+       "body": "Six free first-come courts with open play and senior sessions.",
+       "links": [
+        {
+         "label": "Official page",
+         "url": "https://discovertorrance.com/pickleball-in-torrance/"
+        }
+       ]
+      },
+      {
+       "title": "South Bay Tennis & Pickleball Center",
+       "sub": "Torrance · 25924 Rolling Hills Rd",
+       "body": "Nine dedicated courts, $5 open play, adult leagues, social nights and lessons.",
+       "links": [
+        {
+         "label": "Official page",
+         "url": "https://www.sbtcpickleball.com/"
+        }
+       ]
+      },
+      {
+       "title": "City of Torrance: Pickleball & Tennis",
+       "sub": "Torrance · citywide",
+       "body": "Book courts and sign up for open play, group lessons and private lessons.",
+       "links": [
+        {
+         "label": "Official page",
+         "url": "https://www.torranceca.gov/Our-Community/Classes-and-Programs/Classes-Programs/Pickleball-and-Tennis"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "note",
+     "text": "Looking for a local pro? Every club above runs lessons; check a coach's certification in the Learn chapter. We don't list individual coaches we can't verify."
+    }
+   ]
+  },
+  {
+   "id": "travel",
+   "short": "Trips",
+   "title": "Trips worth taking",
+   "dek": "Places where the courts are the reason to go. Each has an official page and a ready Airbnb search for the town.",
+   "blocks": [
+    {
+     "type": "cards",
+     "items": [
+      {
+       "title": "Naples, FL",
+       "sub": "East Naples Community Park",
+       "body": "Home of the US Open Pickleball Championships, ten years running. Next one: April 17–24, 2027.",
+       "source": "https://www.usopenpickleball.com/",
+       "links": [
+        {
+         "label": "The venue",
+         "url": "https://www.usopenpickleball.com/"
+        },
+        {
+         "label": "Stays nearby",
+         "url": "https://www.airbnb.com/s/Naples--FL/homes"
+        }
+       ]
+      },
+      {
+       "title": "San Diego, CA",
+       "sub": "Barnes Tennis Center",
+       "body": "19 pickleball courts; hosts the USA Pickleball National Championships, Oct 31–Nov 8, 2026. Two hours down the 5.",
+       "source": "https://usapickleball.org/usap-news/nationals/usa-pickleball-national-championships-return-to-barnes-tennis-center-in-2026/",
+       "links": [
+        {
+         "label": "The venue",
+         "url": "https://www.barnestenniscenter.com/"
+        },
+        {
+         "label": "Stays nearby",
+         "url": "https://www.airbnb.com/s/San-Diego--CA/homes"
+        }
+       ]
+      },
+      {
+       "title": "Daytona Beach area, FL",
+       "sub": "Pictona at Holly Hill",
+       "body": "A 49-court club open to visitors on a $15 day pass, with a free Pickleball 101 class.",
+       "source": "https://pictona.org/overview/",
+       "links": [
+        {
+         "label": "The venue",
+         "url": "https://pictona.org/"
+        },
+        {
+         "label": "Stays nearby",
+         "url": "https://www.airbnb.com/s/Daytona-Beach--FL/homes"
+        }
+       ]
+      },
+      {
+       "title": "Fort Lauderdale, FL",
+       "sub": "The Fort",
+       "body": "43 courts (14 weatherproof) and what it calls the first pickleball stadium. Hosts the APP Tour Championships Dec 3–6.",
+       "source": "https://playthefort.com/",
+       "links": [
+        {
+         "label": "The venue",
+         "url": "https://playthefort.com/"
+        },
+        {
+         "label": "Stays nearby",
+         "url": "https://www.airbnb.com/s/Fort-Lauderdale--FL/homes"
+        }
+       ]
+      },
+      {
+       "title": "Orange Beach, AL",
+       "sub": "Orange Beach Pickleball Complex",
+       "body": "New public complex (opened May 2026): 14 lighted courts, open 7am–10pm daily, plus 6 indoor courts nearby.",
+       "source": "https://www.orangebeachal.gov/1657/Pickleball-Complex",
+       "links": [
+        {
+         "label": "The venue",
+         "url": "https://www.orangebeachal.gov/1657/Pickleball-Complex"
+        },
+        {
+         "label": "Stays nearby",
+         "url": "https://www.airbnb.com/s/Orange-Beach--AL/homes"
+        }
+       ]
+      },
+      {
+       "title": "St. George, UT",
+       "sub": "Little Valley Pickleball Complex",
+       "body": "24 lighted outdoor courts; pickleball at the Huntsman World Senior Games every October. Zion is next door.",
+       "source": "https://seniorgames.net/sports/pickleball",
+       "links": [
+        {
+         "label": "The venue",
+         "url": "https://greaterzion.com/venues/little-valley-pickleball-complex/"
+        },
+        {
+         "label": "Stays nearby",
+         "url": "https://www.airbnb.com/s/St.-George--UT/homes"
+        }
+       ]
+      },
+      {
+       "title": "Los Barriles, Baja, Mexico",
+       "sub": "Tres Palapas Baja Pickleball Resort",
+       "body": "A pickleball resort: 10 courts, casitas and villas on site, open play most days ($20 day rate), Baja Classic tournament Nov 18–22, 2026.",
+       "source": "https://www.trespalapasbaja.com/",
+       "links": [
+        {
+         "label": "The venue",
+         "url": "https://www.trespalapasbaja.com/"
+        },
+        {
+         "label": "Stays nearby",
+         "url": "https://www.airbnb.com/s/Los-Barriles--Baja-California-Sur--Mexico/homes"
+        }
+       ]
+      },
+      {
+       "title": "Brisbane, Australia",
+       "sub": "Queensland Tennis Centre",
+       "body": "PPA Tour Australia's Australian Pickleball Cup, Oct 13–18, 2026, at Pat Rafter Arena.",
+       "source": "https://ppatour.com.au/",
+       "links": [
+        {
+         "label": "The venue",
+         "url": "https://ppatour.com.au/"
+        },
+        {
+         "label": "Stays nearby",
+         "url": "https://www.airbnb.com/s/Brisbane--Queensland--Australia/homes"
+        }
+       ]
+      },
+      {
+       "title": "Greater Kuala Lumpur, Malaysia",
+       "sub": "9Pickle Setia Alam",
+       "body": "Hosted the PPA Tour Asia Kuala Lumpur Open in May 2026, with amateur divisions alongside the pros.",
+       "source": "https://www.ppatour-asia.com/tournament/2026/kuala-lumpur-open/",
+       "links": [
+        {
+         "label": "The venue",
+         "url": "https://www.ppatour-asia.com/tournament/2026/kuala-lumpur-open/"
+        },
+        {
+         "label": "Stays nearby",
+         "url": "https://www.airbnb.com/s/Shah-Alam--Selangor--Malaysia/homes"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "note",
+     "text": "Airbnb links open a plain search for the town. No affiliate links anywhere in this guide."
+    }
+   ]
+  },
+  {
+   "id": "rally",
+   "short": "Rally tools",
+   "title": "Rally's own tools",
+   "dek": "Free, no sign-up, everything stays on your phone unless you choose to sign it onto the ledger.",
+   "blocks": [
+    {
+     "type": "cards",
+     "items": [
+      {
+       "title": "What's your number?",
+       "sub": "no wallet",
+       "body": "Pick the line that sounds like you. Make it official when you want it on the ladder.",
+       "links": [
+        {
+         "label": "Find my number",
+         "url": "/#your-number"
+        }
+       ]
+      },
+      {
+       "title": "The open play desk",
+       "sub": "tonight · no accounts",
+       "body": "Names in, fair rotating rounds out, scores, standings, a recap card for the group chat.",
+       "links": [
+        {
+         "label": "Keep score tonight",
+         "url": "/tonight/"
+        }
+       ]
+      },
+      {
+       "title": "The score caller",
+       "sub": "one game",
+       "body": "Tap who won the rally. It keeps the server, the side, the 0-0-2 start, and says the call out loud.",
+       "links": [
+        {
+         "label": "Call a game",
+         "url": "/score/"
+        }
+       ]
+      },
+      {
+       "title": "The bag",
+       "sub": "your paddles",
+       "body": "Log paddle hours and wear. Send a wear report to the public register.",
+       "links": [
+        {
+         "label": "Open the bag",
+         "url": "/bag/"
+        }
+       ]
+      },
+      {
+       "title": "The paddle calendar",
+       "sub": "2026 releases",
+       "body": "Every paddle release this year, sourced.",
+       "links": [
+        {
+         "label": "See the calendar",
+         "url": "/paddle-calendar/"
+        }
+       ]
+      },
+      {
+       "title": "The paddle fund",
+       "sub": "crew money game",
+       "body": "Ten seats, $20 a week, a $200 paddle every week.",
+       "links": [
+        {
+         "label": "Play the sprint",
+         "url": "/paddle-fund/"
+        }
+       ]
+      },
+      {
+       "title": "The ladder",
+       "sub": "the record",
+       "body": "Only matches every player countersigns move it. Anyone can replay the math.",
+       "links": [
+        {
+         "label": "See the ladder",
+         "url": "/#board"
+        },
+        {
+         "label": "MCP for agents",
+         "url": "/api/mcp"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

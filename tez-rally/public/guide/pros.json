@@ -1,0 +1,1231 @@
+{
+ "asOf": "2026-09-22",
+ "method": "Official tour and league pages, checked 2026-09-22. Rankings move weekly; the date on each table is the date we read it.",
+ "chapters": [
+  {
+   "id": "map",
+   "short": "Who's who",
+   "title": "Three tours and a league",
+   "dek": "The pro game is split in two, with the amateur governing body off to one side.",
+   "blocks": [
+    {
+     "type": "cards",
+     "items": [
+      {
+       "title": "UPA: PPA Tour + MLP",
+       "sub": "the big one",
+       "body": "The United Pickleball Association owns the Carvana PPA Tour (individual events, split season Aug 2026 → May 2027) and Major League Pickleball (the team league, May–Aug). Exclusive player contracts; its own rulebook and paddle standard, UPA-A.",
+       "source": "https://majorleaguepickleball.co/news/major-league-pickleball-announces-full-2026-may-august-season-schedule-event-tickets-now-on-sale-via-tixr-and-ticketmaster-2/",
+       "links": [
+        {
+         "label": "PPA Tour",
+         "url": "https://ppatour.com/"
+        },
+        {
+         "label": "MLP",
+         "url": "https://majorleaguepickleball.co/"
+        }
+       ]
+      },
+      {
+       "title": "APP Tour",
+       "sub": "independent",
+       "body": "The Association of Pickleball Players: tournaments open to pros and amateurs, AARP Champions (50+) and Masters (60+) pro divisions. Ten US events and $1.5M in pro prize money in 2026.",
+       "source": "https://www.theapp.global/news/app-tour-doubles-professional-prize-money-expands-2027-tour-schedule",
+       "links": [
+        {
+         "label": "APP",
+         "url": "https://www.theapp.global/"
+        }
+       ]
+      },
+      {
+       "title": "USA Pickleball",
+       "sub": "amateur governing body",
+       "body": "Runs the amateur Nationals, sanctions the US Open in Naples, keeps the approved-paddle list, and uses DUPR for ratings since Dec 2025.",
+       "source": "https://usapickleball.org/skill-level/ratings/",
+       "links": [
+        {
+         "label": "USA Pickleball",
+         "url": "https://usapickleball.org/rules/"
+        }
+       ]
+      },
+      {
+       "title": "MLP Champions Series",
+       "sub": "50+ pros",
+       "body": "The senior pro team league, formerly the National Pickleball League, licensed under the MLP brand since March 2026. 16 teams.",
+       "source": "https://majorleaguepickleball.co/news/major-league-pickleball-announces-partnership-with-pro-senior-pickleball-league-champions-series-pickleball-csp/",
+       "links": [
+        {
+         "label": "Champions Series",
+         "url": "https://www.nplpickleball.com/"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "next",
+   "short": "Next up",
+   "title": "Every pro event, rest of 2026",
+   "dek": "All tours on one list. The highlighted row is next.",
+   "blocks": [
+    {
+     "type": "schedule",
+     "rows": [
+      {
+       "start": "2026-09-14",
+       "end": "2026-09-20",
+       "dates": "Sep 14–20",
+       "event": "PPA Arizona Open",
+       "city": "Mesa, AZ",
+       "venue": "Arizona Athletic Grounds",
+       "source": "https://ppatour.com/watch/tv/"
+      },
+      {
+       "start": "2026-09-17",
+       "end": "2026-09-20",
+       "dates": "Sep 17–20",
+       "event": "APP Overland Park Open",
+       "city": "Overland Park, KS",
+       "venue": "",
+       "source": "https://www.theapp.global/news/sunday-broadcast-overland-park-2026"
+      },
+      {
+       "start": "2026-09-28",
+       "end": "2026-10-04",
+       "dates": "Sep 28–Oct 4",
+       "event": "PPA Las Vegas Open",
+       "city": "Las Vegas, NV",
+       "venue": "Darling Tennis Center",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2026-10-01",
+       "end": "2026-10-04",
+       "dates": "Oct 1–4",
+       "event": "APP Columbus Open ($125K)",
+       "city": "Columbus, OH",
+       "venue": "Pickle & Chill",
+       "source": "https://www.theapp.global/tour-schedule/2026-app-columbus-open"
+      },
+      {
+       "start": "2026-10-05",
+       "end": "2026-10-11",
+       "dates": "Oct 5–11",
+       "event": "PPA Chicago Cup",
+       "city": "Chicago, IL",
+       "venue": "Life Time North Shore",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2026-10-08",
+       "end": "2026-10-11",
+       "dates": "Oct 8–11",
+       "event": "MLP Champions Series (50+)",
+       "city": "Columbus, OH",
+       "venue": "",
+       "source": "https://www.nplpickleball.com/"
+      },
+      {
+       "start": "2026-10-12",
+       "end": "2026-10-18",
+       "dates": "Oct 12–18",
+       "event": "PPA Virginia Beach Open",
+       "city": "Virginia Beach, VA",
+       "venue": "Pickleball Virginia Beach",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2026-10-13",
+       "end": "2026-10-18",
+       "dates": "Oct 13–18",
+       "event": "PPA Australia Pickleball Cup",
+       "city": "Brisbane, QLD",
+       "venue": "Queensland Tennis Centre",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2026-10-15",
+       "end": "2026-10-18",
+       "dates": "Oct 15–18",
+       "event": "APP Louisville Open ($125K)",
+       "city": "Louisville, KY",
+       "venue": "Kentucky International Convention Center",
+       "source": "https://www.theapp.global/tour-schedule/2026-app-louisville"
+      },
+      {
+       "start": "2026-10-19",
+       "end": "2026-10-25",
+       "dates": "Oct 19–25",
+       "event": "PPA Asia Hong Kong Slam",
+       "city": "Hong Kong",
+       "venue": "Kai Tak Arena",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2026-10-30",
+       "end": "2026-11-01",
+       "dates": "Oct 30–Nov 1",
+       "event": "MLP Nations Cup (first ever)",
+       "city": "Dallas, TX",
+       "venue": "Brookhaven Country Club",
+       "source": "https://majorleaguepickleball.co/events-2026/mlp-nations-cup/"
+      },
+      {
+       "start": "2026-10-31",
+       "end": "2026-11-08",
+       "dates": "Oct 31–Nov 8",
+       "event": "USA Pickleball National Championships",
+       "city": "San Diego, CA",
+       "venue": "Barnes Tennis Center",
+       "source": "https://usapickleball.org/tournaments/us-open-pickleball-championships/"
+      },
+      {
+       "start": "2026-11-02",
+       "end": "2026-11-08",
+       "dates": "Nov 2–8",
+       "event": "PPA Pickleball World Championships (Major)",
+       "city": "Farmers Branch, TX",
+       "venue": "Brookhaven Country Club",
+       "source": "https://ppatour.com/events/2026/pickleball-world-championships/"
+      },
+      {
+       "start": "2026-11-12",
+       "end": "2026-11-15",
+       "dates": "Nov 12–15",
+       "event": "APP Arizona Open ($125K)",
+       "city": "Mesa, AZ",
+       "venue": "Arizona Athletic Grounds",
+       "source": "https://www.theapp.global/tour-schedule/2026-app-arizona"
+      },
+      {
+       "start": "2026-11-16",
+       "end": "2026-11-22",
+       "dates": "Nov 16–22",
+       "event": "PPA Daytona Beach Open",
+       "city": "Holly Hill, FL",
+       "venue": "",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2026-12-03",
+       "end": "2026-12-06",
+       "dates": "Dec 3–6",
+       "event": "APP Tour Championships",
+       "city": "Fort Lauderdale, FL",
+       "venue": "The Fort",
+       "source": "https://www.theapp.global/tour-schedule/2026-app-tour-championships"
+      },
+      {
+       "start": "2026-12-14",
+       "end": "2026-12-20",
+       "dates": "Dec 14–20",
+       "event": "PPA Malibu Showcase",
+       "city": "Malibu, CA",
+       "venue": "",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2027-01-11",
+       "end": "2027-01-17",
+       "dates": "Jan 11–17, 2027",
+       "event": "PPA Pickleball Masters (Major)",
+       "city": "Rancho Mirage, CA",
+       "venue": "",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2027-04-17",
+       "end": "2027-04-24",
+       "dates": "Apr 17–24, 2027",
+       "event": "US Open Pickleball Championships",
+       "city": "Naples, FL",
+       "venue": "East Naples Community Park",
+       "source": "https://usapickleball.org/tournaments/us-open-pickleball-championships/"
+      },
+      {
+       "start": "2027-05-10",
+       "end": "2027-05-16",
+       "dates": "May 10–16, 2027",
+       "event": "PPA Finals",
+       "city": "San Clemente, CA",
+       "venue": "",
+       "source": "https://ppatour.com/schedule/"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "mlp",
+   "short": "MLP",
+   "title": "Major League Pickleball",
+   "dek": "Coed teams, four games a match, and a singles relay when it's tied. The 2026 season is done; the New Jersey 5s won it.",
+   "blocks": [
+    {
+     "type": "facts",
+     "items": [
+      {
+       "fact": "New Jersey 5s beat the St. Louis Shock in the 2026 Finals at CityPickle at Wollman Rink in Central Park on Aug 30, their first MLP title. Federico Staksrud was Finals MVP.",
+       "source": "https://www.thedinkpickleball.com/the-new-jersey-fives-take-home-the-2026-mlp-championship/"
+      },
+      {
+       "fact": "Up next: the first MLP Nations Cup, Oct 30–Nov 1 in Dallas, with regional teams. It opens the PPA World Championships week. Every match on PickleballTV.",
+       "source": "https://majorleaguepickleball.co/events-2026/mlp-nations-cup/"
+      }
+     ]
+    },
+    {
+     "heading": "How a match works",
+     "type": "facts",
+     "items": [
+      {
+       "fact": "A team match is four games: women's doubles, men's doubles, then two mixed doubles. Tied 2–2 means a fifth game, the DreamBreaker.",
+       "source": "https://majorleaguepickleball.co/faq/"
+      },
+      {
+       "fact": "DreamBreaker: singles where each team rotates its players every four points, rally scoring to 21, win by two. The home team names its order first.",
+       "source": "https://majorleaguepickleball.co/faq/"
+      },
+      {
+       "fact": "Doubles games use side-out scoring to 11, win by 2.",
+       "source": "https://majorleaguepickleball.co/abcs-of-mlp/"
+      },
+      {
+       "fact": "20 teams in 2026, all in one league. At each regular-season event 11 teams play round-robin Thursday to Saturday, and Sunday head-to-heads award standings points.",
+       "source": "https://majorleaguepickleball.co/abcs-of-mlp/"
+      },
+      {
+       "fact": "Top 12 make the playoffs; seeds 1–4 get byes. First round in Dallas, quarterfinals in Newport Beach, semis and finals in New York.",
+       "source": "https://majorleaguepickleball.co/abcs-of-mlp/"
+      }
+     ]
+    },
+    {
+     "heading": "The 20 teams",
+     "type": "quick",
+     "items": [
+      {
+       "big": "Atlanta Bouncers",
+       "small": ""
+      },
+      {
+       "big": "Bay Area Breakers",
+       "small": ""
+      },
+      {
+       "big": "Brooklyn Pickleball Team",
+       "small": ""
+      },
+      {
+       "big": "California Black Bears",
+       "small": ""
+      },
+      {
+       "big": "Carolina Hogs",
+       "small": ""
+      },
+      {
+       "big": "Chicago Slice",
+       "small": ""
+      },
+      {
+       "big": "Columbus Sliders",
+       "small": ""
+      },
+      {
+       "big": "Dallas Flash",
+       "small": ""
+      },
+      {
+       "big": "Florida Smash",
+       "small": ""
+      },
+      {
+       "big": "Las Vegas Night Owls",
+       "small": ""
+      },
+      {
+       "big": "Los Angeles Mad Drops",
+       "small": ""
+      },
+      {
+       "big": "Miami Pickleball Club",
+       "small": ""
+      },
+      {
+       "big": "New Jersey 5s",
+       "small": ""
+      },
+      {
+       "big": "Orlando Squeeze",
+       "small": ""
+      },
+      {
+       "big": "Palm Beach Royals",
+       "small": ""
+      },
+      {
+       "big": "Phoenix Flames",
+       "small": ""
+      },
+      {
+       "big": "SoCal Hard Eights",
+       "small": ""
+      },
+      {
+       "big": "St. Louis Shock",
+       "small": ""
+      },
+      {
+       "big": "Texas Ranchers",
+       "small": ""
+      },
+      {
+       "big": "Utah Black Diamonds",
+       "small": ""
+      }
+     ]
+    },
+    {
+     "type": "note",
+     "text": "Closest to the South Bay: the Los Angeles Mad Drops, SoCal Hard Eights and California Black Bears. Team list from majorleaguepickleball.co/mlp-teams."
+    },
+    {
+     "heading": "The 2026 season",
+     "type": "schedule",
+     "rows": [
+      {
+       "start": "2026-05-22",
+       "end": "2026-05-25",
+       "dates": "May 22–25",
+       "event": "Regular season #1",
+       "city": "Dallas, TX",
+       "venue": "Pickler Universe – Carrollton",
+       "source": "https://majorleaguepickleball.co/news/major-league-pickleball-announces-full-2026-may-august-season-schedule-event-tickets-now-on-sale-via-tixr-and-ticketmaster-2/"
+      },
+      {
+       "start": "2026-05-28",
+       "end": "2026-05-31",
+       "dates": "May 28–31",
+       "event": "Regular season #2",
+       "city": "Columbus, OH",
+       "venue": "Pickle & Chill",
+       "source": "https://majorleaguepickleball.co/news/major-league-pickleball-announces-full-2026-may-august-season-schedule-event-tickets-now-on-sale-via-tixr-and-ticketmaster-2/"
+      },
+      {
+       "start": "2026-06-04",
+       "end": "2026-06-07",
+       "dates": "Jun 4–7",
+       "event": "Regular season #3",
+       "city": "St. Louis, MO",
+       "venue": "Chaifetz Arena",
+       "source": "https://majorleaguepickleball.co/news/major-league-pickleball-announces-full-2026-may-august-season-schedule-event-tickets-now-on-sale-via-tixr-and-ticketmaster-2/"
+      },
+      {
+       "start": "2026-06-11",
+       "end": "2026-06-14",
+       "dates": "Jun 11–14",
+       "event": "Regular season #4",
+       "city": "Austin, TX",
+       "venue": "Austin Pickle Ranch",
+       "source": "https://majorleaguepickleball.co/news/major-league-pickleball-announces-full-2026-may-august-season-schedule-event-tickets-now-on-sale-via-tixr-and-ticketmaster-2/"
+      },
+      {
+       "start": "2026-06-17",
+       "end": "2026-06-21",
+       "dates": "Jun 17–21",
+       "event": "Regular season #5",
+       "city": "St. Petersburg, FL",
+       "venue": "St. Pete Athletic",
+       "source": "https://majorleaguepickleball.co/news/major-league-pickleball-announces-full-2026-may-august-season-schedule-event-tickets-now-on-sale-via-tixr-and-ticketmaster-2/"
+      },
+      {
+       "start": "2026-06-25",
+       "end": "2026-06-28",
+       "dates": "Jun 25–28",
+       "event": "Regular season #6",
+       "city": "New York, NY",
+       "venue": "Sportime Randall's Island",
+       "source": "https://majorleaguepickleball.co/news/major-league-pickleball-announces-full-2026-may-august-season-schedule-event-tickets-now-on-sale-via-tixr-and-ticketmaster-2/"
+      },
+      {
+       "start": "2026-07-08",
+       "end": "2026-07-12",
+       "dates": "Jul 8–12",
+       "event": "Mid-Season Tournament",
+       "city": "Grand Rapids, MI",
+       "venue": "Bellknap Park",
+       "source": "https://majorleaguepickleball.co/news/major-league-pickleball-announces-full-2026-may-august-season-schedule-event-tickets-now-on-sale-via-tixr-and-ticketmaster-2/"
+      },
+      {
+       "start": "2026-07-16",
+       "end": "2026-07-19",
+       "dates": "Jul 16–19",
+       "event": "Regular season #7",
+       "city": "San Diego, CA",
+       "venue": "Barnes Tennis Center",
+       "source": "https://majorleaguepickleball.co/news/major-league-pickleball-announces-full-2026-may-august-season-schedule-event-tickets-now-on-sale-via-tixr-and-ticketmaster-2/"
+      },
+      {
+       "start": "2026-07-23",
+       "end": "2026-07-26",
+       "dates": "Jul 23–26",
+       "event": "Regular season #8",
+       "city": "Chicago, IL",
+       "venue": "Life Time North Shore",
+       "source": "https://majorleaguepickleball.co/news/major-league-pickleball-announces-full-2026-may-august-season-schedule-event-tickets-now-on-sale-via-tixr-and-ticketmaster-2/"
+      },
+      {
+       "start": "2026-07-30",
+       "end": "2026-08-02",
+       "dates": "Jul 30–Aug 2",
+       "event": "Regular season #9 (finale)",
+       "city": "Orlando, FL",
+       "venue": "ESPN Wide World of Sports",
+       "source": "https://majorleaguepickleball.co/news/major-league-pickleball-announces-full-2026-may-august-season-schedule-event-tickets-now-on-sale-via-tixr-and-ticketmaster-2/"
+      },
+      {
+       "start": "2026-08-06",
+       "end": "2026-08-09",
+       "dates": "Aug 6–9",
+       "event": "Playoffs: first round",
+       "city": "Dallas, TX",
+       "venue": "Pickler Universe – DFW",
+       "source": "https://majorleaguepickleball.co/news/major-league-pickleball-announces-full-2026-may-august-season-schedule-event-tickets-now-on-sale-via-tixr-and-ticketmaster-2/"
+      },
+      {
+       "start": "2026-08-13",
+       "end": "2026-08-16",
+       "dates": "Aug 13–16",
+       "event": "Playoffs: quarterfinals",
+       "city": "Newport Beach, CA",
+       "venue": "Tennis and Pickleball Club",
+       "source": "https://majorleaguepickleball.co/news/major-league-pickleball-announces-full-2026-may-august-season-schedule-event-tickets-now-on-sale-via-tixr-and-ticketmaster-2/"
+      },
+      {
+       "start": "2026-08-28",
+       "end": "2026-08-30",
+       "dates": "Aug 28–30",
+       "event": "Semifinals & Finals: New Jersey 5s d. St. Louis Shock",
+       "city": "New York, NY",
+       "venue": "CityPickle at Wollman Rink",
+       "source": "https://www.thedinkpickleball.com/the-new-jersey-fives-take-home-the-2026-mlp-championship/"
+      },
+      {
+       "start": "2026-10-30",
+       "end": "2026-11-01",
+       "dates": "Oct 30–Nov 1",
+       "event": "MLP Nations Cup (first ever): USA, Canada, Asia, Western Europe, Eastern Europe, South America, Australia",
+       "city": "Dallas, TX",
+       "venue": "Brookhaven Country Club",
+       "source": "https://majorleaguepickleball.co/events-2026/mlp-nations-cup/"
+      }
+     ]
+    },
+    {
+     "heading": "Where to watch",
+     "type": "links",
+     "items": [
+      {
+       "name": "PickleballTV",
+       "url": "https://pickleballtv.com/",
+       "what": "Every MLP match, plus the app.",
+       "kind": "streaming"
+      },
+      {
+       "name": "MLP on YouTube",
+       "url": "https://www.youtube.com/@MajorLeaguePickleball",
+       "what": "Full matches posted after each match day.",
+       "kind": "youtube"
+      },
+      {
+       "name": "MLP Nations Cup",
+       "url": "https://majorleaguepickleball.co/events-2026/mlp-nations-cup/",
+       "what": "Format, teams, tickets for Oct 30–Nov 1.",
+       "kind": "event"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ppa",
+   "short": "PPA",
+   "title": "The PPA Tour",
+   "dek": "The 2026–27 season runs from late August to the PPA Finals in May. Events are tiered: Majors carry 2,000–3,000 ranking points, Cups 1,500, Opens 500–1,000.",
+   "blocks": [
+    {
+     "type": "schedule",
+     "rows": [
+      {
+       "start": "2026-09-14",
+       "end": "2026-09-20",
+       "dates": "Sep 14–20",
+       "event": "PPA Arizona Open",
+       "city": "Mesa, AZ",
+       "venue": "Arizona Athletic Grounds",
+       "source": "https://ppatour.com/watch/tv/"
+      },
+      {
+       "start": "2026-09-28",
+       "end": "2026-10-04",
+       "dates": "Sep 28–Oct 4",
+       "event": "PPA Las Vegas Open",
+       "city": "Las Vegas, NV",
+       "venue": "Darling Tennis Center",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2026-10-05",
+       "end": "2026-10-11",
+       "dates": "Oct 5–11",
+       "event": "PPA Chicago Cup",
+       "city": "Chicago, IL",
+       "venue": "Life Time North Shore",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2026-10-12",
+       "end": "2026-10-18",
+       "dates": "Oct 12–18",
+       "event": "PPA Virginia Beach Open",
+       "city": "Virginia Beach, VA",
+       "venue": "Pickleball Virginia Beach",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2026-10-13",
+       "end": "2026-10-18",
+       "dates": "Oct 13–18",
+       "event": "PPA Australia Pickleball Cup",
+       "city": "Brisbane, QLD",
+       "venue": "Queensland Tennis Centre",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2026-10-19",
+       "end": "2026-10-25",
+       "dates": "Oct 19–25",
+       "event": "PPA Asia Hong Kong Slam",
+       "city": "Hong Kong",
+       "venue": "Kai Tak Arena",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2026-11-02",
+       "end": "2026-11-08",
+       "dates": "Nov 2–8",
+       "event": "PPA Pickleball World Championships (Major)",
+       "city": "Farmers Branch, TX",
+       "venue": "Brookhaven Country Club",
+       "source": "https://ppatour.com/events/2026/pickleball-world-championships/"
+      },
+      {
+       "start": "2026-11-16",
+       "end": "2026-11-22",
+       "dates": "Nov 16–22",
+       "event": "PPA Daytona Beach Open",
+       "city": "Holly Hill, FL",
+       "venue": "",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2026-12-14",
+       "end": "2026-12-20",
+       "dates": "Dec 14–20",
+       "event": "PPA Malibu Showcase",
+       "city": "Malibu, CA",
+       "venue": "",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2027-01-11",
+       "end": "2027-01-17",
+       "dates": "Jan 11–17, 2027",
+       "event": "PPA Pickleball Masters (Major)",
+       "city": "Rancho Mirage, CA",
+       "venue": "",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2027-05-10",
+       "end": "2027-05-16",
+       "dates": "May 10–16, 2027",
+       "event": "PPA Finals",
+       "city": "San Clemente, CA",
+       "venue": "",
+       "source": "https://ppatour.com/schedule/"
+      },
+      {
+       "start": "2026-08-31",
+       "end": "2026-09-06",
+       "dates": "Aug 31–Sep 6",
+       "event": "PPA National Championships (Major)",
+       "city": "Cary, NC",
+       "venue": "Cary Tennis Park",
+       "source": "https://ppatour.com/watch/tv/"
+      }
+     ]
+    },
+    {
+     "heading": "Where to watch",
+     "type": "links",
+     "items": [
+      {
+       "name": "PickleballTV",
+       "url": "https://pickleballtv.com/",
+       "what": "Every round of every PPA event.",
+       "kind": "streaming"
+      },
+      {
+       "name": "Tennis Channel",
+       "url": "https://www.tennischannel.com/",
+       "what": "Semifinal and championship windows.",
+       "kind": "tv"
+      },
+      {
+       "name": "PPA TV listings",
+       "url": "https://ppatour.com/watch/tv/",
+       "what": "FOX Sports FS1/FS2, CBS and other windows, event by event.",
+       "kind": "listings"
+      },
+      {
+       "name": "PPA Tour on YouTube",
+       "url": "https://www.youtube.com/channel/UCSP6HlrMmRqogym2aHBPHpw",
+       "what": "Replays and highlights.",
+       "kind": "youtube"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "app",
+   "short": "APP",
+   "title": "The APP Tour",
+   "dek": "The independent tour: pros and amateurs at the same event, big senior pro divisions, and a doubled purse coming in 2027.",
+   "blocks": [
+    {
+     "type": "schedule",
+     "rows": [
+      {
+       "start": "2026-09-17",
+       "end": "2026-09-20",
+       "dates": "Sep 17–20",
+       "event": "APP Overland Park Open",
+       "city": "Overland Park, KS",
+       "venue": "",
+       "source": "https://www.theapp.global/news/sunday-broadcast-overland-park-2026"
+      },
+      {
+       "start": "2026-10-01",
+       "end": "2026-10-04",
+       "dates": "Oct 1–4",
+       "event": "APP Columbus Open ($125K)",
+       "city": "Columbus, OH",
+       "venue": "Pickle & Chill",
+       "source": "https://www.theapp.global/tour-schedule/2026-app-columbus-open"
+      },
+      {
+       "start": "2026-10-15",
+       "end": "2026-10-18",
+       "dates": "Oct 15–18",
+       "event": "APP Louisville Open ($125K)",
+       "city": "Louisville, KY",
+       "venue": "Kentucky International Convention Center",
+       "source": "https://www.theapp.global/tour-schedule/2026-app-louisville"
+      },
+      {
+       "start": "2026-11-12",
+       "end": "2026-11-15",
+       "dates": "Nov 12–15",
+       "event": "APP Arizona Open ($125K)",
+       "city": "Mesa, AZ",
+       "venue": "Arizona Athletic Grounds",
+       "source": "https://www.theapp.global/tour-schedule/2026-app-arizona"
+      },
+      {
+       "start": "2026-12-03",
+       "end": "2026-12-06",
+       "dates": "Dec 3–6",
+       "event": "APP Tour Championships",
+       "city": "Fort Lauderdale, FL",
+       "venue": "The Fort",
+       "source": "https://www.theapp.global/tour-schedule/2026-app-tour-championships"
+      }
+     ]
+    },
+    {
+     "type": "facts",
+     "items": [
+      {
+       "fact": "APP Next (23 and under) stops: Overland Park Oct 23–25, Allen TX Nov 20–22, Fort Lauderdale Dec 11–13.",
+       "source": "https://www.theapp.global/tour?upcoming_category_equal=APP+Tour"
+      },
+      {
+       "fact": "Broadcast: ESPN+ and ESPN2 windows on championship days; every court on APPTV.",
+       "source": "https://www.theapp.global/news/sunday-broadcast-overland-park-2026"
+      }
+     ]
+    },
+    {
+     "heading": "Where to watch",
+     "type": "links",
+     "items": [
+      {
+       "name": "APPTV on YouTube",
+       "url": "https://www.youtube.com/@TheAPPTour",
+       "what": "Livestreams and replays.",
+       "kind": "youtube"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "rankings",
+   "short": "Rankings",
+   "title": "Who's on top",
+   "dek": "The PPA's world ranking (WPR) blends singles, gender doubles and mixed. Read Sept 22, 2026; the discipline lists are pickleball.com's current seeds for the week of Sept 21.",
+   "blocks": [
+    {
+     "heading": "Men · world ranking",
+     "type": "table",
+     "cols": [
+      "#",
+      "player",
+      "points"
+     ],
+     "rows": [
+      {
+       "cells": [
+        "1",
+        "Ben Johns",
+        "17,832.5"
+       ],
+       "source": "https://ppatour.com/rankings/"
+      },
+      {
+       "cells": [
+        "2",
+        "Gabriel Tardio",
+        "13,291.3"
+       ],
+       "source": "https://ppatour.com/rankings/"
+      },
+      {
+       "cells": [
+        "3",
+        "Christian Alshon",
+        "11,827.5"
+       ],
+       "source": "https://ppatour.com/rankings/"
+      },
+      {
+       "cells": [
+        "4",
+        "Federico Staksrud",
+        "10,797.5"
+       ],
+       "source": "https://ppatour.com/rankings/"
+      },
+      {
+       "cells": [
+        "5",
+        "Hayden Patriquin",
+        "10,392.5"
+       ],
+       "source": "https://ppatour.com/rankings/"
+      }
+     ]
+    },
+    {
+     "heading": "Women · world ranking",
+     "type": "table",
+     "cols": [
+      "#",
+      "player",
+      "points"
+     ],
+     "rows": [
+      {
+       "cells": [
+        "1",
+        "Anna Leigh Waters",
+        "20,710"
+       ],
+       "source": "https://ppatour.com/rankings/"
+      },
+      {
+       "cells": [
+        "2",
+        "Anna Bright",
+        "15,655"
+       ],
+       "source": "https://ppatour.com/rankings/"
+      },
+      {
+       "cells": [
+        "3",
+        "Jorja Johnson",
+        "10,672.5"
+       ],
+       "source": "https://ppatour.com/rankings/"
+      },
+      {
+       "cells": [
+        "4",
+        "Tyra Hurricane Black",
+        "9,530"
+       ],
+       "source": "https://ppatour.com/rankings/"
+      },
+      {
+       "cells": [
+        "5",
+        "Parris Todd",
+        "8,822.5"
+       ],
+       "source": "https://ppatour.com/rankings/"
+      }
+     ]
+    },
+    {
+     "heading": "Men's doubles",
+     "type": "table",
+     "cols": [
+      "#",
+      "player",
+      "points"
+     ],
+     "rows": [
+      {
+       "cells": [
+        "1",
+        "Gabriel Tardio",
+        "21,300"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=5"
+      },
+      {
+       "cells": [
+        "2",
+        "Ben Johns",
+        "20,700"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=5"
+      },
+      {
+       "cells": [
+        "3",
+        "Andrei Daescu",
+        "14,200"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=5"
+      },
+      {
+       "cells": [
+        "4",
+        "Christian Alshon",
+        "14,000"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=5"
+      },
+      {
+       "cells": [
+        "5",
+        "Federico Staksrud",
+        "13,200"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=5"
+      }
+     ]
+    },
+    {
+     "heading": "Women's doubles",
+     "type": "table",
+     "cols": [
+      "#",
+      "player",
+      "points"
+     ],
+     "rows": [
+      {
+       "cells": [
+        "1",
+        "Anna Leigh Waters",
+        "22,100"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=4"
+      },
+      {
+       "cells": [
+        "2",
+        "Anna Bright",
+        "21,300"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=4"
+      },
+      {
+       "cells": [
+        "3",
+        "Tyra Hurricane Black",
+        "14,300"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=4"
+      },
+      {
+       "cells": [
+        "4",
+        "Parris Todd",
+        "13,100"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=4"
+      },
+      {
+       "cells": [
+        "5",
+        "Rachel Rohrabacher",
+        "12,300"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=4"
+      }
+     ]
+    },
+    {
+     "heading": "Men's singles",
+     "type": "table",
+     "cols": [
+      "#",
+      "player",
+      "points"
+     ],
+     "rows": [
+      {
+       "cells": [
+        "1",
+        "Christopher Haworth",
+        "16,100"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=2"
+      },
+      {
+       "cells": [
+        "2",
+        "Federico Staksrud",
+        "14,450"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=2"
+      },
+      {
+       "cells": [
+        "3",
+        "Hunter Johnson",
+        "11,275"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=2"
+      },
+      {
+       "cells": [
+        "4",
+        "Christian Alshon",
+        "6,750"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=2"
+      },
+      {
+       "cells": [
+        "5",
+        "Roscoe Bellamy",
+        "5,850"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=2"
+      }
+     ]
+    },
+    {
+     "heading": "Women's singles",
+     "type": "table",
+     "cols": [
+      "#",
+      "player",
+      "points"
+     ],
+     "rows": [
+      {
+       "cells": [
+        "1",
+        "Anna Leigh Waters",
+        "17,500"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=1"
+      },
+      {
+       "cells": [
+        "2",
+        "Kate Fahey",
+        "14,700"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=1"
+      },
+      {
+       "cells": [
+        "3",
+        "Kaitlyn Christian",
+        "13,100"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=1"
+      },
+      {
+       "cells": [
+        "4",
+        "Brooke Buckner",
+        "10,450"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=1"
+      },
+      {
+       "cells": [
+        "5",
+        "Lea Jansen",
+        "7,650"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=1"
+      }
+     ]
+    },
+    {
+     "heading": "Women's mixed",
+     "type": "table",
+     "cols": [
+      "#",
+      "player",
+      "points"
+     ],
+     "rows": [
+      {
+       "cells": [
+        "1",
+        "Anna Leigh Waters",
+        "20,100"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=3"
+      },
+      {
+       "cells": [
+        "2",
+        "Anna Bright",
+        "14,300"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=3"
+      },
+      {
+       "cells": [
+        "3",
+        "Jorja Johnson",
+        "12,500"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=3"
+      },
+      {
+       "cells": [
+        "4",
+        "Rachel Rohrabacher",
+        "7,400"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=3"
+      },
+      {
+       "cells": [
+        "5",
+        "Tyra Hurricane Black",
+        "6,800"
+       ],
+       "source": "https://pickleball.com/rankings?ranking_type=currentSeed&page=1&type=3"
+      }
+     ]
+    },
+    {
+     "type": "note",
+     "text": "Men's mixed seeds couldn't be read on the day, so they're left out rather than guessed."
+    }
+   ]
+  },
+  {
+   "id": "money",
+   "short": "The money",
+   "title": "The money and the politics",
+   "dek": "Contracts, prize money, draft prices, and the rulebook split.",
+   "blocks": [
+    {
+     "type": "facts",
+     "items": [
+      {
+       "fact": "Pros earn from four places: UPA contracts (guaranteed salary), prize money, MLP team contracts, and equipment deals (paddle, ball, apparel). The UPA says 2026 shifts pay from salary toward prize money.",
+       "source": "https://pickleball.com/news/upa-works-to-extend-pro-contracts-will-pay-out-millions-in-prize-money"
+      },
+      {
+       "fact": "The UPA's plan: up to $31M in player earnings starting 2026: $11M guaranteed, $15M domestic prize money (PPA + MLP), $5M international.",
+       "source": "https://pickleball.com/news/upa-works-to-extend-pro-contracts-will-pay-out-millions-in-prize-money"
+      },
+      {
+       "fact": "In the 2026 MLP draft the St. Louis Shock paid $1.23 million for Anna Bright and the New Jersey 5s paid $800,000 for Jorja Johnson. A salary cap and floor are expected for 2027.",
+       "source": "https://www.thedinkpickleball.com/the-new-jersey-fives-take-home-the-2026-mlp-championship/"
+      },
+      {
+       "fact": "Anna Leigh Waters left Paddletek for a long-term Franklin deal in January 2026. Terms weren't disclosed; the $10M figure going around is podcast speculation.",
+       "source": "https://pickleballrookie.com/the-biggest-paddle-deal-in-pickleball-history-contract-drama-rocks-the-pro-tour-and-mlp-heads-to-disney-world"
+      },
+      {
+       "fact": "APP pro prize money: $1.5M across 2026, doubling to $3M in 2027 across 12 events.",
+       "source": "https://www.theapp.global/news/app-tour-doubles-professional-prize-money-expands-2027-tour-schedule"
+      },
+      {
+       "fact": "The 2026 US Open in Naples drew more than 500 pros for a purse of more than $160,000.",
+       "source": "https://www.marconews.com/story/sports/2026/04/10/2026-us-open-pickleball-championships-gets-underway-in-east-naples/89561007007/"
+      },
+      {
+       "fact": "UPA-A paddle certification costs a brand $10,000 a year plus $3,000 per paddle (valid 24 months), with paid rush options up to $7,500.",
+       "source": "https://upaa.unitedpickleball.com/paddle-testing/2026-upa-a-certification/"
+      }
+     ]
+    },
+    {
+     "heading": "Who runs what",
+     "type": "facts",
+     "items": [
+      {
+       "fact": "MLP and the PPA Tour merged in 2024 under the United Pickleball Association (UPA), which runs both.",
+       "source": "https://majorleaguepickleball.co/news/major-league-pickleball-announces-full-2026-may-august-season-schedule-event-tickets-now-on-sale-via-tixr-and-ticketmaster-2/"
+      },
+      {
+       "fact": "In May 2024 the UPA replaced USA Pickleball as its governing body with its own UPA of America (UPA-A). USA Pickleball had been the only US governing body since 1984.",
+       "source": "https://www.thedinkpickleball.com/upa-severs-ties-with-usa-pickleball/"
+      },
+      {
+       "fact": "Two paddle rulebooks now: UPA-A certification (performance-tested: power and spin, after break-in) is required for PPA and MLP pro play since Sept 1, 2025. Amateur divisions just need the paddle on USA Pickleball's approved list.",
+       "source": "https://upaa.unitedpickleball.com/paddle-testing/2026-upa-a-certification/"
+      },
+      {
+       "fact": "UPA contracts are exclusive. In Dec 2025 it terminated three pros' contracts for playing unsanctioned events in Japan; they appealed.",
+       "source": "https://www.thedinkpickleball.com/upa-terminates-contracts-of-ignatowich-fu-glozman-following-participation-in-unsanctioned-event/"
+      },
+      {
+       "fact": "USA Pickleball still sanctions the US Open in Naples and runs its own National Championships, and partners with the APP on Golden Ticket qualifiers.",
+       "source": "https://www.thedinkpickleball.com/dupr-is-now-the-official-ratings-partner-of-usa-pickleball/"
+      },
+      {
+       "fact": "The senior pro league (50+) formerly called the National Pickleball League is now Champions Series Pickleball, licensed since March 2026 as the MLP Champions Series, with 16 teams.",
+       "source": "https://majorleaguepickleball.co/news/major-league-pickleball-announces-partnership-with-pro-senior-pickleball-league-champions-series-pickleball-csp/"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
