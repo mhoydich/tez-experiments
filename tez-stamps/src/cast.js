@@ -12,9 +12,14 @@ const j = (url) => fetch(url).then((r) => (r.ok ? r.json() : null)).catch(() => 
 
 export const KINDS = ["note", "link", "art"];
 
-export async function getCasts({ author = null, limit = 30 } = {}) {
+// Kinds people publish (0 note, 1 link, 2 art). Machine casts on the same
+// tower — e.g. pointcast-chain anchors (kind 3, binary pcc1 bodies) — are
+// filtered out of every feed here so they never render as garbled notes.
+export const HUMAN_KINDS = [0, 1, 2];
+
+export async function getCasts({ author = null, limit = 30, kinds = HUMAN_KINDS } = {}) {
   if (!CAST) return [];
-  const q = author ? `&value.author=${author}` : "";
+  const q = (author ? `&value.author=${author}` : "") + (kinds ? `&value.kind.in=${kinds.join(",")}` : "");
   const rows = await j(
     `${INDEXER}/v1/contracts/${CAST}/bigmaps/casts/keys?active=true&sort.desc=id&limit=${limit}${q}`
   );
@@ -52,8 +57,12 @@ export async function topCasters(limit = 5) {
   const rows = await j(
     `${INDEXER}/v1/contracts/${CAST}/bigmaps/by_author/keys?active=true&limit=500`
   );
+  // Machine casters (e.g. a pointcast-chain anchor account) would top the
+  // board; list them in VITE_HIDDEN_CASTERS (comma-separated) to hide them.
+  const hidden = new Set((import.meta.env.VITE_HIDDEN_CASTERS || "").split(",").map((s) => s.trim()).filter(Boolean));
   return (rows || [])
     .map((r) => ({ address: r.key, count: Number(r.value) }))
+    .filter((r) => !hidden.has(r.address))
     .sort((a, b) => b.count - a.count)
     .slice(0, limit);
 }
