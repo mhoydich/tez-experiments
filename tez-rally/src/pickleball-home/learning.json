@@ -1,0 +1,412 @@
+{
+  "version": 1,
+  "checkedAt": "2026-10-02",
+  "ruleset": "USA Pickleball 2026 · standard doubles with side-out scoring",
+  "editorialNote": "Original RALLY practice prompts. Rules are checked against USA Pickleball's official 2026 sources; drills and success targets are practice suggestions, not official skill tests. Pick a path by what you can do consistently. These paths do not award or endorse a rating.",
+  "sources": [
+    {
+      "id": "usap-rulebook-2026",
+      "title": "USA Pickleball · 2026 Official Rulebook",
+      "url": "https://usapickleball.org/docs/rules/USAP-Official-Rulebook.pdf",
+      "checkedAt": "2026-10-02",
+      "sections": "7.A–7.E serving; 11.A non-volley zone"
+    },
+    {
+      "id": "usap-summary",
+      "title": "USA Pickleball · Rules Summary",
+      "url": "https://usapickleball.org/rules/summary/",
+      "checkedAt": "2026-10-02",
+      "sections": "Service sequence; side-out scoring; two-bounce rule; line calls"
+    },
+    {
+      "id": "usap-rules-index",
+      "title": "USA Pickleball · Official Rules and Updates",
+      "url": "https://usapickleball.org/rules/",
+      "checkedAt": "2026-10-02",
+      "sections": "2026 rulebook and change document"
+    }
+  ],
+  "ruleBasics": [
+    {
+      "id": "serve-position",
+      "title": "Start behind the baseline",
+      "text": "At serve contact, keep at least one foot on the ground behind the baseline. Neither foot may touch the baseline, court, or ground outside the extended sideline and centerline.",
+      "sourceIds": ["usap-rulebook-2026"]
+    },
+    {
+      "id": "serve-options",
+      "title": "Volley serve or drop serve",
+      "text": "Volley serve: hit before a bounce, swinging upward; contact at or below waist level with the paddle head no higher than the wrist. Drop serve: release from a natural, unaided height without propelling the ball, let it bounce, then hit. The three volley-serve motion restrictions do not apply to the drop serve. Keep the release visible and do not add spin on release.",
+      "sourceIds": ["usap-rulebook-2026"]
+    },
+    {
+      "id": "serve-target",
+      "title": "Diagonal, beyond the kitchen",
+      "text": "Serve into the opposite diagonal service court. Its kitchen line is out on a serve; the other service-court lines are in. A net-touching serve that lands legally remains in play.",
+      "sourceIds": ["usap-summary"]
+    },
+    {
+      "id": "two-bounce",
+      "title": "One bounce on each side first",
+      "text": "Let the serve bounce before returning it. The serving team must then let that return bounce. After these two bounces, volleys are allowed outside the kitchen.",
+      "sourceIds": ["usap-summary"]
+    },
+    {
+      "id": "kitchen",
+      "title": "The kitchen is for bounced balls",
+      "text": "You may enter the kitchen to play a bounced ball. Before volleying again, place both feet fully outside it. During a volley, you, your gear, and anything touching you must avoid the kitchen and its lines. Momentum into it, or something touching it, is a fault even after the rally ends.",
+      "sourceIds": ["usap-rulebook-2026"]
+    },
+    {
+      "id": "side-out",
+      "title": "Call three numbers in doubles",
+      "text": "Only the serving team scores. Call serving score, receiving score, then server 1 or 2. Begin 0–0–2: the opening team gets one server. Later, both partners serve before side out. Usually play to 11, win by two. Confirm the format; rally scoring works differently.",
+      "sourceIds": ["usap-summary"]
+    }
+  ],
+  "paths": [
+    {
+      "id": "beginner",
+      "title": "Get into the game",
+      "description": "Learn the rules, start a rally, and finish your first doubles game with confidence.",
+      "selfAssessment": "Choose this if serving, the kitchen, or the score still makes you pause.",
+      "lessons": [
+        {
+          "id": "beginner-serve",
+          "title": "1. Build one reliable serve",
+          "cue": "Pick a legal serve motion and a generous diagonal target. Repeat the same setup.",
+          "exercise": "Hit 10 serves from each side at a towel-sized target safely inside the service court. Start with a drop serve if the bounce makes timing easier.",
+          "check": "Can you land 8 of 10 legally from each side without rushing? Increase placement before pace.",
+          "ruleIds": ["serve-position", "serve-options", "serve-target"],
+          "drillIds": ["serve-targets"],
+          "sourceIds": ["usap-rulebook-2026", "usap-summary"]
+        },
+        {
+          "id": "beginner-two-bounces",
+          "title": "2. Start every rally correctly",
+          "cue": "Return the serve after its bounce. Stay ready for the return bounce when your team serves.",
+          "exercise": "With a partner, play 10 serve–return–third-shot sequences. Say 'bounce' on the first two contacts, then continue cooperatively.",
+          "check": "Complete 10 starts with no early volley. Then aim the return deeper and recover your balance.",
+          "ruleIds": ["two-bounce"],
+          "drillIds": ["return-recover"],
+          "sourceIds": ["usap-summary"]
+        },
+        {
+          "id": "beginner-kitchen",
+          "title": "3. Know when to step in",
+          "cue": "A dink is a soft bounced shot near the net. Enter for the bounce; get fully out before a volley.",
+          "exercise": "Trade 10 soft dinks, including a short feed that invites you into the kitchen. Recover outside it, then receive one gentle volley feed and finish balanced.",
+          "check": "Can you explain why a bounced shot inside is legal and a volley with kitchen contact is a fault?",
+          "ruleIds": ["kitchen"],
+          "drillIds": ["four-target-dinks"],
+          "sourceIds": ["usap-rulebook-2026"]
+        },
+        {
+          "id": "beginner-score",
+          "title": "4. Call a doubles game",
+          "cue": "Agree on side-out scoring. Say all three numbers before each serve.",
+          "exercise": "Walk through 0–0–2, an opening side out, a point won by the next team, then first-server and second-server faults. Play a game with a partner checking each call.",
+          "check": "You can identify the serving team, correct side, and server number after both a point and a lost rally.",
+          "ruleIds": ["side-out"],
+          "drillIds": [],
+          "sourceIds": ["usap-summary"]
+        }
+      ]
+    },
+    {
+      "id": "intermediate",
+      "title": "Build a dependable doubles game",
+      "description": "Use depth, soft hands, and shared court coverage to earn a better next ball.",
+      "selfAssessment": "Choose this if you know the rules and can sustain a rally, but drops, resets, or partner positioning vary under pressure.",
+      "lessons": [
+        {
+          "id": "intermediate-forehand",
+          "title": "1. Give the forehand a shape",
+          "cue": "Turn early, meet the ball in front, and finish toward the target. Make clean placement repeatable.",
+          "exercise": "Ask a partner for 10 comfortable forehand feeds. Send five crosscourt and five through the middle, then alternate the targets on their call.",
+          "check": "At least 7 of 10 reach the called target area in court without changing your swing into a hard slap.",
+          "ruleIds": [],
+          "drillIds": ["forehand-shape"],
+          "sourceIds": []
+        },
+        {
+          "id": "intermediate-drop",
+          "title": "2. Drop, observe, then advance",
+          "cue": "Give the ball enough arc to land softly in the opposing kitchen. Move only as far as your shot earns.",
+          "exercise": "Start a few steps behind the kitchen line. Hit five drops, step back after a successful set, and work toward the baseline. Stop and prepare as your partner contacts the ball.",
+          "check": "From each distance, land 3 of 5 soft drops that your partner plays from below net height. A miss is useful feedback, not a reason to rush in.",
+          "ruleIds": [],
+          "drillIds": ["drop-ladder"],
+          "sourceIds": []
+        },
+        {
+          "id": "intermediate-reset",
+          "title": "3. Reset a difficult ball",
+          "cue": "A reset takes pace off an incoming ball and sends it softly toward the kitchen. Shorten the stroke.",
+          "exercise": "Stand in midcourt while a partner feeds controlled volleys. Reset five to the middle kitchen, then take one step forward after a good reset and stop for the next feed.",
+          "check": "Reset 3 of 5 feeds without a high attackable bounce. Repeat at the same pace before making the feed harder.",
+          "ruleIds": [],
+          "drillIds": ["transition-reset"],
+          "sourceIds": []
+        },
+        {
+          "id": "intermediate-right-side",
+          "title": "4. Own the right side together",
+          "cue": "Facing the net, call the seam before play and move with your partner. Court side is a role, not a permanent assignment.",
+          "exercise": "Begin with one player on the right. Opponents feed toward the right sideline and middle in turn. Call 'mine' or 'yours' early, recover together, then swap roles.",
+          "check": "Complete 10 feeds with no collision, silent middle ball, or two-player chase. For a left-handed player, agree coverage again rather than assuming the same forehand geometry.",
+          "ruleIds": [],
+          "drillIds": ["right-side-seam"],
+          "sourceIds": []
+        }
+      ]
+    },
+    {
+      "id": "advanced",
+      "title": "Turn control into pressure",
+      "description": "Train decisions under variation: when to attack, when to reset, and how to cover the next ball.",
+      "selfAssessment": "Choose this if your fundamentals hold in games and you want to test decisions, disguise, and doubles patterns under pressure.",
+      "lessons": [
+        {
+          "id": "advanced-dink",
+          "title": "1. Create a weaker next contact",
+          "cue": "Change dink placement while keeping an unattackable height. Read the reply instead of forcing a winner.",
+          "exercise": "Trade four neutral crosscourt dinks, then move the fifth toward a different kitchen target. Resume the rally and notice whether the opponent must reach or moves comfortably.",
+          "check": "Across 10 pattern changes, keep at least 7 in and recover before the next contact. Track pop-ups as well as outright misses.",
+          "ruleIds": [],
+          "drillIds": ["four-target-dinks"],
+          "sourceIds": []
+        },
+        {
+          "id": "advanced-selection",
+          "title": "2. Choose drop or drive on purpose",
+          "cue": "Use your contact height, balance, and opponents' positions to choose. Prepare for the fifth shot either way.",
+          "exercise": "A feeder alternates deep returns and shorter sits-up balls. Call 'drop' or 'drive' before your third contact, play the next two shots, and explain the choice afterward.",
+          "check": "Review 10 sequences: was the choice playable, and did you recover for the reply? Count the quality of the fifth shot, not just the third.",
+          "ruleIds": ["two-bounce"],
+          "drillIds": ["forehand-shape", "drop-ladder"],
+          "sourceIds": []
+        },
+        {
+          "id": "advanced-speedup",
+          "title": "3. Attack a ball you can support",
+          "cue": "A speed-up changes a soft exchange into a faster one. Attack from balance and prepare for a counter.",
+          "exercise": "After three cooperative dinks, the feeder varies a low ball and a higher ball. Reset the low ball; on a suitable higher contact, speed up at controlled pace and play the reply.",
+          "check": "Make 8 of 10 sensible decisions without a kitchen fault. A kept-in reset earns as much credit as a controlled attack.",
+          "ruleIds": ["kitchen"],
+          "drillIds": ["attack-or-reset"],
+          "sourceIds": []
+        },
+        {
+          "id": "advanced-patterns",
+          "title": "4. Cover the counter as a pair",
+          "cue": "Before the ball speeds up, agree who covers the seam and who protects the line. Recover after every contact.",
+          "exercise": "In four-player practice, start at the kitchen line. The right-side player changes one ball's pace, the partner covers the agreed middle, and both play two more shots. Swap right-side roles after five starts.",
+          "check": "Across 10 starts, both players are ready for the next shot and can describe the same coverage plan. Add randomness only when the pair stays coordinated.",
+          "ruleIds": [],
+          "drillIds": ["right-side-seam", "attack-or-reset"],
+          "sourceIds": []
+        }
+      ]
+    }
+  ],
+  "drills": [
+    {
+      "id": "serve-targets",
+      "title": "Serve to a generous target",
+      "level": "beginner",
+      "durationMinutes": 6,
+      "players": "1–2",
+      "setup": "Use a court, 5–10 balls, and a flat target marker well inside each diagonal service court. Keep markers away from anyone's footing.",
+      "steps": [
+        "Choose a volley serve or drop serve and check the corresponding rules above.",
+        "Hit 10 from the right, then 10 from the left; collect balls between sets.",
+        "Count legal serves separately from serves that reach the target. Repeat with the same routine."
+      ],
+      "progression": "After 8 of 10 legal serves from each side, make the target smaller or deeper. Change one variable at a time.",
+      "successTarget": "8 of 10 legal serves from each side; 5 of 10 in the chosen target area.",
+      "tags": ["serve", "solo", "placement"],
+      "ruleIds": ["serve-position", "serve-options", "serve-target"],
+      "sourceIds": ["usap-rulebook-2026", "usap-summary"]
+    },
+    {
+      "id": "return-recover",
+      "title": "Return deep, arrive ready",
+      "level": "beginner",
+      "durationMinutes": 6,
+      "players": "2",
+      "setup": "One player serves; the other receives behind the baseline. Choose a large return target several feet inside the opposite baseline.",
+      "steps": [
+        "Let the serve bounce, return into the deep target, and begin moving toward the kitchen line.",
+        "The server lets the return bounce before hitting a controlled third shot. The receiver stops and gets ready as that player contacts the ball.",
+        "Play one more shot, reset, and repeat five times before swapping roles."
+      ],
+      "progression": "Vary the serve's placement. If the return is weak, practice stopping earlier and handling the next shot before advancing again.",
+      "successTarget": "7 of 10 returns in court, with no two-bounce-rule violation and a balanced next contact.",
+      "tags": ["return", "two-bounce", "movement"],
+      "ruleIds": ["two-bounce"],
+      "sourceIds": ["usap-summary"]
+    },
+    {
+      "id": "four-target-dinks",
+      "title": "Four-target dink control",
+      "level": "beginner",
+      "durationMinutes": 8,
+      "players": "2",
+      "setup": "Stand diagonally opposite near the kitchen lines. Choose two generous landing areas in each kitchen; point to them instead of placing objects underfoot.",
+      "steps": [
+        "Spend two minutes on one paired target, letting the ball bounce and keeping the pace cooperative.",
+        "Change the target pair for two minutes, then switch court halves and repeat both pairs.",
+        "Count the longest rally and note balls that land in the target but sit high enough to attack."
+      ],
+      "progression": "Call the next target before contact, or change placement after four neutral dinks. Keep control before adding pressure.",
+      "successTarget": "One rally of 10 controlled dinks from each court half, with at least 6 reaching the chosen areas.",
+      "tags": ["dink", "touch", "placement"],
+      "ruleIds": ["kitchen"],
+      "sourceIds": [],
+      "relatedLinks": [
+        {"label": "PointCast's original four-corners note", "url": "https://pointcast.xyz/b/0257"}
+      ]
+    },
+    {
+      "id": "forehand-shape",
+      "title": "Forehand: crosscourt to middle",
+      "level": "intermediate",
+      "durationMinutes": 6,
+      "players": "2",
+      "setup": "Hitter near the baseline; feeder across the net supplies comfortable bounced forehands. Agree on crosscourt and middle target areas.",
+      "steps": [
+        "Turn before the bounce and contact in front. Send five forehands crosscourt at a pace the feeder can handle.",
+        "Send five toward the middle, then let the feeder call the target before the bounce for another 10.",
+        "Swap roles after three minutes. Count placement, balance, and readiness for the next ball."
+      ],
+      "progression": "Vary feed depth, then play the reply. For a right-side hitter, add recovery from the forehand sideline toward the agreed seam.",
+      "successTarget": "7 of 10 called targets reached in court while finishing balanced.",
+      "tags": ["forehand", "right-side", "placement"],
+      "ruleIds": [],
+      "sourceIds": []
+    },
+    {
+      "id": "drop-ladder",
+      "title": "The drop ladder",
+      "level": "intermediate",
+      "durationMinutes": 8,
+      "players": "2",
+      "setup": "Feeder at the kitchen line; hitter starts a few steps behind their own kitchen line. Use the middle of the opposing kitchen as the target.",
+      "steps": [
+        "On five comfortable bounced feeds, lift the ball softly into the target kitchen.",
+        "After 3 of 5 successful drops, move the starting position two steps farther from the net; work toward the baseline.",
+        "After a good drop, move forward and stop for the feeder's next contact. Swap roles halfway."
+      ],
+      "progression": "Add a deeper feed or forehand/backhand variation. Return to the previous distance if touch disappears.",
+      "successTarget": "3 of 5 drops land in the kitchen and require the feeder to contact below net height at two different starting distances.",
+      "tags": ["drop", "third-shot", "touch"],
+      "ruleIds": [],
+      "sourceIds": []
+    },
+    {
+      "id": "transition-reset",
+      "title": "Reset your way forward",
+      "level": "intermediate",
+      "durationMinutes": 8,
+      "players": "2",
+      "setup": "Feeder at the kitchen line; hitter in midcourt. Feed at controlled pace with enough spacing to reset between balls.",
+      "steps": [
+        "Send five feeds toward the hitter's feet or comfortable reach. The hitter uses a short stroke to soften the reply into the kitchen.",
+        "After a low reset, take one step forward; stop and prepare as the feeder contacts the next ball.",
+        "If the reset sits up, hold position and handle the next feed. Swap roles after four minutes."
+      ],
+      "progression": "Vary direction before increasing pace. Add a partner moving beside the hitter once individual control is consistent.",
+      "successTarget": "3 of 5 resets land softly in the kitchen; complete one three-ball forward sequence without a rushed contact.",
+      "tags": ["reset", "transition", "soft-hands"],
+      "ruleIds": [],
+      "sourceIds": []
+    },
+    {
+      "id": "right-side-seam",
+      "title": "Right side + shared seam",
+      "level": "intermediate",
+      "durationMinutes": 8,
+      "players": "3–4",
+      "setup": "A doubles pair near the kitchen line faces one or two cooperative feeders. Right and left mean the player's view facing the net. Agree who takes the seam, accounting for handedness.",
+      "steps": [
+        "Feed five balls toward the right sideline. The right-side player handles the ball while the partner shifts to protect the middle.",
+        "Feed five middle balls. Use an early 'mine' or 'yours' call and keep the other player available for the next shot.",
+        "Mix the two locations for 10 feeds, then swap court-side roles. With four players, trade feeding and receiving roles halfway."
+      ],
+      "progression": "Play two follow-up shots after each feed, then add a controlled pace change from the right-side player and cover its counter.",
+      "successTarget": "10 mixed feeds with one clear hitter per ball, no collision, and both players prepared for the reply.",
+      "tags": ["right-side", "doubles", "communication", "forehand"],
+      "ruleIds": ["kitchen"],
+      "sourceIds": []
+    },
+    {
+      "id": "attack-or-reset",
+      "title": "Attack or reset?",
+      "level": "advanced",
+      "durationMinutes": 8,
+      "players": "2–4",
+      "setup": "Players at the kitchen lines. Start cooperatively on one court half with two players, or as doubles with four. Agree to controlled pace and the same decision goal.",
+      "steps": [
+        "Begin each sequence with three cooperative dinks. The feeder then varies a low ball and a ball that allows a higher, balanced contact.",
+        "Keep the low ball soft. On a suitable higher ball, choose a controlled speed-up and prepare for the counter; choosing another dink is allowed.",
+        "Play two more shots, then discuss the decision. Swap the decision-making role after five sequences."
+      ],
+      "progression": "Remove the predictable fourth-feed timing, then use normal points. Score decision quality separately from winning the rally.",
+      "successTarget": "8 of 10 choices suit the contact height and balance, with recovery for the reply and no kitchen fault.",
+      "tags": ["speed-up", "decision", "counter", "doubles"],
+      "ruleIds": ["kitchen"],
+      "sourceIds": []
+    }
+  ],
+  "practicePlans": [
+    {
+      "id": "15-minutes",
+      "title": "15 minutes · find your touch",
+      "durationMinutes": 15,
+      "players": "2",
+      "focus": "A useful short session before a game: clean starts, quiet dinks, clear scoring.",
+      "blocks": [
+        {"minutes": 2, "title": "Cooperative start", "instruction": "Trade easy bounced shots near the net. Choose one generous landing target and build a steady rhythm."},
+        {"minutes": 5, "title": "Serve, return, recover", "instruction": "Alternate five serve–return–third-shot starts per player. Observe both opening bounces and stop ready for the next contact.", "drillId": "return-recover"},
+        {"minutes": 5, "title": "Two dink targets", "instruction": "Run a shortened four-target drill: two minutes on each target pair, then one minute trying a 10-ball rally.", "drillId": "four-target-dinks"},
+        {"minutes": 3, "title": "Score rehearsal", "instruction": "Walk through an opening 0–0–2 side out, then both servers on the other team. Each player calls the next score and points to the correct server. Finish by naming one shot to take into the next game."}
+      ]
+    },
+    {
+      "id": "30-minutes",
+      "title": "30 minutes · earn the kitchen",
+      "durationMinutes": 30,
+      "players": "2",
+      "focus": "Forehand placement, drops, and resets that carry into doubles.",
+      "blocks": [
+        {"minutes": 3, "title": "Touch and rhythm", "instruction": "Start with easy dinks and comfortable groundstrokes. Agree on today's target and pace."},
+        {"minutes": 6, "title": "Forehand targets", "instruction": "Run crosscourt-to-middle forehands, three minutes in each role. Keep a count of called targets reached.", "drillId": "forehand-shape"},
+        {"minutes": 8, "title": "Drop ladder", "instruction": "Work away from the kitchen line toward the baseline. Move back after a successful set; trade roles halfway.", "drillId": "drop-ladder"},
+        {"minutes": 8, "title": "Reset and advance", "instruction": "Begin in midcourt. Advance one step after a soft reset and prepare for the next feed; hold when the ball sits up.", "drillId": "transition-reset"},
+        {"minutes": 5, "title": "Apply and review", "instruction": "Play unscored full-court practice rallies beginning with a diagonal serve, the return bounce, and a chosen drop or drive. Switch ends halfway. Name one repeatable cue and one thing to revisit."}
+      ]
+    },
+    {
+      "id": "45-minutes",
+      "title": "45 minutes · doubles decisions",
+      "durationMinutes": 45,
+      "players": "4",
+      "focus": "Prepare together, protect the seam, and support every attack with a next-shot plan.",
+      "blocks": [
+        {"minutes": 5, "title": "Pair warm-up", "instruction": "Begin with cooperative dinks and controlled groundstrokes. Agree who covers the middle with today's handedness and court sides."},
+        {"minutes": 8, "title": "Four-player opening patterns", "instruction": "Run serve–return–third-shot starts with all four players, then play one more ball. Rotate the server every two minutes and count balanced next contacts.", "drillId": "return-recover"},
+        {"minutes": 8, "title": "Dink placement", "instruction": "Use two crosscourt pairs for the four-target drill. Change targets together every two minutes; note pop-ups as well as misses.", "drillId": "four-target-dinks"},
+        {"minutes": 8, "title": "Right side and seam", "instruction": "Mix right-sideline and middle feeds. Swap court-side roles and then swap the receiving pair halfway.", "drillId": "right-side-seam"},
+        {"minutes": 10, "title": "Controlled attack decisions", "instruction": "Extend attack-or-reset practice to 10 minutes. Train five starts per decision-maker, then let all four players choose. Credit a sound reset as well as a sound attack.", "drillId": "attack-or-reset"},
+        {"minutes": 6, "title": "Play, then name the pattern", "instruction": "Play standard doubles with side-out scoring for five minutes. Use the final minute to name one successful coverage pattern and one decision each pair will train next."}
+      ]
+    }
+  ],
+  "preservedResources": [
+    {"id": "rally-guide", "title": "RALLY's existing guide", "url": "https://tez-rally.pages.dev/guide/", "description": "Keep the original rules, gear, ratings, lessons, and coach-directory links available."},
+    {"id": "rally-score", "title": "RALLY score caller", "url": "https://tez-rally.pages.dev/score/", "description": "The existing game score tool remains available for doubles practice."},
+    {"id": "pointcast-dink-note", "title": "PointCast · the four-corners dink note", "url": "https://pointcast.xyz/b/0257", "description": "Preserved editorial archive link. The drill card above is a new, clearly timed practice plan."},
+    {"id": "pointcast-forehand-note", "title": "PointCast · Third shot roll — stop flaring the paddle", "url": "https://pointcast.xyz/b/0237", "description": "The existing third-shot note and its equipment-specific observation remain in the archive."}
+  ]
+}

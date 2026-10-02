@@ -4,8 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "predev": "node scripts/build-pickleball-home.mjs",
     "dev": "vite",
+    "prebuild": "node scripts/build-pickleball-home.mjs",
     "build": "vite build",
+    "build:site": "node scripts/build-site.mjs",
+    "test:home": "node scripts/test-home-routes.mjs",
     "deploy": "node scripts/deploy.js",
     "smoke": "node scripts/smoke.js"
   },

@@ -8,9 +8,35 @@ speaks mainnet, so mainnet is where real players connect.
 Elo settles (`npm run smoke` replays it).
 
 **Live at [tez-rally.pages.dev](https://tez-rally.pages.dev)** — Cloudflare
-Pages project `tez-rally` (deploy: `npx vite build && npx wrangler pages
-deploy dist --project-name tez-rally`). Rebuild + redeploy after changing
-`VITE_RALLY_ADDRESS`.
+Pages project `tez-rally` (deploy: `npm run build:site && npx wrangler pages
+deploy dist --project-name tez-rally`). Public contract changes belong in
+`scripts/build-site.mjs`; rebuild and redeploy after updating that configuration.
+
+**Pickleball home (2026-10-02):** `/` is the wallet-free playing home:
+beginner through advanced learning, practice progressions, sourced South Bay
+court discovery, crew tools, paddle research, and the RALLY campaign archive.
+The complete original rating desk, level finder, ladder, portrait booth, and
+court passport now live at `/desk/`. Old root player links (`?view`, `?invite`,
+`?level`) and every original root anchor still forward there with their query
+and hash intact. All existing tool routes remain available.
+
+The home is rendered from the standalone shared modules in
+`src/pickleball-home/`, also used by PointCast's sister experience at
+`pointcast.xyz/pickleball/home`. `scripts/build-pickleball-home.mjs` writes `index.html`
+from `src/home-shell.html` before `npm run dev` and `npm run build`, so the
+content and source links remain readable without JavaScript. Edit the shared
+source and shell, then regenerate; do not hand-edit the generated home.
+RALLY is the canonical source. After a reviewed shared change, run
+`node scripts/version-pickleball-home.mjs` to refresh the file hashes in
+`src/pickleball-home/shared-version.json`, then sync the modules and manifest
+to PointCast before releasing either home.
+Vite builds both the new home and `/desk/`. Court filtering never requests
+location; the optional original passport stamp flow stays in the desk.
+Use `npm run build:site` for public deployments: it explicitly preserves the
+documented mainnet RPC, indexer, rating-desk address, and court-book address.
+`npm run build` continues to use your local development environment.
+After a public build, `npm run test:home` verifies the home, preserved desk
+links, existing tool outputs, and mainnet configuration without network or wallet writes.
 
 **Reference + tools added 2026-09-22:** `/guide/` (the field guide: rules,
 gear, ratings, lessons, watch/listen, pro calendar, tournaments, the money,
@@ -23,7 +49,7 @@ score caller (side-out scoring, 0-0-2, spoken calls; `window.__rallyScore`
 exposes the pure rules engine for tests).
 
 **Read [GROWTH.md](GROWTH.md) first** — the 2026-09-19 rethink: Rally is the
-crew's scorekeeper first and a ledger second. Site map since then: `/` leads
+crew's scorekeeper first and a ledger second. The original page at `/desk/` leads
 with the level finder ("What's your number?", `src/finder.js`, no wallet;
 the choice carries into `declare`, and `?level=<milli>` deep-links it), then
 the desk and the ladder, then crew tools, then the booth. **`/tonight/`**
@@ -77,10 +103,10 @@ from `?add=<register id>`, and lists the three newest entries from
 `PURE-START` / `PURE-END` markers; `node scripts/test-bag.mjs` lifts them out
 and runs the assertions.
 
-The landing page is the front door for the full Rally identity system:
+The player desk is the front door for the full Rally identity system:
 pickleball portraits, wallet-owned player cards, countersigned match records,
 and geoconfirmed court passport stamps. The working booth and rating desk stay
-on the same page immediately below the introduction.
+on the same desk page immediately below the introduction.
 
 ## House League and the zero-user loop
 
@@ -188,8 +214,9 @@ npm run smoke           # declare → report → countersign → ladder moves
 
 Soulbound FA2 surface (token_id = venue id) + views `page_of`, `venue_of`,
 `courts_visited` — gate anything on showing up. Note: geolocation inside
-the pointcast.xyz/rally iframe needs `allow="geolocation"` on the frame;
-use "Open direct" to stamp until that lands.
+an embedded desk needs `allow="geolocation"` on its frame. PointCast's sister
+home links to the direct RALLY desk; optional passport stamping happens
+there, separately from permission-free court discovery.
 
 ## MCP — the desk, agent-readable
 

@@ -3,455 +3,207 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Rally — pickleball, on the record</title>
-  <meta name="description" content="Make a pickleball portrait, own your player card, countersign match results, and collect court stamps with Rally on Tezos." />
-  <meta property="og:title" content="Rally — pickleball, on the record" />
-  <meta property="og:description" content="The playful, wallet-owned home for pickleball portraits, ratings, match records, and court passports." />
-  <meta name="twitter:card" content="summary" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/src/style.css" />
+  <title>RALLY — leave it all on the court</title>
+  <meta name="description" content="Your pickleball home. Learn the game, build a better practice, discover South Bay courts, and get your crew playing with RALLY." />
+  <meta property="og:title" content="RALLY — leave it all on the court" />
+  <meta property="og:description" content="Learn. Find a court. Play tonight. A pickleball home from El Segundo to wherever you rally." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tez-rally.pages.dev/" />
+  <meta property="og:image" content="https://tez-rally.pages.dev/images/pickleball-home/social.webp" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/svg+xml" href="/rally-mark.svg" />
+  <link rel="canonical" href="https://tez-rally.pages.dev/" />
+  <link rel="stylesheet" href="/src/pickleball-home/styles.css" />
+  <style>body { margin: 0; }</style>
+  <script>
+    // Player cards, level choices, and portrait invites originally lived
+    // at /. Keep those URLs with every original query and anchor intact.
+    (function () {
+      var query = new URLSearchParams(location.search);
+      var legacyAnchors = ["top","landing-title","your-number","finder-result","finder-number","finder-down","finder-up","finder-official","desk-entry","welcome-back","wb-address","wb-resume","wb-peek","connect","desk","address","copy-address","tzkt-link","share-link","disconnect","card","card-rating","card-tier","card-declared","card-record","card-form-line","card-form","card-glicko-line","card-glicko","card-spark","booth-profile-card","booth-profile-image","booth-profile-title","booth-profile-meta","booth-profile-edit","declare-form","declare-rating","report-form","partner-field","partner","opp1","opp2-field","opp2","score-us","score-them","venue","venue-other-field","venue-other","tape","pending","stamp-btn","passport","board","ladder","matches","status","tools-title","house-league","house-title","zero-two-title","invite-partner","invite-status","invite-banner","booth","booth-title","booth-surprise","booth-canvas","booth-upload","booth-zoom","booth-name","booth-superlative","booth-custom-field","booth-custom","booth-quote","booth-download","booth-share","booth-save"];
+      if (["view", "invite", "level"].some(function (key) { return query.has(key); }) || legacyAnchors.includes(location.hash.slice(1))) {
+        location.replace("/desk/" + location.search + location.hash);
+      }
+    }());
+  </script>
 </head>
 <body>
-  <main class="office">
-    <header class="site-nav">
-      <a class="nav-mark" href="#top" aria-label="Rally home">rally</a>
-      <nav aria-label="Primary navigation">
-        <a href="#your-number">Your number</a>
-        <a href="/tonight/">Tonight</a>
-        <a href="/score/">Score</a>
-        <a href="/guide/">Guide</a>
-        <a href="/pros/">Pro desk</a>
-        <a href="/paddle-calendar/">Paddles</a>
-        <a href="#board">Ladder</a>
-      </nav>
-      <a class="nav-cta" href="/tonight/">Keep score tonight</a>
-    </header>
+  <div class="pb-home pb-brand-rally" data-pickleball-home>
+    <a class="pb-skip" href="#pb-main">Skip to pickleball home</a>
+    <header class="pb-header"><a class="pb-wordmark" href="/" aria-label="RALLY home">RALLY<span class="pb-logo-ball" aria-hidden="true"><i></i><i></i><i></i></span></a><nav class="pb-nav" aria-label="Pickleball navigation"><a href="#pb-learn">Learn</a><a href="#pb-courts">Courts</a><a href="#pb-practice">Practice</a><a href="#pb-tools">The kit</a><a class="pb-board-link" href="https://pointcast.xyz/pickleball">Court board</a><a class="pb-sister-link" href="https://pointcast.xyz/pickleball/home">PointCast <span aria-hidden="true">↗</span></a></nav></header>
+    <main id="pb-main">
+      <section class="pb-hero" aria-labelledby="pb-hero-title"><div class="pb-hero-copy"><p class="pb-kicker">Southern California / Pickleball, all in</p><h1 id="pb-hero-title">Leave it all<br>on the <em>court.</em></h1><p class="pb-hero-deck">Your next game starts here. Find a court, build a better rally, and bring your people.</p><div class="pb-hero-actions"><a href="#pb-courts" class="pb-button pb-button-lime">Find a court <span aria-hidden="true">↘</span></a><a href="#pb-learn" class="pb-button pb-button-outline">Build your game <span aria-hidden="true">↘</span></a></div><div class="pb-hero-foot"><span>EL SEGUNDO · SOUTH BAY · BEYOND</span><span>SHOW UP. PLAY MORE.</span></div></div><figure class="pb-hero-art"><img src="/images/pickleball-home/leave-it-all.webp" alt="Leave it all on the court: RALLY pickleball campaign artwork" width="1122" height="1402" fetchpriority="high" /><figcaption><span>THE COURT IS THE COMMON GROUND.</span><span>RALLY / CAMPAIGN STUDY</span></figcaption></figure></section>
+      <div class="pb-marquee" aria-label="Play, learn, rally, repeat"><span>PLAY</span><span aria-hidden="true">✳</span><span>LEARN</span><span aria-hidden="true">✳</span><span>RALLY</span><span aria-hidden="true">✳</span><span>REPEAT</span><span aria-hidden="true">✳</span><span>PLAY</span></div>
 
-    <section id="top" class="landing-hero" aria-labelledby="landing-title">
-      <div class="hero-copy">
-        <p class="eyebrow">the open pickleball rating · say it, then prove it</p>
-        <h1 id="landing-title">What's your <em>number?</em></h1>
-        <p class="hero-deck">Pick the line that sounds like you on a normal day. That's your
-          number. The people you play countersign the scores, and the math that moves it is public.</p>
+      <span class="pb-anchor" id="learn"></span><section class="pb-section pb-learn" id="pb-learn" aria-labelledby="pb-learn-title"><div class="pb-section-heading"><div><p class="pb-kicker">01 / Build your game</p><h2 id="pb-learn-title">A little better.<br><em>Every time.</em></h2></div><p>You don’t need a perfect game to belong on court. Pick a starting point, practice with purpose, and move forward when the checkpoint feels repeatable.</p></div><nav class="pb-learning-tabs" aria-label="Learning paths"><a href="#pb-path-beginner" id="pb-tab-beginner" data-learning-tab="beginner">beginner <span aria-hidden="true">↗</span></a><a href="#pb-path-intermediate" id="pb-tab-intermediate" data-learning-tab="intermediate">intermediate <span aria-hidden="true">↗</span></a><a href="#pb-path-advanced" id="pb-tab-advanced" data-learning-tab="advanced">advanced <span aria-hidden="true">↗</span></a></nav><div class="pb-paths"><section id="pb-path-beginner" class="pb-path" data-learning-panel="beginner" aria-labelledby="pb-path-title-beginner">
+    <div class="pb-path-intro"><div><h3 id="pb-path-title-beginner">Get into the game</h3><p>Learn the rules, start a rally, and finish your first doubles game with confidence.</p></div><p class="pb-path-check"><b>Start here if</b> Choose this if serving, the kitchen, or the score still makes you pause.</p></div>
+    <div class="pb-lessons"><article class="pb-lesson">
+    <div class="pb-card-top"><span class="pb-number">01</span><label class="pb-progress"><input type="checkbox" data-lesson-complete="beginner-beginner-serve" aria-label="Mark 1. Build one reliable serve as practiced" /><span>Practiced</span></label></div>
+    <h4>1. Build one reliable serve</h4><p class="pb-lesson-cue">Pick a legal serve motion and a generous diagonal target. Repeat the same setup.</p>
+    <div class="pb-lesson-detail"><p><b>Try it</b> Hit 10 serves from each side at a towel-sized target safely inside the service court. Start with a drop serve if the bounce makes timing easier.</p><p><b>Your checkpoint</b> Can you land 8 of 10 legally from each side without rushing? Increase placement before pace.</p></div>
+    <div class="pb-sources"><a class="pb-source" href="https://usapickleball.org/docs/rules/USAP-Official-Rulebook.pdf">USA Pickleball · 2026 Official Rulebook <span aria-hidden="true">↗</span></a><a class="pb-source" href="https://usapickleball.org/rules/summary/">USA Pickleball · Rules Summary <span aria-hidden="true">↗</span></a></div>
+  </article><article class="pb-lesson">
+    <div class="pb-card-top"><span class="pb-number">02</span><label class="pb-progress"><input type="checkbox" data-lesson-complete="beginner-beginner-two-bounces" aria-label="Mark 2. Start every rally correctly as practiced" /><span>Practiced</span></label></div>
+    <h4>2. Start every rally correctly</h4><p class="pb-lesson-cue">Return the serve after its bounce. Stay ready for the return bounce when your team serves.</p>
+    <div class="pb-lesson-detail"><p><b>Try it</b> With a partner, play 10 serve–return–third-shot sequences. Say &#39;bounce&#39; on the first two contacts, then continue cooperatively.</p><p><b>Your checkpoint</b> Complete 10 starts with no early volley. Then aim the return deeper and recover your balance.</p></div>
+    <div class="pb-sources"><a class="pb-source" href="https://usapickleball.org/rules/summary/">USA Pickleball · Rules Summary <span aria-hidden="true">↗</span></a></div>
+  </article><article class="pb-lesson">
+    <div class="pb-card-top"><span class="pb-number">03</span><label class="pb-progress"><input type="checkbox" data-lesson-complete="beginner-beginner-kitchen" aria-label="Mark 3. Know when to step in as practiced" /><span>Practiced</span></label></div>
+    <h4>3. Know when to step in</h4><p class="pb-lesson-cue">A dink is a soft bounced shot near the net. Enter for the bounce; get fully out before a volley.</p>
+    <div class="pb-lesson-detail"><p><b>Try it</b> Trade 10 soft dinks, including a short feed that invites you into the kitchen. Recover outside it, then receive one gentle volley feed and finish balanced.</p><p><b>Your checkpoint</b> Can you explain why a bounced shot inside is legal and a volley with kitchen contact is a fault?</p></div>
+    <div class="pb-sources"><a class="pb-source" href="https://usapickleball.org/docs/rules/USAP-Official-Rulebook.pdf">USA Pickleball · 2026 Official Rulebook <span aria-hidden="true">↗</span></a></div>
+  </article><article class="pb-lesson">
+    <div class="pb-card-top"><span class="pb-number">04</span><label class="pb-progress"><input type="checkbox" data-lesson-complete="beginner-beginner-score" aria-label="Mark 4. Call a doubles game as practiced" /><span>Practiced</span></label></div>
+    <h4>4. Call a doubles game</h4><p class="pb-lesson-cue">Agree on side-out scoring. Say all three numbers before each serve.</p>
+    <div class="pb-lesson-detail"><p><b>Try it</b> Walk through 0–0–2, an opening side out, a point won by the next team, then first-server and second-server faults. Play a game with a partner checking each call.</p><p><b>Your checkpoint</b> You can identify the serving team, correct side, and server number after both a point and a lost rally.</p></div>
+    <div class="pb-sources"><a class="pb-source" href="https://usapickleball.org/rules/summary/">USA Pickleball · Rules Summary <span aria-hidden="true">↗</span></a></div>
+  </article></div>
+  </section><section id="pb-path-intermediate" class="pb-path" data-learning-panel="intermediate" aria-labelledby="pb-path-title-intermediate">
+    <div class="pb-path-intro"><div><h3 id="pb-path-title-intermediate">Build a dependable doubles game</h3><p>Use depth, soft hands, and shared court coverage to earn a better next ball.</p></div><p class="pb-path-check"><b>Start here if</b> Choose this if you know the rules and can sustain a rally, but drops, resets, or partner positioning vary under pressure.</p></div>
+    <div class="pb-lessons"><article class="pb-lesson">
+    <div class="pb-card-top"><span class="pb-number">01</span><label class="pb-progress"><input type="checkbox" data-lesson-complete="intermediate-intermediate-forehand" aria-label="Mark 1. Give the forehand a shape as practiced" /><span>Practiced</span></label></div>
+    <h4>1. Give the forehand a shape</h4><p class="pb-lesson-cue">Turn early, meet the ball in front, and finish toward the target. Make clean placement repeatable.</p>
+    <div class="pb-lesson-detail"><p><b>Try it</b> Ask a partner for 10 comfortable forehand feeds. Send five crosscourt and five through the middle, then alternate the targets on their call.</p><p><b>Your checkpoint</b> At least 7 of 10 reach the called target area in court without changing your swing into a hard slap.</p></div>
 
-        <div id="your-number" class="finder">
-          <div class="finder-levels" role="radiogroup" aria-label="Your level">
-            <button type="button" role="radio" aria-checked="false" data-level="2500"><b>2.5</b><span>I can keep a short rally going and I mostly know the score.</span></button>
-            <button type="button" role="radio" aria-checked="false" data-level="3000"><b>3.0</b><span>My serve and return go in. I get to the kitchen and I'm learning to dink.</span></button>
-            <button type="button" role="radio" aria-checked="false" data-level="3500"><b>3.5</b><span>My third-shot drop works some days. I dink with a plan and don't hand out free points.</span></button>
-            <button type="button" role="radio" aria-checked="false" data-level="4000"><b>4.0</b><span>I choose shots on purpose, reset under fire, and I'll stack, poach, and pick on a weakness.</span></button>
-            <button type="button" role="radio" aria-checked="false" data-level="4500"><b>4.5</b><span>I control pace and placement. Most of my errors are forced.</span></button>
-            <button type="button" role="radio" aria-checked="false" data-level="5000"><b>5.0</b><span>I play open events. People film my points.</span></button>
-          </div>
-          <div id="finder-result" class="finder-result" hidden>
-            <div class="finder-card">
-              <span id="finder-number" class="finder-number">3.50</span>
-              <span class="finder-tier">self-declared · not on the ladder yet</span>
-            </div>
-            <div class="finder-nudge">
-              <button id="finder-down" class="ghost" type="button" aria-label="A quarter point lower">− 0.25</button>
-              <button id="finder-up" class="ghost" type="button" aria-label="A quarter point higher">+ 0.25</button>
-              <span>between two lines? nudge it.</span>
-            </div>
-            <button id="finder-official" class="enter" type="button">Make it official</button>
-            <p class="finder-fine">Official means a wallet signs it onto a player card nobody can edit but you —
-              free to adjust until your first countersigned match. No wallet yet?
-              <a href="/tonight/">Just keep score tonight →</a></p>
-          </div>
-        </div>
-        <p class="hero-trust"><span>No sign-up to start</span><span>Open formula</span><span>Public ledger</span><span>CC0</span></p>
-      </div>
+  </article><article class="pb-lesson">
+    <div class="pb-card-top"><span class="pb-number">02</span><label class="pb-progress"><input type="checkbox" data-lesson-complete="intermediate-intermediate-drop" aria-label="Mark 2. Drop, observe, then advance as practiced" /><span>Practiced</span></label></div>
+    <h4>2. Drop, observe, then advance</h4><p class="pb-lesson-cue">Give the ball enough arc to land softly in the opposing kitchen. Move only as far as your shot earns.</p>
+    <div class="pb-lesson-detail"><p><b>Try it</b> Start a few steps behind the kitchen line. Hit five drops, step back after a successful set, and work toward the baseline. Stop and prepare as your partner contacts the ball.</p><p><b>Your checkpoint</b> From each distance, land 3 of 5 soft drops that your partner plays from below net height. A miss is useful feedback, not a reason to rush in.</p></div>
 
-      <div class="hero-art" aria-label="A fan of colorful Rally pickleball portrait frames">
-        <article class="hero-card hero-card-left" aria-hidden="true">
-          <img src="/frames/golden-hour.png" alt="" />
-          <div class="hero-card-copy"><b>BEST<br />DINK<br />ENERGY</b><small>golden hour club</small></div>
-        </article>
-        <article class="hero-card hero-card-right" aria-hidden="true">
-          <img src="/frames/team-tape.png" alt="" />
-          <div class="hero-card-copy"><b>TEAM<br />CHAOS</b><small>we called it in</small></div>
-        </article>
-        <article class="hero-card hero-card-main">
-          <img src="/frames/court-club.png" alt="Colorful vintage pickleball portrait frame" />
-          <div class="hero-card-copy"><b>MOST<br />LIKELY<br />TO RALLY</b><small>el segundo open play</small></div>
-        </article>
-        <p class="hero-sticker">Yours in<br /><strong>60 sec.</strong></p>
-      </div>
-    </section>
+  </article><article class="pb-lesson">
+    <div class="pb-card-top"><span class="pb-number">03</span><label class="pb-progress"><input type="checkbox" data-lesson-complete="intermediate-intermediate-reset" aria-label="Mark 3. Reset a difficult ball as practiced" /><span>Practiced</span></label></div>
+    <h4>3. Reset a difficult ball</h4><p class="pb-lesson-cue">A reset takes pace off an incoming ball and sends it softly toward the kitchen. Shorten the stroke.</p>
+    <div class="pb-lesson-detail"><p><b>Try it</b> Stand in midcourt while a partner feeds controlled volleys. Reset five to the middle kitchen, then take one step forward after a good reset and stop for the next feed.</p><p><b>Your checkpoint</b> Reset 3 of 5 feeds without a high attackable bounce. Repeat at the same pace before making the feed harder.</p></div>
 
-    <section class="landing-proof" aria-label="Three ways in">
-      <article>
-        <span class="proof-number">01</span>
-        <h2>Say your number</h2>
-        <p>Pick a level up top. When you want it to be yours, a wallet signs it onto a soulbound player card.</p>
-        <a href="#your-number">Find my number →</a>
-      </article>
-      <article>
-        <span class="proof-number">02</span>
-        <h2>Keep score tonight</h2>
-        <p>Run open play from one phone: fair rotating rounds, scores, standings, and a recap for the group chat. No accounts.</p>
-        <a href="/tonight/">Open the desk →</a>
-      </article>
-      <article>
-        <span class="proof-number">03</span>
-        <h2>Make it count</h2>
-        <p>When everyone on the court countersigns a score, the ladder moves. Integer Elo anyone can replay from the contract.</p>
-        <a href="#board">See the public record →</a>
-      </article>
-    </section>
+  </article><article class="pb-lesson">
+    <div class="pb-card-top"><span class="pb-number">04</span><label class="pb-progress"><input type="checkbox" data-lesson-complete="intermediate-intermediate-right-side" aria-label="Mark 4. Own the right side together as practiced" /><span>Practiced</span></label></div>
+    <h4>4. Own the right side together</h4><p class="pb-lesson-cue">Facing the net, call the seam before play and move with your partner. Court side is a role, not a permanent assignment.</p>
+    <div class="pb-lesson-detail"><p><b>Try it</b> Begin with one player on the right. Opponents feed toward the right sideline and middle in turn. Call &#39;mine&#39; or &#39;yours&#39; early, recover together, then swap roles.</p><p><b>Your checkpoint</b> Complete 10 feeds with no collision, silent middle ball, or two-player chase. For a left-handed player, agree coverage again rather than assuming the same forehand geometry.</p></div>
 
+  </article></div>
+  </section><section id="pb-path-advanced" class="pb-path" data-learning-panel="advanced" aria-labelledby="pb-path-title-advanced">
+    <div class="pb-path-intro"><div><h3 id="pb-path-title-advanced">Turn control into pressure</h3><p>Train decisions under variation: when to attack, when to reset, and how to cover the next ball.</p></div><p class="pb-path-check"><b>Start here if</b> Choose this if your fundamentals hold in games and you want to test decisions, disguise, and doubles patterns under pressure.</p></div>
+    <div class="pb-lessons"><article class="pb-lesson">
+    <div class="pb-card-top"><span class="pb-number">01</span><label class="pb-progress"><input type="checkbox" data-lesson-complete="advanced-advanced-dink" aria-label="Mark 1. Create a weaker next contact as practiced" /><span>Practiced</span></label></div>
+    <h4>1. Create a weaker next contact</h4><p class="pb-lesson-cue">Change dink placement while keeping an unattackable height. Read the reply instead of forcing a winner.</p>
+    <div class="pb-lesson-detail"><p><b>Try it</b> Trade four neutral crosscourt dinks, then move the fifth toward a different kitchen target. Resume the rally and notice whether the opponent must reach or moves comfortably.</p><p><b>Your checkpoint</b> Across 10 pattern changes, keep at least 7 in and recover before the next contact. Track pop-ups as well as outright misses.</p></div>
 
+  </article><article class="pb-lesson">
+    <div class="pb-card-top"><span class="pb-number">02</span><label class="pb-progress"><input type="checkbox" data-lesson-complete="advanced-advanced-selection" aria-label="Mark 2. Choose drop or drive on purpose as practiced" /><span>Practiced</span></label></div>
+    <h4>2. Choose drop or drive on purpose</h4><p class="pb-lesson-cue">Use your contact height, balance, and opponents&#39; positions to choose. Prepare for the fifth shot either way.</p>
+    <div class="pb-lesson-detail"><p><b>Try it</b> A feeder alternates deep returns and shorter sits-up balls. Call &#39;drop&#39; or &#39;drive&#39; before your third contact, play the next two shots, and explain the choice afterward.</p><p><b>Your checkpoint</b> Review 10 sequences: was the choice playable, and did you recover for the reply? Count the quality of the fifth shot, not just the third.</p></div>
 
+  </article><article class="pb-lesson">
+    <div class="pb-card-top"><span class="pb-number">03</span><label class="pb-progress"><input type="checkbox" data-lesson-complete="advanced-advanced-speedup" aria-label="Mark 3. Attack a ball you can support as practiced" /><span>Practiced</span></label></div>
+    <h4>3. Attack a ball you can support</h4><p class="pb-lesson-cue">A speed-up changes a soft exchange into a faster one. Attack from balance and prepare for a counter.</p>
+    <div class="pb-lesson-detail"><p><b>Try it</b> After three cooperative dinks, the feeder varies a low ball and a higher ball. Reset the low ball; on a suitable higher contact, speed up at controlled pace and play the reply.</p><p><b>Your checkpoint</b> Make 8 of 10 sensible decisions without a kitchen fault. A kept-in reset earns as much credit as a controlled attack.</p></div>
 
-    <div class="app-column">
-      <header class="app-intro app-intro-compact">
-        <p class="eyebrow">the club desk is open</p>
-        <h2 class="tagline">Your rating, <em>on the record.</em></h2>
-        <p class="lede">Step up with a Tezos wallet to mint your player card, report a match,
-          countersign a result, or stamp your passport at the court.</p>
-      </header>
+  </article><article class="pb-lesson">
+    <div class="pb-card-top"><span class="pb-number">04</span><label class="pb-progress"><input type="checkbox" data-lesson-complete="advanced-advanced-patterns" aria-label="Mark 4. Cover the counter as a pair as practiced" /><span>Practiced</span></label></div>
+    <h4>4. Cover the counter as a pair</h4><p class="pb-lesson-cue">Before the ball speeds up, agree who covers the seam and who protects the line. Recover after every contact.</p>
+    <div class="pb-lesson-detail"><p><b>Try it</b> In four-player practice, start at the kitchen line. The right-side player changes one ball&#39;s pace, the partner covers the agreed middle, and both play two more shots. Swap right-side roles after five starts.</p><p><b>Your checkpoint</b> Across 10 starts, both players are ready for the next shot and can describe the same coverage plan. Add randomness only when the pair stays coordinated.</p></div>
 
+  </article></div>
+  </section></div><p class="pb-storage-note" data-progress-note>Practice checkmarks stay in this browser when storage is available.</p><div class="pb-rules-strip"><h3>Before the first serve.</h3><div class="pb-rule-basics"><div><h4>Start behind the baseline</h4><p>At serve contact, keep at least one foot on the ground behind the baseline. Neither foot may touch the baseline, court, or ground outside the extended sideline and centerline.</p></div><div><h4>Volley serve or drop serve</h4><p>Volley serve: hit before a bounce, swinging upward; contact at or below waist level with the paddle head no higher than the wrist. Drop serve: release from a natural, unaided height without propelling the ball, let it bounce, then hit. The three volley-serve motion restrictions do not apply to the drop serve. Keep the release visible and do not add spin on release.</p></div><div><h4>Diagonal, beyond the kitchen</h4><p>Serve into the opposite diagonal service court. Its kitchen line is out on a serve; the other service-court lines are in. A net-touching serve that lands legally remains in play.</p></div><div><h4>One bounce on each side first</h4><p>Let the serve bounce before returning it. The serving team must then let that return bounce. After these two bounces, volleys are allowed outside the kitchen.</p></div><div><h4>The kitchen is for bounced balls</h4><p>You may enter the kitchen to play a bounced ball. Before volleying again, place both feet fully outside it. During a volley, you, your gear, and anything touching you must avoid the kitchen and its lines. Momentum into it, or something touching it, is a fault even after the rally ends.</p></div><div><h4>Call three numbers in doubles</h4><p>Only the serving team scores. Call serving score, receiving score, then server 1 or 2. Begin 0–0–2: the opening team gets one server. Later, both partners serve before side out. Usually play to 11, win by two. Confirm the format; rally scoring works differently.</p></div></div><div class="pb-rules-links"><a class="pb-text-link" href="https://usapickleball.org/rules/">2026 USA Pickleball Rulebook <span aria-hidden="true">↗</span></a><a class="pb-text-link" href="https://usapickleball.org/rules/summary/">The rules at a glance <span aria-hidden="true">↗</span></a><a class="pb-text-link" href="https://usapickleball.org/skill-level/">Find your skill level <span aria-hidden="true">↗</span></a><a class="pb-text-link" href="https://usapickleball.org/sportsmanship-guide/">Court etiquette and sportsmanship <span aria-hidden="true">↗</span></a><a class="pb-text-link" href="https://usapickleball.org/docs/rules/USAP-Rulebook-Change-Document.pdf">What changed in 2026 <span aria-hidden="true">↗</span></a></div><p class="pb-fine-print">Original RALLY practice prompts. Rules are checked against USA Pickleball&#39;s official 2026 sources; drills and success targets are practice suggestions, not official skill tests. Pick a path by what you can do consistently. These paths do not award or endorse a rating. Rules checked 2026-10-02.</p></div><details class="pb-learning-archive"><summary>Keep the original links close. <span aria-hidden="true">+</span></summary><p>The existing guide and score tool, plus PointCast’s original editorial notes. The practice prompts above are newly written; archive notes retain their original context.</p><div><article><a class="pb-text-link" href="/guide/">RALLY&#39;s existing guide <span aria-hidden="true">↗</span></a><p>Keep the original rules, gear, ratings, lessons, and coach-directory links available.</p></article><article><a class="pb-text-link" href="/score/">RALLY score caller <span aria-hidden="true">↗</span></a><p>The existing game score tool remains available for doubles practice.</p></article><article><a class="pb-text-link" href="https://pointcast.xyz/b/0257">PointCast · the four-corners dink note <span aria-hidden="true">↗</span></a><p>Preserved editorial archive link. The drill card above is a new, clearly timed practice plan.</p></article><article><a class="pb-text-link" href="https://pointcast.xyz/b/0237">PointCast · Third shot roll — stop flaring the paddle <span aria-hidden="true">↗</span></a><p>The existing third-shot note and its equipment-specific observation remain in the archive.</p></article></div></details></section>
 
+      <span class="pb-anchor" id="play"></span><section class="pb-section pb-practice" id="pb-practice" aria-labelledby="pb-practice-title"><div class="pb-section-heading"><div><p class="pb-kicker">02 / Make the next half hour count</p><h2 id="pb-practice-title">Less scrolling.<br><em>More reps.</em></h2></div><p>A warm-up, one clear focus, and a little play. Choose the time you have. Every plan is ready to take to the court.</p></div><div class="pb-practice-layout"><aside class="pb-practice-controls"><label for="pb-plan-duration">How much time?</label><select id="pb-plan-duration" data-plan-select><option value="15">15 minutes</option><option value="30" selected>30 minutes</option><option value="45">45 minutes</option></select><div class="pb-timer" data-timer-controls hidden><span class="pb-kicker">PRACTICE CLOCK</span><output data-timer-output role="timer" aria-live="off" aria-label="Time remaining">30:00</output><div class="pb-timer-buttons"><button class="pb-button pb-button-lime" type="button" data-timer-start>Start clock</button><button class="pb-timer-reset" type="button" data-timer-reset>Reset</button></div><p data-timer-status role="status">Choose a plan. Make it yours.</p></div><div class="pb-plan-tip"><span aria-hidden="true">✳</span><p>Start easy. Keep the ball in play. Stop the drill when quality slips, reset, and try again.</p></div></aside><div class="pb-plans"><article class="pb-practice-plan" data-practice-panel="15" id="pb-plan-15"><div class="pb-plan-heading"><h3>15 minutes · find your touch</h3><p>A useful short session before a game: clean starts, quiet dinks, clear scoring.</p></div><ol class="pb-plan-blocks"><li data-plan-block="0"><span class="pb-block-time">2<small>min</small></span><div><h4>Cooperative start</h4><p>Trade easy bounced shots near the net. Choose one generous landing target and build a steady rhythm.</p></div></li><li data-plan-block="1"><span class="pb-block-time">5<small>min</small></span><div><h4>Serve, return, recover</h4><p>Alternate five serve–return–third-shot starts per player. Observe both opening bounces and stop ready for the next contact.</p><a href="#pb-drill-lab">Open the drill lab <span aria-hidden="true">↗</span></a></div></li><li data-plan-block="2"><span class="pb-block-time">5<small>min</small></span><div><h4>Two dink targets</h4><p>Run a shortened four-target drill: two minutes on each target pair, then one minute trying a 10-ball rally.</p><a href="#pb-drill-lab">Open the drill lab <span aria-hidden="true">↗</span></a></div></li><li data-plan-block="3"><span class="pb-block-time">3<small>min</small></span><div><h4>Score rehearsal</h4><p>Walk through an opening 0–0–2 side out, then both servers on the other team. Each player calls the next score and points to the correct server. Finish by naming one shot to take into the next game.</p></div></li></ol></article><article class="pb-practice-plan" data-practice-panel="30" id="pb-plan-30"><div class="pb-plan-heading"><h3>30 minutes · earn the kitchen</h3><p>Forehand placement, drops, and resets that carry into doubles.</p></div><ol class="pb-plan-blocks"><li data-plan-block="0"><span class="pb-block-time">3<small>min</small></span><div><h4>Touch and rhythm</h4><p>Start with easy dinks and comfortable groundstrokes. Agree on today&#39;s target and pace.</p></div></li><li data-plan-block="1"><span class="pb-block-time">6<small>min</small></span><div><h4>Forehand targets</h4><p>Run crosscourt-to-middle forehands, three minutes in each role. Keep a count of called targets reached.</p><a href="#pb-drill-lab">Open the drill lab <span aria-hidden="true">↗</span></a></div></li><li data-plan-block="2"><span class="pb-block-time">8<small>min</small></span><div><h4>Drop ladder</h4><p>Work away from the kitchen line toward the baseline. Move back after a successful set; trade roles halfway.</p><a href="#pb-drill-lab">Open the drill lab <span aria-hidden="true">↗</span></a></div></li><li data-plan-block="3"><span class="pb-block-time">8<small>min</small></span><div><h4>Reset and advance</h4><p>Begin in midcourt. Advance one step after a soft reset and prepare for the next feed; hold when the ball sits up.</p><a href="#pb-drill-lab">Open the drill lab <span aria-hidden="true">↗</span></a></div></li><li data-plan-block="4"><span class="pb-block-time">5<small>min</small></span><div><h4>Apply and review</h4><p>Play unscored full-court practice rallies beginning with a diagonal serve, the return bounce, and a chosen drop or drive. Switch ends halfway. Name one repeatable cue and one thing to revisit.</p></div></li></ol></article><article class="pb-practice-plan" data-practice-panel="45" id="pb-plan-45"><div class="pb-plan-heading"><h3>45 minutes · doubles decisions</h3><p>Prepare together, protect the seam, and support every attack with a next-shot plan.</p></div><ol class="pb-plan-blocks"><li data-plan-block="0"><span class="pb-block-time">5<small>min</small></span><div><h4>Pair warm-up</h4><p>Begin with cooperative dinks and controlled groundstrokes. Agree who covers the middle with today&#39;s handedness and court sides.</p></div></li><li data-plan-block="1"><span class="pb-block-time">8<small>min</small></span><div><h4>Four-player opening patterns</h4><p>Run serve–return–third-shot starts with all four players, then play one more ball. Rotate the server every two minutes and count balanced next contacts.</p><a href="#pb-drill-lab">Open the drill lab <span aria-hidden="true">↗</span></a></div></li><li data-plan-block="2"><span class="pb-block-time">8<small>min</small></span><div><h4>Dink placement</h4><p>Use two crosscourt pairs for the four-target drill. Change targets together every two minutes; note pop-ups as well as misses.</p><a href="#pb-drill-lab">Open the drill lab <span aria-hidden="true">↗</span></a></div></li><li data-plan-block="3"><span class="pb-block-time">8<small>min</small></span><div><h4>Right side and seam</h4><p>Mix right-sideline and middle feeds. Swap court-side roles and then swap the receiving pair halfway.</p><a href="#pb-drill-lab">Open the drill lab <span aria-hidden="true">↗</span></a></div></li><li data-plan-block="4"><span class="pb-block-time">10<small>min</small></span><div><h4>Controlled attack decisions</h4><p>Extend attack-or-reset practice to 10 minutes. Train five starts per decision-maker, then let all four players choose. Credit a sound reset as well as a sound attack.</p><a href="#pb-drill-lab">Open the drill lab <span aria-hidden="true">↗</span></a></div></li><li data-plan-block="5"><span class="pb-block-time">6<small>min</small></span><div><h4>Play, then name the pattern</h4><p>Play standard doubles with side-out scoring for five minutes. Use the final minute to name one successful coverage pattern and one decision each pair will train next.</p></div></li></ol></article></div></div><div class="pb-drill-lab" id="pb-drill-lab"><div class="pb-drill-lab-heading"><h3>The drill lab.</h3><p>Simple setups. Clear targets. Open a drill and get going.</p></div><div class="pb-drills"><details class="pb-drill"><summary><span class="pb-number">01</span><span class="pb-drill-title">Serve to a generous target<small>beginner · 6 min · 1–2</small></span><span class="pb-plus" aria-hidden="true">+</span></summary>
+    <div class="pb-drill-body"><p><b>Set up</b> Use a court, 5–10 balls, and a flat target marker well inside each diagonal service court. Keep markers away from anyone&#39;s footing.</p><ol><li>Choose a volley serve or drop serve and check the corresponding rules above.</li><li>Hit 10 from the right, then 10 from the left; collect balls between sets.</li><li>Count legal serves separately from serves that reach the target. Repeat with the same routine.</li></ol><p><b>Build it</b> After 8 of 10 legal serves from each side, make the target smaller or deeper. Change one variable at a time.</p><p><b>Success target</b> 8 of 10 legal serves from each side; 5 of 10 in the chosen target area.</p><div class="pb-sources"><a class="pb-source" href="https://usapickleball.org/docs/rules/USAP-Official-Rulebook.pdf">USA Pickleball · 2026 Official Rulebook <span aria-hidden="true">↗</span></a><a class="pb-source" href="https://usapickleball.org/rules/summary/">USA Pickleball · Rules Summary <span aria-hidden="true">↗</span></a></div></div>
+  </details><details class="pb-drill"><summary><span class="pb-number">02</span><span class="pb-drill-title">Return deep, arrive ready<small>beginner · 6 min · 2</small></span><span class="pb-plus" aria-hidden="true">+</span></summary>
+    <div class="pb-drill-body"><p><b>Set up</b> One player serves; the other receives behind the baseline. Choose a large return target several feet inside the opposite baseline.</p><ol><li>Let the serve bounce, return into the deep target, and begin moving toward the kitchen line.</li><li>The server lets the return bounce before hitting a controlled third shot. The receiver stops and gets ready as that player contacts the ball.</li><li>Play one more shot, reset, and repeat five times before swapping roles.</li></ol><p><b>Build it</b> Vary the serve&#39;s placement. If the return is weak, practice stopping earlier and handling the next shot before advancing again.</p><p><b>Success target</b> 7 of 10 returns in court, with no two-bounce-rule violation and a balanced next contact.</p><div class="pb-sources"><a class="pb-source" href="https://usapickleball.org/rules/summary/">USA Pickleball · Rules Summary <span aria-hidden="true">↗</span></a></div></div>
+  </details><details class="pb-drill"><summary><span class="pb-number">03</span><span class="pb-drill-title">Four-target dink control<small>beginner · 8 min · 2</small></span><span class="pb-plus" aria-hidden="true">+</span></summary>
+    <div class="pb-drill-body"><p><b>Set up</b> Stand diagonally opposite near the kitchen lines. Choose two generous landing areas in each kitchen; point to them instead of placing objects underfoot.</p><ol><li>Spend two minutes on one paired target, letting the ball bounce and keeping the pace cooperative.</li><li>Change the target pair for two minutes, then switch court halves and repeat both pairs.</li><li>Count the longest rally and note balls that land in the target but sit high enough to attack.</li></ol><p><b>Build it</b> Call the next target before contact, or change placement after four neutral dinks. Keep control before adding pressure.</p><p><b>Success target</b> One rally of 10 controlled dinks from each court half, with at least 6 reaching the chosen areas.</p><div class="pb-sources pb-related-links"><span>Original editorial archive:</span><a class="pb-source" href="https://pointcast.xyz/b/0257">PointCast&#39;s original four-corners note <span aria-hidden="true">↗</span></a></div></div>
+  </details><details class="pb-drill"><summary><span class="pb-number">04</span><span class="pb-drill-title">Forehand: crosscourt to middle<small>intermediate · 6 min · 2</small></span><span class="pb-plus" aria-hidden="true">+</span></summary>
+    <div class="pb-drill-body"><p><b>Set up</b> Hitter near the baseline; feeder across the net supplies comfortable bounced forehands. Agree on crosscourt and middle target areas.</p><ol><li>Turn before the bounce and contact in front. Send five forehands crosscourt at a pace the feeder can handle.</li><li>Send five toward the middle, then let the feeder call the target before the bounce for another 10.</li><li>Swap roles after three minutes. Count placement, balance, and readiness for the next ball.</li></ol><p><b>Build it</b> Vary feed depth, then play the reply. For a right-side hitter, add recovery from the forehand sideline toward the agreed seam.</p><p><b>Success target</b> 7 of 10 called targets reached in court while finishing balanced.</p></div>
+  </details><details class="pb-drill"><summary><span class="pb-number">05</span><span class="pb-drill-title">The drop ladder<small>intermediate · 8 min · 2</small></span><span class="pb-plus" aria-hidden="true">+</span></summary>
+    <div class="pb-drill-body"><p><b>Set up</b> Feeder at the kitchen line; hitter starts a few steps behind their own kitchen line. Use the middle of the opposing kitchen as the target.</p><ol><li>On five comfortable bounced feeds, lift the ball softly into the target kitchen.</li><li>After 3 of 5 successful drops, move the starting position two steps farther from the net; work toward the baseline.</li><li>After a good drop, move forward and stop for the feeder&#39;s next contact. Swap roles halfway.</li></ol><p><b>Build it</b> Add a deeper feed or forehand/backhand variation. Return to the previous distance if touch disappears.</p><p><b>Success target</b> 3 of 5 drops land in the kitchen and require the feeder to contact below net height at two different starting distances.</p></div>
+  </details><details class="pb-drill"><summary><span class="pb-number">06</span><span class="pb-drill-title">Reset your way forward<small>intermediate · 8 min · 2</small></span><span class="pb-plus" aria-hidden="true">+</span></summary>
+    <div class="pb-drill-body"><p><b>Set up</b> Feeder at the kitchen line; hitter in midcourt. Feed at controlled pace with enough spacing to reset between balls.</p><ol><li>Send five feeds toward the hitter&#39;s feet or comfortable reach. The hitter uses a short stroke to soften the reply into the kitchen.</li><li>After a low reset, take one step forward; stop and prepare as the feeder contacts the next ball.</li><li>If the reset sits up, hold position and handle the next feed. Swap roles after four minutes.</li></ol><p><b>Build it</b> Vary direction before increasing pace. Add a partner moving beside the hitter once individual control is consistent.</p><p><b>Success target</b> 3 of 5 resets land softly in the kitchen; complete one three-ball forward sequence without a rushed contact.</p></div>
+  </details><details class="pb-drill"><summary><span class="pb-number">07</span><span class="pb-drill-title">Right side + shared seam<small>intermediate · 8 min · 3–4</small></span><span class="pb-plus" aria-hidden="true">+</span></summary>
+    <div class="pb-drill-body"><p><b>Set up</b> A doubles pair near the kitchen line faces one or two cooperative feeders. Right and left mean the player&#39;s view facing the net. Agree who takes the seam, accounting for handedness.</p><ol><li>Feed five balls toward the right sideline. The right-side player handles the ball while the partner shifts to protect the middle.</li><li>Feed five middle balls. Use an early &#39;mine&#39; or &#39;yours&#39; call and keep the other player available for the next shot.</li><li>Mix the two locations for 10 feeds, then swap court-side roles. With four players, trade feeding and receiving roles halfway.</li></ol><p><b>Build it</b> Play two follow-up shots after each feed, then add a controlled pace change from the right-side player and cover its counter.</p><p><b>Success target</b> 10 mixed feeds with one clear hitter per ball, no collision, and both players prepared for the reply.</p></div>
+  </details><details class="pb-drill"><summary><span class="pb-number">08</span><span class="pb-drill-title">Attack or reset?<small>advanced · 8 min · 2–4</small></span><span class="pb-plus" aria-hidden="true">+</span></summary>
+    <div class="pb-drill-body"><p><b>Set up</b> Players at the kitchen lines. Start cooperatively on one court half with two players, or as doubles with four. Agree to controlled pace and the same decision goal.</p><ol><li>Begin each sequence with three cooperative dinks. The feeder then varies a low ball and a ball that allows a higher, balanced contact.</li><li>Keep the low ball soft. On a suitable higher ball, choose a controlled speed-up and prepare for the counter; choosing another dink is allowed.</li><li>Play two more shots, then discuss the decision. Swap the decision-making role after five sequences.</li></ol><p><b>Build it</b> Remove the predictable fourth-feed timing, then use normal points. Score decision quality separately from winning the rally.</p><p><b>Success target</b> 8 of 10 choices suit the contact height and balance, with recovery for the reply and no kitchen fault.</p></div>
+  </details></div></div></section>
 
-    <div id="desk-entry" class="desk-entry">
-      <div id="welcome-back" class="welcome-back" hidden>
-        <p>Welcome back, <span id="wb-address" class="mono-inline"></span>.</p>
-        <p class="profile-links"><button id="wb-resume" class="linkish" type="button">back to my card</button>
-        <a id="wb-peek" href="#">just peek</a></p>
-      </div>
+      <span class="pb-anchor" id="courts"></span><section class="pb-section pb-courts-section" id="pb-courts" aria-labelledby="pb-courts-title"><div class="pb-section-heading"><div><p class="pb-kicker">03 / Find your place</p><h2 id="pb-courts-title">Meet you<br><em>at the court.</em></h2></div><p>Start in El Segundo and the South Bay, then head up the coast. These are sourced venue references: check the current city schedule and access requirements before you go.</p></div><div class="pb-court-layout"><aside class="pb-court-map"><div class="pb-locator"><svg viewBox="0 0 520 600" role="img" aria-labelledby="pb-map-title pb-map-desc"><title id="pb-map-title">Los Angeles and South Bay city locator</title><desc id="pb-map-desc">Schematic coastal locator. City positions show the region; use each venue's directions link for the court location.</desc><defs><pattern id="pb-map-grid" width="38" height="38" patternUnits="userSpaceOnUse"><path d="M 38 0 L 0 0 0 38" fill="none" stroke="currentColor" stroke-width="0.7"/></pattern></defs><rect width="520" height="600" fill="#0955cf"/><path d="M130 -10 L167 60 Q169 135 201 176 L218 225 Q239 249 218 294 L199 352 Q205 382 244 413 L261 455 Q285 498 319 518 L390 610 L530 610 L530 -10Z" fill="#064735"/><rect width="520" height="600" fill="url(#pb-map-grid)" opacity=".14"/><path d="M267 8 L290 163 L306 295 L318 410 L384 590" fill="none" stroke="#d4f34a" stroke-width="2" stroke-dasharray="8 10" opacity=".4"/><text x="33" y="366" fill="#fff" font-size="14" transform="rotate(-65 33 366)" letter-spacing="5">PACIFIC OCEAN</text><text x="385" y="160" fill="#d4f34a" font-size="11" letter-spacing="2">LOS</text><text x="385" y="177" fill="#d4f34a" font-size="11" letter-spacing="2">ANGELES</text></svg>
+    <div class="pb-map-cities"><button type="button" class="pb-city-pin" style="--pin-x:36%;--pin-y:14%" data-court-city="Santa Monica"><span class="pb-pin-dot" aria-hidden="true"></span><span>Santa Monica</span></button><button type="button" class="pb-city-pin" style="--pin-x:46%;--pin-y:38%" data-court-city="El Segundo"><span class="pb-pin-dot" aria-hidden="true"></span><span>El Segundo</span></button><button type="button" class="pb-city-pin" style="--pin-x:44%;--pin-y:57%" data-court-city="Manhattan Beach"><span class="pb-pin-dot" aria-hidden="true"></span><span>Manhattan Beach</span></button><button type="button" class="pb-city-pin" style="--pin-x:73%;--pin-y:48%" data-court-city="Hawthorne"><span class="pb-pin-dot" aria-hidden="true"></span><span>Hawthorne</span></button><button type="button" class="pb-city-pin" style="--pin-x:45%;--pin-y:69%" data-court-city="Hermosa Beach"><span class="pb-pin-dot" aria-hidden="true"></span><span>Hermosa Beach</span></button><button type="button" class="pb-city-pin" style="--pin-x:65%;--pin-y:84%" data-court-city="Torrance"><span class="pb-pin-dot" aria-hidden="true"></span><span>Torrance</span></button></div><div class="pb-map-caption"><b>Pick your city.</b><span>City-level locator · exact directions on each card</span></div>
+  </div><div class="pb-discovery-note"><h3>Keep exploring.</h3><p>A bigger search starts with a reliable source.</p><div><a class="pb-text-link" href="https://www.redondo.org/departments/community_services/classes_and_activities/pickleball.php">Redondo Beach city court guide <span aria-hidden="true">↗</span></a><p>Find Alta Vista, Perry, Franklin, Anderson, and Dale Page courts. Shared courts have sport priorities; several require your own net. Aviation Park is described as a future project.</p></div><div><a class="pb-text-link" href="https://www.torranceca.gov/Our-Community/Classes-and-Programs/Classes-Programs/Pickleball-and-Tennis">Torrance public court programs <span aria-hidden="true">↗</span></a><p>The city&#39;s current entry point for court schedules, open play, and instruction at its public tennis and pickleball facilities.</p></div><div><a class="pb-text-link" href="https://www.santamonica.gov/programs/pickleball">Santa Monica courts and programs <span aria-hidden="true">↗</span></a><p>Memorial Park access, drop-in registration, and John Adams Middle School weekend information.</p></div><div><a class="pb-text-link" href="https://www.longbeach.gov/park/recreation-programs/sports-and-athletics/pickleball/">Long Beach city court guide <span aria-hidden="true">↗</span></a><p>City-listed park courts and tennis-center pickleball programs. Most park courts use first-come access with shared-use signage; tennis centers have separate paid sessions and operator contacts.</p></div><div><a class="pb-text-link" href="https://usapickleball.org/places-to-play/">USA Pickleball Places to Play <span aria-hidden="true">↗</span></a><p>USA Pickleball&#39;s route to its official court finder, Pickleheads. Search manually by city; confirm access with the venue before traveling.</p></div></div></aside><div class="pb-court-list"><form class="pb-court-filters" data-court-filters role="search" aria-label="Filter court references"><label class="pb-search-label" for="pb-court-search">City or court<input id="pb-court-search" type="search" placeholder="Try El Segundo" data-court-search autocomplete="off" /></label><label for="pb-court-region">Region<select id="pb-court-region" data-court-region><option value="all">All regions</option><option value="South Bay">South Bay</option><option value="Los Angeles">Los Angeles</option></select></label><label for="pb-court-ownership">Court type<select id="pb-court-ownership" data-court-ownership><option value="all">Public & private</option><option value="public">Public courts</option><option value="private">Private & commercial</option></select></label><button type="reset" class="pb-filter-reset">Clear</button></form><p class="pb-court-results" role="status" aria-live="polite" data-court-count>11 sourced court references · checked 2026-10-02</p><p class="pb-court-notice">Court details were checked against city, city-operated recreation, venue-operator, and USA Pickleball sources on October 2, 2026. This directory describes published access policies; it does not show live availability. Follow current venue schedules and posted signs before playing.</p><div class="pb-court-cards"><article class="pb-court" id="pb-court-el-segundo-recreation-park" data-court-card data-region="South Bay" data-ownership="public" data-city="El Segundo" data-search="recreation park courts el segundo south bay 401 sheldon street, el segundo, ca 90245 outdoor free walk-on play when unreserved. paid reservations and city programs take priority.">
+    <div class="pb-court-top"><span class="pb-number">01</span><span class="pb-tag">El Segundo</span><span class="pb-tag pb-ownership">Public</span></div>
+    <h3>Recreation Park Courts</h3><p class="pb-court-description">Outdoor sports complex. The current city booking portal refers to pickleball Courts 1–8; an older city overview says four courts.</p><p class="pb-address">401 Sheldon Street, El Segundo, CA 90245</p>
+    <dl class="pb-court-facts"><div><dt>Access</dt><dd>Free walk-on play when unreserved. Paid reservations and city programs take priority.</dd></div><div><dt>Before you go</dt><dd>The city-operated portal publishes 8 AM–10 PM. Check its current calendar for reserved courts and programs.</dd></div></dl>
+    <details class="pb-court-details"><summary>Local rules & access notes <span aria-hidden="true">+</span></summary><ul><li>Private paid instruction and unapproved organized activities are prohibited.</li><li>Water only on the courts; no pets, glass, or wheeled vehicles.</li><li>Court-count descriptions differ between official sources; confirm the current setup with the Checkout Building at 310-524-2700.</li></ul></details>
+    <div class="pb-court-bottom"><a class="pb-text-link" href="https://www.google.com/maps/search/?api=1&amp;query=Recreation+Park+Courts+401+Sheldon+Street+El+Segundo+CA+90245">Directions <span aria-hidden="true">↗</span></a><span>Checked 2026-10-02</span></div><div class="pb-sources"><a class="pb-source" href="https://www.rec.us/locations/7527b987-0f0b-473e-9680-0c90758f6dcd">El Segundo Recreation · court access and guidelines <span aria-hidden="true">↗</span></a><a class="pb-source" href="https://www.elsegundorecparks.gov/programs-services/recreation-programs-activities/adult-sports/pickleball">City of El Segundo · pickleball location <span aria-hidden="true">↗</span></a><a class="pb-source" href="https://www.elsegundorecparks.gov/programs-services/recreation-programs-activities/adult-sports">City of El Segundo · older court overview <span aria-hidden="true">↗</span></a></div>
+  </article><article class="pb-court" id="pb-court-manhattan-beach-middle-school" data-court-card data-region="South Bay" data-ownership="public" data-city="Manhattan Beach" data-search="manhattan beach middle school courts manhattan beach south bay 1501 n. redondo avenue, manhattan beach, ca 90266 outdoor free public play on weekends and mbusd breaks and holidays.">
+    <div class="pb-court-top"><span class="pb-number">02</span><span class="pb-tag">Manhattan Beach</span><span class="pb-tag pb-ownership">Public</span></div>
+    <h3>Manhattan Beach Middle School Courts</h3><p class="pb-court-description">Five open-play courts and one beginner court.</p><p class="pb-address">1501 N. Redondo Avenue, Manhattan Beach, CA 90266</p>
+    <dl class="pb-court-facts"><div><dt>Access</dt><dd>Free public play on weekends and MBUSD breaks and holidays.</dd></div><div><dt>Before you go</dt><dd>Published public window: 8 AM–dusk on weekends and MBUSD breaks and holidays.</dd></div></dl>
+    <details class="pb-court-details"><summary>Local rules & access notes <span aria-hidden="true">+</span></summary><ul><li>Follow the challenge-court rules posted at the venue.</li><li>The city does not publish ordinary weekday-after-school public access on this page. Gate access is not guaranteed.</li></ul></details>
+    <div class="pb-court-bottom"><a class="pb-text-link" href="https://www.google.com/maps/search/?api=1&amp;query=Manhattan+Beach+Middle+School+Pickleball+1501+N+Redondo+Avenue+Manhattan+Beach+CA+90266">Directions <span aria-hidden="true">↗</span></a><span>Checked 2026-10-02</span></div><div class="pb-sources"><a class="pb-source" href="https://www.manhattanbeach.gov/departments/parks-and-recreation/tennis">City of Manhattan Beach · Middle School section <span aria-hidden="true">↗</span></a></div>
+  </article><article class="pb-court" id="pb-court-manhattan-heights" data-court-card data-region="South Bay" data-ownership="public" data-city="Manhattan Beach" data-search="manhattan heights park courts manhattan beach south bay 1600 manhattan beach boulevard, manhattan beach, ca 90266 outdoor paid reservations or scheduled drop-in. hourly rates: $12 residents / $16 nonresidents. daily drop-in: $3 / $4.">
+    <div class="pb-court-top"><span class="pb-number">03</span><span class="pb-tag">Manhattan Beach</span><span class="pb-tag pb-ownership">Public</span><span class="pb-tag pb-tag-alert">Confirm details</span></div>
+    <h3>Manhattan Heights Park Courts</h3><p class="pb-court-description">Drop-in setup expands to seven courts except Wednesday mornings, when three are listed.</p><p class="pb-address">1600 Manhattan Beach Boulevard, Manhattan Beach, CA 90266</p>
+    <dl class="pb-court-facts"><div><dt>Access</dt><dd>Paid reservations or scheduled drop-in. Hourly rates: $12 residents / $16 nonresidents. Daily drop-in: $3 / $4.</dd></div><div><dt>Before you go</dt><dd>Published drop-in: weekday mornings, Monday/Friday evenings, and Saturday evenings; verify the current session.</dd></div></dl>
+    <details class="pb-court-details"><summary>Local rules & access notes <span aria-hidden="true">+</span></summary><ul><li>Reserve online; maximum two one-hour reservations per day.</li><li>The page gives conflicting closing hours. Check the city&#39;s booking calendar.</li></ul></details>
+    <div class="pb-court-bottom"><a class="pb-text-link" href="https://www.google.com/maps/search/?api=1&amp;query=Manhattan+Heights+Park+1600+Manhattan+Beach+Boulevard+Manhattan+Beach+CA+90266">Directions <span aria-hidden="true">↗</span></a><span>Checked 2026-10-02</span></div><div class="pb-sources"><a class="pb-source" href="https://www.manhattanbeach.gov/departments/parks-and-recreation/tennis">City of Manhattan Beach · Pickleball section <span aria-hidden="true">↗</span></a></div>
+  </article><article class="pb-court" id="pb-court-betty-ainsworth" data-court-card data-region="South Bay" data-ownership="public" data-city="Hawthorne" data-search="betty ainsworth sports center courts hawthorne south bay 3851 w. el segundo boulevard, hawthorne, ca 90250 outdoor free, first come, first served; city programs have priority.">
+    <div class="pb-court-top"><span class="pb-number">04</span><span class="pb-tag">Hawthorne</span><span class="pb-tag pb-ownership">Public</span></div>
+    <h3>Betty Ainsworth Sports Center Courts</h3><p class="pb-court-description">Four hybrid courts; the city provides nets and equipment.</p><p class="pb-address">3851 W. El Segundo Boulevard, Hawthorne, CA 90250</p>
+    <dl class="pb-court-facts"><div><dt>Access</dt><dd>Free, first come, first served; city programs have priority.</dd></div><div><dt>Before you go</dt><dd>City regulations publish 9 AM–9 PM; check posted program use.</dd></div></dl>
+    <details class="pb-court-details"><summary>Local rules & access notes <span aria-hidden="true">+</span></summary><ul><li>Use posted rotation rules when players wait.</li><li>Only city programs may provide instruction.</li><li>Adults 18+ receive court preference after 6 PM.</li></ul></details>
+    <div class="pb-court-bottom"><a class="pb-text-link" href="https://www.google.com/maps/search/?api=1&amp;query=Betty+Ainsworth+Sports+Center+3851+W+El+Segundo+Boulevard+Hawthorne+CA+90250">Directions <span aria-hidden="true">↗</span></a><span>Checked 2026-10-02</span></div><div class="pb-sources"><a class="pb-source" href="https://www.cityofhawthorne.org/departments/community-services/tennis-pickleball-courts">City of Hawthorne · court locations <span aria-hidden="true">↗</span></a><a class="pb-source" href="https://www.cityofhawthorne.org/home/showpublisheddocument/6287/638451548350070000">City of Hawthorne · court regulations <span aria-hidden="true">↗</span></a></div>
+  </article><article class="pb-court" id="pb-court-holly-glen" data-court-card data-region="South Bay" data-ownership="public" data-city="Hawthorne" data-search="holly glen park courts hawthorne south bay 5255 w. 137th street, hawthorne, ca 90250 outdoor free, first come, first served; city programs have priority.">
+    <div class="pb-court-top"><span class="pb-number">05</span><span class="pb-tag">Hawthorne</span><span class="pb-tag pb-ownership">Public</span></div>
+    <h3>Holly Glen Park Courts</h3><p class="pb-court-description">Four hybrid pickleball courts; bring your own net and equipment.</p><p class="pb-address">5255 W. 137th Street, Hawthorne, CA 90250</p>
+    <dl class="pb-court-facts"><div><dt>Access</dt><dd>Free, first come, first served; city programs have priority.</dd></div><div><dt>Before you go</dt><dd>City regulations publish 9 AM–9 PM; check posted program use.</dd></div></dl>
+    <details class="pb-court-details"><summary>Local rules & access notes <span aria-hidden="true">+</span></summary><ul><li>Use posted rotation rules when players wait.</li><li>Only city programs may provide instruction.</li><li>Adults 18+ receive court preference after 6 PM.</li></ul></details>
+    <div class="pb-court-bottom"><a class="pb-text-link" href="https://www.google.com/maps/search/?api=1&amp;query=Holly+Glen+Park+5255+W+137th+Street+Hawthorne+CA+90250">Directions <span aria-hidden="true">↗</span></a><span>Checked 2026-10-02</span></div><div class="pb-sources"><a class="pb-source" href="https://www.cityofhawthorne.org/departments/community-services/tennis-pickleball-courts">City of Hawthorne · court locations <span aria-hidden="true">↗</span></a><a class="pb-source" href="https://www.cityofhawthorne.org/home/showpublisheddocument/6287/638451548350070000">City of Hawthorne · court regulations <span aria-hidden="true">↗</span></a></div>
+  </article><article class="pb-court" id="pb-court-ramona-park" data-court-card data-region="South Bay" data-ownership="public" data-city="Hawthorne" data-search="ramona park courts hawthorne south bay 4662 w. 136th street, hawthorne, ca 90250 outdoor free, first come, first served; city programs have priority.">
+    <div class="pb-court-top"><span class="pb-number">06</span><span class="pb-tag">Hawthorne</span><span class="pb-tag pb-ownership">Public</span></div>
+    <h3>Ramona Park Courts</h3><p class="pb-court-description">Two hybrid courts; bring your own net and equipment.</p><p class="pb-address">4662 W. 136th Street, Hawthorne, CA 90250</p>
+    <dl class="pb-court-facts"><div><dt>Access</dt><dd>Free, first come, first served; city programs have priority.</dd></div><div><dt>Before you go</dt><dd>City regulations publish 9 AM–9 PM; check posted program use.</dd></div></dl>
+    <details class="pb-court-details"><summary>Local rules & access notes <span aria-hidden="true">+</span></summary><ul><li>Use posted rotation rules when players wait.</li><li>Only city programs may provide instruction.</li><li>Adults 18+ receive court preference after 6 PM.</li></ul></details>
+    <div class="pb-court-bottom"><a class="pb-text-link" href="https://www.google.com/maps/search/?api=1&amp;query=Ramona+Park+4662+W+136th+Street+Hawthorne+CA+90250">Directions <span aria-hidden="true">↗</span></a><span>Checked 2026-10-02</span></div><div class="pb-sources"><a class="pb-source" href="https://www.cityofhawthorne.org/departments/community-services/tennis-pickleball-courts">City of Hawthorne · court locations <span aria-hidden="true">↗</span></a><a class="pb-source" href="https://www.cityofhawthorne.org/home/showpublisheddocument/6287/638451548350070000">City of Hawthorne · court regulations <span aria-hidden="true">↗</span></a></div>
+  </article><article class="pb-court" id="pb-court-dee-hardison" data-court-card data-region="South Bay" data-ownership="public" data-city="Torrance" data-search="dee hardison sports center torrance south bay 2400 jefferson street, torrance, ca 90501 indoor online registration is required. published fee: $5 per person; ages 18+; capacity 30.">
+    <div class="pb-court-top"><span class="pb-number">07</span><span class="pb-tag">Torrance</span><span class="pb-tag pb-ownership">Public</span></div>
+    <h3>Dee Hardison Sports Center</h3><p class="pb-court-description">Indoor adult drop-in at Wilson Park&#39;s sports center.</p><p class="pb-address">2400 Jefferson Street, Torrance, CA 90501</p>
+    <dl class="pb-court-facts"><div><dt>Access</dt><dd>Online registration is required. Published fee: $5 per person; ages 18+; capacity 30.</dd></div><div><dt>Before you go</dt><dd>The city lists Monday and Wednesday, 10 AM–2 PM. Verify the selected session on Torrance Rec.</dd></div></dl>
+    <details class="pb-court-details"><summary>Local rules & access notes <span aria-hidden="true">+</span></summary><ul><li>Spectators are not permitted.</li><li>Registration and program capacity determine access; this page does not confirm a place is available.</li></ul></details>
+    <div class="pb-court-bottom"><a class="pb-text-link" href="https://www.google.com/maps/search/?api=1&amp;query=Dee+Hardison+Sports+Center+2400+Jefferson+Street+Torrance+CA+90501">Directions <span aria-hidden="true">↗</span></a><span>Checked 2026-10-02</span></div><div class="pb-sources"><a class="pb-source" href="https://www.torranceca.gov/Our-Community/Classes-and-Programs/Classes-Programs/Adult-Sports/Pickleball">City of Torrance · indoor pickleball <span aria-hidden="true">↗</span></a></div>
+  </article><article class="pb-court" id="pb-court-memorial-park-santa-monica" data-court-card data-region="Los Angeles" data-ownership="public" data-city="Santa Monica" data-search="memorial park pickleball courts santa monica los angeles 1401 olympic boulevard, santa monica, ca outdoor first come, first served outside city programs and approved permits. organized drop-in uses registration and a paddle queue.">
+    <div class="pb-court-top"><span class="pb-number">08</span><span class="pb-tag">Santa Monica</span><span class="pb-tag pb-ownership">Public</span><span class="pb-tag pb-tag-alert">Confirm details</span></div>
+    <h3>Memorial Park Pickleball Courts</h3><p class="pb-court-description">Sixteen pickleball courts share four tennis courts.</p><p class="pb-address">1401 Olympic Boulevard, Santa Monica, CA</p>
+    <dl class="pb-court-facts"><div><dt>Access</dt><dd>First come, first served outside city programs and approved permits. Organized drop-in uses registration and a paddle queue.</dd></div><div><dt>Before you go</dt><dd>Organized sessions are published for weekday evenings and weekends. The page has inconsistent weekend end times; check the current registration listing.</dd></div></dl>
+    <details class="pb-court-details"><summary>Local rules & access notes <span aria-hidden="true">+</span></summary><ul><li>No private instruction.</li><li>When players wait, use the paddle queue and do not drill.</li><li>Follow city staff and posted rotation rules.</li><li>Registration windows differ for residents and nonresidents. Walk-in registration is accepted only if space remains.</li></ul></details>
+    <div class="pb-court-bottom"><a class="pb-text-link" href="https://www.google.com/maps/search/?api=1&amp;query=Memorial+Park+1401+Olympic+Boulevard+Santa+Monica+CA">Directions <span aria-hidden="true">↗</span></a><span>Checked 2026-10-02</span></div><div class="pb-sources"><a class="pb-source" href="https://www.santamonica.gov/programs/pickleball">City of Santa Monica · pickleball and court etiquette <span aria-hidden="true">↗</span></a></div>
+  </article><article class="pb-court" id="pb-court-kelly-courts" data-court-card data-region="South Bay" data-ownership="public" data-city="Hermosa Beach" data-search="kelly courts hermosa beach south bay 861 valley drive, hermosa beach, ca 90254 outdoor confirm with parks and recreation at 310-318-0280. the linked policy permits free unreserved walk-on play and limits reservations to resident members.">
+    <div class="pb-court-top"><span class="pb-number">09</span><span class="pb-tag">Hermosa Beach</span><span class="pb-tag pb-ownership">Public</span><span class="pb-tag pb-tag-alert">Confirm details</span></div>
+    <h3>Kelly Courts</h3><p class="pb-court-description">The current facility page lists four pickleball courts beside Clark Field.</p><p class="pb-address">861 Valley Drive, Hermosa Beach, CA 90254</p>
+    <dl class="pb-court-facts"><div><dt>Access</dt><dd>Confirm with Parks and Recreation at 310-318-0280. The linked policy permits free unreserved walk-on play and limits reservations to resident members.</dd></div><div><dt>Before you go</dt><dd>Current hours and the number of usable courts need confirmation. No availability is implied.</dd></div></dl>
+    <details class="pb-court-details"><summary>Local rules & access notes <span aria-hidden="true">+</span></summary><ul><li>The linked policy restricts equipment and requires city approval for instruction; check the current posted policy.</li><li>The facility page lists 9 AM–7 PM daily. Its linked PDF still gives a restricted Tuesday–Saturday schedule and says Courts 3 and 4 are closed. These official sources conflict.</li></ul></details>
+    <div class="pb-court-bottom"><a class="pb-text-link" href="https://www.google.com/maps/search/?api=1&amp;query=Kelly+Courts+861+Valley+Drive+Hermosa+Beach+CA+90254">Directions <span aria-hidden="true">↗</span></a><span>Checked 2026-10-02</span></div><div class="pb-sources"><a class="pb-source" href="https://www.hermosabeach.gov/Home/Components/FacilityDirectory/FacilityDirectory/125/248">City of Hermosa Beach · current facility listing <span aria-hidden="true">↗</span></a><a class="pb-source" href="https://www.hermosabeach.gov/home/showpublisheddocument/16287/638435243220500000">City of Hermosa Beach · linked court policy PDF <span aria-hidden="true">↗</span></a></div>
+  </article><article class="pb-court" id="pb-court-california-smash" data-court-card data-region="South Bay" data-ownership="commercial" data-city="El Segundo" data-search="california smash el segundo south bay 815 n. nash street, el segundo, ca 90245 indoor open to the public without membership. paid hourly court bookings use courtreserve; classes and scheduled open play are also listed.">
+    <div class="pb-court-top"><span class="pb-number">10</span><span class="pb-tag">El Segundo</span><span class="pb-tag pb-ownership">Commercial · paid</span><span class="pb-tag pb-tag-alert">Confirm details</span></div>
+    <h3>California Smash</h3><p class="pb-court-description">Nine indoor padded courts at a privately operated pickleball and social club.</p><p class="pb-address">815 N. Nash Street, El Segundo, CA 90245</p>
+    <dl class="pb-court-facts"><div><dt>Access</dt><dd>Open to the public without membership. Paid hourly court bookings use CourtReserve; classes and scheduled open play are also listed.</dd></div><div><dt>Before you go</dt><dd>Use the operator&#39;s current booking calendar. A listed facility or program does not imply an available court.</dd></div></dl>
+    <details class="pb-court-details"><summary>Local rules & access notes <span aria-hidden="true">+</span></summary><ul><li>Prices vary by court type and selected time. The booking page and footer give different weekday and Sunday closing hours; confirm the selected session with the operator at 310-295-4048.</li></ul></details>
+    <div class="pb-court-bottom"><a class="pb-text-link" href="https://www.google.com/maps/search/?api=1&amp;query=California+Smash+815+N+Nash+Street+El+Segundo+CA+90245">Directions <span aria-hidden="true">↗</span></a><span>Checked 2026-10-02</span></div><div class="pb-sources"><a class="pb-source" href="https://calismash.com/">California Smash · courts and public access <span aria-hidden="true">↗</span></a><a class="pb-source" href="https://calismash.com/book-a-court">California Smash · booking policies and address <span aria-hidden="true">↗</span></a></div>
+  </article><article class="pb-court" id="pb-court-love-life" data-court-card data-region="South Bay" data-ownership="private" data-city="El Segundo" data-search="love.life pickleball el segundo south bay 740 s. pacific coast highway, el segundo, ca 90245 indoor membership-based club access. the operator says pickleball is included in all memberships for the first year; confirm current terms before planning a visit.">
+    <div class="pb-court-top"><span class="pb-number">11</span><span class="pb-tag">El Segundo</span><span class="pb-tag pb-ownership">Private · members</span><span class="pb-tag pb-tag-alert">Confirm details</span></div>
+    <h3>Love.Life Pickleball</h3><p class="pb-court-description">Three indoor courts in the Love.Life longevity club; lessons, clinics, and an observation lounge are listed.</p><p class="pb-address">740 S. Pacific Coast Highway, El Segundo, CA 90245</p>
+    <dl class="pb-court-facts"><div><dt>Access</dt><dd>Membership-based club access. The operator says pickleball is included in all memberships for the first year; confirm current terms before planning a visit.</dd></div><div><dt>Before you go</dt><dd>Published club hours are not a pickleball court-availability calendar. Confirm court access directly with the operator.</dd></div></dl>
+    <details class="pb-court-details"><summary>Local rules & access notes <span aria-hidden="true">+</span></summary><ul><li>Guest access, court booking requirements, lesson fees, and access after the first year need confirmation with the club at 310-424-7011.</li></ul></details>
+    <div class="pb-court-bottom"><a class="pb-text-link" href="https://www.google.com/maps/search/?api=1&amp;query=Love+Life+740+S+Pacific+Coast+Highway+El+Segundo+CA+90245">Directions <span aria-hidden="true">↗</span></a><span>Checked 2026-10-02</span></div><div class="pb-sources"><a class="pb-source" href="https://love.life/pickleball">Love.Life · official pickleball and membership information <span aria-hidden="true">↗</span></a></div>
+  </article></div><p class="pb-empty" data-court-empty hidden>No courts match those filters. Clear a filter or try a nearby city.</p></div></div></section>
 
-      <button id="connect" class="enter">Step up to the desk</button>
-    </div>
+      <span class="pb-anchor" id="culture"></span><section class="pb-campaign" aria-labelledby="pb-campaign-title"><div class="pb-campaign-intro"><p class="pb-kicker">04 / A little court culture</p><h2 id="pb-campaign-title">Good game.<br><em>Great company.</em></h2><p>Palms overhead. A ball in the air. One more game before the light goes. RALLY’s visual world is built around the people who make a court feel like home.</p><p class="pb-campaign-label">Independent generated campaign and courtwear concepts. Any depicted locations or teams are fictional; no Nouns endorsement, product availability, or checkout is implied.</p></div><div class="pb-campaign-grid"><figure><img loading="lazy" src="/images/pickleball-home/courtside.webp" alt="RALLY courtside campaign concept" width="1000" height="1250" /><figcaption><span>01 / COURTSIDE</span><b>Stay for one more.</b></figcaption></figure><figure><img loading="lazy" src="/images/pickleball-home/essentials.webp" alt="RALLY pickleball essentials campaign concept" width="1000" height="1250" /><figcaption><span>02 / THE ESSENTIALS</span><b>Bring your game.</b></figcaption></figure><figure class="pb-campaign-wide"><img loading="lazy" src="/images/pickleball-home/banner.webp" alt="RALLY courtside banner campaign concept" width="1536" height="1024" /><figcaption><span>03 / COURTSIDE BANNER</span><b>The common ground.</b></figcaption></figure></div><div class="pb-nouns-heading"><h3>Nouns × RALLY.<br>A crew with character.</h3><p>Explore the complete independent courtwear study: the court kit, club layer, essentials, and campaign. Exact Nouns vector artwork and the original specification are preserved below.</p></div><div class="pb-nouns-grid"><figure><img src="/images/pickleball-home/nouns-court-kit.webp" alt="The court kit: independent Nouns × RALLY concept" width="1200" height="800" loading="lazy" /><figcaption>The court kit / CONCEPT</figcaption></figure><figure><img src="/images/pickleball-home/nouns-club-layer.webp" alt="The club layer: independent Nouns × RALLY concept" width="1200" height="800" loading="lazy" /><figcaption>The club layer / CONCEPT</figcaption></figure><figure><img src="/images/pickleball-home/nouns-essentials.webp" alt="Court essentials: independent Nouns × RALLY concept" width="1200" height="800" loading="lazy" /><figcaption>Court essentials / CONCEPT</figcaption></figure><figure><img src="/images/pickleball-home/nouns-campaign.webp" alt="The campaign: independent Nouns × RALLY concept" width="1200" height="800" loading="lazy" /><figcaption>The campaign / CONCEPT</figcaption></figure></div><div class="pb-nouns-assets"><a href="/images/pickleball-home/Noun-0-transparent.svg" aria-label="Open exact Noun 0 vector artwork"><img src="/images/pickleball-home/Noun-0-transparent.svg" alt="Noun 0" width="58" height="58" loading="lazy" /></a><a href="/images/pickleball-home/Noun-1-transparent.svg" aria-label="Open exact Noun 1 vector artwork"><img src="/images/pickleball-home/Noun-1-transparent.svg" alt="Noun 1" width="58" height="58" loading="lazy" /></a><a href="/images/pickleball-home/Noun-2-transparent.svg" aria-label="Open exact Noun 2 vector artwork"><img src="/images/pickleball-home/Noun-2-transparent.svg" alt="Noun 2" width="58" height="58" loading="lazy" /></a><a href="/images/pickleball-home/Noggles-one-color.svg" aria-label="Open exact Noggles vector artwork"><img class="pb-noggles" src="/images/pickleball-home/Noggles-one-color.svg" alt="Noggles" width="80" height="36" loading="lazy" /></a><div><a class="pb-text-link" href="/images/pickleball-home/nouns-courtwear-spec.pdf">Original courtwear specification <span aria-hidden="true">↗</span></a><a class="pb-text-link" href="/images/pickleball-home/nouns-provenance.json">Artwork provenance <span aria-hidden="true">↗</span></a></div></div></section>
 
-    <section id="desk" hidden>
-      <div class="profile-bar">
-        <div>
-          <p class="mono" id="address"></p>
-          <p class="profile-links">
-            <button id="copy-address" class="linkish" type="button">copy</button>
-            <a id="tzkt-link" href="#" target="_blank" rel="noopener">tzkt</a>
-            <a id="share-link" href="#">share card</a>
-          </p>
-        </div>
-        <button id="disconnect" class="ghost" type="button">Log out</button>
-      </div>
+      <span class="pb-anchor" id="gear"></span><section class="pb-section pb-tools-section" id="pb-tools" aria-labelledby="pb-tools-title"><div class="pb-section-heading"><div><p class="pb-kicker">05 / The kit, already in play</p><h2 id="pb-tools-title">Everything<br><em>comes together.</em></h2></div><p>RALLY brings the crew tools. PointCast brings the research and local context. Keep the useful things close, from your first session to your next paddle.</p></div><div class="pb-gear-advice"><div><h3>Start with feel.</h3><p>Use a comfortable grip and a paddle you can control through a full session. Borrow or demo a few shapes before choosing; the most expensive paddle is not a practice plan.</p></div><div><h3>Compare the evidence.</h3><p>Separate measured results from maker claims. Compare shape, weight, dimensions, construction, and dated source notes in the register.</p></div><div><h3>Check your event.</h3><p>Equipment approval depends on the event’s governing rules. Confirm the exact model on the current official list, then keep an eye on wear and damage.</p></div></div><div class="pb-tool-group"><div class="pb-tool-group-title"><h3>From RALLY.</h3><a class="pb-text-link" href="/">Open RALLY <span aria-hidden="true">↗</span></a></div><div class="pb-tool-grid"><a class="pb-tool-card" href="/tonight/"><span class="pb-number">01</span><h4>Run open play <span aria-hidden="true">↗</span></h4><p>Turn a crew into fair doubles rounds, score the session, and keep a recap.</p></a><a class="pb-tool-card" href="/score/"><span class="pb-number">02</span><h4>Call the score <span aria-hidden="true">↗</span></h4><p>A courtside score caller for standard side-out doubles scoring.</p></a><a class="pb-tool-card" href="/bag/"><span class="pb-number">03</span><h4>Keep your bag <span aria-hidden="true">↗</span></h4><p>Log your paddles, court hours, and wear. Compare what you actually play.</p></a><a class="pb-tool-card" href="/desk/"><span class="pb-number">04</span><h4>The RALLY desk <span aria-hidden="true">↗</span></h4><p>Find your level, make a player portrait, and explore the existing rating desk.</p></a><a class="pb-tool-card" href="/paddle-calendar/"><span class="pb-number">05</span><h4>Paddle calendar <span aria-hidden="true">↗</span></h4><p>Follow sourced release history and research notes, with dates and confidence.</p></a><a class="pb-tool-card" href="/guide/"><span class="pb-number">06</span><h4>The field guide <span aria-hidden="true">↗</span></h4><p>Keep exploring rules, equipment, ratings, lessons, and South Bay play.</p></a><a class="pb-tool-card" href="/pros/"><span class="pb-number">07</span><h4>Follow the pro game <span aria-hidden="true">↗</span></h4><p>The existing tour, team, format, and ranking reference.</p></a><a class="pb-tool-card" href="/paddle-fund/"><span class="pb-number">08</span><h4>Paddle fund concept <span aria-hidden="true">↗</span></h4><p>A playable pretend-money rotation for a crew. Explore the existing demo.</p></a></div></div><div class="pb-tool-group pb-pointcast-group"><div class="pb-tool-group-title"><h3>Across at PointCast.</h3><a class="pb-text-link" href="https://pointcast.xyz/pickleball/home">Open the sister home <span aria-hidden="true">↗</span></a></div><div class="pb-pointcast-grid"><a class="pb-pointcast-tool" href="https://pointcast.xyz/paddles"><h4>The paddle register <span aria-hidden="true">↗</span></h4><p>Browse the equipment research, source notes, and individual paddle files.</p></a><a class="pb-pointcast-tool" href="https://pointcast.xyz/paddles/compare"><h4>Compare paddles <span aria-hidden="true">↗</span></h4><p>Put build, shape, and published measurements side by side.</p></a><a class="pb-pointcast-tool" href="https://pointcast.xyz/paddles/oracle"><h4>The paddle oracle <span aria-hidden="true">↗</span></h4><p>A free match-count preview; paid sourced answers are labeled on the destination.</p></a><a class="pb-pointcast-tool" href="https://pointcast.xyz/paddles/legal"><h4>Rules &amp; legal tracker <span aria-hidden="true">↗</span></h4><p>Read the existing equipment standards and legal research archive.</p></a><a class="pb-pointcast-tool" href="https://pointcast.xyz/reviews/paddles"><h4>Paddle Takes <span aria-hidden="true">↗</span></h4><p>The firsthand-review method and empty review archive. No reviews are published yet.</p></a><a class="pb-pointcast-tool" href="https://pointcast.xyz/paddles/pros"><h4>Pros &amp; their paddles <span aria-hidden="true">↗</span></h4><p>A sourced model and signing reference, with its own checked dates.</p></a><a class="pb-pointcast-tool" href="https://pointcast.xyz/paddles/changes"><h4>Register changes <span aria-hidden="true">↗</span></h4><p>Source-linked additions, corrections, and equipment history.</p></a><a class="pb-pointcast-tool" href="https://pointcast.xyz/paddle-exchange"><h4>Paddle exchange <span aria-hidden="true">↗</span></h4><p>A browser-only trade, loan, and try profile concept; no shared stock is implied.</p></a><a class="pb-pointcast-tool" href="https://pointcast.xyz/reviews/bags"><h4>The court bag desk <span aria-hidden="true">↗</span></h4><p>Sourced bag specifications and comparisons, with no hands-on claim.</p></a><a class="pb-pointcast-tool" href="https://pointcast.xyz/beach-commons/v19#pocket-seats"><h4>A seat between games <span aria-hidden="true">↗</span></h4><p>The existing researched compact-seat reference for court breaks.</p></a><a class="pb-pointcast-tool" href="https://pointcast.xyz/court"><h4>The court shortcut <span aria-hidden="true">↗</span></h4><p>The existing short link to the Field Reports court spot.</p></a><a class="pb-pointcast-tool" href="https://pointcast.xyz/r/courts"><h4>Field Reports <span aria-hidden="true">↗</span></h4><p>Explore the local reporting experience and its existing court context.</p></a><a class="pb-pointcast-tool" href="https://pointcast.xyz/pickleball"><h4>The pickleball board <span aria-hidden="true">↗</span></h4><p>The original PointCast board stays in place: sessions, context, and links.</p></a><a class="pb-pointcast-tool" href="https://pointcast.xyz/games/noun-pickleball/"><h4>Noun Court Doubles <span aria-hidden="true">↗</span></h4><p>Play the existing CPU or pass-and-play game, with practice drills.</p></a><a class="pb-pointcast-tool" href="https://pointcast.xyz/brick-choir/third-shot"><h4>Third Shot <span aria-hidden="true">↗</span></h4><p>Phone-native strategic doubles with coach callouts, drills, and a Shot Report.</p></a><a class="pb-pointcast-tool" href="https://pointcast.xyz/brick-choir/park"><h4>Pickle Park <span aria-hidden="true">↗</span></h4><p>The existing TV court game with phone paddles and customized Buddies.</p></a><a class="pb-pointcast-tool" href="https://pointcast.xyz/brick-choir/rally"><h4>Rally, the game <span aria-hidden="true">↗</span></h4><p>PointCast’s distinct musical TV-and-phone game for one to four players.</p></a><a class="pb-pointcast-tool" href="https://pointcast.xyz/brick-choir/watch"><h4>Watch a room <span aria-hidden="true">↗</span></h4><p>Join the existing spectator experience with a four-letter room code.</p></a></div></div></section>
 
-      <div id="card" class="player-card" hidden>
-        <div class="rating-big"><span id="card-rating"></span></div>
-        <div class="card-facts">
-          <p id="card-tier" class="tier-badge"></p>
-          <p class="card-line">declared <strong id="card-declared"></strong></p>
-          <p class="card-line">record <strong id="card-record"></strong></p>
-          <p class="card-line" id="card-form-line" hidden>form <strong id="card-form"></strong></p>
-          <p class="card-line" id="card-glicko-line" hidden>second opinion <strong id="card-glicko"></strong></p>
-        </div>
-        <div id="card-spark" class="card-spark" hidden></div>
-      </div>
-
-      <div id="booth-profile-card" class="booth-profile-card" hidden>
-        <img id="booth-profile-image" alt="Saved Rally portrait" />
-        <div>
-          <p class="eyebrow">rally portrait</p>
-          <h3 id="booth-profile-title"></h3>
-          <p id="booth-profile-meta"></p>
-          <button id="booth-profile-edit" class="linkish" type="button">make another portrait</button>
-        </div>
-      </div>
-
-      <form id="declare-form" hidden>
-        <h2 class="section-label">Declare your rating</h2>
-        <p class="form-hint">Honor system to start — pick the number you'd say
-           out loud at open play. It's free to adjust until your first
-           countersigned match; after that, the ladder owns it.</p>
-        <div class="declare-row">
-          <select id="declare-rating" aria-label="rating"></select>
-          <button type="submit" class="enter enter-sm">Declare &amp; mint card</button>
-        </div>
-      </form>
-
-      <form id="report-form">
-        <h2 class="section-label">Report a match</h2>
-        <div class="format-row" role="radiogroup" aria-label="format">
-          <label><input type="radio" name="format" value="singles" checked /> singles</label>
-          <label><input type="radio" name="format" value="doubles" /> doubles</label>
-        </div>
-        <label class="field" id="partner-field" hidden>My partner
-          <input id="partner" placeholder="tz1… address" autocomplete="off" />
-        </label>
-        <label class="field">Opponent
-          <input id="opp1" placeholder="tz1… address" required autocomplete="off" />
-        </label>
-        <label class="field" id="opp2-field" hidden>Their partner
-          <input id="opp2" placeholder="tz1… address" autocomplete="off" />
-        </label>
-        <div class="score-row">
-          <label class="field">Us
-            <input id="score-us" type="number" min="0" max="99" required />
-          </label>
-          <span class="score-dash">–</span>
-          <label class="field">Them
-            <input id="score-them" type="number" min="0" max="99" required />
-          </label>
-        </div>
-        <label class="field">Venue
-          <select id="venue">
-            <option>California Smash</option>
-            <option>Hollyglen Park</option>
-            <option>El Segundo Rec Park</option>
-            <option value="__other">Elsewhere…</option>
-          </select>
-        </label>
-        <label class="field" id="venue-other-field" hidden>Where
-          <input id="venue-other" placeholder="court name" autocomplete="off" />
-        </label>
-        <label class="field">The tape <span class="field-hint">optional</span>
-          <input id="tape" type="file" accept="video/*" />
-        </label>
-        <p class="form-hint">Attach match video and its sha256 fingerprint is
-           hashed in your browser and anchored on-chain with the result —
-           tamper-evident forever. Keep the file; hosted playback comes later.</p>
-        <p class="form-hint">Everyone on the court signs before it counts.
-           Report losses too — an honest log is the whole point.</p>
-        <button type="submit" class="enter enter-sm">Report result</button>
-      </form>
-
-      <h2 class="section-label">Awaiting signatures</h2>
-      <ul id="pending" class="match-list"></ul>
-
-      <div class="shelf-head">
-        <h2 class="section-label">Passport</h2>
-        <button id="stamp-btn" class="ghost" type="button">📍 Stamp my passport</button>
-      </div>
-      <p class="form-hint">Show up at a court and stamp the page — your position
-         has to clear the fence, then the oracle signs and the book remembers.
-         One stamp per court per day.</p>
-      <ul id="passport" class="passport-book"></ul>
-    </section>
-
-    <section id="board">
-      <h2 class="section-label">The ladder</h2>
-      <ol id="ladder" class="ladder"></ol>
-
-      <h2 class="section-label">Recent matches</h2>
-      <ul id="matches" class="match-list"></ul>
-    </section>
-
-    <p id="status" class="status" role="status"></p>
-    </div>
-
-    <section class="club-tools" aria-labelledby="tools-title">
-      <p class="eyebrow">for the crew</p>
-      <h2 id="tools-title">Tools and reference for the <em>Tuesday group.</em></h2>
-      <a class="fund-strip" href="/tonight/">
-        <span class="fund-tag">no sign-up</span>
-        <b>The Open Play Desk</b>
-        <span>Type the names, get fair rounds, tap the scores, send the standings to the group chat →</span>
-      </a>
-    <a class="fund-strip" href="/score/">
-      <span class="fund-tag">one game · says it out loud</span>
-      <b>The Score Caller</b>
-      <span>Tap who won the rally. It keeps the server, the side and the 0-0-2 start, and calls the score →</span>
-    </a>
-    <a class="fund-strip" href="/guide/">
-      <span class="fund-tag">reference · every fact sourced</span>
-      <b>The Field Guide</b>
-      <span>The whole sport on one page: rules, gear, ratings, lessons, where to watch, the money, South Bay courts, trips →</span>
-    </a>
-    <a class="fund-strip" href="/pros/">
-      <span class="fund-tag">PPA · MLP · APP</span>
-      <b>The Pro Desk</b>
-      <span>Every pro event left in 2026, how MLP works, who's ranked on top, where to watch →</span>
-    </a>
-    <a class="fund-strip" href="/paddle-fund/">
-      <span class="fund-tag">playable concept</span>
-      <b>The Paddle Fund</b>
-      <span>Ten seats × $20 = a $200 paddle every week. The ladder sets the order. Take it, punt it, or pass it on →</span>
-    </a>
-    <a class="fund-strip" href="/paddle-calendar/">
-      <span class="fund-tag">reference · every date sourced</span>
-      <b>The Paddle Calendar</b>
-      <span>Every paddle release of 2026 on one calendar, what is coming next, and which ones fit under the fund's $200 →</span>
-    </a>
-    <a class="fund-strip" href="/bag/">
-      <span class="fund-tag">stays on your device</span>
-      <b>The Bag</b>
-      <span>Log the paddles you carry, the hours you put on them, and the day the grit fades or the core goes dead →</span>
-    </a>
-    </section>
-
-    <div class="landing-marquee" aria-hidden="true">
-      <span>YOUR NUMBER · OPEN PLAY DESK · COUNTERSIGNED MATCHES · COURT STAMPS · OPEN ELO · PORTRAITS · </span>
-      <span>YOUR NUMBER · OPEN PLAY DESK · COUNTERSIGNED MATCHES · COURT STAMPS · OPEN ELO · PORTRAITS · </span>
-    </div>
-
-    <section id="house-league" class="house-league" aria-labelledby="house-title">
-      <header class="house-head">
-        <div>
-          <p class="eyebrow">the photo booth · start with a character</p>
-          <h2 id="house-title">Meet the <em>House League.</em></h2>
-        </div>
-        <p>Six imaginary pickleball energies made with ChatGPT, Midjourney, and
-          Reve. They are prompts, not pretend users — pick one and it loads
-          the booth below with a frame, a superlative, and a quote.</p>
-      </header>
-
-      <div class="house-grid">
-        <article class="house-card house-card-tall">
-          <div class="house-image"><img src="/house/chatgpt-kitchen-mayor.jpg" alt="Fictional older pickleball player holding a giant blue paddle" /><span class="house-award">👑</span></div>
-          <p class="source-pill">ChatGPT image · house character</p>
-          <h3>Kitchen Mayor</h3>
-          <p>Knows every court rule, every birthday, and whose ball was definitely out.</p>
-          <button class="house-use" type="button" data-house-starter data-superlative="Kitchen Royalty" data-quote="The kitchen recognizes my authority." data-award="kitchen-mayor" data-frame="court-club">Use this energy</button>
-        </article>
-        <article class="house-card">
-          <div class="house-image"><img src="/house/chatgpt-dink-scientist.jpg" alt="Fictional pickleball player conducting a colorful courtside experiment" /><span class="house-award">🧪</span></div>
-          <p class="source-pill">ChatGPT image · house character</p>
-          <h3>Dink Scientist</h3>
-          <p>Peer-reviewed third shots. Findings remain controversial at open play.</p>
-          <button class="house-use" type="button" data-house-starter data-superlative="Dink Scientist" data-quote="The control group popped it up." data-award="dink-scientist" data-frame="kitchen-royalty">Use this energy</button>
-        </article>
-        <article class="house-card house-card-tall">
-          <div class="house-image"><img src="/house/chatgpt-team-chaos.jpg" alt="Fictional group of four exuberant pickleball teammates" /><span class="house-award">⚡</span></div>
-          <p class="source-pill">ChatGPT image · house character</p>
-          <h3>Team Chaos</h3>
-          <p>Four paddles, one group chat, no agreed interpretation of the score.</p>
-          <button class="house-use" type="button" data-house-starter data-superlative="Team Nobody Asked For" data-quote="The formation is mostly emotional." data-award="chaos-agent" data-frame="team-tape">Use this energy</button>
-        </article>
-        <article class="house-card">
-          <div class="house-image"><img src="/editorial/midjourney-court-warrior.jpg" alt="Illustrated pickleball court warrior in an ornate helmet" /><span class="house-award">🛡️</span></div>
-          <p class="source-pill source-mj">Midjourney original · editorial seed</p>
-          <h3>Court Warrior</h3>
-          <p>Arrives dressed for the bronze-medal match and a minor mythological dispute.</p>
-          <button class="house-use" type="button" data-house-starter data-superlative="Court Warrior" data-quote="No soft game without honor." data-award="court-warrior" data-frame="midjourney-color-court">Use this energy</button>
-        </article>
-        <article class="house-card house-card-tall">
-          <div class="house-image"><img src="/editorial/midjourney-best-dressed.jpg" alt="Fashion editorial illustration of a pickleball player in floral clothes" /><span class="house-award">💅</span></div>
-          <p class="source-pill source-mj">Midjourney original · editorial seed</p>
-          <h3>Best Dressed</h3>
-          <p>The rating is provisional. The look has already cleared review.</p>
-          <button class="house-use" type="button" data-house-starter data-superlative="Best Dressed at Open Play" data-quote="The outfit was never in question." data-award="best-dressed" data-frame="golden-hour">Use this energy</button>
-        </article>
-        <article class="house-card house-card-night">
-          <div class="house-image"><img src="/editorial/reve-electric-night.jpg" alt="Vintage pickleball magazine cover with lightning over a tropical court" /><span class="house-award">🌩️</span></div>
-          <p class="source-pill source-reve">Reve image · limited wildcard</p>
-          <h3>Electric Night</h3>
-          <p>For matches with weather, lore, and entirely too much cinematic importance.</p>
-          <button class="house-use" type="button" data-house-starter data-superlative="Electric Night Rallier" data-quote="The forecast said one more game." data-award="electric-night" data-frame="reve-electric-night">Use this energy</button>
-        </article>
-      </div>
-
-      <aside class="zero-two" aria-labelledby="zero-two-title">
-        <div>
-          <p class="eyebrow">how a crew gets on the record</p>
-          <h3 id="zero-two-title">First a tally. Then a claim. Then a record.</h3>
-        </div>
-        <ol>
-          <li><strong>Keep score tonight</strong><span>One phone, no accounts. <a href="/tonight/">The open play desk</a> deals the rounds.</span></li>
-          <li><strong>Claim your name</strong><span>Say your number and sign it onto a player card.</span></li>
-          <li><strong>Countersign a match</strong><span>Only real signatures move the public ladder.</span></li>
-        </ol>
-        <button id="invite-partner" class="enter enter-sm" type="button">Invite my first partner</button>
-        <p id="invite-status" class="invite-status" role="status"></p>
-      </aside>
-      <p class="house-honesty">House characters have no wallets, ratings, or match history.
-        Fun awards are self-applied; Rally’s competitive record still comes only from real player signatures.</p>
-    </section>
-
-    <div class="app-column">
-    <div id="invite-banner" class="invite-banner" hidden>
-      <span aria-hidden="true">🤝</span>
-      <p><strong>You were invited to a doubles card.</strong><br />Choose a shot and an award; your partner can make the matching half.</p>
-    </div>
-
-    <section id="booth" class="booth" aria-labelledby="booth-title">
-      <div class="booth-head">
-        <div>
-          <p class="eyebrow">new at the desk · photo day</p>
-          <h2 id="booth-title">The Rally Booth</h2>
-        </div>
-        <button id="booth-surprise" class="ghost" type="button">Surprise me</button>
-      </div>
-      <p class="booth-deck">Upload a player, doubles pair, or whole team. Pick a frame,
-        hand out a superlative, then download it or wallet-sign it into your Rally profile.</p>
-
-      <canvas id="booth-canvas" width="1024" height="1024"
-        role="img" aria-label="Preview of your framed Rally pickleball portrait"></canvas>
-
-      <label class="upload-card" for="booth-upload">
-        <span>1 · Choose the shot</span>
-        <strong>Upload player or team photo</strong>
-        <small>JPG, PNG, HEIC · stays in this browser</small>
-        <input id="booth-upload" type="file" accept="image/*" />
-      </label>
-
-      <label class="field booth-zoom">Crop / zoom
-        <input id="booth-zoom" type="range" min="1" max="2.5" value="1" step="0.01" />
-        <span class="field-hint">Drag the photo in the preview to reposition it.</span>
-      </label>
-
-      <fieldset class="frame-picker">
-        <legend>2 · Pick a frame</legend>
-        <button type="button" data-booth-frame="court-club" aria-pressed="true">
-          <img src="/frames/court-club.png" alt="" /><span>Court Club</span>
-        </button>
-        <button type="button" data-booth-frame="kitchen-royalty" aria-pressed="false">
-          <img src="/frames/kitchen-royalty.png" alt="" /><span>Kitchen Royalty</span>
-        </button>
-        <button type="button" data-booth-frame="golden-hour" aria-pressed="false">
-          <img src="/frames/golden-hour.png" alt="" /><span>Golden Hour</span>
-        </button>
-        <button type="button" data-booth-frame="team-tape" aria-pressed="false">
-          <img src="/frames/team-tape.png" alt="" /><span>Team Tape</span>
-        </button>
-        <button type="button" data-booth-frame="midjourney-color-court" aria-pressed="false">
-          <img src="/frames/midjourney-color-court.jpg" alt="" /><span>Color Court · MJ</span>
-        </button>
-        <button type="button" data-booth-frame="reve-electric-night" aria-pressed="false">
-          <img src="/frames/reve-electric-night.jpg" alt="" /><span>Electric Night · Reve</span>
-        </button>
-      </fieldset>
-
-      <div class="booth-copy">
-        <label class="field">3 · Player / duo / team name
-          <input id="booth-name" maxlength="34" value="El Segundo Open Play" autocomplete="off" />
-        </label>
-        <label class="field">The superlative
-          <select id="booth-superlative"></select>
-        </label>
-        <label class="field" id="booth-custom-field" hidden>Custom superlative
-          <input id="booth-custom" maxlength="48" placeholder="Most Likely to…" autocomplete="off" />
-        </label>
-        <label class="field">The quote
-          <input id="booth-quote" maxlength="72" value="Mine was in." autocomplete="off" />
-        </label>
-      </div>
-
-      <fieldset class="award-picker">
-        <legend>4 · Pin an award</legend>
-        <button type="button" data-booth-award="founding-player" aria-pressed="true"><b>🏆</b><span>Founding Player</span></button>
-        <button type="button" data-booth-award="kitchen-mayor" aria-pressed="false"><b>👑</b><span>Kitchen Mayor</span></button>
-        <button type="button" data-booth-award="dink-scientist" aria-pressed="false"><b>🧪</b><span>Dink Scientist</span></button>
-        <button type="button" data-booth-award="chaos-agent" aria-pressed="false"><b>⚡</b><span>Chaos Agent</span></button>
-        <button type="button" data-booth-award="court-warrior" aria-pressed="false"><b>🛡️</b><span>Court Warrior</span></button>
-        <button type="button" data-booth-award="best-dressed" aria-pressed="false"><b>💅</b><span>Best Dressed</span></button>
-        <button type="button" data-booth-award="electric-night" aria-pressed="false"><b>🌩️</b><span>Electric Night</span></button>
-      </fieldset>
-
-      <div class="booth-actions">
-        <button id="booth-download" class="enter enter-sm" type="button">Download portrait</button>
-        <button id="booth-share" class="ghost" type="button">Share</button>
-        <button id="booth-save" class="ghost save-profile" type="button">Save to Tezos profile</button>
-      </div>
-      <p class="booth-note">Saving asks your wallet for a gas-free signature. The portrait is
-        private to this browser for now; the signature proves which Tezos profile made it.</p>
-    </section>
-
-    <footer><p>Mainnet · CC0 · integer Elo, replayable from contract storage
-      · <a href="/api/mcp" style="color:inherit">MCP for agents</a></p></footer>
-    </div>
-  </main>
-  <script type="module" src="/src/main.js"></script>
+      <section class="pb-closing"><span class="pb-closing-ball" aria-hidden="true">✳</span><h2>See you<br>out there.</h2><a class="pb-button pb-button-lime" href="#pb-courts">Find your next court <span aria-hidden="true">↗</span></a><p>PLAY GENEROUSLY. LEAVE THE COURT BETTER.</p></section>
+    </main><footer class="pb-footer"><a class="pb-footer-word" href="/">RALLY</a><p>Pickleball, all in.<br>El Segundo · South Bay · wherever the game takes you.</p><div><a class="pb-text-link" href="https://pointcast.xyz/pickleball/home">Visit PointCast <span aria-hidden="true">↗</span></a><a href="#pb-main">Back to the top ↑</a></div><p class="pb-footer-note">RALLY and PointCast are independent experiences. Court references are checked editorial information, not reservations. Existing tool terms apply on their own pages.</p></footer>
+    <noscript><p class="pb-noscript">All learning paths, practice plans, and court references are available above. Filtering and the practice clock require JavaScript.</p></noscript>
+  </div>
+  <script type="module" src="/src/home.js"></script>
 </body>
 </html>
