@@ -71,13 +71,20 @@ Tuesday. Conversion is a player wanting their line to be *theirs*.
 
 ## Site map (reorganized)
 
+**2026-10-02 update:** The new `/` pickleball home puts learning, courts,
+practice, crew tools, and gear first. The original page described below is
+preserved at `/desk/`; its player-card queries, invites, level links, and
+anchors still resolve there. PointCast's `/pickleball/home` sister shares the home
+content and links into the working RALLY tools.
+
 | Route | Job | Wallet |
 |---|---|---|
-| `/` | **What's your number?** Level finder in the hero → card → the desk → the ladder. Then club tools, then the booth. | optional |
+| `/` | **Pickleball home.** Learning, drills, sourced court discovery, tools, gear, and the campaign archive. | none |
+| `/desk/` | **What's your number?** Original level finder → card → the desk → the ladder. Then club tools, then the booth. Old root queries and anchors forward here. | optional |
 | `/tonight/` | **Open play desk.** Names → fair rotating-partner rounds → scores → standings, session Elo (the contract's exact integer formula), recap card, share link. | none |
 | `/paddle-fund/` | Crew money game (concept). | none |
-| `/#booth` | Portrait booth; House League lives here as starter presets. | optional |
-| `/#board` | The ladder + countersigned matches. | none |
+| `/desk/#booth` | Portrait booth; House League lives here as starter presets. | optional |
+| `/desk/#board` | The ladder + countersigned matches. | none |
 | `/api/mcp` | Agents read the ledger. | none |
 
 Shipped with this document: the `/` reorganization, the level finder, and
@@ -125,8 +132,9 @@ Shipped with this document: the `/` reorganization, the level finder, and
 - THAS HER's SLSaaS reads and writes the Rally contract instead of its own
   KV ladder: the zine is the voice, Rally is the record. Same for any Pro
   Shop tool that wants a level.
-- PointCast `/rally` door is a 404 since the main-lineage rewrite; restore
-  it as a Court-channel page when there is a second player to show.
+- PointCast's sister door shares the learning, court, and gear home at
+  `/pickleball/home`. The competitive
+  ladder stays on the RALLY desk and continues to show its real record.
 
 ## Who we grow with, in order
 

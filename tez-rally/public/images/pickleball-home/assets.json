@@ -1,0 +1,64 @@
+{
+  "generatedConcepts": true,
+  "fictionalLocations": true,
+  "endorsement": "Independent concepts; no Nouns DAO or third-party RALLY endorsement.",
+  "checkedAt": "2026-10-02",
+  "records": [
+    {
+      "source": "01-RALLY-Leave-It-All-Hero.png",
+      "name": "leave-it-all.webp",
+      "sourceSha256": "0abe668f77330d239c517c9c7a933182e202b03c9ba5ecf11310f0b77b19ac0c",
+      "webpSha256": "cb390f530c05ddd098ef2c84dda8f2acb17bd327fe6d601b2d3d0b2a18f3af21",
+      "bytes": 162800
+    },
+    {
+      "source": "02-RALLY-Courtside.png",
+      "name": "courtside.webp",
+      "sourceSha256": "4635bffc566c4ed99c75f1da2082cacc741e2beb2423276bb522fee889a3ea78",
+      "webpSha256": "c9607b8202be46c46a5cf180cfe6fe91cf2307c47342e2935150049e77afd3be",
+      "bytes": 150180
+    },
+    {
+      "source": "03-RALLY-Court-Essentials.png",
+      "name": "essentials.webp",
+      "sourceSha256": "7de0b8181829a4dbf9d1341d81fdd79c51300ea4150a67e2998695f4cf7ef178",
+      "webpSha256": "cb2613a527f93bb76db62e5ede766c321735b797811e2da4c56d5077d4e0b445",
+      "bytes": 232866
+    },
+    {
+      "source": "RALLY-04-Courtside-Banner.png",
+      "name": "banner.webp",
+      "sourceSha256": "236631ad93fbeda191d5ba2f492fbaec608dca45ce389d16db4fa93bb16ee1d3",
+      "webpSha256": "24f651219a2ee0af50908cf3fefd7a291d137d7df98c0dfec70e7ce759876911",
+      "bytes": 225120
+    },
+    {
+      "source": "nouns/01-Court-Kit.png",
+      "name": "nouns-court-kit.webp",
+      "sourceSha256": "6244f17d47575d3892c488ae2d9c7e8231280a2265dcee605c75a70a0a503963",
+      "webpSha256": "5abc2ecb3d51e70f79e3a6b1a71bfcc924d79bf8b2e9dd3c2796504a517ded34",
+      "bytes": 68690
+    },
+    {
+      "source": "nouns/02-Club-Layer.png",
+      "name": "nouns-club-layer.webp",
+      "sourceSha256": "5b8b27e7ddece13226bb345643c5df3d0e72dcf22ebe7c2d83acde4c8327be00",
+      "webpSha256": "95901847f6c88d3671541edd9b685c5aecec084c89bd7b19768a24f09a7ad39f",
+      "bytes": 54696
+    },
+    {
+      "source": "nouns/03-Court-Essentials.png",
+      "name": "nouns-essentials.webp",
+      "sourceSha256": "2e68e598b8f0c70aaf73152b9874a6eb120a323db312305696ddfe2f2d532d92",
+      "webpSha256": "fb953c2d089ea49995dc747dcdd385d255b097179543afcb5cfecdc07151f2b7",
+      "bytes": 165568
+    },
+    {
+      "source": "nouns/04-Campaign-Hero.png",
+      "name": "nouns-campaign.webp",
+      "sourceSha256": "a7c8de489c1e6d72b98b034f984ad6f86279f72d1f04f8ae3e2a7af5903cb79e",
+      "webpSha256": "8ceab1828ec6edd62d4d4d2bdf223db4829fcca0b2dae79dd932c71c59f3fbbd",
+      "bytes": 112500
+    }
+  ]
+}

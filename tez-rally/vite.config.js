@@ -13,6 +13,14 @@ const beaconBundle = fileURLToPath(
 
 export default defineConfig({
   plugins: [nodePolyfills()],
+  build: {
+    rollupOptions: {
+      input: {
+        home: fileURLToPath(new URL("./index.html", import.meta.url)),
+        desk: fileURLToPath(new URL("./desk/index.html", import.meta.url)),
+      },
+    },
+  },
   resolve: {
     alias: {
       "@airgap/beacon-sdk": beaconBundle,

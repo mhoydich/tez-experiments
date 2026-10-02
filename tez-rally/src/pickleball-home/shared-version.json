@@ -1,0 +1,12 @@
+{
+  "version": "1-9aa7f7903e25",
+  "canonicalRepository": "mhoydich/tez-experiments",
+  "canonicalPath": "tez-rally/src/pickleball-home",
+  "files": {
+    "render.js": "c1b4a0890e6b0afda0d0c2431323aed7cbce6f30491d9b17ac1e236c5797b643",
+    "client.js": "2bf2d06e1f7ef8bad72b04f0110739b4e3a254b54dc84ac641fc74a623da09b6",
+    "styles.css": "01a5d32a661d574381828486d6d5ed9f89eb14403b21357274f9c52bf26289a9",
+    "learning.json": "96992a5adcfdfa062dc901cf77afe11c1acc26682ef33213222518e326cb042d",
+    "courts.json": "f80235e3f75cf8d29ee8b885535769fa70b8ecc8be1ce3c5b0a114e40065888b"
+  }
+}

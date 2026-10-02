@@ -1,0 +1,100 @@
+{
+  "retrieved_at_utc": "2026-10-02T05:19:19.302659+00:00",
+  "description": "Ten actual numbered Nouns NFTs. Original retrieved SVG and PNG files are preserved unchanged. Their pixel shapes and colors have been verified exactly against the official NounsDAO RLE traits and seeds returned by the official nouns.wtf configured subgraph. 1280 PNGs are nearest-neighbor enlargements.",
+  "license": "CC0 artwork; source software is separately GPL-3.0",
+  "license_source": "https://nouns.wtf/brand",
+  "official_art_source": "https://github.com/nounsDAO/nouns-monorepo/blob/master/packages/nouns-assets/src/image-data.json",
+  "official_renderer_source": "https://github.com/nounsDAO/nouns-monorepo/blob/master/packages/nouns-sdk/src/image/svg-builder.ts",
+  "website_bundle_provenance": "https://nouns.wtf/assets/index-NR9Z-7gu.js uses https://noun.pics/${tokenID} for displayed Nouns and configures the listed subgraph",
+  "seed_source": "https://api.goldsky.com/api/public/project_clnbcoajmebxn33wdbt98f439/subgraphs/nouns-mainnet/1.0.0/gn",
+  "seed_evidence_file": "nouns-seeds-selected.json",
+  "artworks": [
+    {
+      "noun_id": 0,
+      "name": "Noun 0",
+      "official_nft_url": "https://nouns.wtf/noun/0",
+      "contract": "0x9C8fF314C9Bc7F6e59A9d9225Fb22946427eDC03",
+      "chain": "Ethereum mainnet",
+      "svg_source_url": "https://noun.pics/0.svg",
+      "png_source_url": "https://noun.pics/0",
+      "source_svg_file": "noun-0000-original.svg",
+      "source_png_file": "noun-0000-original.png",
+      "nearest_1280_png": "noun-0000-nearest-1280.png",
+      "background_hex": "#d5d7e1",
+      "seed": {
+        "background": 0,
+        "body": 14,
+        "accessory": 132,
+        "head": 94,
+        "glasses": 18
+      },
+      "traits": {
+        "body": "body-green",
+        "accessory": "accessory-yingyang",
+        "head": "head-gnome",
+        "glasses": "glasses-square-watermelon"
+      },
+      "official_trait_pixel_match": true,
+      "original_png_pixel_match": true,
+      "sha256_svg": "f2676e3710c67fc7287a2def8b73c3280271d43b8965093eec2abb466a72a0a9"
+    },
+    {
+      "noun_id": 1,
+      "name": "Noun 1",
+      "official_nft_url": "https://nouns.wtf/noun/1",
+      "contract": "0x9C8fF314C9Bc7F6e59A9d9225Fb22946427eDC03",
+      "chain": "Ethereum mainnet",
+      "svg_source_url": "https://noun.pics/1.svg",
+      "png_source_url": "https://noun.pics/1",
+      "source_svg_file": "noun-0001-original.svg",
+      "source_png_file": "noun-0001-original.png",
+      "nearest_1280_png": "noun-0001-nearest-1280.png",
+      "background_hex": "#e1d7d5",
+      "seed": {
+        "background": 1,
+        "body": 20,
+        "accessory": 95,
+        "head": 88,
+        "glasses": 14
+      },
+      "traits": {
+        "body": "body-peachy-B",
+        "accessory": "accessory-sunset",
+        "head": "head-fox",
+        "glasses": "glasses-square-pink-purple-multi"
+      },
+      "official_trait_pixel_match": true,
+      "original_png_pixel_match": true,
+      "sha256_svg": "b0ef531be7ebecdf9ffa676e5df767241f81179320fdb2bde43a80a9884c2c97"
+    },
+    {
+      "noun_id": 2,
+      "name": "Noun 2",
+      "official_nft_url": "https://nouns.wtf/noun/2",
+      "contract": "0x9C8fF314C9Bc7F6e59A9d9225Fb22946427eDC03",
+      "chain": "Ethereum mainnet",
+      "svg_source_url": "https://noun.pics/2.svg",
+      "png_source_url": "https://noun.pics/2",
+      "source_svg_file": "noun-0002-original.svg",
+      "source_png_file": "noun-0002-original.png",
+      "nearest_1280_png": "noun-0002-nearest-1280.png",
+      "background_hex": "#e1d7d5",
+      "seed": {
+        "background": 1,
+        "body": 3,
+        "accessory": 3,
+        "head": 157,
+        "glasses": 20
+      },
+      "traits": {
+        "body": "body-bluegrey",
+        "accessory": "accessory-belly-chameleon",
+        "head": "head-pineapple",
+        "glasses": "glasses-square-yellow-saturated"
+      },
+      "official_trait_pixel_match": true,
+      "original_png_pixel_match": true,
+      "sha256_svg": "b2467a42807864bffdbabf9742b83c02147a46e16a1dfa82645b0fb7b9281d4a"
+    }
+  ]
+}
