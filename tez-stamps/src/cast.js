@@ -12,9 +12,14 @@ const j = (url) => fetch(url).then((r) => (r.ok ? r.json() : null)).catch(() => 
 
 export const KINDS = ["note", "link", "art"];
 
-export async function getCasts({ author = null, limit = 30 } = {}) {
+// Kinds people publish (0 note, 1 link, 2 art). Machine casts on the same
+// tower — e.g. pointcast-chain anchors (kind 3, binary pcc1 bodies) — are
+// filtered out of every feed here so they never render as garbled notes.
+export const HUMAN_KINDS = [0, 1, 2];
+
+export async function getCasts({ author = null, limit = 30, kinds = HUMAN_KINDS } = {}) {
   if (!CAST) return [];
-  const q = author ? `&value.author=${author}` : "";
+  const q = (author ? `&value.author=${author}` : "") + (kinds ? `&value.kind.in=${kinds.join(",")}` : "");
   const rows = await j(
     `${INDEXER}/v1/contracts/${CAST}/bigmaps/casts/keys?active=true&sort.desc=id&limit=${limit}${q}`
   );
@@ -46,14 +51,32 @@ export async function getCastCount(addr) {
   return Number(row?.value || 0);
 }
 
-// Top authors by total casts — "loudest towers" on the landing.
+// Top authors by human casts — "loudest towers" on the landing.
+// The contract's by_author totals include machine anchors, so count the
+// human feed instead. Cursor pagination keeps the ranking complete.
 export async function topCasters(limit = 5) {
   if (!CAST) return [];
-  const rows = await j(
-    `${INDEXER}/v1/contracts/${CAST}/bigmaps/by_author/keys?active=true&limit=500`
-  );
-  return (rows || [])
-    .map((r) => ({ address: r.key, count: Number(r.value) }))
+  const hidden = new Set((import.meta.env.VITE_HIDDEN_CASTERS || "").split(",").map((s) => s.trim()).filter(Boolean));
+  const counts = new Map();
+  const pageSize = 1000;
+  let cursor = null;
+  while (true) {
+    const q = cursor === null ? "" : `&offset.cr=${cursor}`;
+    const rows = await j(
+      `${INDEXER}/v1/contracts/${CAST}/bigmaps/casts/keys?active=true&sort.asc=id&limit=${pageSize}&value.kind.in=${HUMAN_KINDS.join(",")}${q}`
+    );
+    // A failed page cannot establish a complete ranking.
+    if (!Array.isArray(rows)) return [];
+    for (const r of rows) {
+      const address = r.value?.author;
+      if (address && HUMAN_KINDS.includes(Number(r.value.kind)) && !hidden.has(address))
+        counts.set(address, (counts.get(address) || 0) + 1);
+    }
+    if (rows.length < pageSize) break;
+    cursor = rows[rows.length - 1].id;
+  }
+  return [...counts.entries()]
+    .map(([address, count]) => ({ address, count }))
     .sort((a, b) => b.count - a.count)
     .slice(0, limit);
 }

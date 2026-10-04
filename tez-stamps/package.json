@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "test": "node --test tests/cast.test.mjs",
     "deploy": "node scripts/deploy.js"
   },
   "dependencies": {

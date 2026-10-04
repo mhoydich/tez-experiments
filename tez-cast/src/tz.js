@@ -78,9 +78,14 @@ export async function getTokens(addr, limit = 12) {
 }
 
 // ---- the cast tower ----
-export async function getCasts({ author = null, limit = 30 } = {}) {
+// Kinds people publish (0 note, 1 link, 2 art). Machine casts on the same
+// tower — e.g. pointcast-chain anchors (kind 3, binary pcc1 bodies) — are
+// filtered out of every feed here so they never render as garbled notes.
+export const HUMAN_KINDS = [0, 1, 2];
+
+export async function getCasts({ author = null, limit = 30, kinds = HUMAN_KINDS } = {}) {
   if (!CAST) return [];
-  const q = author ? `&value.author=${author}` : "";
+  const q = (author ? `&value.author=${author}` : "") + (kinds ? `&value.kind.in=${kinds.join(",")}` : "");
   const rows = await j(
     `${INDEXER}/v1/contracts/${CAST}/bigmaps/casts/keys?active=true&sort.desc=id&limit=${limit}${q}`
   );
