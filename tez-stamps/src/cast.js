@@ -51,18 +51,32 @@ export async function getCastCount(addr) {
   return Number(row?.value || 0);
 }
 
-// Top authors by total casts — "loudest towers" on the landing.
+// Top authors by human casts — "loudest towers" on the landing.
+// The contract's by_author totals include machine anchors, so count the
+// human feed instead. Cursor pagination keeps the ranking complete.
 export async function topCasters(limit = 5) {
   if (!CAST) return [];
-  const rows = await j(
-    `${INDEXER}/v1/contracts/${CAST}/bigmaps/by_author/keys?active=true&limit=500`
-  );
-  // Machine casters (e.g. a pointcast-chain anchor account) would top the
-  // board; list them in VITE_HIDDEN_CASTERS (comma-separated) to hide them.
   const hidden = new Set((import.meta.env.VITE_HIDDEN_CASTERS || "").split(",").map((s) => s.trim()).filter(Boolean));
-  return (rows || [])
-    .map((r) => ({ address: r.key, count: Number(r.value) }))
-    .filter((r) => !hidden.has(r.address))
+  const counts = new Map();
+  const pageSize = 1000;
+  let cursor = null;
+  while (true) {
+    const q = cursor === null ? "" : `&offset.cr=${cursor}`;
+    const rows = await j(
+      `${INDEXER}/v1/contracts/${CAST}/bigmaps/casts/keys?active=true&sort.asc=id&limit=${pageSize}&value.kind.in=${HUMAN_KINDS.join(",")}${q}`
+    );
+    // A failed page cannot establish a complete ranking.
+    if (!Array.isArray(rows)) return [];
+    for (const r of rows) {
+      const address = r.value?.author;
+      if (address && HUMAN_KINDS.includes(Number(r.value.kind)) && !hidden.has(address))
+        counts.set(address, (counts.get(address) || 0) + 1);
+    }
+    if (rows.length < pageSize) break;
+    cursor = rows[rows.length - 1].id;
+  }
+  return [...counts.entries()]
+    .map(([address, count]) => ({ address, count }))
     .sort((a, b) => b.count - a.count)
     .slice(0, limit);
 }

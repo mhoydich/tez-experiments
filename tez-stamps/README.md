@@ -36,6 +36,13 @@ Edit from your passport's **page desk** pane — every edit is a public cast,
 forever. Growth path: signed-stamp issuers can print QR pages at events;
 any app that reads the tower can render the same page.
 
+The public wire and top-casters board count only human casts (kind 0 note,
+1 link, 2 art). Machine anchors (kind 3) never enter either, including
+when an account also publishes human casts. The board paginates the full
+human history before ranking; a failed page leaves it empty rather than
+showing partial totals. `VITE_HIDDEN_CASTERS` can still hide specific
+addresses, but no anchor address needs to be configured.
+
 ## The model
 
 ```
