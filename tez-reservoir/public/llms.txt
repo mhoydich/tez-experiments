@@ -1,0 +1,7 @@
+# the reservoir
+
+> The compute susu: a club that pools small dues into secured compute (frontier API credits, decentralized GPU-hours, club nodes). Membership is a soulbound seat; every buy is memo-tagged on-chain. Part of the CC0 tez-experiments series.
+
+- [the reservoir](https://tez-reservoir.pages.dev/): Wallet app to read the water level, join, and pour.
+- [The money games house](https://tez-susu.pages.dev/): The sibling susu and fountain experiments.
+- [Source and README](https://github.com/mhoydich/tez-experiments/tree/main/tez-reservoir): Contract design, deployed addresses and smoke-test notes.

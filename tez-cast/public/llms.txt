@@ -1,0 +1,6 @@
+# tez-cast
+
+> A personal page for any Tezos wallet (balance, activity, stamps, nouns) and an append-only, admin-less broadcast tower contract. Part of the CC0 tez-experiments series.
+
+- [tez-cast](https://tez-cast.pages.dev/): Paste any Tezos address to get a page: balance sparkline, activity pulse, soulbound stamps, on-chain nouns, postcards received, token holdings. A connected wallet can publish short casts (note / link / art) that cannot be edited or deleted.
+- [Source and README](https://github.com/mhoydich/tez-experiments/tree/main/tez-cast): Contract details, deployed addresses (Mainnet and Shadownet) and build notes.

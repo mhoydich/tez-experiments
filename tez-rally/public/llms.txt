@@ -1,0 +1,13 @@
+# RALLY
+
+> A pickleball home (learning paths, practice plans, South Bay court references) plus a wallet-owned player desk on Tezos: self-declared soulbound rating cards hardened by countersigned matches. Part of the CC0 tez-experiments series.
+
+- [Home](https://tez-rally.pages.dev/): Learn the game, find a court, play tonight.
+- [Player desk](https://tez-rally.pages.dev/desk/): Player portraits, cards, match records and court stamps.
+- [Field guide](https://tez-rally.pages.dev/guide/): The whole sport of pickleball on one page.
+- [Pro desk](https://tez-rally.pages.dev/pros/): PPA, MLP, APP, rankings and the money.
+- [Score caller](https://tez-rally.pages.dev/score/): Who serves, from where, and what to call.
+- [Tonight](https://tez-rally.pages.dev/tonight/): The open play desk.
+- [The bag](https://tez-rally.pages.dev/bag/): What you carry and how long it lasts.
+- [Paddle fund](https://tez-rally.pages.dev/paddle-fund/) and [paddle calendar](https://tez-rally.pages.dev/paddle-calendar/): Paddle pages.
+- [Source and README](https://github.com/mhoydich/tez-experiments/tree/main/tez-rally): Contracts, deployed addresses and API notes.

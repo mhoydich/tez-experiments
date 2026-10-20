@@ -4,6 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>tez-onboard — the front door</title>
+  <meta name="description" content="Sign in with an account you already have. A Tezos wallet appears, gets seeded with enough tez to act, and starts remembering everything you do from here." />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="tez-onboard — the front door" />
+  <meta property="og:description" content="Sign in with an account you already have. A Tezos wallet appears, gets seeded with enough tez to act, and starts remembering everything you do from here." />
+  <meta name="twitter:card" content="summary" />
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
@@ -20,6 +26,7 @@
       <img src="/art/passport-pool.webp" alt="A teal passport with a gold crest, resting on sunlit pool-tile mosaic" width="640" height="640" />
     </figure>
 
+    <noscript><p class="fine">Connecting a wallet (Kukai or any Beacon wallet) needs JavaScript.</p></noscript>
     <div id="connect-wrap">
       <button id="connect" class="enter">Enter with Kukai</button>
       <p class="fine">or any Beacon wallet — Temple, Umami…</p>
