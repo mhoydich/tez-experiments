@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tez-drum.pages.dev/sitemap.xml

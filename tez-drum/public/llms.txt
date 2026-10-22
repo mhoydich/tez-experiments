@@ -1,0 +1,6 @@
+# drum
+
+> A single-page Tezos app: hit the drum, and a run of taps settles as one mint of DRUM, a fungible FA2 token. Permissionless self-mint, no admin. Part of the CC0 tez-experiments series.
+
+- [drum](https://tez-drum.pages.dev/): The playable drum. Taps are counted locally; connecting a Beacon wallet (e.g. Kukai) lets you mint the run in one operation.
+- [Source and README](https://github.com/mhoydich/tez-experiments/tree/main/tez-drum): Contract entrypoints, views (balance, total_taps), and deployed addresses.
